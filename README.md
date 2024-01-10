@@ -2,6 +2,11 @@
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+## Project Setup
+
+`npm install`
+`npm start`
+
 ## Available Scripts
 
 In the project directory, you can run:
@@ -44,3 +49,31 @@ You don’t have to ever use `eject`. The curated feature set is suitable for sm
 You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
 To learn React, check out the [React documentation](https://reactjs.org/).
+
+# Project Requirements
+
+---
+
+# Important Links
+
+## Packages
+
+### Typescript
+
+https://www.typescriptlang.org/
+
+### React Router
+
+https://reactrouter.com/en/main/start/tutorial#the-root-route
+
+### Styled Components
+
+https://styled-components.com/docs/basics#getting-started
+
+### React Hook Forms
+
+https://react-hook-form.com/get-started#Quickstart
+
+### React Testing Library
+
+https://testing-library.com/docs/react-testing-library/example-intro
