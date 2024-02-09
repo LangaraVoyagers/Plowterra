@@ -9,7 +9,6 @@
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "fix": "eslint --fix && git add .",
     "preview": "vite preview",
-    "preinstall": "npm install -g pnpm",
     "postinstall": "husky install"
   },
   "dependencies": {
