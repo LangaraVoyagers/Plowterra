@@ -1,38 +1,68 @@
-# Project 2
+# Project 2 
+Team Voyagers web app repo
 
-## Contributors
+Contibutors:
+- [Alberth](https://github.com/ALFAROSO)
+- [Bryan](https://github.com/BryanCaldeira)
+- [Reinhardt](https://github.com/ReinhardtBotha)
+- [Wonnyo](https://github.com/whamester)
 
-@whamester
-@BryanCaldeira
-@ReinhardtBotha
-@ALFAROSO
+## Setup
 
-## Project Setup
+Clone the Repo
+```bash
+git clone git@github.com:LangaraVoyagers/project-2.git
+```
 
-`npm install -g pnpm`
-`yarn`
-`yarn dev`
+Install the node packages
+```bash
+npm install -g pnpm
+```
 
-# Important Links
+Start the server
 
-## Packages
+```bash
+yarn dev
+```
 
-### Typescript
+---
 
-https://www.typescriptlang.org/
+## assets
+Media resources
 
-### React Router
+## coponents 
+Will contain all our custom components
 
-https://reactrouter.com/en/main/start/tutorial#the-root-route
+## pages
+Will contain all the main layouts that will serve as the pages of our app
 
-### Styled Components
+## routes
+Will contain all the routing component such as custom, protected and public routes
 
-https://styled-components.com/docs/basics#getting-started
+## shared
+Will contain all the shared helper functions
 
-### React Hook Forms
+## Docs
+- [typescript](https://www.typescriptlang.org/docs/handbook/intro.html)
+- [react router](https://reactrouter.com/en/main/start/tutorial#the-root-route)
+- [styled components](https://styled-components.com/docs/basics#getting-started)
+- [react hook forms](https://react-hook-form.com/get-started#Quickstart)
+- [react testing library](https://testing-library.com/docs/react-testing-library/example-intro)
 
-https://react-hook-form.com/get-started#Quickstart
+## NPM
+#### Dependencies
+- [react](https://www.npmjs.com/package/react)
+- [react-dom](https://www.npmjs.com/package/react-dom)
+- [react-hook-form](https://www.npmjs.com/package/react-hook-form)
+- [react-query](https://www.npmjs.com/package/react-query)
+- [react-router-dom](https://www.npmjs.com/package/react-router-dom)
+- [styled-components](https://www.npmjs.com/package/styled-components)
+---
 
-### React Testing Library
-
-https://testing-library.com/docs/react-testing-library/example-intro
+#### Development Dependencies
+- [@types/react](https://www.npmjs.com/package/@types/react)
+- [@types/react-dom](https://www.npmjs.com/package/@types/react-dom)
+- [husky](https://www.npmjs.com/package/husky)
+- [vite](https://www.npmjs.com/package/vite)
+- [typescript](https://www.npmjs.com/package/typescript) 
+- [eslint](https://www.npmjs.com/package/eslint) 
