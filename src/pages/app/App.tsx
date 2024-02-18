@@ -2,7 +2,9 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
 import Login from "pages/login";
-import Home from "pages/home";
+import MainLayout from "layouts/MainLayout";
+import paths from "shared/paths";
+import Pickers from "pages/pickers";
 
 const router = createBrowserRouter([
   {
@@ -11,15 +13,11 @@ const router = createBrowserRouter([
   },
   {
     path: "/",
-    element: <Home />,
+    element: <MainLayout />,
     children: [
       {
-        path: "contacts/:contactId",
-        element: <div>Contact Detail</div>,
-      },
-      {
-        path: "contacts/:contactId/edit",
-        element: <div>Edit Contact</div>,
+        path: paths.pickers.dashboard,
+        element: <Pickers />,
       },
     ],
   },
