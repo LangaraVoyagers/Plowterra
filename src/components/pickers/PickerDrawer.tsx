@@ -71,7 +71,11 @@ const PickerDrawer = () => {
               return (
                 <Box display="flex" flexDirection="column" gap={1}>
                   <InputLabel htmlFor="picker-name-input">Name*</InputLabel>
-                  <OutlinedInput {...field} id="picker-name-input" />
+                  <OutlinedInput
+                    {...field}
+                    id="picker-name-input"
+                    size="small"
+                  />
                 </Box>
               );
             }}
@@ -87,7 +91,11 @@ const PickerDrawer = () => {
                     Phone Number*
                   </InputLabel>
 
-                  <OutlinedInput {...field} id="picker-phone-input" />
+                  <OutlinedInput
+                    {...field}
+                    id="picker-phone-input"
+                    size="small"
+                  />
                 </Box>
               );
             }}
@@ -102,13 +110,12 @@ const PickerDrawer = () => {
                   <InputLabel htmlFor="picker-contact-name-input">
                     Emergency Contact Name*
                   </InputLabel>
-                  <FormGroup row>
-                    <Select defaultValue={1}>
-                      {/* Get the countries list */}
-                      <MenuItem value={1}>COL</MenuItem>
-                    </Select>
-                    <OutlinedInput {...field} id="picker-contact-name-input" />
-                  </FormGroup>
+
+                  <OutlinedInput
+                    {...field}
+                    id="picker-contact-name-input"
+                    size="small"
+                  />
                 </Box>
               );
             }}
@@ -124,7 +131,7 @@ const PickerDrawer = () => {
                     Relation to picker*
                   </InputLabel>
 
-                  <Select {...field} id="picker-relation-input">
+                  <Select {...field} id="picker-relation-input" size="small">
                     {relationshipList?.map(({ value, label }) => {
                       return (
                         <MenuItem key={value} value={value}>
@@ -149,11 +156,16 @@ const PickerDrawer = () => {
                   </InputLabel>
 
                   <FormGroup row>
-                    <Select defaultValue={1}>
+                    <Select defaultValue={1} size="small">
                       {/* Get the countries list */}
                       <MenuItem value={1}>COL</MenuItem>
                     </Select>
-                    <OutlinedInput {...field} id="picker-contact-name-input" />
+                    <OutlinedInput
+                      {...field}
+                      id="picker-contact-number-input"
+                      size="small"
+                      sx={{ flex: 1 }}
+                    />
                   </FormGroup>
                 </Box>
               );
@@ -170,7 +182,7 @@ const PickerDrawer = () => {
                     Blood Type
                   </InputLabel>
 
-                  <Select {...field} id="picker-blood-type-input">
+                  <Select {...field} id="picker-blood-type-input" size="small">
                     {bloodTypeList?.map(({ value, label }) => {
                       return (
                         <MenuItem key={value} value={value}>
@@ -194,7 +206,11 @@ const PickerDrawer = () => {
                     Identification Number
                   </InputLabel>
 
-                  <OutlinedInput {...field} id="picker-gov-id-input" />
+                  <OutlinedInput
+                    {...field}
+                    id="picker-gov-id-input"
+                    size="small"
+                  />
                 </Box>
               );
             }}
@@ -214,7 +230,7 @@ const PickerDrawer = () => {
                     {...field}
                     id="picker-address-input"
                     multiline
-                    rows={3}
+                    rows={2}
                   />
                 </Box>
               );
