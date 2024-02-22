@@ -119,7 +119,7 @@ const Pickers = () => {
               },
             },
           }}
-          getRowId={(data) => data.id}
+          getRowId={(data) => data?.id}
           pageSizeOptions={[20, 50, 100]}
           disableRowSelectionOnClick
         />
