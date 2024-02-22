@@ -55,7 +55,7 @@ const PickerDrawer = () => {
       <Button variant="contained" onClick={showDrawer}>
         Add New Picker
       </Button>
-      <Drawer anchor="right" open={open} onClose={hideDrawer}>
+      <Drawer anchor="right" open={open}>
         <Box
           display="flex"
           flexDirection="column"
@@ -238,7 +238,9 @@ const PickerDrawer = () => {
           />
 
           <Box display="flex" justifyContent="space-between">
-            <Button disabled={isLoading}>Cancel</Button>
+            <Button disabled={isLoading} onClick={hideDrawer}>
+              Cancel
+            </Button>
 
             <Button
               variant="contained"
