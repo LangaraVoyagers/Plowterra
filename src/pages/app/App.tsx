@@ -5,6 +5,7 @@ import Login from "pages/login";
 import MainLayout from "layouts/MainLayout";
 import paths from "shared/paths";
 import Pickers from "pages/pickers";
+import HarvestLogs from "pages/harvest-logs";  
 
 const router = createBrowserRouter([
   {
@@ -18,6 +19,10 @@ const router = createBrowserRouter([
       {
         path: paths.pickers.dashboard,
         element: <Pickers />,
+      },
+      {
+        path: paths.harvestLogs.dashboard,
+        element: <HarvestLogs />,
       },
     ],
   },

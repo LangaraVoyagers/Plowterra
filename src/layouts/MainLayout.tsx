@@ -80,7 +80,7 @@ const sidebarItems = [
   {
     title: "Daily Harvest",
     icon: <AssignmentTurnedInOutlinedIcon />,
-    href: "",
+    href: paths.harvestLogs.dashboard,
   },
   {
     title: "Pickers",
