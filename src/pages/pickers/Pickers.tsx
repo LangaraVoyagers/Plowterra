@@ -10,14 +10,18 @@ import {
   Select,
 } from "@mui/material";
 import { DataGrid, GridColDef, GridValueGetterParams } from "@mui/x-data-grid";
+import { getPickers } from "api/pickers";
+import PickerDrawer from "components/pickers/PickerDrawer";
 import BasicHome from "layouts/BasicHome";
+import { IPicker } from "project-2-types/lib/pickers";
+import { useState } from "react";
+import { useQuery } from "react-query";
 
 const columns: GridColDef[] = [
   {
     field: "name",
     headerName: "Name",
     width: 150,
-    flex: 1,
     editable: true,
   },
   {
@@ -29,13 +33,16 @@ const columns: GridColDef[] = [
     field: "contactName",
     headerName: "Emergency Contact",
     width: 200,
-    valueGetter: (params: GridValueGetterParams) => params.row.contacts.name,
+    valueGetter: (params: GridValueGetterParams<IPicker>) =>
+      params.row.emergencyContact.name,
   },
   {
     field: "contactPhone",
     headerName: "",
     width: 150,
-    valueGetter: (params: GridValueGetterParams) => params.row.contacts.phone,
+    flex: 1,
+    valueGetter: (params: GridValueGetterParams<IPicker>) =>
+      params.row.emergencyContact.phone,
   },
 
   {
@@ -48,73 +55,26 @@ const columns: GridColDef[] = [
   },
 ];
 
-const rows = [
-  {
-    id: 1,
-    name: "Snow",
-    phone: "123 456 447",
-    contacts: {
-      name: "Jon",
-      phone: 14,
-    },
-  },
-  {
-    id: 2,
-    name: "Lannister",
-    phone: "123 456 447",
-    contacts: {
-      name: "Cersei",
-      phone: 31,
-    },
-  },
-  {
-    id: 3,
-    name: "Lannister",
-    phone: "123 456 447",
-    contacts: {
-      name: "Jaime",
-      phone: 31,
-    },
-  },
-  {
-    id: 4,
-    name: "Stark",
-    phone: "123 456 447",
-    contacts: {
-      name: "Arya",
-      phone: 11,
-    },
-  },
-  {
-    id: 5,
-    name: "Targaryen",
-    phone: "123 456 447",
-    contacts: {
-      name: "Daenerys",
-      phone: null,
-    },
-  },
-  {
-    id: 6,
-    name: "Melisandre",
-    phone: "123 456 447",
-    contacts: {
-      name: null,
-      phone: 150,
-    },
-  },
-];
-
 const Pickers = () => {
+  const { isLoading } = useQuery({
+    queryKey: ["pickers", "get"],
+    queryFn: getPickers,
+    onSuccess: (results) => {
+      setPickers(results);
+    },
+  });
+
+  const [pickers, setPickers] = useState<Array<IPicker>>([]);
+
   return (
     <BasicHome
       title="Pickers"
       subtitle="Add and view picker’s profile and information here."
-      breadcumb={[
+      breadcrumb={[
         { title: "Farm Name", href: "#" },
         { title: "Pickers", href: "" },
       ]}
-      actions={<Button variant="contained">Add New Picker</Button>}
+      actions={<PickerDrawer />}
     >
       <Box display="flex" justifyContent="space-between">
         <FormControl>
@@ -147,10 +107,11 @@ const Pickers = () => {
         </FormControl>
       </Box>
 
-      <Box>
+      <Box display="flex" flexGrow={1}>
         <DataGrid
-          rows={rows}
+          rows={pickers}
           columns={columns}
+          loading={isLoading}
           initialState={{
             pagination: {
               paginationModel: {

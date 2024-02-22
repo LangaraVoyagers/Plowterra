@@ -2466,6 +2466,11 @@ prelude-ls@^1.2.1:
   resolved "https://registry.yarnpkg.com/prelude-ls/-/prelude-ls-1.2.1.tgz#debc6489d7a6e6b0e7611888cec880337d316396"
   integrity sha512-vkcDPrRZo1QZLbn5RLGPpg/WmIQ65qoWWhcGKf/b5eplkkarX0m9z8ppCat4mlOqUsWpyNuYgO3VRyrYHSzX5g==
 
+project-2-types@^1.0.3:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/project-2-types/-/project-2-types-1.0.2.tgz#450e0dd8134482f1794b0a2784506f07f381a0e9"
+  integrity sha512-LGn2XeCWbmgnmgbpYwAM69e4mh/vu8uUxcj0e/kMetpSnG6JLFIzCN9CQarV8SESCY9WF3wMxO3Rmrcb/pC69A==
+
 prop-types@^15.6.2, prop-types@^15.8.1:
   version "15.8.1"
   resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.8.1.tgz#67d87bf1a694f48435cf332c24af10214a3140b5"

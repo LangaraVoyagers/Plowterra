@@ -109,7 +109,7 @@ export default function MainLayout() {
   };
 
   return (
-    <Box sx={{ display: "flex" }}>
+    <Box height='100%' display="flex">
       <CssBaseline />
       {/* Sidebar */}
       <Drawer component="aside" variant="permanent" open={open}>
@@ -173,7 +173,7 @@ export default function MainLayout() {
         </List>
       </Drawer>
       {/* Content */}
-      <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+      <Box component="main" height="100%" flexGrow={1} p={3}>
         <Outlet />
       </Box>
     </Box>
