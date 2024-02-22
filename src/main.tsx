@@ -6,7 +6,7 @@ import { CssBaseline } from "@mui/material";
 import "./index.css";
 
 import theme from "./theme";
-import App from "pages/app";
+import App from "pages/App";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>

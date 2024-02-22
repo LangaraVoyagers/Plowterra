@@ -1,7 +1,7 @@
 import { Box, Breadcrumbs, Link, Typography } from "@mui/material";
 
 interface BasicHomeProps {
-  breadcumb: Array<{ title: string; href: string }>;
+  breadcrumb: Array<{ title: string; href: string }>;
   title: string;
   subtitle?: string;
   actions?: React.ReactNode;
@@ -9,18 +9,18 @@ interface BasicHomeProps {
 }
 
 export default function BasicHome({
-  breadcumb,
+  breadcrumb,
   title,
   subtitle,
   actions,
   children,
 }: BasicHomeProps) {
   return (
-    <Box>
+    <Box display="flex" flexDirection="column" height="100%">
       <Box component="header" display="flex" flexDirection="column">
         <Breadcrumbs maxItems={2} aria-label="breadcrumb">
-          {breadcumb.map((item, index) => {
-            if (index === breadcumb.length - 1) {
+          {breadcrumb.map((item, index) => {
+            if (index === breadcrumb.length - 1) {
               return (
                 <Typography key={index} color="text.primary" fontWeight={600}>
                   {item.title}
@@ -56,7 +56,7 @@ export default function BasicHome({
         </Box>
       </Box>
 
-      <Box display="flex" flexDirection="column">
+      <Box display="flex" flexDirection="column" height="100%">
         {children}
       </Box>
     </Box>
