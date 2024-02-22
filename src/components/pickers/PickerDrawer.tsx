@@ -9,23 +9,45 @@ import {
   Select,
   Typography,
 } from "@mui/material";
-import { BloodType, IPicker } from "project-2-types/lib/pickers";
+import { createPicker } from "api/pickers";
+import { BloodType, IPicker, Relationship } from "project-2-types/lib/pickers";
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
+import { useMutation, useQueryClient } from "react-query";
 
 interface IPickerForm extends Omit<IPicker, "id"> {}
+
+export const relationshipList = (
+  Object.keys(Relationship) as Array<keyof typeof Relationship>
+).map((key) => ({ value: key, label: Relationship[key] }));
+
+export const bloodTypeList = (
+  Object.keys(BloodType) as Array<keyof typeof BloodType>
+).map((key) => ({ value: key, label: BloodType[key] }));
 
 const PickerDrawer = () => {
   const [open, setOpen] = useState<boolean>(false);
 
+  const queryClient = useQueryClient();
+
   const { control, handleSubmit } = useForm<IPickerForm>();
+
+  const { mutate: createPickerMutation, isLoading } = useMutation({
+    mutationKey: ["pickers", "create"],
+    mutationFn: createPicker,
+    onSuccess: (result) => {
+      queryClient.setQueryData<Array<IPicker>>(["pickers", "get"], (prev) => {
+        return [...(prev ?? []), result];
+      });
+    },
+  });
 
   const showDrawer = () => setOpen(true);
 
   const hideDrawer = () => setOpen(false);
 
   const onSubmit = (data: IPickerForm) => {
-    console.log({ data });
+    createPickerMutation(data);
   };
 
   return (
@@ -102,7 +124,15 @@ const PickerDrawer = () => {
                     Relation to picker*
                   </InputLabel>
 
-                  <OutlinedInput {...field} id="picker-relation-input" />
+                  <Select {...field} id="picker-relation-input">
+                    {relationshipList?.map(({ value, label }) => {
+                      return (
+                        <MenuItem key={value} value={value}>
+                          {label}
+                        </MenuItem>
+                      );
+                    })}
+                  </Select>
                 </Box>
               );
             }}
@@ -141,8 +171,13 @@ const PickerDrawer = () => {
                   </InputLabel>
 
                   <Select {...field} id="picker-blood-type-input">
-                    {/* Get the blood type list */}
-                    <MenuItem value={BloodType.AB_POSITIVE}>A+</MenuItem>
+                    {bloodTypeList?.map(({ value, label }) => {
+                      return (
+                        <MenuItem key={value} value={value}>
+                          {label}
+                        </MenuItem>
+                      );
+                    })}
                   </Select>
                 </Box>
               );
@@ -187,10 +222,14 @@ const PickerDrawer = () => {
           />
 
           <Box display="flex" justifyContent="space-between">
-            <Button>Cancel</Button>
+            <Button disabled={isLoading}>Cancel</Button>
 
-            <Button variant="contained" onClick={handleSubmit(onSubmit)}>
-              Save
+            <Button
+              variant="contained"
+              onClick={handleSubmit(onSubmit)}
+              disabled={isLoading}
+            >
+              {isLoading ? "Loading..." : "Save"}
             </Button>
           </Box>
         </Box>

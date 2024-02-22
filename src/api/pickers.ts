@@ -1,4 +1,4 @@
-import { IPicker } from "project-2-types/lib/pickers";
+import { ICreatePickerRequest, IPicker } from "project-2-types/lib/pickers";
 import axios from "./axios";
 import endpoints from "./endpoints";
 
@@ -22,9 +22,10 @@ export const getPickerById = async (id: string) => {
   }
 };
 
-export const createPicker = () => {
+export const createPicker = async (payload: ICreatePickerRequest) => {
   try {
-    return;
+    const { data } = await axios.post<IPicker>(endpoints.pickers, payload);
+    return data;
   } catch (error) {
     console.log({ error });
     throw error;

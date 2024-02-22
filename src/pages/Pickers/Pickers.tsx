@@ -115,12 +115,12 @@ const Pickers = () => {
           initialState={{
             pagination: {
               paginationModel: {
-                pageSize: 5,
+                pageSize: 20,
               },
             },
           }}
           getRowId={(data) => data.id}
-          pageSizeOptions={[5, 10]}
+          pageSizeOptions={[20, 50, 100]}
           disableRowSelectionOnClick
         />
       </Box>
