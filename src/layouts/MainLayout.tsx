@@ -78,7 +78,7 @@ const sidebarItems = [
     href: "",
   },
   {
-    title: "Daily Harvest",
+    title: "Harvest Log",
     icon: <AssignmentTurnedInOutlinedIcon />,
     href: paths.harvestLogs.dashboard,
   },
@@ -109,7 +109,7 @@ export default function MainLayout() {
   };
 
   return (
-    <Box height='100%' display="flex">
+    <Box height="100%" display="flex">
       <CssBaseline />
       {/* Sidebar */}
       <Drawer component="aside" variant="permanent" open={open}>
