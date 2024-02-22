@@ -1,11 +1,11 @@
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import MainLayout from "layouts/MainLayout";
+import Login from "pages/Login";
+import Pickers from "pages/Pickers";
+import HarvestLogs from "pages/HarvestLogs"
 import { QueryClient, QueryClientProvider } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
-import Login from "pages/login";
-import MainLayout from "layouts/MainLayout";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import paths from "shared/paths";
-import Pickers from "pages/pickers";
-import HarvestLogs from "pages/harvest-logs";  
 
 const router = createBrowserRouter([
   {

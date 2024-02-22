@@ -70,7 +70,7 @@ const HarvestLogs = () => {
     <BasicHome
       title="Harvest Log"
       subtitle="Add and view picker’s daily collection data here."
-      breadcumb={[
+      breadcrumb={[
         { title: "Farm Name", href: "#" },
         { title: "Harvest Log", href: "" },
       ]}
