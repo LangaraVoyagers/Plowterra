@@ -1,12 +1,10 @@
+import { IPicker } from "project-2-types/lib/pickers";
+import axios from "./axios";
 import endpoints from "./endpoints";
-
-const API_URL = process.env.API_URL;
 
 export const getPickers = async () => {
   try {
-    // TODO: Replace with axios
-    const result = await fetch(`${API_URL}${endpoints.pickers}`);
-    const data = await result.json();
+    const { data } = await axios<Array<IPicker>>(endpoints.pickers);
     return data;
   } catch (error) {
     console.log({ error });
@@ -16,8 +14,7 @@ export const getPickers = async () => {
 
 export const getPickerById = async (id: string) => {
   try {
-    const result = await fetch(`${API_URL}${endpoints.pickers}/${id}`);
-    const data = await result.json();
+    const { data } = await axios<IPicker>(`${endpoints.pickers}/${id}`);
     return data;
   } catch (error) {
     console.log({ error });
@@ -27,7 +24,7 @@ export const getPickerById = async (id: string) => {
 
 export const createPicker = () => {
   try {
-    return; 
+    return;
   } catch (error) {
     console.log({ error });
     throw error;
@@ -45,7 +42,7 @@ export const updatePicker = () => {
 
 export const deletePicker = () => {
   try {
-    return; 
+    return;
   } catch (error) {
     console.log({ error });
     throw error;
