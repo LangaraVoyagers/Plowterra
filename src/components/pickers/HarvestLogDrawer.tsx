@@ -114,14 +114,14 @@ const HarvestLogDrawer = () => {
             render={({ field }) => {
               return (
                 <Box display="flex" flexDirection="column" gap={1}>
-                  <InputLabel htmlFor="harvest-log-date">Date*</InputLabel>
+                  {/* <InputLabel htmlFor="harvest-log-date">Date*</InputLabel> */}
                   <LocalizationProvider dateAdapter={AdapterDayjs}>
                     <DemoContainer components={["DatePicker"]}>
                       <DatePicker
                         {...field}
-                        label=""
+                        label="Date*"
                         defaultValue={dayjs(new Date())}
-                        id="harvest-log-date"
+                        // id="harvest-log-date"
                       />
                     </DemoContainer>
                   </LocalizationProvider>
