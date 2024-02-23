@@ -56,15 +56,19 @@ const columns: GridColDef[] = [
 ];
 
 const Pickers = () => {
-  const { isLoading } = useQuery({
+  const { isLoading, isError } = useQuery({
     queryKey: ["pickers", "get"],
     queryFn: getPickers,
     onSuccess: (results) => {
       setPickers(results);
     },
+    onError: (error) => {
+      console.log(error);
+    },
   });
 
   const [pickers, setPickers] = useState<Array<IPicker>>([]);
+  console.log({ isError, pickers });
 
   return (
     <BasicHome
