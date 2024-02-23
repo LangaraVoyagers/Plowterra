@@ -11,6 +11,7 @@ import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import HarvestLogDrawer from "components/pickers/HarvestLogDrawer";
 
 import BasicHome from "layouts/BasicHome";
 
@@ -74,14 +75,17 @@ const HarvestLogs = () => {
         { title: "Farm Name", href: "#" },
         { title: "Harvest Log", href: "" },
       ]}
-      actions={<Button variant="contained">Add New Log</Button>}
+      actions={<HarvestLogDrawer />}
     >
       <Box display="flex" justifyContent="space-between">
         <LocalizationProvider dateAdapter={AdapterDayjs}>
           <DemoContainer components={["DatePicker"]}>
-            <DatePicker label="Basic date picker" />
+            <DatePicker label="Start Date" />
+            <DatePicker label="End Date" />
           </DemoContainer>
         </LocalizationProvider>
+
+        
 
         <FormControl>
           <OutlinedInput
