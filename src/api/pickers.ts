@@ -2,14 +2,14 @@ import { ICreatePickerRequest, IPicker } from "project-2-types/lib/pickers";
 import axios from "./axios";
 import endpoints from "./endpoints";
 
-console.log(import.meta.env.VITE_API_URL);
-
 export const getPickers = async () => {
   try {
-    const { data } = await axios.get<Array<IPicker>>(endpoints.pickers);
-    console.log({ data });
+    const {
+      data: { data },
+    } = await axios.get(endpoints.pickers);
+
     if (typeof data === "object") {
-      return data;
+      return data as Array<IPicker>;
     }
     return [];
   } catch (error) {
@@ -20,8 +20,10 @@ export const getPickers = async () => {
 
 export const getPickerById = async (id: string) => {
   try {
-    const { data } = await axios.get<IPicker>(`${endpoints.pickers}/${id}`);
-    return data;
+    const {
+      data: { data },
+    } = await axios.get(`${endpoints.pickers}/${id}`);
+    return data as IPicker;
   } catch (error) {
     console.log({ error });
     throw error;
@@ -30,8 +32,10 @@ export const getPickerById = async (id: string) => {
 
 export const createPicker = async (payload: ICreatePickerRequest) => {
   try {
-    const { data } = await axios.post<IPicker>(endpoints.pickers, payload);
-    return data;
+    const {
+      data: { data },
+    } = await axios.post(endpoints.pickers, payload);
+    return data as IPicker;
   } catch (error) {
     console.log({ error });
     throw error;

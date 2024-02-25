@@ -56,7 +56,7 @@ const columns: GridColDef[] = [
 ];
 
 const Pickers = () => {
-  const { isLoading, isError } = useQuery({
+  const { isLoading } = useQuery({
     queryKey: ["pickers", "get"],
     queryFn: getPickers,
     onSuccess: (results) => {
@@ -68,7 +68,6 @@ const Pickers = () => {
   });
 
   const [pickers, setPickers] = useState<Array<IPicker>>([]);
-  console.log({ isError, pickers });
 
   return (
     <BasicHome
@@ -119,12 +118,12 @@ const Pickers = () => {
           initialState={{
             pagination: {
               paginationModel: {
-                pageSize: 20,
+                pageSize: 10,
               },
             },
           }}
           getRowId={(data) => data?.id}
-          pageSizeOptions={[20, 50, 100]}
+          pageSizeOptions={[10, 20, 50, 100]}
           disableRowSelectionOnClick
         />
       </Box>

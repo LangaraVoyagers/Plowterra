@@ -30,7 +30,11 @@ const PickerDrawer = () => {
 
   const queryClient = useQueryClient();
 
-  const { control, handleSubmit } = useForm<IPickerForm>();
+  const { control, handleSubmit, reset } = useForm<IPickerForm>();
+
+  const showDrawer = () => setOpen(true);
+
+  const hideDrawer = () => setOpen(false);
 
   const { mutate: createPickerMutation, isLoading } = useMutation({
     mutationKey: ["pickers", "create"],
@@ -39,12 +43,10 @@ const PickerDrawer = () => {
       queryClient.setQueryData<Array<IPicker>>(["pickers", "get"], (prev) => {
         return [...(prev ?? []), result];
       });
+      reset();
+      hideDrawer();
     },
   });
-
-  const showDrawer = () => setOpen(true);
-
-  const hideDrawer = () => setOpen(false);
 
   const onSubmit = (data: IPickerForm) => {
     createPickerMutation(data);
