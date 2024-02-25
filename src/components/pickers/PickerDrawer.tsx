@@ -9,23 +9,47 @@ import {
   Select,
   Typography,
 } from "@mui/material";
-import { BloodType, IPicker } from "project-2-types/lib/pickers";
+import { createPicker } from "api/pickers";
+import { BloodType, IPicker, Relationship } from "project-2-types/lib/pickers";
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
+import { useMutation, useQueryClient } from "react-query";
 
 interface IPickerForm extends Omit<IPicker, "id"> {}
+
+export const relationshipList = (
+  Object.keys(Relationship) as Array<keyof typeof Relationship>
+).map((key) => ({ value: key, label: Relationship[key] }));
+
+export const bloodTypeList = (
+  Object.keys(BloodType) as Array<keyof typeof BloodType>
+).map((key) => ({ value: key, label: BloodType[key] }));
 
 const PickerDrawer = () => {
   const [open, setOpen] = useState<boolean>(false);
 
-  const { control, handleSubmit } = useForm<IPickerForm>();
+  const queryClient = useQueryClient();
+
+  const { control, handleSubmit, reset } = useForm<IPickerForm>();
 
   const showDrawer = () => setOpen(true);
 
   const hideDrawer = () => setOpen(false);
 
+  const { mutate: createPickerMutation, isLoading } = useMutation({
+    mutationKey: ["pickers", "create"],
+    mutationFn: createPicker,
+    onSuccess: (result) => {
+      queryClient.setQueryData<Array<IPicker>>(["pickers", "get"], (prev) => {
+        return [...(prev ?? []), result];
+      });
+      reset();
+      hideDrawer();
+    },
+  });
+
   const onSubmit = (data: IPickerForm) => {
-    console.log({ data });
+    createPickerMutation(data);
   };
 
   return (
@@ -33,7 +57,7 @@ const PickerDrawer = () => {
       <Button variant="contained" onClick={showDrawer}>
         Add New Picker
       </Button>
-      <Drawer anchor="right" open={open} onClose={hideDrawer}>
+      <Drawer anchor="right" open={open}>
         <Box
           display="flex"
           flexDirection="column"
@@ -49,7 +73,11 @@ const PickerDrawer = () => {
               return (
                 <Box display="flex" flexDirection="column" gap={1}>
                   <InputLabel htmlFor="picker-name-input">Name*</InputLabel>
-                  <OutlinedInput {...field} id="picker-name-input" />
+                  <OutlinedInput
+                    {...field}
+                    id="picker-name-input"
+                    size="small"
+                  />
                 </Box>
               );
             }}
@@ -65,7 +93,11 @@ const PickerDrawer = () => {
                     Phone Number*
                   </InputLabel>
 
-                  <OutlinedInput {...field} id="picker-phone-input" />
+                  <OutlinedInput
+                    {...field}
+                    id="picker-phone-input"
+                    size="small"
+                  />
                 </Box>
               );
             }}
@@ -80,13 +112,12 @@ const PickerDrawer = () => {
                   <InputLabel htmlFor="picker-contact-name-input">
                     Emergency Contact Name*
                   </InputLabel>
-                  <FormGroup row>
-                    <Select defaultValue={1}>
-                      {/* Get the countries list */}
-                      <MenuItem value={1}>COL</MenuItem>
-                    </Select>
-                    <OutlinedInput {...field} id="picker-contact-name-input" />
-                  </FormGroup>
+
+                  <OutlinedInput
+                    {...field}
+                    id="picker-contact-name-input"
+                    size="small"
+                  />
                 </Box>
               );
             }}
@@ -102,7 +133,15 @@ const PickerDrawer = () => {
                     Relation to picker*
                   </InputLabel>
 
-                  <OutlinedInput {...field} id="picker-relation-input" />
+                  <Select {...field} id="picker-relation-input" size="small">
+                    {relationshipList?.map(({ value, label }) => {
+                      return (
+                        <MenuItem key={value} value={value}>
+                          {label}
+                        </MenuItem>
+                      );
+                    })}
+                  </Select>
                 </Box>
               );
             }}
@@ -119,11 +158,16 @@ const PickerDrawer = () => {
                   </InputLabel>
 
                   <FormGroup row>
-                    <Select defaultValue={1}>
+                    <Select defaultValue={1} size="small">
                       {/* Get the countries list */}
                       <MenuItem value={1}>COL</MenuItem>
                     </Select>
-                    <OutlinedInput {...field} id="picker-contact-name-input" />
+                    <OutlinedInput
+                      {...field}
+                      id="picker-contact-number-input"
+                      size="small"
+                      sx={{ flex: 1 }}
+                    />
                   </FormGroup>
                 </Box>
               );
@@ -140,9 +184,14 @@ const PickerDrawer = () => {
                     Blood Type
                   </InputLabel>
 
-                  <Select {...field} id="picker-blood-type-input">
-                    {/* Get the blood type list */}
-                    <MenuItem value={BloodType.AB_POSITIVE}>A+</MenuItem>
+                  <Select {...field} id="picker-blood-type-input" size="small">
+                    {bloodTypeList?.map(({ value, label }) => {
+                      return (
+                        <MenuItem key={value} value={value}>
+                          {label}
+                        </MenuItem>
+                      );
+                    })}
                   </Select>
                 </Box>
               );
@@ -159,7 +208,11 @@ const PickerDrawer = () => {
                     Identification Number
                   </InputLabel>
 
-                  <OutlinedInput {...field} id="picker-gov-id-input" />
+                  <OutlinedInput
+                    {...field}
+                    id="picker-gov-id-input"
+                    size="small"
+                  />
                 </Box>
               );
             }}
@@ -179,7 +232,7 @@ const PickerDrawer = () => {
                     {...field}
                     id="picker-address-input"
                     multiline
-                    rows={3}
+                    rows={2}
                   />
                 </Box>
               );
@@ -187,10 +240,16 @@ const PickerDrawer = () => {
           />
 
           <Box display="flex" justifyContent="space-between">
-            <Button>Cancel</Button>
+            <Button disabled={isLoading} onClick={hideDrawer}>
+              Cancel
+            </Button>
 
-            <Button variant="contained" onClick={handleSubmit(onSubmit)}>
-              Save
+            <Button
+              variant="contained"
+              onClick={handleSubmit(onSubmit)}
+              disabled={isLoading}
+            >
+              {isLoading ? "Loading..." : "Save"}
             </Button>
           </Box>
         </Box>
