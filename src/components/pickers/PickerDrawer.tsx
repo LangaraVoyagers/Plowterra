@@ -1,4 +1,5 @@
 import {
+  Alert,
   Box,
   Button,
   Drawer,
@@ -10,7 +11,7 @@ import {
   Select,
   Typography,
 } from "@mui/material";
-import { upsertPicker, getPickerById } from "api/pickers";
+import { upsertPicker, getPickerById, deletePicker } from "api/pickers";
 import { useAlert } from "context/AlertProvider";
 import { BloodType, IPicker, Relationship } from "project-2-types/lib/pickers";
 import { Controller, useForm } from "react-hook-form";
@@ -18,13 +19,13 @@ import { useMutation, useQuery, useQueryClient } from "react-query";
 
 interface IPickerForm extends Omit<IPicker, "id"> {}
 
- const relationshipList = (
-   Object.keys(Relationship) as Array<keyof typeof Relationship>
- ).map((key) => ({ value: key, label: Relationship[key] }));
+const relationshipList = (
+  Object.keys(Relationship) as Array<keyof typeof Relationship>
+).map((key) => ({ value: key, label: Relationship[key] }));
 
- const bloodTypeList = (
-   Object.keys(BloodType) as Array<keyof typeof BloodType>
- ).map((key) => ({ value: key, label: BloodType[key] }));
+const bloodTypeList = (
+  Object.keys(BloodType) as Array<keyof typeof BloodType>
+).map((key) => ({ value: key, label: BloodType[key] }));
 
 type PickerDrawerProps = DrawerProps & {
   pickerId?: string;
@@ -75,10 +76,32 @@ const PickerDrawer = ({ dismiss, pickerId, ...props }: PickerDrawerProps) => {
       reset();
       dismiss();
     },
+    onError: () => {
+      showAlert("Oops! The picker couldn't be saved.");
+    },
+  });
+
+  const { mutate: deletePickerMutation, isLoading: isDeleting } = useMutation({
+    mutationKey: ["pickers", "delete", pickerId],
+    mutationFn: deletePicker,
+    onSuccess: (result) => {
+      queryClient.setQueryData<Array<IPicker>>(["pickers", "get"], (prev) => {
+        return (prev ?? []).filter((data) => data.id !== result.id);
+      });
+      showAlert("The picker was deleted successfully");
+      dismiss();
+    },
+    onError: () => {
+      showAlert("Oops! The picker couldn't be deleted.");
+    },
   });
 
   const onSubmit = (data: IPickerForm) => {
     savePickerMutation({ ...data, pickerId });
+  };
+
+  const onDelete = () => {
+    deletePickerMutation(pickerId);
   };
 
   return (
@@ -268,18 +291,37 @@ const PickerDrawer = ({ dismiss, pickerId, ...props }: PickerDrawerProps) => {
           />
 
           <Box display="flex" justifyContent="space-between">
-            <Button disabled={isLoading} onClick={dismiss}>
+            <Button disabled={isLoading || isDeleting} onClick={dismiss}>
               Cancel
             </Button>
 
             <Button
               variant="contained"
               onClick={handleSubmit(onSubmit)}
-              disabled={isLoading || !isDirty}
+              disabled={isLoading || !isDirty || isDeleting}
             >
               {isLoading ? "Loading..." : "Save"}
             </Button>
           </Box>
+
+          {/* TODO: add confirmation modal later, we probably will standardize the way we do deleted after design has defined that */}
+          {!!pickerId && (
+            <Box display="flex" flexDirection="column" gap={4}>
+              <Typography variant="h2">Danger Zone</Typography>
+              <Alert
+                severity="error"
+                variant="outlined"
+                action={
+                  <Button color="error" variant="text" onClick={onDelete}>
+                    {isDeleting ? "Deleting..." : "Delete"}
+                  </Button>
+                }
+                sx={{ display: "flex", alignItems: "center" }}
+              >
+                Delete picker data
+              </Alert>
+            </Box>
+          )}
         </Box>
       )}
     </Drawer>

@@ -52,9 +52,13 @@ export const upsertPicker = async ({
   }
 };
 
-export const deletePicker = () => {
+export const deletePicker = async (pickerId?: string) => {
   try {
-    return;
+    const {
+      data: { data },
+    } = await axios.delete(`${endpoints.pickers}/${pickerId}`);
+
+    return data as IPicker;
   } catch (error) {
     console.log({ error });
     throw error;
