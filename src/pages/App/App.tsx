@@ -1,3 +1,4 @@
+import { AlertProvider } from "context/AlertProvider";
 import MainLayout from "layouts/MainLayout";
 import Login from "pages/Login";
 import Pickers from "pages/Pickers";
@@ -38,7 +39,9 @@ const queryClient = new QueryClient({
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <RouterProvider router={router} />
+      <AlertProvider>
+        <RouterProvider router={router} />
+      </AlertProvider>
       <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>
   );
