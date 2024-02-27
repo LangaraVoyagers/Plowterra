@@ -1,7 +1,6 @@
 import { MagnifyingGlass  } from "@phosphor-icons/react";
 import {
   Box,
-  Button,
   FormControl,
   InputAdornment,
   InputLabel,
@@ -9,13 +8,23 @@ import {
   OutlinedInput,
   Select,
 } from "@mui/material";
-import { DataGrid, GridColDef, GridValueGetterParams } from "@mui/x-data-grid";
+import {
+  DataGrid,
+  GridColDef,
+  GridRenderCellParams,
+  GridValueGetterParams,
+} from "@mui/x-data-grid";
 import { getPickers } from "api/pickers";
 import PickerDrawer from "components/pickers/PickerDrawer";
 import BasicHome from "layouts/BasicHome";
 import { IPicker } from "project-2-types/lib/pickers";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useQuery } from "react-query";
+import paths from "shared/paths";
+import { useParams } from "react-router-dom";
+import CreatePicker from "components/pickers/CreatePicker";
+import UpdatePicker from "components/pickers/UpdatePicker";
+import useQueryCache from "hooks/useQueryCache";
 
 const columns: GridColDef[] = [
   {
@@ -49,15 +58,28 @@ const columns: GridColDef[] = [
     field: "action",
     headerName: "",
     width: 150,
-    renderCell: () => {
-      return <Button>View More</Button>;
+    renderCell: (data: GridRenderCellParams<IPicker>) => {
+      return <UpdatePicker pickerId={data.row.id} />;
     },
   },
 ];
 
 const Pickers = () => {
+  const params = useParams<{ id: string }>();
+  const { GET_QUERY_KEY } = useQueryCache("pickers");
+
+  const [open, setOpen] = useState<boolean>(false);
+  const [pickers, setPickers] = useState<Array<IPicker>>([]);
+
+  const showDrawer = () => setOpen(true);
+
+  const hideDrawer = () => {
+    setOpen(false);
+    window.location.replace(paths.pickers);
+  };
+
   const { isLoading } = useQuery({
-    queryKey: ["pickers", "get"],
+    queryKey: GET_QUERY_KEY,
     queryFn: getPickers,
     onSuccess: (results) => {
       setPickers(results);
@@ -67,7 +89,11 @@ const Pickers = () => {
     },
   });
 
-  const [pickers, setPickers] = useState<Array<IPicker>>([]);
+  useEffect(() => {
+    if (params.id) {
+      showDrawer();
+    }
+  }, [params.id]);
 
   return (
     <BasicHome
@@ -77,7 +103,7 @@ const Pickers = () => {
         { title: "Farm Name", href: "#" },
         { title: "Pickers", href: "" },
       ]}
-      actions={<PickerDrawer />}
+      actions={<CreatePicker />}
     >
       <Box display="flex" justifyContent="space-between">
         <FormControl>
@@ -103,14 +129,14 @@ const Pickers = () => {
             size="small"
             startAdornment={
               <InputAdornment position="start">
-                <MagnifyingGlass  />
+                <MagnifyingGlass />
               </InputAdornment>
             }
           />
         </FormControl>
       </Box>
 
-      <Box display="flex" flexGrow={1}>
+      <Box display="flex" flexGrow={1} pb={3}>
         <DataGrid
           rows={pickers}
           columns={columns}
@@ -118,7 +144,7 @@ const Pickers = () => {
           initialState={{
             pagination: {
               paginationModel: {
-                pageSize: 10,
+                pageSize: 12,
               },
             },
           }}
@@ -127,6 +153,11 @@ const Pickers = () => {
           disableRowSelectionOnClick
         />
       </Box>
+
+      {!!open && (
+        <PickerDrawer pickerId={params.id} dismiss={hideDrawer} open />
+        // Replace with Picker detail
+      )}
     </BasicHome>
   );
 };

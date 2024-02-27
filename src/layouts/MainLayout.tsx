@@ -86,7 +86,7 @@ const sidebarItems = [
   {
     title: "Pickers",
     icon: <User />,
-    href: paths.pickers.dashboard,
+    href: paths.pickers,
   },
   {
     title: "Payroll",
@@ -165,7 +165,7 @@ export default function MainLayout() {
                     justifyContent: "center",
                   }}
                 >
-                  {index % 2 === 0 ? <ArchiveTray  /> : <EnvelopeSimple />}
+                  {index % 2 === 0 ? <ArchiveTray /> : <EnvelopeSimple />}
                 </ListItemIcon>
                 <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
               </ListItemButton>
