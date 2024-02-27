@@ -2,24 +2,25 @@ import { Box, CssBaseline, Divider, IconButton, List } from "@mui/material";
 import MuiDrawer from "@mui/material/Drawer";
 import { CSSObject, Theme, styled } from "@mui/material/styles";
 import { useState } from "react";
-import { CaretLeft } from "@phosphor-icons/react";
-import { CaretRight } from "@phosphor-icons/react";
-import { EnvelopeSimple } from "@phosphor-icons/react";
-import { ArchiveTray } from "@phosphor-icons/react";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import { House } from "@phosphor-icons/react";
-import { NotePencil } from "@phosphor-icons/react";
 
 import { Outlet } from "react-router-dom";
 
-import { 
-  Notepad,
+import {
+  ArchiveTray,
+  CaretRight,
+  EnvelopeSimple,
+  NotePencil,
+  CaretLeft,
+  House,
   CurrencyCircleDollar,
-  User
-} from "@phosphor-icons/react";
+  Notepad,
+  User,
+  } from "@phosphor-icons/react";
+
 import paths from "shared/paths";
 
 const DRAWER_WIDTH = 240;
