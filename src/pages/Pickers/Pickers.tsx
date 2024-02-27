@@ -1,4 +1,4 @@
-import { Search } from "@mui/icons-material";
+import { MagnifyingGlass  } from "@phosphor-icons/react";
 import {
   Box,
   Button,
@@ -62,6 +62,9 @@ const Pickers = () => {
     onSuccess: (results) => {
       setPickers(results);
     },
+    onError: (error) => {
+      console.log(error);
+    },
   });
 
   const [pickers, setPickers] = useState<Array<IPicker>>([]);
@@ -100,7 +103,7 @@ const Pickers = () => {
             size="small"
             startAdornment={
               <InputAdornment position="start">
-                <Search />
+                <MagnifyingGlass  />
               </InputAdornment>
             }
           />
@@ -115,12 +118,12 @@ const Pickers = () => {
           initialState={{
             pagination: {
               paginationModel: {
-                pageSize: 5,
+                pageSize: 10,
               },
             },
           }}
-          getRowId={(data) => data.id}
-          pageSizeOptions={[5, 10]}
+          getRowId={(data) => data?.id}
+          pageSizeOptions={[10, 20, 50, 100]}
           disableRowSelectionOnClick
         />
       </Box>
