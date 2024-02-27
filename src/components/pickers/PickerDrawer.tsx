@@ -2,6 +2,7 @@ import {
   Box,
   Button,
   Drawer,
+  DrawerProps,
   FormGroup,
   InputLabel,
   MenuItem,
@@ -9,55 +10,80 @@ import {
   Select,
   Typography,
 } from "@mui/material";
-import { createPicker } from "api/pickers";
+import { upsertPicker, getPickerById } from "api/pickers";
+import { useAlert } from "context/AlertProvider";
 import { BloodType, IPicker, Relationship } from "project-2-types/lib/pickers";
-import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
-import { useMutation, useQueryClient } from "react-query";
+import { useMutation, useQuery, useQueryClient } from "react-query";
 
 interface IPickerForm extends Omit<IPicker, "id"> {}
 
-export const relationshipList = (
-  Object.keys(Relationship) as Array<keyof typeof Relationship>
-).map((key) => ({ value: key, label: Relationship[key] }));
+ const relationshipList = (
+   Object.keys(Relationship) as Array<keyof typeof Relationship>
+ ).map((key) => ({ value: key, label: Relationship[key] }));
 
-export const bloodTypeList = (
-  Object.keys(BloodType) as Array<keyof typeof BloodType>
-).map((key) => ({ value: key, label: BloodType[key] }));
+ const bloodTypeList = (
+   Object.keys(BloodType) as Array<keyof typeof BloodType>
+ ).map((key) => ({ value: key, label: BloodType[key] }));
 
-const PickerDrawer = () => {
-  const [open, setOpen] = useState<boolean>(false);
-
+type PickerDrawerProps = DrawerProps & {
+  pickerId?: string;
+  dismiss: () => void;
+};
+const PickerDrawer = ({ dismiss, pickerId, ...props }: PickerDrawerProps) => {
+  const { showAlert } = useAlert();
   const queryClient = useQueryClient();
 
-  const { control, handleSubmit, reset } = useForm<IPickerForm>();
+  const {
+    control,
+    handleSubmit,
+    reset,
+    formState: { isDirty },
+  } = useForm<IPickerForm>();
 
-  const showDrawer = () => setOpen(true);
+  const { isLoading: isLoadingDetail } = useQuery({
+    queryKey: ["pickers", "detail", pickerId],
+    queryFn: () => getPickerById(pickerId),
+    enabled: !!pickerId,
+    onSuccess: (result) => {
+      reset(result);
+    },
+    onError: () => {
+      showAlert("Oops! Information couldn't be displayed.");
+    },
+  });
 
-  const hideDrawer = () => setOpen(false);
-
-  const { mutate: createPickerMutation, isLoading } = useMutation({
-    mutationKey: ["pickers", "create"],
-    mutationFn: createPicker,
+  const { mutate: savePickerMutation, isLoading } = useMutation({
+    mutationKey: ["pickers", pickerId ? "update" : "create", pickerId],
+    mutationFn: upsertPicker,
     onSuccess: (result) => {
       queryClient.setQueryData<Array<IPicker>>(["pickers", "get"], (prev) => {
-        return [...(prev ?? []), result];
+        if (pickerId) {
+          return (prev ?? []).map((data) => {
+            if (data.id === result.id) {
+              return result;
+            }
+
+            return data;
+          });
+        }
+        return [result, ...(prev ?? [])];
       });
+      showAlert(
+        `The picker was ${pickerId ? "updated" : "created"} successfully`
+      );
       reset();
-      hideDrawer();
+      dismiss();
     },
   });
 
   const onSubmit = (data: IPickerForm) => {
-    createPickerMutation(data);
+    savePickerMutation({ ...data, pickerId });
   };
 
   return (
-    <div>
-      <Button variant="contained" onClick={showDrawer}>
-        Add New Picker
-      </Button>
-      <Drawer anchor="right" open={open}>
+    <Drawer anchor="right" {...props}>
+      {!isLoadingDetail && (
         <Box
           display="flex"
           flexDirection="column"
@@ -65,7 +91,9 @@ const PickerDrawer = () => {
           gap={3}
           width={600}
         >
-          <Typography variant="h1">Add Picker</Typography>
+          <Typography variant="h1">
+            {pickerId ? "Edit Picker" : "Add Picker"}
+          </Typography>
           <Controller
             control={control}
             name="name"
@@ -240,21 +268,21 @@ const PickerDrawer = () => {
           />
 
           <Box display="flex" justifyContent="space-between">
-            <Button disabled={isLoading} onClick={hideDrawer}>
+            <Button disabled={isLoading} onClick={dismiss}>
               Cancel
             </Button>
 
             <Button
               variant="contained"
               onClick={handleSubmit(onSubmit)}
-              disabled={isLoading}
+              disabled={isLoading || !isDirty}
             >
               {isLoading ? "Loading..." : "Save"}
             </Button>
           </Box>
         </Box>
-      </Drawer>
-    </div>
+      )}
+    </Drawer>
   );
 };
 

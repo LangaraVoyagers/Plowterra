@@ -18,7 +18,7 @@ export const getPickers = async () => {
   }
 };
 
-export const getPickerById = async (id: string) => {
+export const getPickerById = async (id?: string) => {
   try {
     const {
       data: { data },
@@ -30,21 +30,22 @@ export const getPickerById = async (id: string) => {
   }
 };
 
-export const createPicker = async (payload: ICreatePickerRequest) => {
+export const upsertPicker = async ({
+  pickerId,
+  ...payload
+}: ICreatePickerRequest & { pickerId?: string }) => {
   try {
+    if (pickerId) {
+      const {
+        data: { data },
+      } = await axios.put(`${endpoints.pickers}/${pickerId}`, payload);
+
+      return data as IPicker;
+    }
     const {
       data: { data },
     } = await axios.post(endpoints.pickers, payload);
     return data as IPicker;
-  } catch (error) {
-    console.log({ error });
-    throw error;
-  }
-};
-
-export const updatePicker = () => {
-  try {
-    return;
   } catch (error) {
     console.log({ error });
     throw error;

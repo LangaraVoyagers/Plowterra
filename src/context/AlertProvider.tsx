@@ -1,5 +1,4 @@
-import { Alert, IconButton, Snackbar } from "@mui/material";
-import { X as CloseIcon } from "@phosphor-icons/react";
+import { Alert, Snackbar } from "@mui/material";
 import React, { createContext, useContext } from "react";
 
 export const AlertContext = createContext<{
@@ -29,7 +28,7 @@ export const AlertProvider: React.FC<AlertProviderProps> = ({ children }) => {
   };
 
   const handleClose = (
-    event: React.SyntheticEvent | Event,
+    _event: React.SyntheticEvent | Event,
     reason?: string
   ) => {
     if (reason === "clickaway") {

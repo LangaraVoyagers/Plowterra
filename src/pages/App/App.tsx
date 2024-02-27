@@ -17,7 +17,11 @@ const router = createBrowserRouter([
     element: <MainLayout />,
     children: [
       {
-        path: paths.pickers.dashboard,
+        path: paths.pickers,
+        element: <Pickers />,
+      },
+      {
+        path: `${paths.pickers}/:id`,
         element: <Pickers />,
       },
     ],

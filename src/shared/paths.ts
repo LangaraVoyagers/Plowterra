@@ -1,7 +1,5 @@
 const paths = {
-  pickers: {
-    dashboard: "/pickers",
-  },
+  pickers: "/pickers",
 };
 
 export default paths;
