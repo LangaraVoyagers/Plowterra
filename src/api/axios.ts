@@ -2,9 +2,6 @@ import axios from "axios";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
-console.log({ API_URL });
-
-
 const instance = axios.create({
   baseURL: API_URL,
   timeout: 1000,
@@ -12,7 +9,6 @@ const instance = axios.create({
 
 instance.interceptors.request.use(
   function (config) {
-    console.log("baseURL", config.baseURL);
     // TODO: Handle auth token
     return config;
   },

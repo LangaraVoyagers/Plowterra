@@ -16,8 +16,8 @@ export default function BasicHome({
   children,
 }: BasicHomeProps) {
   return (
-    <Box display="flex" flexDirection="column" height="100%">
-      <Box component="header" display="flex" flexDirection="column">
+    <Box display="flex" flexDirection="column" height="100%" gap={8}>
+      <Box component="header" display="flex" flexDirection="column" gap={4}>
         <Breadcrumbs maxItems={2} aria-label="breadcrumb">
           {breadcrumb.map((item, index) => {
             if (index === breadcrumb.length - 1) {
@@ -42,7 +42,7 @@ export default function BasicHome({
         </Breadcrumbs>
 
         <Box display="flex" justifyContent="space-between">
-          <Box display="flex" flexDirection="column">
+          <Box display="flex" flexDirection="column" gap={1}>
             <Typography variant="h1">{title}</Typography>
             <Typography
               variant="subtitle1"
@@ -56,7 +56,7 @@ export default function BasicHome({
         </Box>
       </Box>
 
-      <Box display="flex" flexDirection="column" height="100%">
+      <Box display="flex" flexDirection="column" height="100%" gap={4}>
         {children}
       </Box>
     </Box>
