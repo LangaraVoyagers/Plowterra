@@ -30,41 +30,6 @@ const columns: GridColDef[] = [
   },
 ];
 
-const rows = [
-  {
-    id: 1,
-    name: "John Doe",
-    product: "Cocoa",
-    amount: "100kg",
-    deductions: "$5",
-    date: "12/12/2020",
-  },
-  {
-    id: 2,
-    name: "John Doe",
-    product: "Cocoa",
-    amount: "100kg",
-    deductions: "$5",
-    date: "12/12/2022",
-  },
-  {
-    id: 3,
-    name: "John Doe",
-    product: "Cocoa",
-    amount: "100kg",
-    deductions: "$5",
-    date: "12/12/2023",
-  },
-  {
-    id: 4,
-    name: "John Doe",
-    product: "Cocoa",
-    amount: "100kg",
-    deductions: "$5",
-    date: "12/12/2020",
-  },
-];
-
 const HarvestLogs = () => {
   return (
     <BasicHome
@@ -97,7 +62,7 @@ const HarvestLogs = () => {
       </Box>
       <Box>
         <DataGrid
-          rows={rows}
+          rows={[]} //TODO: replace with data from useQuery
           columns={columns}
           initialState={{
             pagination: {
