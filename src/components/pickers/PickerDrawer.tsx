@@ -312,7 +312,7 @@ const PickerDrawer = ({ dismiss, pickerId, ...props }: PickerDrawerProps) => {
         </Button>
       </Box>
 
-      {/* TODO: add confirmation modal later, we probably will standardize the way we do deleted after design has defined that */}
+      {/* TODO: add confirmation modal later, we probably will standardize the way we handle the delete after design has defined that */}
       {!!pickerId && (
         <Box display="flex" flexDirection="column" gap={4}>
           <Typography variant="h2">Danger Zone</Typography>
