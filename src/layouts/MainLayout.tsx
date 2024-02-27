@@ -2,30 +2,19 @@ import { Box, CssBaseline, Divider, IconButton, List } from "@mui/material";
 import MuiDrawer from "@mui/material/Drawer";
 import { CSSObject, Theme, styled } from "@mui/material/styles";
 import { useState } from "react";
-// import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import { CaretLeft } from "@phosphor-icons/react";
-// import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import { CaretRight } from "@phosphor-icons/react";
-// import MailIcon from "@mui/icons-material/Mail";
 import { EnvelopeSimple } from "@phosphor-icons/react";
-// import InboxIcon from "@mui/icons-material/MoveToInbox";
 import { ArchiveTray } from "@phosphor-icons/react";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-// import HouseOutlinedIcon from "@mui/icons-material/HouseOutlined";
 import { House } from "@phosphor-icons/react";
-// import AssignmentTurnedInOutlinedIcon from "@mui/icons-material/AssignmentTurnedInOutlined";
 import { NotePencil } from "@phosphor-icons/react";
 
 import { Outlet } from "react-router-dom";
 
-// import {
-//   EventNoteOutlined,
-//   PaidOutlined,
-//   PersonOutlined,
-// } from "@mui/icons-material";
 import { 
   Notepad,
   CurrencyCircleDollar,
