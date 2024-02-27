@@ -136,7 +136,7 @@ const Pickers = () => {
         </FormControl>
       </Box>
 
-      <Box display="flex" flexGrow={1}>
+      <Box display="flex" flexGrow={1} pb={3}>
         <DataGrid
           rows={pickers}
           columns={columns}
@@ -144,7 +144,7 @@ const Pickers = () => {
           initialState={{
             pagination: {
               paginationModel: {
-                pageSize: 10,
+                pageSize: 12,
               },
             },
           }}

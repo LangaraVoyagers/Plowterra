@@ -110,7 +110,7 @@ export default function MainLayout() {
   };
 
   return (
-    <Box height='100%' display="flex">
+    <Box height="100%" display="flex">
       <CssBaseline />
       {/* Sidebar */}
       <Drawer component="aside" variant="permanent" open={open}>
@@ -165,7 +165,7 @@ export default function MainLayout() {
                     justifyContent: "center",
                   }}
                 >
-                  {index % 2 === 0 ? <ArchiveTray  /> : <EnvelopeSimple />}
+                  {index % 2 === 0 ? <ArchiveTray /> : <EnvelopeSimple />}
                 </ListItemIcon>
                 <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
               </ListItemButton>
