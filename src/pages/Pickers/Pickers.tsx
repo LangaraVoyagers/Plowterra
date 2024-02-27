@@ -1,4 +1,4 @@
-import { Search } from "@mui/icons-material";
+import { MagnifyingGlass  } from "@phosphor-icons/react";
 import {
   Box,
   Button,
@@ -103,7 +103,7 @@ const Pickers = () => {
             size="small"
             startAdornment={
               <InputAdornment position="start">
-                <Search />
+                <MagnifyingGlass  />
               </InputAdornment>
             }
           />
