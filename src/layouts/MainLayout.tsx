@@ -86,7 +86,7 @@ const sidebarItems = [
   {
     title: "Pickers",
     icon: <User />,
-    href: paths.pickers.dashboard,
+    href: paths.pickers,
   },
   {
     title: "Payroll",
