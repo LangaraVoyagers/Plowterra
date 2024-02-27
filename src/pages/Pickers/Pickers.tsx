@@ -24,6 +24,7 @@ import paths from "shared/paths";
 import { useParams } from "react-router-dom";
 import CreatePicker from "components/pickers/CreatePicker";
 import UpdatePicker from "components/pickers/UpdatePicker";
+import useQueryCache from "hooks/useQueryCache";
 
 const columns: GridColDef[] = [
   {
@@ -65,6 +66,7 @@ const columns: GridColDef[] = [
 
 const Pickers = () => {
   const params = useParams<{ id: string }>();
+  const { GET_QUERY_KEY } = useQueryCache("pickers");
 
   const [open, setOpen] = useState<boolean>(false);
   const [pickers, setPickers] = useState<Array<IPicker>>([]);
@@ -77,7 +79,7 @@ const Pickers = () => {
   };
 
   const { isLoading } = useQuery({
-    queryKey: ["pickers", "get"],
+    queryKey: GET_QUERY_KEY,
     queryFn: getPickers,
     onSuccess: (results) => {
       setPickers(results);
