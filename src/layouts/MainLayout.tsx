@@ -81,7 +81,7 @@ const sidebarItems = [
   {
     title: "Harvest Log",
     icon: <NotePencil />,
-    href: paths.harvestLogs.dashboard,
+    href: paths.harvestLogs,
   },
   {
     title: "Pickers",

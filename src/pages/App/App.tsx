@@ -26,7 +26,7 @@ const router = createBrowserRouter([
         element: <Pickers />,
       },
       {
-        path: paths.harvestLogs.dashboard,
+        path: paths.harvestLogs,
         element: <HarvestLogs />,
       },
     ],
