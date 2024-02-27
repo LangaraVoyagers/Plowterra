@@ -12,7 +12,6 @@ const instance = axios.create({
 
 instance.interceptors.request.use(
   function (config) {
-    console.log("baseURL", config.baseURL);
     // TODO: Handle auth token
     return config;
   },
