@@ -2,24 +2,35 @@ import { Box, CssBaseline, Divider, IconButton, List } from "@mui/material";
 import MuiDrawer from "@mui/material/Drawer";
 import { CSSObject, Theme, styled } from "@mui/material/styles";
 import { useState } from "react";
-import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
-import ChevronRightIcon from "@mui/icons-material/ChevronRight";
-import MailIcon from "@mui/icons-material/Mail";
-import InboxIcon from "@mui/icons-material/MoveToInbox";
+// import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
+import { CaretLeft } from "@phosphor-icons/react";
+// import ChevronRightIcon from "@mui/icons-material/ChevronRight";
+import { CaretRight } from "@phosphor-icons/react";
+// import MailIcon from "@mui/icons-material/Mail";
+import { EnvelopeSimple } from "@phosphor-icons/react";
+// import InboxIcon from "@mui/icons-material/MoveToInbox";
+import { ArchiveTray } from "@phosphor-icons/react";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import HouseOutlinedIcon from "@mui/icons-material/HouseOutlined";
-import AssignmentTurnedInOutlinedIcon from "@mui/icons-material/AssignmentTurnedInOutlined";
+// import HouseOutlinedIcon from "@mui/icons-material/HouseOutlined";
+import { House } from "@phosphor-icons/react";
+// import AssignmentTurnedInOutlinedIcon from "@mui/icons-material/AssignmentTurnedInOutlined";
+import { NotePencil } from "@phosphor-icons/react";
 
 import { Outlet } from "react-router-dom";
 
-import {
-  EventNoteOutlined,
-  PaidOutlined,
-  PersonOutlined,
-} from "@mui/icons-material";
+// import {
+//   EventNoteOutlined,
+//   PaidOutlined,
+//   PersonOutlined,
+// } from "@mui/icons-material";
+import { 
+  Notepad,
+  CurrencyCircleDollar,
+  User
+} from "@phosphor-icons/react";
 import paths from "shared/paths";
 
 const DRAWER_WIDTH = 240;
@@ -74,27 +85,27 @@ const Drawer = styled(MuiDrawer, {
 const sidebarItems = [
   {
     title: "Home",
-    icon: <HouseOutlinedIcon />,
+    icon: <House />,
     href: "",
   },
   {
     title: "Daily Harvest",
-    icon: <AssignmentTurnedInOutlinedIcon />,
+    icon: <NotePencil />,
     href: "",
   },
   {
     title: "Pickers",
-    icon: <PersonOutlined />,
+    icon: <User />,
     href: paths.pickers.dashboard,
   },
   {
     title: "Payroll",
-    icon: <PaidOutlined />,
+    icon: <CurrencyCircleDollar />,
     href: "",
   },
   {
     title: "Harvest Seasons",
-    icon: <EventNoteOutlined />,
+    icon: <Notepad />,
     href: "",
   },
 ];
@@ -115,7 +126,7 @@ export default function MainLayout() {
       <Drawer component="aside" variant="permanent" open={open}>
         <DrawerHeader>
           <IconButton onClick={handleDrawerClose}>
-            {!open ? <ChevronRightIcon /> : <ChevronLeftIcon />}
+            {!open ? <CaretRight /> : <CaretLeft />}
           </IconButton>
         </DrawerHeader>
         <Divider />
@@ -164,7 +175,7 @@ export default function MainLayout() {
                     justifyContent: "center",
                   }}
                 >
-                  {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+                  {index % 2 === 0 ? <ArchiveTray  /> : <EnvelopeSimple />}
                 </ListItemIcon>
                 <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
               </ListItemButton>
