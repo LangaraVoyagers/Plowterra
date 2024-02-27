@@ -5,7 +5,7 @@ import {
   InputAdornment,
   OutlinedInput,
 } from "@mui/material";
-import { Search } from "@mui/icons-material";
+import { MagnifyingGlass  } from "@phosphor-icons/react";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
@@ -89,7 +89,7 @@ const HarvestLogs = () => {
             size="small"
             startAdornment={
               <InputAdornment position="start">
-                <Search />
+                <MagnifyingGlass />
               </InputAdornment>
             }
           />
