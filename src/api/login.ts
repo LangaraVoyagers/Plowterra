@@ -1,10 +1,17 @@
-import axios from "axios";
-
-const API_URL = 'http://localhost:8000/api/v1/auth/';
+import axios from "./axios";
+import endpoints from "./endpoints";
 
 interface User {
-    email: string;
-    password: string;
+  email: string;
+  password: string;
 }
 
-export const loginn = (user: User) => axios.post(`${API_URL}signin`, user);
+export const login = async (user: User) => {
+  try {
+    const { data } = await axios.post(endpoints.signin, user);
+    return data;
+  } catch (error) {
+    console.log({ error });
+    throw error;
+  }
+};

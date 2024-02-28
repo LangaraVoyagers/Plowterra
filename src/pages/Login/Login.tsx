@@ -1,4 +1,5 @@
-import { loginn } from "../../api/login.ts";
+import { useNavigate } from "react-router-dom";
+import { login } from "../../api/login.ts";
 import { useState } from "react";
 
 interface FormData {
@@ -7,7 +8,12 @@ interface FormData {
 }
 
 const Login: React.FC = () => {
-  const [formData, setFormData] = useState<FormData>({ email: "", password: "" });
+  const [formData, setFormData] = useState<FormData>({
+    email: "",
+    password: "",
+  });
+
+  const navigate = useNavigate();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -17,10 +23,10 @@ const Login: React.FC = () => {
     e.preventDefault();
     console.log(formData);
     const { email, password } = formData;
-    const res = await loginn({ email, password });
+    const res = await login({ email, password });
 
     if (res) {
-      window.location.href = "/";
+      navigate("/");
     }
   };
 
