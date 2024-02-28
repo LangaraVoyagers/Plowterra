@@ -95,7 +95,7 @@ const HarvestLogs = () => {
               },
             },
           }}
-          getRowId={(data) => data?.id}
+          getRowId={(data) => data?._id}
           pageSizeOptions={[5, 10]}
           disableRowSelectionOnClick
         />

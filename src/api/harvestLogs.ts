@@ -8,7 +8,7 @@ export const getHarvestLogs = async () => {
       data: { data },
     } 
     // = await axios.get(endpoints.harvestLogs);
-    = await axios.get("http://localhost:9000/api/v1/harvestlog");
+    = await axios.get("http://localhost:9000/api/v1/harvestlogs");
 
     if (typeof data === "object") {
       return data as Array<IHarvestLog>;
