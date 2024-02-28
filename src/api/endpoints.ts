@@ -1,5 +1,6 @@
 const endpoints = {
-    pickers:'/pickers'
-}
+  pickers: "/pickers",
+  signin: "/auth/signin",
+};
 
 export default endpoints
