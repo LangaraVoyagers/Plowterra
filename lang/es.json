@@ -1,0 +1,17 @@
+{
+  "sidebar.daily_harvest": {
+    "defaultMessage": "Cosecha Diaria"
+  },
+  "sidebar.harvest_season": {
+    "defaultMessage": "Temporada"
+  },
+  "sidebar.home": {
+    "defaultMessage": "Inicio"
+  },
+  "sidebar.payroll": {
+    "defaultMessage": "Nómina"
+  },
+  "sidebar.pickers": {
+    "defaultMessage": "Recolectores"
+  }
+}

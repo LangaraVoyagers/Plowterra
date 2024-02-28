@@ -9,7 +9,10 @@
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "fix": "eslint --fix && git add .",
     "preview": "vite preview",
-    "postinstall": "husky install"
+    "postinstall": "husky install",
+    "extract": "formatjs extract",
+    "compile": "formatjs compile",
+    "transform-lang": "yarn extract 'src/**/*.ts*' --ignore='**/*.d.ts' --out-file lang/en.json && yarn compile lang/en.json --ast --out-file compiled-lang/en.json"
   },
   "dependencies": {
     "@emotion/react": "^11.11.3",
@@ -23,11 +26,13 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.49.3",
+    "react-intl": "^6.6.2",
     "react-query": "^3.39.3",
     "react-router-dom": "^6.21.2",
     "styled-components": "^6.1.8"
   },
   "devDependencies": {
+    "@formatjs/cli": "^6.2.7",
     "@types/node": "^20.11.19",
     "@types/react": "^18.2.43",
     "@types/react-dom": "^18.2.17",
@@ -35,6 +40,7 @@
     "@typescript-eslint/parser": "^6.18.1",
     "@vitejs/plugin-react": "^4.2.1",
     "eslint": "^8.55.0",
+    "eslint-plugin-formatjs": "^4.12.2",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.5",
     "husky": "^8.0.3",

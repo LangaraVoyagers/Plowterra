@@ -1,0 +1,20 @@
+{
+  "pickers.table.column.name": {
+    "defaultMessage": "Name"
+  },
+  "sidebar.daily_harvest": {
+    "defaultMessage": "Daily Harvest"
+  },
+  "sidebar.harvest_season": {
+    "defaultMessage": "Harvest Season"
+  },
+  "sidebar.home": {
+    "defaultMessage": "Home"
+  },
+  "sidebar.payroll": {
+    "defaultMessage": "Payroll"
+  },
+  "sidebar.pickers": {
+    "defaultMessage": "Pickers"
+  }
+}

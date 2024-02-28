@@ -1,0 +1,32 @@
+{
+  "sidebar.daily_harvest": [
+    {
+      "type": 0,
+      "value": "Cosecha Diaria"
+    }
+  ],
+  "sidebar.harvest_season": [
+    {
+      "type": 0,
+      "value": "Temporada"
+    }
+  ],
+  "sidebar.home": [
+    {
+      "type": 0,
+      "value": "Inicio"
+    }
+  ],
+  "sidebar.payroll": [
+    {
+      "type": 0,
+      "value": "Nómina"
+    }
+  ],
+  "sidebar.pickers": [
+    {
+      "type": 0,
+      "value": "Recolectores"
+    }
+  ]
+}
