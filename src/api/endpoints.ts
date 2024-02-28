@@ -1,6 +1,7 @@
 const endpoints = {
-    pickers:'/pickers',
-    harvestLogs: '/harvest-logs'
-}
+  pickers: "/pickers",
+  signin: "/auth/signin",
+  harvestLogs: '/harvest-logs'
+};
 
 export default endpoints

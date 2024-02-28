@@ -10,7 +10,7 @@ import paths from "shared/paths";
 
 const router = createBrowserRouter([
   {
-    path: "/login",
+    path: paths.login,
     element: <Login />,
   },
   {
