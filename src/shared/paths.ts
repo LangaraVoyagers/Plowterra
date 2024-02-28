@@ -1,10 +1,6 @@
 const paths = {
-  pickers: {
-    dashboard: "/pickers",
-  },
-  harvestLogs: {
-    dashboard: "/harvest-logs",
-  },
+  pickers: "/pickers",
+  login: "/login",
+  harvestLogs: "/harvest-logs",
 };
-
 export default paths;

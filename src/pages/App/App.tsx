@@ -1,3 +1,4 @@
+import { AlertProvider } from "context/AlertProvider";
 import MainLayout from "layouts/MainLayout";
 import Login from "pages/Login";
 import Pickers from "pages/Pickers";
@@ -9,7 +10,7 @@ import paths from "shared/paths";
 
 const router = createBrowserRouter([
   {
-    path: "/login",
+    path: paths.login,
     element: <Login />,
   },
   {
@@ -17,11 +18,15 @@ const router = createBrowserRouter([
     element: <MainLayout />,
     children: [
       {
-        path: paths.pickers.dashboard,
+        path: paths.pickers,
         element: <Pickers />,
       },
       {
-        path: paths.harvestLogs.dashboard,
+        path: `${paths.pickers}/:id`,
+        element: <Pickers />,
+      },
+      {
+        path: paths.harvestLogs,
         element: <HarvestLogs />,
       },
     ],
@@ -43,7 +48,9 @@ const queryClient = new QueryClient({
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <RouterProvider router={router} />
+      <AlertProvider>
+        <RouterProvider router={router} />
+      </AlertProvider>
       <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>
   );

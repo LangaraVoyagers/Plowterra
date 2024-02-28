@@ -1,48 +1,64 @@
-import { IPicker } from "project-2-types/lib/pickers";
+import { ICreatePickerRequest, IPicker } from "project-2-types/lib/pickers";
 import axios from "./axios";
 import endpoints from "./endpoints";
 
 export const getPickers = async () => {
   try {
-    const { data } = await axios<Array<IPicker>>(endpoints.pickers);
-    return data;
+    const {
+      data: { data },
+    } = await axios.get(endpoints.pickers);
+
+    if (typeof data === "object") {
+      return data as Array<IPicker>;
+    }
+    return [];
   } catch (error) {
     console.log({ error });
     throw error;
   }
 };
 
-export const getPickerById = async (id: string) => {
+export const getPickerById = async (id?: string) => {
   try {
-    const { data } = await axios<IPicker>(`${endpoints.pickers}/${id}`);
-    return data;
+    const {
+      data: { data },
+    } = await axios.get(`${endpoints.pickers}/${id}`);
+    return data as IPicker;
   } catch (error) {
     console.log({ error });
     throw error;
   }
 };
 
-export const createPicker = () => {
+export const upsertPicker = async ({
+  pickerId,
+  ...payload
+}: ICreatePickerRequest & { pickerId?: string }) => {
   try {
-    return;
+    if (pickerId) {
+      const {
+        data: { data },
+      } = await axios.put(`${endpoints.pickers}/${pickerId}`, payload);
+
+      return data as IPicker;
+    }
+    const {
+      data: { data },
+    } = await axios.post(endpoints.pickers, payload);
+    return data as IPicker;
   } catch (error) {
     console.log({ error });
     throw error;
   }
 };
 
-export const updatePicker = () => {
+export const deletePicker = async (pickerId?: string) => {
   try {
-    return;
-  } catch (error) {
-    console.log({ error });
-    throw error;
-  }
-};
+    const {
+      data: { data },
+    } = await axios.delete(`${endpoints.pickers}/${pickerId}`);
 
-export const deletePicker = () => {
-  try {
-    return;
+    return data as IPicker;
   } catch (error) {
     console.log({ error });
     throw error;

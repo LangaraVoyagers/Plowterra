@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build",
+    "build": "tsc && vite build --mode development",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "fix": "eslint --fix && git add .",
     "preview": "vite preview",
@@ -14,13 +14,13 @@
   "dependencies": {
     "@emotion/react": "^11.11.3",
     "@emotion/styled": "^11.11.0",
-    "@mui/icons-material": "^5.15.9",
     "@mui/material": "^5.15.9",
     "@mui/styled-engine-sc": "^6.0.0-alpha.16",
     "@mui/x-data-grid": "^6.19.4",
     "@mui/x-date-pickers": "^6.19.4",
     "dayjs": "^1.11.10",
-    "axios": "^1.6.7",
+    "@phosphor-icons/react": "^2.0.15",
+    "axios": "^0.27.2",
     "eslint-plugin-react": "^7.33.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -40,7 +40,7 @@
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.5",
     "husky": "^8.0.3",
-    "project-2-types": "^1.0.2",
+    "project-2-types": "^1.0.7",
     "typescript": "^5.2.2",
     "vite": "^5.0.8",
     "vite-tsconfig-paths": "^4.2.3"

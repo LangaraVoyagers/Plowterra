@@ -5,21 +5,27 @@ import {
   InputAdornment,
   OutlinedInput,
 } from "@mui/material";
-import { Search } from "@mui/icons-material";
+import { MagnifyingGlass } from "@phosphor-icons/react";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import HarvestLogDrawer from "components/pickers/HarvestLogDrawer";
+import { IHarvestLog } from "project-2-types/lib/harvestLog";
+
+import useQueryCache from "hooks/useQueryCache";
+import { useState } from "react";
+import { getHarvestLogs } from "api/harvestLogs";
 
 import BasicHome from "layouts/BasicHome";
+import { useQuery } from "react-query";
 
 const columns: GridColDef[] = [
-  { field: "name", headerName: "Name", width: 200 },
+  { field: "picker", headerName: "Name", width: 200 },
   { field: "product", headerName: "Product", width: 200 },
-  { field: "amount", headerName: "Amount", width: 200 },
-  { field: "deductions", headerName: "Deductions", width: 200 },
+  { field: "collectedAmount", headerName: "Amount", width: 200 },
+  { field: "totalDeduction", headerName: "Deductions", width: 200 },
   { field: "date", headerName: "Date", width: 200 },
   {
     field: "action",
@@ -31,42 +37,24 @@ const columns: GridColDef[] = [
   },
 ];
 
-const rows = [
-  {
-    id: 1,
-    name: "John Doe",
-    product: "Cocoa",
-    amount: "100kg",
-    deductions: "$5",
-    date: "12/12/2020",
-  },
-  {
-    id: 2,
-    name: "John Doe",
-    product: "Cocoa",
-    amount: "100kg",
-    deductions: "$5",
-    date: "12/12/2022",
-  },
-  {
-    id: 3,
-    name: "John Doe",
-    product: "Cocoa",
-    amount: "100kg",
-    deductions: "$5",
-    date: "12/12/2023",
-  },
-  {
-    id: 4,
-    name: "John Doe",
-    product: "Cocoa",
-    amount: "100kg",
-    deductions: "$5",
-    date: "12/12/2020",
-  },
-];
-
 const HarvestLogs = () => {
+  const { GET_QUERY_KEY } = useQueryCache("harvestLogs");
+
+  const [harvestLogs, setHarvestLogs] = useState<Array<IHarvestLog>>([]);
+
+  const { isLoading } = useQuery({
+    queryKey: GET_QUERY_KEY,
+    queryFn: getHarvestLogs,
+    onSuccess: (results) => {
+      setHarvestLogs(results);
+      console.log(results);
+      
+    },
+    onError: (error) => {
+      console.log(error);
+    },
+  });
+
   return (
     <BasicHome
       title="Harvest Log"
@@ -93,7 +81,7 @@ const HarvestLogs = () => {
             size="small"
             startAdornment={
               <InputAdornment position="start">
-                <Search />
+                <MagnifyingGlass />
               </InputAdornment>
             }
           />
@@ -101,8 +89,9 @@ const HarvestLogs = () => {
       </Box>
       <Box>
         <DataGrid
-          rows={rows}
+          rows={harvestLogs}
           columns={columns}
+          loading={isLoading}
           initialState={{
             pagination: {
               paginationModel: {
@@ -110,7 +99,7 @@ const HarvestLogs = () => {
               },
             },
           }}
-          getRowId={(data) => data.id}
+          getRowId={(data) => data?._id}
           pageSizeOptions={[5, 10]}
           disableRowSelectionOnClick
         />
