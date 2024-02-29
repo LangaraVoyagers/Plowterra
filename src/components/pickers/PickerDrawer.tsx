@@ -98,13 +98,23 @@ const PickerDrawer = ({ dismiss, pickerId, ...props }: PickerDrawerProps) => {
 
   const handleCreateSuccess = (created: IPicker) => {
     createCache(created);
-    showAlert(`The picker was created successfully`);
+    showAlert(
+      intl.formatMessage({
+        id: "pickers.create.picker.response.success",
+        defaultMessage: "The picker was created successfully",
+      })
+    );
     onCreatePickerClose();
   };
 
   const handleUpdateSuccess = (updated: IPicker) => {
     updateCache(updated);
-    showAlert(`The picker was updated successfully`);
+    showAlert(
+      intl.formatMessage({
+        id: "pickers.update.picker.response.success",
+        defaultMessage: "The picker was updated successfully",
+      })
+    );
     hideEdit();
   };
 
@@ -395,7 +405,7 @@ const PickerDrawer = ({ dismiss, pickerId, ...props }: PickerDrawerProps) => {
               <Button color="error" variant="text" onClick={onDelete}>
                 {intl.formatMessage(
                   {
-                    id: "pickers.button.save",
+                    id: "pickers.button.delete",
                     defaultMessage:
                       "{isDeleting, plural, one {Deleting...} other {Delete} }",
                   },
@@ -406,7 +416,7 @@ const PickerDrawer = ({ dismiss, pickerId, ...props }: PickerDrawerProps) => {
             sx={{ display: "flex", alignItems: "center" }}
           >
             {intl.formatMessage({
-              id: "pickers.button.delete",
+              id: "pickers.delete.label",
               defaultMessage: "Delete picker data",
             })}
           </Alert>
@@ -439,7 +449,12 @@ const PickerDrawer = ({ dismiss, pickerId, ...props }: PickerDrawerProps) => {
         <Divider />
 
         <Box display="flex" flexDirection="column">
-          <Typography variant="overline">Emergency Contact Person</Typography>
+          <Typography variant="overline">
+            {intl.formatMessage({
+              id: "pickers.detail.emergency_contact_person.label",
+              defaultMessage: "Emergency Contact Person",
+            })}
+          </Typography>
           <Typography variant="body1" fontWeight={600}>
             {pickerData.emergencyContact?.name
               ? `${pickerData.emergencyContact?.name} (${
@@ -455,7 +470,13 @@ const PickerDrawer = ({ dismiss, pickerId, ...props }: PickerDrawerProps) => {
         <Divider />
 
         <Box display="flex" flexDirection="column">
-          <Typography variant="overline">Blood Type</Typography>
+          <Typography variant="overline">
+            {intl.formatMessage({
+              id: "pickers.detail.blood_type.label",
+              defaultMessage: "Blood Type",
+            })}
+          </Typography>
+
           <Typography variant="body1">
             {pickerData.bloodType ? BloodType[pickerData.bloodType] : "-"}
           </Typography>
@@ -464,14 +485,25 @@ const PickerDrawer = ({ dismiss, pickerId, ...props }: PickerDrawerProps) => {
         <Divider />
 
         <Box display="flex" flexDirection="column">
-          <Typography variant="overline">Identification Number</Typography>
+          <Typography variant="overline">
+            {intl.formatMessage({
+              id: "pickers.detail.identification_number.label",
+              defaultMessage: "Identification Number",
+            })}
+          </Typography>
+
           <Typography variant="body1">{pickerData.govId ?? "-"}</Typography>
         </Box>
 
         <Divider />
 
         <Box display="flex" flexDirection="column">
-          <Typography variant="overline">Address</Typography>
+          <Typography variant="overline">
+            {intl.formatMessage({
+              id: "pickers.detail.address.label",
+              defaultMessage: "Address",
+            })}
+          </Typography>
           <Typography variant="body1">{pickerData.address ?? "-"}</Typography>
         </Box>
 
@@ -482,13 +514,19 @@ const PickerDrawer = ({ dismiss, pickerId, ...props }: PickerDrawerProps) => {
             )
           }
         >
-          View Harvest Log
+          {intl.formatMessage({
+            id: "pickers.detail.button.view_harvest_log",
+            defaultMessage: "View Harvest Log",
+          })}
         </Button>
       </Box>
 
       <Box display="flex" flexDirection="column" alignItems="flex-end">
         <Button variant="contained" onClick={showEdit}>
-          Edit
+          {intl.formatMessage({
+            id: "button.edit",
+            defaultMessage: "Edit",
+          })}
         </Button>
       </Box>
     </Box>

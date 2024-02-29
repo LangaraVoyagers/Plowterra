@@ -122,7 +122,28 @@ const sidebarItems = [
   },
 ];
 
-const quickActions = ["Add Daily Harvest", "Add Picker"];
+const quickActions = [
+  {
+    title: (
+      <FormattedMessage
+        id="sidebar.quick_actions.add_daily_harvest"
+        defaultMessage="Add Daily Harvest"
+      />
+    ),
+    icon: <ArchiveTray />,
+    href: "#",
+  },
+  {
+    title: (
+      <FormattedMessage
+        id="sidebar.quick_actions.add_picker"
+        defaultMessage="Add Picker"
+      />
+    ),
+    icon: <EnvelopeSimple />,
+    href: `${paths.pickers}?new=true`,
+  },
+];
 
 export default function MainLayout() {
   const [open, setOpen] = useState(true);
@@ -175,16 +196,22 @@ export default function MainLayout() {
             ))}
           </List>
           <Divider />
-          <ListItem sx={{ opacity: open ? 1 : 0 }}>Quick Actions</ListItem>
+          <ListItem sx={{ opacity: open ? 1 : 0 }}>
+            <FormattedMessage
+              id="sidebar.quick_actions"
+              defaultMessage="Quick Actions"
+            />
+          </ListItem>
           <List>
-            {quickActions.map((text, index) => (
-              <ListItem key={text} disablePadding sx={{ display: "block" }}>
+            {quickActions.map((data, index) => (
+              <ListItem key={index} disablePadding sx={{ display: "block" }}>
                 <ListItemButton
                   sx={{
                     minHeight: 48,
                     justifyContent: open ? "initial" : "center",
                     px: 2.5,
                   }}
+                  href={data.href}
                 >
                   <ListItemIcon
                     sx={{
@@ -193,9 +220,12 @@ export default function MainLayout() {
                       justifyContent: "center",
                     }}
                   >
-                    {index % 2 === 0 ? <ArchiveTray /> : <EnvelopeSimple />}
+                    {data.icon}
                   </ListItemIcon>
-                  <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
+                  <ListItemText
+                    primary={data.title}
+                    sx={{ opacity: open ? 1 : 0 }}
+                  />
                 </ListItemButton>
               </ListItem>
             ))}

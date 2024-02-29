@@ -1,7 +1,8 @@
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useContext } from "react";
 import { IntlProvider } from "react-intl";
 import English from "../../compiled-lang/en.json";
 import Spanish from "../../compiled-lang/es.json";
+import { usePersistedState } from "hooks/usePersistedState";
 
 const messages = {
   en: English,
@@ -23,7 +24,7 @@ type LocaleProviderProps = {
 };
 
 export const LocaleProvider: React.FC<LocaleProviderProps> = ({ children }) => {
-  const [locale, setLocale] = useState<`${LANGUAGES}`>("en");
+  const [locale, setLocale] = usePersistedState<`${LANGUAGES}`>("lang", "en");
 
   const selectLanguage = async (language: `${LANGUAGES}`) => {
     setLocale(language);

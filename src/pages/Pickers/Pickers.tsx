@@ -117,7 +117,7 @@ const Pickers = () => {
         defaultMessage: "Add and view picker’s profile and information here.",
       })}
       breadcrumb={[
-        { title: "Farm Name", href: "#" },
+        { title: "Farm Name", href: "/" },
         {
           title: (
             <FormattedMessage id="sidebar.pickers" defaultMessage="Pickers" />
@@ -147,7 +147,10 @@ const Pickers = () => {
 
         <FormControl>
           <OutlinedInput
-            placeholder="Search"
+            placeholder={intl.formatMessage({
+              id: "search",
+              defaultMessage: "Search",
+            })}
             size="small"
             startAdornment={
               <InputAdornment position="start">

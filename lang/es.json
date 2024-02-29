@@ -1,9 +1,108 @@
 {
+  "button.cancel": {
+    "defaultMessage": "Cancelar"
+  },
+  "button.edit": {
+    "defaultMessage": "Editar"
+  },
+  "danger.zone.label": {
+    "defaultMessage": "Zona de Peligro"
+  },
+  "pickers": {
+    "defaultMessage": "Recolectores"
+  },
+  "pickers.button.delete": {
+    "defaultMessage": "{isDeleting, plural, one {Eliminando...} other {Eliminar} }"
+  },
+  "pickers.button.save": {
+    "defaultMessage": "{isLoading, plural, one {Cargando...} other {Guardar} }"
+  },
+  "pickers.create.button.text": {
+    "defaultMessage": "Agregar Nuevo Recolector"
+  },
+  "pickers.create.form.address.label": {
+    "defaultMessage": "Dirección"
+  },
+  "pickers.create.form.blood_type.label": {
+    "defaultMessage": "Tipo de Sangre"
+  },
+  "pickers.create.form.emergency_contact_name.label": {
+    "defaultMessage": "Nombre de Contacto de Emergencia"
+  },
+  "pickers.create.form.emergency_contact_number.label": {
+    "defaultMessage": "Número de Contacto de Emergencia"
+  },
+  "pickers.create.form.identification_number.label": {
+    "defaultMessage": "Número de Identificación"
+  },
+  "pickers.create.form.name.label": {
+    "defaultMessage": "Nombre"
+  },
+  "pickers.create.form.phone_number.label": {
+    "defaultMessage": "Número de Teléfono"
+  },
+  "pickers.create.form.relation_to_picker.label": {
+    "defaultMessage": "Relación con el recolector"
+  },
+  "pickers.create.picker.response.error": {
+    "defaultMessage": "¡Ups! No se pudo guardar el recolector."
+  },
+  "pickers.create.picker.response.success": {
+    "defaultMessage": "El recolector se creó correctamente"
+  },
+  "pickers.delete.label": {
+    "defaultMessage": "Eliminar datos del recolector"
+  },
+  "pickers.delete.picker.response.error": {
+    "defaultMessage": "¡Ups! No se pudo eliminar el recolector."
+  },
+  "pickers.delete.picker.response.success": {
+    "defaultMessage": "El recolector se eliminó correctamente."
+  },
+  "pickers.detail.address.label": {
+    "defaultMessage": "Dirección"
+  },
+  "pickers.detail.blood_type.label": {
+    "defaultMessage": "Tipo de Sangre"
+  },
+  "pickers.detail.button.view_harvest_log": {
+    "defaultMessage": "Ver Registro de Temporada"
+  },
+  "pickers.detail.emergency_contact_person.label": {
+    "defaultMessage": "Persona de Contacto de Emergencia"
+  },
+  "pickers.detail.identification_number.label": {
+    "defaultMessage": "Número de Identificación"
+  },
+  "pickers.detail.title": {
+    "defaultMessage": "{isEdit, plural, one {Editar Recolector} other {Agregar Recolector} }"
+  },
+  "pickers.subtitle": {
+    "defaultMessage": "Agrega y visualiza el perfil e información del recolector aquí."
+  },
+  "pickers.table.button.view_more": {
+    "defaultMessage": "Ver Más"
+  },
+  "pickers.table.column.emergency_contact": {
+    "defaultMessage": "Contacto de Emergencia"
+  },
+  "pickers.table.column.name": {
+    "defaultMessage": "Nombre"
+  },
+  "pickers.table.column.phone_number": {
+    "defaultMessage": "Número de Teléfono"
+  },
+  "pickers.update.picker.response.success": {
+    "defaultMessage": "El recolector se actualizó correctamente"
+  },
+  "search": {
+    "defaultMessage": "Buscar"
+  },
   "sidebar.daily_harvest": {
     "defaultMessage": "Cosecha Diaria"
   },
   "sidebar.harvest_season": {
-    "defaultMessage": "Temporada"
+    "defaultMessage": "Temporada de Cosecha"
   },
   "sidebar.home": {
     "defaultMessage": "Inicio"
@@ -13,5 +112,14 @@
   },
   "sidebar.pickers": {
     "defaultMessage": "Recolectores"
+  },
+  "sidebar.quick_actions": {
+    "defaultMessage": "Acciones Rápidas"
+  },
+  "sidebar.quick_actions.add_daily_harvest": {
+    "defaultMessage": "Agregar Cosecha Diaria"
+  },
+  "sidebar.quick_actions.add_picker": {
+    "defaultMessage": "Agregar Recolector"
   }
 }
