@@ -1,7 +1,9 @@
 name: Update lang files
+
 on:
   push:
-    branches: [ P2-199-fe-internationalization ]
+    branches: 
+      - P2-199-fe-internationalization
   pull_request:
     branches:
       - main
@@ -16,19 +18,20 @@ jobs:
       - name: checkout
         uses: actions/checkout@v4
         with:
-          persist-credentials: false # otherwise, the token used is the GITHUB_TOKEN, instead of your personal access token.
-          fetch-depth: 0 # otherwise, there would be errors pushing refs to the destination repository.
+          persist-credentials: false
+          fetch-depth: 0
       - name: Update lang/en.json and compiled-lang/en.json
         run: |
           npm install
           npm run transform-lang
-       - name: Commit files
+      - name: Commit files
         run: |
           git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
-          git commit -a -m "feat: update en.json files"
+          git add .
+          git commit -m "feat: update en.json files"
       - name: Push changes
-          uses: ad-m/github-push-action@master
-          with:
-            github_token: ${{ secrets.GITHUB_TOKEN }}
-            branch: ${{ github.ref }}
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: ${{ github.ref }}
