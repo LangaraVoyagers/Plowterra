@@ -75,6 +75,12 @@
       "value": "isLoading"
     }
   ],
+  "pickers.create.button.test": [
+    {
+      "type": 0,
+      "value": "Test"
+    }
+  ],
   "pickers.create.button.text": [
     {
       "type": 0,

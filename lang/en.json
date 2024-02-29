@@ -17,6 +17,9 @@
   "pickers.button.save": {
     "defaultMessage": "{isLoading, plural, one {Loading...} other {Save} }"
   },
+  "pickers.create.button.test": {
+    "defaultMessage": "Test"
+  },
   "pickers.create.button.text": {
     "defaultMessage": "Add New Picker"
   },
