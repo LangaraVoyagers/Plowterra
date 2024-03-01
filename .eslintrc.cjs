@@ -24,8 +24,14 @@ module.exports = {
     ecmaVersion: "latest",
     sourceType: "module",
   },
-  plugins: ["@typescript-eslint", "react"],
+  plugins: ["formatjs", "@typescript-eslint", "react"],
   rules: {
     "react/react-in-jsx-scope": "off",
+    // "formatjs/enforce-id": [
+    //   "error",
+    //   {
+    //     idInterpolationPattern: "[sha512:contenthash:base64:6]",
+    //   },
+    // ],
   },
 };
