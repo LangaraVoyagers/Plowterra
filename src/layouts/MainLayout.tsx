@@ -1,4 +1,14 @@
-import { Box, CssBaseline, Divider, IconButton, List } from "@mui/material";
+import {
+  Box,
+  CssBaseline,
+  Divider,
+  FormControl,
+  IconButton,
+  InputLabel,
+  List,
+  MenuItem,
+  Select,
+} from "@mui/material";
 import MuiDrawer from "@mui/material/Drawer";
 import { CSSObject, Theme, styled } from "@mui/material/styles";
 import { useState } from "react";
@@ -19,9 +29,11 @@ import {
   CurrencyCircleDollar,
   Notepad,
   User,
-  } from "@phosphor-icons/react";
+} from "@phosphor-icons/react";
 
 import paths from "shared/paths";
+import { FormattedMessage } from "react-intl";
+import { LANGUAGES, useLocale } from "context/LocaleProvider";
 
 const DRAWER_WIDTH = 240;
 
@@ -74,36 +86,69 @@ const Drawer = styled(MuiDrawer, {
 
 const sidebarItems = [
   {
-    title: "Home",
+    title: <FormattedMessage id="sidebar.home" defaultMessage="Home" />,
     icon: <House />,
     href: "",
   },
   {
-    title: "Harvest Log",
+    title: (
+      <FormattedMessage
+        id="sidebar.daily_harvest"
+        defaultMessage="Daily Harvest"
+      />
+    ),
     icon: <NotePencil />,
     href: paths.harvestLogs,
   },
   {
-    title: "Pickers",
+    title: <FormattedMessage id="sidebar.pickers" defaultMessage="Pickers" />,
     icon: <User />,
     href: paths.pickers,
   },
   {
-    title: "Payroll",
+    title: <FormattedMessage id="sidebar.payroll" defaultMessage="Payroll" />,
     icon: <CurrencyCircleDollar />,
     href: "",
   },
   {
-    title: "Harvest Seasons",
+    title: (
+      <FormattedMessage
+        id="sidebar.harvest_season"
+        defaultMessage="Harvest Season"
+      />
+    ),
     icon: <Notepad />,
     href: "",
   },
 ];
 
-const quickActions = ["Add Daily Harvest", "Add Picker"];
+const quickActions = [
+  {
+    title: (
+      <FormattedMessage
+        id="sidebar.quick_actions.add_daily_harvest"
+        defaultMessage="Add Daily Harvest"
+      />
+    ),
+    icon: <ArchiveTray />,
+    href: "#",
+  },
+  {
+    title: (
+      <FormattedMessage
+        id="sidebar.quick_actions.add_picker"
+        defaultMessage="Add Picker"
+      />
+    ),
+    icon: <EnvelopeSimple />,
+    href: `${paths.pickers}?new=true`,
+  },
+];
 
 export default function MainLayout() {
   const [open, setOpen] = useState(true);
+
+  const { locale, selectLanguage } = useLocale();
 
   const handleDrawerClose = () => {
     setOpen(!open);
@@ -114,64 +159,100 @@ export default function MainLayout() {
       <CssBaseline />
       {/* Sidebar */}
       <Drawer component="aside" variant="permanent" open={open}>
-        <DrawerHeader>
-          <IconButton onClick={handleDrawerClose}>
-            {!open ? <CaretRight /> : <CaretLeft />}
-          </IconButton>
-        </DrawerHeader>
-        <Divider />
-        <List>
-          {sidebarItems.map(({ title, icon, href }) => (
-            <ListItem key={title} disablePadding sx={{ display: "block" }}>
-              <ListItemButton
-                sx={{
-                  minHeight: 48,
-                  justifyContent: open ? "initial" : "center",
-                  px: 2.5,
-                }}
-                href={href}
-              >
-                <ListItemIcon
+        <Box display="flex" flex={1} flexDirection="column">
+          <DrawerHeader>
+            <IconButton onClick={handleDrawerClose}>
+              {!open ? <CaretRight /> : <CaretLeft />}
+            </IconButton>
+          </DrawerHeader>
+          <Divider />
+          <List>
+            {sidebarItems.map(({ title, icon, href }, index) => (
+              <ListItem key={index} disablePadding sx={{ display: "block" }}>
+                <ListItemButton
                   sx={{
-                    minWidth: 0,
-                    mr: open ? 3 : "auto",
-                    justifyContent: "center",
+                    minHeight: 48,
+                    justifyContent: open ? "initial" : "center",
+                    px: 2.5,
                   }}
+                  href={href}
                 >
-                  {icon}
-                </ListItemIcon>
+                  <ListItemIcon
+                    sx={{
+                      minWidth: 0,
+                      mr: open ? 3 : "auto",
+                      justifyContent: "center",
+                    }}
+                  >
+                    {icon}
+                  </ListItemIcon>
 
-                <ListItemText primary={title} sx={{ opacity: open ? 1 : 0 }} />
-              </ListItemButton>
-            </ListItem>
-          ))}
-        </List>
-        <Divider />
-        <ListItem sx={{ opacity: open ? 1 : 0 }}>Quick Actions</ListItem>
-        <List>
-          {quickActions.map((text, index) => (
-            <ListItem key={text} disablePadding sx={{ display: "block" }}>
-              <ListItemButton
-                sx={{
-                  minHeight: 48,
-                  justifyContent: open ? "initial" : "center",
-                  px: 2.5,
-                }}
-              >
-                <ListItemIcon
+                  <ListItemText
+                    primary={title}
+                    sx={{ opacity: open ? 1 : 0 }}
+                  />
+                </ListItemButton>
+              </ListItem>
+            ))}
+          </List>
+          <Divider />
+          <ListItem sx={{ opacity: open ? 1 : 0 }}>
+            <FormattedMessage
+              id="sidebar.quick_actions"
+              defaultMessage="Quick Actions"
+            />
+          </ListItem>
+          <List>
+            {quickActions.map((data, index) => (
+              <ListItem key={index} disablePadding sx={{ display: "block" }}>
+                <ListItemButton
                   sx={{
-                    minWidth: 0,
-                    mr: open ? 3 : "auto",
-                    justifyContent: "center",
+                    minHeight: 48,
+                    justifyContent: open ? "initial" : "center",
+                    px: 2.5,
                   }}
+                  href={data.href}
                 >
-                  {index % 2 === 0 ? <ArchiveTray /> : <EnvelopeSimple />}
-                </ListItemIcon>
-                <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
-              </ListItemButton>
-            </ListItem>
-          ))}
-        </List>
+                  <ListItemIcon
+                    sx={{
+                      minWidth: 0,
+                      mr: open ? 3 : "auto",
+                      justifyContent: "center",
+                    }}
+                  >
+                    {data.icon}
+                  </ListItemIcon>
+                  <ListItemText
+                    primary={data.title}
+                    sx={{ opacity: open ? 1 : 0 }}
+                  />
+                </ListItemButton>
+              </ListItem>
+            ))}
+          </List>
+        </Box>
+
+        <Box display="flex" p={2}>
+          <FormControl fullWidth>
+            <InputLabel id="language-label">Language</InputLabel>
+
+            <Select
+              labelId="language-label"
+              id="language-select"
+              value={locale}
+              size="small"
+              onChange={async (event) => {
+                await selectLanguage(
+                  event.target.value as keyof typeof LANGUAGES
+                );
+              }}
+              label="Language"
+            >
+              <MenuItem value={LANGUAGES.en}>English</MenuItem>
+              <MenuItem value={LANGUAGES.es}>Spanish</MenuItem>
+            </Select>
+          </FormControl>
+        </Box>
       </Drawer>
       {/* Content */}
       <Box component="main" height="100%" flexGrow={1} p={3}>
