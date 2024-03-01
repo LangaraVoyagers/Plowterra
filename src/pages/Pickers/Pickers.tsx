@@ -72,7 +72,7 @@ const columns: GridColDef[] = [
     headerName: "",
     width: 150,
     renderCell: (data: GridRenderCellParams<IPicker>) => {
-      return <UpdatePicker pickerId={data.row.id} />;
+      return <UpdatePicker pickerId={data.row._id} />;
     },
   },
 ];
