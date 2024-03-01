@@ -7,12 +7,15 @@ import "./index.css";
 
 import theme from "./theme";
 import App from "pages/App";
+import { LocaleProvider } from "context/LocaleProvider";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
-      <App />
-    </ThemeProvider>
+    <LocaleProvider>
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        <App />
+      </ThemeProvider>
+    </LocaleProvider>
   </React.StrictMode>
 );

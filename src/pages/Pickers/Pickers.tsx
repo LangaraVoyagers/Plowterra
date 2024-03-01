@@ -25,22 +25,35 @@ import { useParams } from "react-router-dom";
 import CreatePicker from "components/pickers/CreatePicker";
 import UpdatePicker from "components/pickers/UpdatePicker";
 import useQueryCache from "hooks/useQueryCache";
+import { FormattedMessage, useIntl } from "react-intl";
 
 const columns: GridColDef[] = [
   {
     field: "name",
-    headerName: "Name",
+    renderHeader: () => (
+      <FormattedMessage id="pickers.table.column.name" defaultMessage="Name" />
+    ),
     width: 150,
     editable: true,
   },
   {
     field: "phone",
-    headerName: "Phone Number",
+    renderHeader: () => (
+      <FormattedMessage
+        id="pickers.table.column.phone_number"
+        defaultMessage="Phone Number"
+      />
+    ),
     width: 150,
   },
   {
     field: "contactName",
-    headerName: "Emergency Contact",
+    renderHeader: () => (
+      <FormattedMessage
+        id="pickers.table.column.emergency_contact"
+        defaultMessage="Emergency Contact"
+      />
+    ),
     width: 200,
     valueGetter: (params: GridValueGetterParams<IPicker>) =>
       params.row.emergencyContact.name,
@@ -66,6 +79,7 @@ const columns: GridColDef[] = [
 
 const Pickers = () => {
   const params = useParams<{ id: string }>();
+  const intl = useIntl();
   const { GET_QUERY_KEY } = useQueryCache("pickers");
 
   const [open, setOpen] = useState<boolean>(false);
@@ -97,11 +111,19 @@ const Pickers = () => {
 
   return (
     <BasicHome
-      title="Pickers"
-      subtitle="Add and view picker’s profile and information here."
+      title={intl.formatMessage({ id: "pickers", defaultMessage: "Pickers" })}
+      subtitle={intl.formatMessage({
+        id: "pickers.subtitle",
+        defaultMessage: "Add and view picker’s profile and information here.",
+      })}
       breadcrumb={[
-        { title: "Farm Name", href: "#" },
-        { title: "Pickers", href: "" },
+        { title: "Farm Name", href: "/" },
+        {
+          title: (
+            <FormattedMessage id="sidebar.pickers" defaultMessage="Pickers" />
+          ),
+          href: "",
+        },
       ]}
       actions={<CreatePicker />}
     >
@@ -125,7 +147,10 @@ const Pickers = () => {
 
         <FormControl>
           <OutlinedInput
-            placeholder="Search"
+            placeholder={intl.formatMessage({
+              id: "search",
+              defaultMessage: "Search",
+            })}
             size="small"
             startAdornment={
               <InputAdornment position="start">

@@ -1,0 +1,308 @@
+{
+  "button.cancel": [
+    {
+      "type": 0,
+      "value": "Cancelar"
+    }
+  ],
+  "button.edit": [
+    {
+      "type": 0,
+      "value": "Editar"
+    }
+  ],
+  "danger.zone.label": [
+    {
+      "type": 0,
+      "value": "Zona de Peligro"
+    }
+  ],
+  "pickers": [
+    {
+      "type": 0,
+      "value": "Recolectores"
+    }
+  ],
+  "pickers.button.delete": [
+    {
+      "offset": 0,
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Eliminando..."
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Eliminar"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "isDeleting"
+    }
+  ],
+  "pickers.button.save": [
+    {
+      "offset": 0,
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Cargando..."
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Guardar"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "isLoading"
+    }
+  ],
+  "pickers.create.button.text": [
+    {
+      "type": 0,
+      "value": "Agregar Nuevo Recolector"
+    }
+  ],
+  "pickers.create.form.address.label": [
+    {
+      "type": 0,
+      "value": "Dirección"
+    }
+  ],
+  "pickers.create.form.blood_type.label": [
+    {
+      "type": 0,
+      "value": "Tipo de Sangre"
+    }
+  ],
+  "pickers.create.form.emergency_contact_name.label": [
+    {
+      "type": 0,
+      "value": "Nombre de Contacto de Emergencia"
+    }
+  ],
+  "pickers.create.form.emergency_contact_number.label": [
+    {
+      "type": 0,
+      "value": "Número de Contacto de Emergencia"
+    }
+  ],
+  "pickers.create.form.identification_number.label": [
+    {
+      "type": 0,
+      "value": "Número de Identificación"
+    }
+  ],
+  "pickers.create.form.name.label": [
+    {
+      "type": 0,
+      "value": "Nombre"
+    }
+  ],
+  "pickers.create.form.phone_number.label": [
+    {
+      "type": 0,
+      "value": "Número de Teléfono"
+    }
+  ],
+  "pickers.create.form.relation_to_picker.label": [
+    {
+      "type": 0,
+      "value": "Relación con el recolector"
+    }
+  ],
+  "pickers.create.picker.response.error": [
+    {
+      "type": 0,
+      "value": "¡Ups! No se pudo guardar el recolector."
+    }
+  ],
+  "pickers.create.picker.response.success": [
+    {
+      "type": 0,
+      "value": "El recolector se creó correctamente"
+    }
+  ],
+  "pickers.delete.label": [
+    {
+      "type": 0,
+      "value": "Eliminar datos del recolector"
+    }
+  ],
+  "pickers.delete.picker.response.error": [
+    {
+      "type": 0,
+      "value": "¡Ups! No se pudo eliminar el recolector."
+    }
+  ],
+  "pickers.delete.picker.response.success": [
+    {
+      "type": 0,
+      "value": "El recolector se eliminó correctamente."
+    }
+  ],
+  "pickers.detail.address.label": [
+    {
+      "type": 0,
+      "value": "Dirección"
+    }
+  ],
+  "pickers.detail.blood_type.label": [
+    {
+      "type": 0,
+      "value": "Tipo de Sangre"
+    }
+  ],
+  "pickers.detail.button.view_harvest_log": [
+    {
+      "type": 0,
+      "value": "Ver Registro de Temporada"
+    }
+  ],
+  "pickers.detail.emergency_contact_person.label": [
+    {
+      "type": 0,
+      "value": "Persona de Contacto de Emergencia"
+    }
+  ],
+  "pickers.detail.identification_number.label": [
+    {
+      "type": 0,
+      "value": "Número de Identificación"
+    }
+  ],
+  "pickers.detail.title": [
+    {
+      "offset": 0,
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Editar Recolector"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Agregar Recolector"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "isEdit"
+    }
+  ],
+  "pickers.subtitle": [
+    {
+      "type": 0,
+      "value": "Agrega y visualiza el perfil e información del recolector aquí."
+    }
+  ],
+  "pickers.table.button.view_more": [
+    {
+      "type": 0,
+      "value": "Ver Más"
+    }
+  ],
+  "pickers.table.column.emergency_contact": [
+    {
+      "type": 0,
+      "value": "Contacto de Emergencia"
+    }
+  ],
+  "pickers.table.column.name": [
+    {
+      "type": 0,
+      "value": "Nombre"
+    }
+  ],
+  "pickers.table.column.phone_number": [
+    {
+      "type": 0,
+      "value": "Número de Teléfono"
+    }
+  ],
+  "pickers.update.picker.response.success": [
+    {
+      "type": 0,
+      "value": "El recolector se actualizó correctamente"
+    }
+  ],
+  "search": [
+    {
+      "type": 0,
+      "value": "Buscar"
+    }
+  ],
+  "sidebar.daily_harvest": [
+    {
+      "type": 0,
+      "value": "Cosecha Diaria"
+    }
+  ],
+  "sidebar.harvest_season": [
+    {
+      "type": 0,
+      "value": "Temporada de Cosecha"
+    }
+  ],
+  "sidebar.home": [
+    {
+      "type": 0,
+      "value": "Inicio"
+    }
+  ],
+  "sidebar.payroll": [
+    {
+      "type": 0,
+      "value": "Nómina"
+    }
+  ],
+  "sidebar.pickers": [
+    {
+      "type": 0,
+      "value": "Recolectores"
+    }
+  ],
+  "sidebar.quick_actions": [
+    {
+      "type": 0,
+      "value": "Acciones Rápidas"
+    }
+  ],
+  "sidebar.quick_actions.add_daily_harvest": [
+    {
+      "type": 0,
+      "value": "Agregar Cosecha Diaria"
+    }
+  ],
+  "sidebar.quick_actions.add_picker": [
+    {
+      "type": 0,
+      "value": "Agregar Recolector"
+    }
+  ]
+}
