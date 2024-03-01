@@ -257,7 +257,7 @@
       "value": "Buscar"
     }
   ],
-  "sidebar.daily_harvest": [
+  "sidebar.harvest_log": [
     {
       "type": 0,
       "value": "Cosecha Diaria"
@@ -293,7 +293,7 @@
       "value": "Acciones Rápidas"
     }
   ],
-  "sidebar.quick_actions.add_daily_harvest": [
+  "sidebar.quick_actions.add_harvest_log": [
     {
       "type": 0,
       "value": "Agregar Cosecha Diaria"

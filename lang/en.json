@@ -101,8 +101,8 @@
   "search": {
     "defaultMessage": "Search"
   },
-  "sidebar.daily_harvest": {
-    "defaultMessage": "Daily Harvest"
+  "sidebar.harvest_log": {
+    "defaultMessage": "Harvest Log"
   },
   "sidebar.harvest_season": {
     "defaultMessage": "Harvest Season"
@@ -119,7 +119,7 @@
   "sidebar.quick_actions": {
     "defaultMessage": "Quick Actions"
   },
-  "sidebar.quick_actions.add_daily_harvest": {
+  "sidebar.quick_actions.add_harvest_log": {
     "defaultMessage": "Add Daily Harvest"
   },
   "sidebar.quick_actions.add_picker": {
