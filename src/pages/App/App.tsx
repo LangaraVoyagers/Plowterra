@@ -2,6 +2,7 @@ import { QueryClient, QueryClientProvider } from "react-query";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 
 import { AlertProvider } from "context/AlertProvider";
+import HarvestLogs from "pages/HarvestLogs"
 import Login from "pages/Login";
 import MainLayout from "layouts/MainLayout";
 import Pickers from "pages/Pickers";
@@ -29,6 +30,10 @@ const router = createBrowserRouter([
       {
         path: paths.seasons,
         element: <Seasons />,
+      },
+      {
+        path: paths.harvestLogs,
+        element: <HarvestLogs />,
       },
     ],
   },
