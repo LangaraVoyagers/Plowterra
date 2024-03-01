@@ -26,9 +26,15 @@ const columns: GridColDef[] = [
     headerName: "Name",
     width: 200,
     renderCell: (params: GridRenderCellParams<IHarvestLog>) =>
-      params.value?.name,
+      params.value?.name || "",
   },
-  { field: "product", headerName: "Product", width: 200 }, //TODO: add product when available in response
+  {
+    field: "season",
+    headerName: "Product",
+    width: 200,
+    renderCell: (params: GridRenderCellParams<IHarvestLog>) =>
+      params.value?.product?.name || "",
+  },
   { field: "collectedAmount", headerName: "Amount", width: 200 },
   { field: "totalDeduction", headerName: "Deductions", width: 200 },
   {
@@ -49,9 +55,7 @@ const columns: GridColDef[] = [
     field: "action",
     headerName: "",
     width: 200,
-    renderCell() {
-      return <Button>View More</Button>;
-    },
+    renderCell: () => <Button>View More</Button>,
   },
 ];
 
@@ -65,7 +69,7 @@ const HarvestLogs = () => {
     queryFn: getHarvestLogs,
     onSuccess: (results) => {
       setHarvestLogs(results);
-      // console.log(results);
+      console.log(results);
     },
     onError: (error) => {
       console.log(error);
