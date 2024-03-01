@@ -1,5 +1,9 @@
 name: Update lang files
+
 on:
+  push:
+    branches: 
+      - P2-199-fe-internationalization
   pull_request:
     branches:
       - main
@@ -8,23 +12,26 @@ on:
 
 jobs:
   update_date:
-    # if: github.event.pull_request.merged == true
+    if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     steps:
       - name: checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
         with:
-          # Fetch full depth, otherwise the last step overwrites the last commit's parent, essentially removing the graph.
+          persist-credentials: false
           fetch-depth: 0
-
-      - name: Update version.txt
+      - name: Update lang/en.json and compiled-lang/en.json
         run: |
           npm install
           npm run transform-lang
-      - name: Amend the last commit
+      - name: Commit files
         run: |
-          git config --global user.email "wonnyohamester@outlook.com"
-          git config --global user.name "Automation"
-          git commit -a --amend --no-edit
-          git push --force-with-lease
-          echo "Complete"
+          git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add .
+          git commit -m "feat: update en.json files"
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: ${{ github.ref }}

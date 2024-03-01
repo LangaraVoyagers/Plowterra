@@ -1,0 +1,314 @@
+{
+  "button.cancel": [
+    {
+      "type": 0,
+      "value": "Cancel"
+    }
+  ],
+  "button.edit": [
+    {
+      "type": 0,
+      "value": "Edit"
+    }
+  ],
+  "danger.zone.label": [
+    {
+      "type": 0,
+      "value": "Danger Zone"
+    }
+  ],
+  "pickers": [
+    {
+      "type": 0,
+      "value": "Pickers"
+    }
+  ],
+  "pickers.button.delete": [
+    {
+      "offset": 0,
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Deleting..."
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Delete"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "isDeleting"
+    }
+  ],
+  "pickers.button.save": [
+    {
+      "offset": 0,
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Loading..."
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Save"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "isLoading"
+    }
+  ],
+  "pickers.create.button.test": [
+    {
+      "type": 0,
+      "value": "Test"
+    }
+  ],
+  "pickers.create.button.text": [
+    {
+      "type": 0,
+      "value": "Add New Picker"
+    }
+  ],
+  "pickers.create.form.address.label": [
+    {
+      "type": 0,
+      "value": "Address"
+    }
+  ],
+  "pickers.create.form.blood_type.label": [
+    {
+      "type": 0,
+      "value": "Blood Type"
+    }
+  ],
+  "pickers.create.form.emergency_contact_name.label": [
+    {
+      "type": 0,
+      "value": "Emergency Contact Name"
+    }
+  ],
+  "pickers.create.form.emergency_contact_number.label": [
+    {
+      "type": 0,
+      "value": "Emergency Contact Number"
+    }
+  ],
+  "pickers.create.form.identification_number.label": [
+    {
+      "type": 0,
+      "value": "Identification Number"
+    }
+  ],
+  "pickers.create.form.name.label": [
+    {
+      "type": 0,
+      "value": "Name"
+    }
+  ],
+  "pickers.create.form.phone_number.label": [
+    {
+      "type": 0,
+      "value": "Phone Number"
+    }
+  ],
+  "pickers.create.form.relation_to_picker.label": [
+    {
+      "type": 0,
+      "value": "Relation to picker"
+    }
+  ],
+  "pickers.create.picker.response.error": [
+    {
+      "type": 0,
+      "value": "Oops! The picker couldn't be saved."
+    }
+  ],
+  "pickers.create.picker.response.success": [
+    {
+      "type": 0,
+      "value": "The picker was created successfully"
+    }
+  ],
+  "pickers.delete.label": [
+    {
+      "type": 0,
+      "value": "Delete picker data"
+    }
+  ],
+  "pickers.delete.picker.response.error": [
+    {
+      "type": 0,
+      "value": "Oops! The picker couldn't be deleted."
+    }
+  ],
+  "pickers.delete.picker.response.success": [
+    {
+      "type": 0,
+      "value": "The picker was deleted successfully."
+    }
+  ],
+  "pickers.detail.address.label": [
+    {
+      "type": 0,
+      "value": "Address"
+    }
+  ],
+  "pickers.detail.blood_type.label": [
+    {
+      "type": 0,
+      "value": "Blood Type"
+    }
+  ],
+  "pickers.detail.button.view_harvest_log": [
+    {
+      "type": 0,
+      "value": "View Harvest Log"
+    }
+  ],
+  "pickers.detail.emergency_contact_person.label": [
+    {
+      "type": 0,
+      "value": "Emergency Contact Person"
+    }
+  ],
+  "pickers.detail.identification_number.label": [
+    {
+      "type": 0,
+      "value": "Identification Number"
+    }
+  ],
+  "pickers.detail.title": [
+    {
+      "offset": 0,
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Edit Picker"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Add Picker"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "isEdit"
+    }
+  ],
+  "pickers.subtitle": [
+    {
+      "type": 0,
+      "value": "Add and view picker’s profile and information here."
+    }
+  ],
+  "pickers.table.button.view_more": [
+    {
+      "type": 0,
+      "value": "View More"
+    }
+  ],
+  "pickers.table.column.emergency_contact": [
+    {
+      "type": 0,
+      "value": "Emergency Contact"
+    }
+  ],
+  "pickers.table.column.name": [
+    {
+      "type": 0,
+      "value": "Name"
+    }
+  ],
+  "pickers.table.column.phone_number": [
+    {
+      "type": 0,
+      "value": "Phone Number"
+    }
+  ],
+  "pickers.update.picker.response.success": [
+    {
+      "type": 0,
+      "value": "The picker was updated successfully"
+    }
+  ],
+  "search": [
+    {
+      "type": 0,
+      "value": "Search"
+    }
+  ],
+  "sidebar.harvest_log": [
+    {
+      "type": 0,
+      "value": "Harvest Log"
+    }
+  ],
+  "sidebar.harvest_season": [
+    {
+      "type": 0,
+      "value": "Harvest Season"
+    }
+  ],
+  "sidebar.home": [
+    {
+      "type": 0,
+      "value": "Home"
+    }
+  ],
+  "sidebar.payroll": [
+    {
+      "type": 0,
+      "value": "Payroll"
+    }
+  ],
+  "sidebar.pickers": [
+    {
+      "type": 0,
+      "value": "Pickers"
+    }
+  ],
+  "sidebar.quick_actions": [
+    {
+      "type": 0,
+      "value": "Quick Actions"
+    }
+  ],
+  "sidebar.quick_actions.add_harvest_log": [
+    {
+      "type": 0,
+      "value": "Add Daily Harvest"
+    }
+  ],
+  "sidebar.quick_actions.add_picker": [
+    {
+      "type": 0,
+      "value": "Add Picker"
+    }
+  ]
+}

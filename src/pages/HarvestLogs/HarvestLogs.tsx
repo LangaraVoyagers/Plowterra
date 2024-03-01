@@ -22,13 +22,25 @@ import BasicHome from "layouts/BasicHome";
 import { useQuery } from "react-query";
 
 const columns: GridColDef[] = [
-  { field: "picker", headerName: "Name", width: 200, renderCell: (params: GridRenderCellParams<IHarvestLog>) => params.value?.name },
-  { field: "product", headerName: "Product", width: 200 },
+  {
+    field: "picker",
+    headerName: "Name",
+    width: 200,
+    renderCell: (params: GridRenderCellParams<IHarvestLog>) =>
+      params.value?.name || "",
+  },
+  {
+    field: "season",
+    headerName: "Product",
+    width: 200,
+    renderCell: (params: GridRenderCellParams<IHarvestLog>) =>
+      params.value?.product?.name || "",
+  },
   { field: "collectedAmount", headerName: "Amount", width: 200 },
   { field: "totalDeduction", headerName: "Deductions", width: 200 },
-  { 
-    field: "createdAt", 
-    headerName: "Date", 
+  {
+    field: "createdAt",
+    headerName: "Date",
     width: 200,
     valueFormatter: (params) => {
       const date = new Date(params.value);
@@ -44,9 +56,7 @@ const columns: GridColDef[] = [
     field: "action",
     headerName: "",
     width: 200,
-    renderCell() {
-      return <Button>View More</Button>;
-    },
+    renderCell: () => <Button>View More</Button>,
   },
 ];
 
@@ -60,8 +70,6 @@ const HarvestLogs = () => {
     queryFn: getHarvestLogs,
     onSuccess: (results) => {
       setHarvestLogs(results);
-      console.log(results);
-      
     },
     onError: (error) => {
       console.log(error);
@@ -100,7 +108,7 @@ const HarvestLogs = () => {
           />
         </FormControl>
       </Box>
-      <Box>
+      <Box display="flex" flexGrow={1} pb={3}>
         <DataGrid
           rows={harvestLogs}
           columns={columns}
@@ -108,12 +116,12 @@ const HarvestLogs = () => {
           initialState={{
             pagination: {
               paginationModel: {
-                pageSize: 5,
+                pageSize: 12,
               },
             },
           }}
           getRowId={(data) => data?._id}
-          pageSizeOptions={[5, 10]}
+          pageSizeOptions={[10, 20, 50, 100]}
           disableRowSelectionOnClick
         />
       </Box>

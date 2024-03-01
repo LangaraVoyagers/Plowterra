@@ -1,0 +1,128 @@
+{
+  "button.cancel": {
+    "defaultMessage": "Cancel"
+  },
+  "button.edit": {
+    "defaultMessage": "Edit"
+  },
+  "danger.zone.label": {
+    "defaultMessage": "Danger Zone"
+  },
+  "pickers": {
+    "defaultMessage": "Pickers"
+  },
+  "pickers.button.delete": {
+    "defaultMessage": "{isDeleting, plural, one {Deleting...} other {Delete} }"
+  },
+  "pickers.button.save": {
+    "defaultMessage": "{isLoading, plural, one {Loading...} other {Save} }"
+  },
+  "pickers.create.button.test": {
+    "defaultMessage": "Test"
+  },
+  "pickers.create.button.text": {
+    "defaultMessage": "Add New Picker"
+  },
+  "pickers.create.form.address.label": {
+    "defaultMessage": "Address"
+  },
+  "pickers.create.form.blood_type.label": {
+    "defaultMessage": "Blood Type"
+  },
+  "pickers.create.form.emergency_contact_name.label": {
+    "defaultMessage": "Emergency Contact Name"
+  },
+  "pickers.create.form.emergency_contact_number.label": {
+    "defaultMessage": "Emergency Contact Number"
+  },
+  "pickers.create.form.identification_number.label": {
+    "defaultMessage": "Identification Number"
+  },
+  "pickers.create.form.name.label": {
+    "defaultMessage": "Name"
+  },
+  "pickers.create.form.phone_number.label": {
+    "defaultMessage": "Phone Number"
+  },
+  "pickers.create.form.relation_to_picker.label": {
+    "defaultMessage": "Relation to picker"
+  },
+  "pickers.create.picker.response.error": {
+    "defaultMessage": "Oops! The picker couldn't be saved."
+  },
+  "pickers.create.picker.response.success": {
+    "defaultMessage": "The picker was created successfully"
+  },
+  "pickers.delete.label": {
+    "defaultMessage": "Delete picker data"
+  },
+  "pickers.delete.picker.response.error": {
+    "defaultMessage": "Oops! The picker couldn't be deleted."
+  },
+  "pickers.delete.picker.response.success": {
+    "defaultMessage": "The picker was deleted successfully."
+  },
+  "pickers.detail.address.label": {
+    "defaultMessage": "Address"
+  },
+  "pickers.detail.blood_type.label": {
+    "defaultMessage": "Blood Type"
+  },
+  "pickers.detail.button.view_harvest_log": {
+    "defaultMessage": "View Harvest Log"
+  },
+  "pickers.detail.emergency_contact_person.label": {
+    "defaultMessage": "Emergency Contact Person"
+  },
+  "pickers.detail.identification_number.label": {
+    "defaultMessage": "Identification Number"
+  },
+  "pickers.detail.title": {
+    "defaultMessage": "{isEdit, plural, one {Edit Picker} other {Add Picker} }"
+  },
+  "pickers.subtitle": {
+    "defaultMessage": "Add and view picker’s profile and information here."
+  },
+  "pickers.table.button.view_more": {
+    "defaultMessage": "View More"
+  },
+  "pickers.table.column.emergency_contact": {
+    "defaultMessage": "Emergency Contact"
+  },
+  "pickers.table.column.name": {
+    "defaultMessage": "Name"
+  },
+  "pickers.table.column.phone_number": {
+    "defaultMessage": "Phone Number"
+  },
+  "pickers.update.picker.response.success": {
+    "defaultMessage": "The picker was updated successfully"
+  },
+  "search": {
+    "defaultMessage": "Search"
+  },
+  "sidebar.harvest_log": {
+    "defaultMessage": "Harvest Log"
+  },
+  "sidebar.harvest_season": {
+    "defaultMessage": "Harvest Season"
+  },
+  "sidebar.home": {
+    "defaultMessage": "Home"
+  },
+  "sidebar.payroll": {
+    "defaultMessage": "Payroll"
+  },
+  "sidebar.pickers": {
+    "defaultMessage": "Pickers"
+  },
+  "sidebar.quick_actions": {
+    "defaultMessage": "Quick Actions"
+  },
+  "sidebar.quick_actions.add_harvest_log": {
+    "defaultMessage": "Add Daily Harvest"
+  },
+  "sidebar.quick_actions.add_picker": {
+    "defaultMessage": "Add Picker"
+  }
+}

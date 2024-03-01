@@ -57,7 +57,8 @@ Will contain all the shared helper functions
 - [react-query](https://www.npmjs.com/package/react-query)
 - [react-router-dom](https://www.npmjs.com/package/react-router-dom)
 - [styled-components](https://www.npmjs.com/package/styled-components)
-- [icons-components](https://www.npmjs.com/package/@phosphor-icons/react)
+- [@phosphor-icons/react](https://www.npmjs.com/package/@phosphor-icons/react)
+- [react-intl](https://www.npmjs.com/package/react-intl)
 ---
 
 #### Development Dependencies
