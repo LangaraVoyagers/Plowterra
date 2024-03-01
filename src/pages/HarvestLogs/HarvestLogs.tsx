@@ -69,7 +69,6 @@ const HarvestLogs = () => {
     queryFn: getHarvestLogs,
     onSuccess: (results) => {
       setHarvestLogs(results);
-      console.log(results);
     },
     onError: (error) => {
       console.log(error);
