@@ -1,27 +1,25 @@
+import {
+  ArchiveTray,
+  CaretLeft,
+  CaretRight,
+  CurrencyCircleDollar,
+  EnvelopeSimple,
+  House,
+  NotePencil,
+  Notepad,
+  User,
+} from "@phosphor-icons/react";
 import { Box, CssBaseline, Divider, IconButton, List } from "@mui/material";
-import MuiDrawer from "@mui/material/Drawer";
 import { CSSObject, Theme, styled } from "@mui/material/styles";
-import { useState } from "react";
+
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-
+import MuiDrawer from "@mui/material/Drawer";
 import { Outlet } from "react-router-dom";
-
-import {
-  ArchiveTray,
-  CaretRight,
-  EnvelopeSimple,
-  NotePencil,
-  CaretLeft,
-  House,
-  CurrencyCircleDollar,
-  Notepad,
-  User,
-  } from "@phosphor-icons/react";
-
 import paths from "shared/paths";
+import { useState } from "react";
 
 const DRAWER_WIDTH = 240;
 
@@ -96,7 +94,7 @@ const sidebarItems = [
   {
     title: "Harvest Seasons",
     icon: <Notepad />,
-    href: "",
+    href: paths.seasons,
   },
 ];
 
