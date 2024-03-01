@@ -6,7 +6,7 @@ import {
   OutlinedInput,
 } from "@mui/material";
 import { MagnifyingGlass } from "@phosphor-icons/react";
-import { DataGrid, GridColDef } from "@mui/x-data-grid";
+import { DataGrid, GridColDef, GridRenderCellParams } from "@mui/x-data-grid";
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
@@ -22,11 +22,24 @@ import BasicHome from "layouts/BasicHome";
 import { useQuery } from "react-query";
 
 const columns: GridColDef[] = [
-  { field: "picker", headerName: "Name", width: 200 },
+  { field: "picker", headerName: "Name", width: 200, renderCell: (params: GridRenderCellParams<IHarvestLog>) => params.value?.name },
   { field: "product", headerName: "Product", width: 200 },
   { field: "collectedAmount", headerName: "Amount", width: 200 },
   { field: "totalDeduction", headerName: "Deductions", width: 200 },
-  { field: "date", headerName: "Date", width: 200 },
+  { 
+    field: "createdAt", 
+    headerName: "Date", 
+    width: 200,
+    valueFormatter: (params) => {
+      const date = new Date(params.value);
+      const formattedDate = date.toLocaleDateString("en-US", {
+        day: "numeric",
+        month: "short",
+        year: "numeric",
+      });
+      return formattedDate;
+    },
+  },
   {
     field: "action",
     headerName: "",
