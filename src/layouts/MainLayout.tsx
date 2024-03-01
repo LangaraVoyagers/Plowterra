@@ -92,13 +92,10 @@ const sidebarItems = [
   },
   {
     title: (
-      <FormattedMessage
-        id="sidebar.daily_harvest"
-        defaultMessage="Daily Harvest"
-      />
+      <FormattedMessage id="sidebar.harvest_log" defaultMessage="Harvest Log" />
     ),
     icon: <NotePencil />,
-    href: "",
+    href: paths.harvestLogs,
   },
   {
     title: <FormattedMessage id="sidebar.pickers" defaultMessage="Pickers" />,
@@ -126,7 +123,7 @@ const quickActions = [
   {
     title: (
       <FormattedMessage
-        id="sidebar.quick_actions.add_daily_harvest"
+        id="sidebar.quick_actions.add_harvest_log"
         defaultMessage="Add Daily Harvest"
       />
     ),

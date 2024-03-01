@@ -263,10 +263,10 @@
       "value": "Search"
     }
   ],
-  "sidebar.daily_harvest": [
+  "sidebar.harvest_log": [
     {
       "type": 0,
-      "value": "Daily Harvest"
+      "value": "Harvest Log"
     }
   ],
   "sidebar.harvest_season": [
@@ -299,7 +299,7 @@
       "value": "Quick Actions"
     }
   ],
-  "sidebar.quick_actions.add_daily_harvest": [
+  "sidebar.quick_actions.add_harvest_log": [
     {
       "type": 0,
       "value": "Add Daily Harvest"

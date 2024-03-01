@@ -2,6 +2,7 @@ import { AlertProvider } from "context/AlertProvider";
 import MainLayout from "layouts/MainLayout";
 import Login from "pages/Login";
 import Pickers from "pages/Pickers";
+import HarvestLogs from "pages/HarvestLogs"
 import { QueryClient, QueryClientProvider } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
@@ -23,6 +24,10 @@ const router = createBrowserRouter([
       {
         path: `${paths.pickers}/:id`,
         element: <Pickers />,
+      },
+      {
+        path: paths.harvestLogs,
+        element: <HarvestLogs />,
       },
     ],
   },

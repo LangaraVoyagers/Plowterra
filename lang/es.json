@@ -98,7 +98,7 @@
   "search": {
     "defaultMessage": "Buscar"
   },
-  "sidebar.daily_harvest": {
+  "sidebar.harvest_log": {
     "defaultMessage": "Cosecha Diaria"
   },
   "sidebar.harvest_season": {
@@ -116,7 +116,7 @@
   "sidebar.quick_actions": {
     "defaultMessage": "Acciones Rápidas"
   },
-  "sidebar.quick_actions.add_daily_harvest": {
+  "sidebar.quick_actions.add_harvest_log": {
     "defaultMessage": "Agregar Cosecha Diaria"
   },
   "sidebar.quick_actions.add_picker": {
