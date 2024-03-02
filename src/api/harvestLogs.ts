@@ -20,9 +20,20 @@ export const getHarvestLogs = async () => {
   }
 };
 
-export const createHarvestLog = async (payload: IHarvestLog) => {
+
+interface ICreateHarvestLog {
+  "farmId":string
+  "collectedAmount": number,
+  "seasonId":string
+  "pickerId": string
+  "seasonDeductionIds":  Array<string>;
+  notes?: string;
+
+}
+
+export const createHarvestLog = async (payload: ICreateHarvestLog) => {
   try {
-    const { data } = await axios.post(endpoints.harvestLogs, payload);
+    const { data:{data} } = await axios.post(endpoints.harvestLogs, payload);
     return data;
   } catch (error) {
     console.log({ error });

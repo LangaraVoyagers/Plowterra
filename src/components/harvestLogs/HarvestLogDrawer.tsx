@@ -20,12 +20,20 @@ import useQueryCache from "hooks/useQueryCache";
 import { useAlert } from "context/AlertProvider";
 import { useForm, Controller } from "react-hook-form";
 import { useMutation, useQuery } from "react-query";
-import { IHarvestLog } from "project-2-types/lib/harvestLog";
+import { IHarvestLogResponse } from "project-2-types/lib/harvestLog";
 import { getPickers } from "api/pickers";
 import { IPicker } from "project-2-types/lib/pickers";
-import { getSeasons, getSeasonById } from "api/seasons";
+import { getSeasons } from "api/seasons";
 import { useState } from "react";
-interface IHarvestLogForm extends Omit<IHarvestLog, "_id"> {}
+
+interface IHarvestLogForm {
+  season: { id: string; label: string };
+  picker: { id: string; label: string };
+  collectedAmount: number;
+  productName?: string;
+  seasonDeductionsIds: Array<string>;
+  notes?: string;
+}
 
 const currentDate = new Date();
 const formattedDate = currentDate.toLocaleDateString("en-US", {
@@ -57,12 +65,10 @@ const HarvestLogDrawer = ({
   ...props
 }: HarvestLogDrawerProps) => {
   const { showAlert } = useAlert();
-  const { CREATE_MUTATION_KEY, createCache } = useQueryCache(
-    "harvestLosgs",
-    harvestLogId
-  );
+  const { CREATE_MUTATION_KEY } = useQueryCache("harvestLosgs", harvestLogId);
 
-  const { control, handleSubmit, reset } = useForm<IHarvestLogForm>();
+  const { control, handleSubmit, reset, watch, setValue } =
+    useForm<IHarvestLogForm>();
 
   const [deductionName, setdeductionName] = React.useState<string[]>([]);
 
@@ -92,40 +98,27 @@ const HarvestLogDrawer = ({
   });
 
   const { GET_QUERY_KEY: SEASONS_QUERY_KEY } = useQueryCache("seasons");
+  const {
+    // GET_QUERY_KEY: HARVEST_LOG_QUERY_KEY,
+    createCache: createHarvestLogCache,
+  } = useQueryCache("harvestLogs");
 
-  const [seasons, setSeasons] = useState([]);
+  const [seasons, setSeasons] = useState<
+    Array<{ _id: string; name: string; product: { name: string } }>
+  >([]);
 
   useQuery({
     queryKey: SEASONS_QUERY_KEY,
     queryFn: getSeasons,
     onSuccess: (results) => {
       setSeasons(results);
-      console.log(results);
     },
     onError: (error) => {
       console.log(error);
     },
   });
 
-  const { GET_QUERY_KEY: SEASONS_ID_QUERY_KEY } = useQueryCache("seasonById");
-
-  const [seasonById, setseasonById] = useState<{
-    product: { _id: string; name: string };
-  } | null>(null);
-
-  const id = "65e2354c3d01dbaacb7575a4";
-
-  useQuery({
-    queryKey: SEASONS_ID_QUERY_KEY,
-    queryFn: () => getSeasonById(id),
-    onSuccess: (results) => {
-      setseasonById(results);
-      console.log(results);
-    },
-    onError: (error) => {
-      console.log(error);
-    },
-  });
+  const selectedProduct = watch("productName");
 
   const { mutate: saveHarvestLogMutation } = useMutation({
     mutationKey: CREATE_MUTATION_KEY,
@@ -143,16 +136,22 @@ const HarvestLogDrawer = ({
     dismiss();
   };
 
-  const handleCreateSuccess = (created: IHarvestLog) => {
-    const updatedCreated = { ...created, _id: "" };
-    createCache(updatedCreated);
+  const handleCreateSuccess = (
+    created: IHarvestLogResponse & { _id: string }
+  ) => {
+    createHarvestLogCache(created);
     showAlert(`Harvest Log created successfully`);
     onCreateHarvestLogClose();
   };
 
   const onSubmit = (data: IHarvestLogForm) => {
     saveHarvestLogMutation({
-      ...data,
+      farmId: "65d703cf9a00b1a671609458", //TODO: get actual farmId
+      collectedAmount: data.collectedAmount,
+      pickerId: data.picker.id,
+      seasonId: data.season.id,
+      seasonDeductionIds: data.seasonDeductionsIds,
+      notes: data.notes, //TODO add to endpoint
     });
   };
 
@@ -168,18 +167,29 @@ const HarvestLogDrawer = ({
       <Controller
         control={control}
         name="season"
-        render={() => {
+        render={({ field: { onChange, value } }) => {
           return (
             <Box display="flex" flexDirection="column" gap={1}>
               <Autocomplete
-                disablePortal
                 id="harvest-season-combo-box"
                 options={seasons.map(
                   (season: { _id: string; name: string }) => ({
                     id: season._id,
-                    label: season.name,
+                    label: season?.name,
                   })
                 )}
+                value={value}
+                onChange={(_, newValue) => {
+                  onChange(newValue);
+
+                  setValue(
+                    "productName",
+                    seasons?.find(
+                      (s: { _id: string }) => s._id === newValue?.id
+                    )?.product?.name ?? ""
+                  );
+                }}
+                getOptionLabel={(option) => option.label}
                 renderInput={(params) => (
                   <div>
                     <InputLabel htmlFor="harvest-log-season">
@@ -194,7 +204,6 @@ const HarvestLogDrawer = ({
         }}
       />
 
-      {/* TODO: Show current date disabled */}
       <Box display="flex" flexDirection="column" gap={1}>
         <InputLabel htmlFor="harvest-log-date">Date*</InputLabel>
         <OutlinedInput id="harvest-log-date" value={formattedDate} disabled />
@@ -203,15 +212,18 @@ const HarvestLogDrawer = ({
       <Controller
         control={control}
         name="picker"
-        render={() => {
+        render={({ field: { onChange, value } }) => {
           return (
             <Box display="flex" flexDirection="column" gap={1}>
               <Autocomplete
-                disablePortal
                 id="picker-combo-box"
+                value={value}
+                onChange={(_, newValue) => {
+                  onChange(newValue);
+                }}
                 options={pickers.map((picker) => ({
                   id: picker._id,
-                  label: picker.name,
+                  label: picker?.name,
                 }))}
                 renderInput={(params) => (
                   <div>
@@ -221,6 +233,7 @@ const HarvestLogDrawer = ({
                     <TextField {...params} id="harvest-log-picker" />
                   </div>
                 )}
+                disablePortal
               />
             </Box>
           );
@@ -231,7 +244,7 @@ const HarvestLogDrawer = ({
         <InputLabel htmlFor="harvest-log-product">Product - Unit</InputLabel>
         <OutlinedInput
           id="harvest-log-product"
-          value={seasonById?.product.name}
+          value={selectedProduct}
           disabled
         />
       </Box>
@@ -250,7 +263,7 @@ const HarvestLogDrawer = ({
       />
       <Controller
         control={control}
-        name="seasonDeductions"
+        name="seasonDeductionsIds"
         render={({ field }) => {
           return (
             <Box display="flex" flexDirection="column" gap={1}>
@@ -259,12 +272,12 @@ const HarvestLogDrawer = ({
                 {...field}
                 labelId="harvest-log-deductions"
                 id="demo-multiple-checkbox"
-                multiple
                 value={deductionName}
                 onChange={handleChange}
                 input={<OutlinedInput label="Deduction" />}
                 renderValue={(selected) => selected.join(", ")}
                 MenuProps={MenuProps}
+                multiple
               >
                 {deductions.map((name) => (
                   <MenuItem key={name} value={name}>
