@@ -11,8 +11,8 @@ import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import HarvestLogDrawer from "components/pickers/HarvestLogDrawer";
 import { IHarvestLog } from "project-2-types/lib/harvestLog";
+import CreateHarvestLog from "components/harvestLogs/CreateHarvestLog";
 
 import useQueryCache from "hooks/useQueryCache";
 import { useState } from "react";
@@ -84,7 +84,7 @@ const HarvestLogs = () => {
         { title: "Farm Name", href: "#" },
         { title: "Harvest Log", href: "" },
       ]}
-      actions={<HarvestLogDrawer />}
+      actions={<CreateHarvestLog />}
     >
       <Box display="flex" justifyContent="space-between">
         <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -93,8 +93,6 @@ const HarvestLogs = () => {
             <DatePicker label="End Date" />
           </DemoContainer>
         </LocalizationProvider>
-
-        
 
         <FormControl>
           <OutlinedInput

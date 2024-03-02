@@ -19,3 +19,13 @@ export const getHarvestLogs = async () => {
     throw error;
   }
 };
+
+export const createHarvestLog = async (payload: IHarvestLog) => {
+  try {
+    const { data } = await axios.post(endpoints.harvestLogs, payload);
+    return data;
+  } catch (error) {
+    console.log({ error });
+    throw error;
+  }
+};
