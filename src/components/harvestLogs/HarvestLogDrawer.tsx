@@ -23,7 +23,8 @@ import { useMutation, useQuery } from "react-query";
 import { IHarvestLog } from "project-2-types/lib/harvestLog";
 import { getPickers } from "api/pickers";
 import { IPicker } from "project-2-types/lib/pickers";
-
+import { getSeasons, getSeasonById } from "api/seasons";
+import { useState } from "react";
 interface IHarvestLogForm extends Omit<IHarvestLog, "_id"> {}
 
 const currentDate = new Date();
@@ -33,8 +34,6 @@ const formattedDate = currentDate.toLocaleDateString("en-US", {
   year: "numeric",
 });
 
-const seasons = ["Season 1", "Season 2"]; //TODO: get actual data
-const product = "Beans - kg"; //TODO: get actual data
 const deductions = ["Transport", "Meal", "Storage", "Other"]; //TODO: get actual data
 
 const ITEM_HEIGHT = 48;
@@ -77,15 +76,51 @@ const HarvestLogDrawer = ({
     );
   };
 
-  const { GET_QUERY_KEY } = useQueryCache("pickers");
+  const { GET_QUERY_KEY: PICKERS_QUERY_KEY } = useQueryCache("pickers");
 
   const [pickers, setPickers] = React.useState<Array<IPicker>>([]);
 
   useQuery({
-    queryKey: GET_QUERY_KEY,
+    queryKey: PICKERS_QUERY_KEY,
     queryFn: getPickers,
     onSuccess: (results) => {
       setPickers(results);
+    },
+    onError: (error) => {
+      console.log(error);
+    },
+  });
+
+  const { GET_QUERY_KEY: SEASONS_QUERY_KEY } = useQueryCache("seasons");
+
+  const [seasons, setSeasons] = useState([]);
+
+  useQuery({
+    queryKey: SEASONS_QUERY_KEY,
+    queryFn: getSeasons,
+    onSuccess: (results) => {
+      setSeasons(results);
+      console.log(results);
+    },
+    onError: (error) => {
+      console.log(error);
+    },
+  });
+
+  const { GET_QUERY_KEY: SEASONS_ID_QUERY_KEY } = useQueryCache("seasonById");
+
+  const [seasonById, setseasonById] = useState<{
+    product: { _id: string; name: string };
+  } | null>(null);
+
+  const id = "65e2354c3d01dbaacb7575a4";
+
+  useQuery({
+    queryKey: SEASONS_ID_QUERY_KEY,
+    queryFn: () => getSeasonById(id),
+    onSuccess: (results) => {
+      setseasonById(results);
+      console.log(results);
     },
     onError: (error) => {
       console.log(error);
@@ -139,7 +174,12 @@ const HarvestLogDrawer = ({
               <Autocomplete
                 disablePortal
                 id="harvest-season-combo-box"
-                options={seasons}
+                options={seasons.map(
+                  (season: { _id: string; name: string }) => ({
+                    id: season._id,
+                    label: season.name,
+                  })
+                )}
                 renderInput={(params) => (
                   <div>
                     <InputLabel htmlFor="harvest-log-season">
@@ -187,10 +227,13 @@ const HarvestLogDrawer = ({
         }}
       />
 
-      {/* TODO: Show product */}
       <Box display="flex" flexDirection="column" gap={1}>
         <InputLabel htmlFor="harvest-log-product">Product - Unit</InputLabel>
-        <OutlinedInput id="harvest-log-product" value={product} disabled />
+        <OutlinedInput
+          id="harvest-log-product"
+          value={seasonById?.product.name}
+          disabled
+        />
       </Box>
 
       <Controller

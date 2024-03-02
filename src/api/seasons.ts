@@ -30,9 +30,11 @@ export const getSeasonById = async (id?: string) => {
 };
 
 export const upsertSeason = async ({
-    seasonId,
-    ...payload
-  }: { seasonId: string }) => {
+  seasonId,
+  ...payload
+}: {
+  seasonId: string;
+}) => {
   try {
     if (seasonId) {
       const {
