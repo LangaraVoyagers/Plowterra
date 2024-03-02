@@ -17,10 +17,6 @@ const CreatePicker = () => {
           id="pickers.create.button.text"
           defaultMessage="Add New Picker"
         />
-        <FormattedMessage
-          id="pickers.create.button.test"
-          defaultMessage="Test"
-        />
       </Button>
 
       <PickerDrawer open={open} dismiss={hideDrawer} />
