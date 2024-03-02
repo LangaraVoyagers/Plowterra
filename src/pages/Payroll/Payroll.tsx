@@ -80,8 +80,8 @@
   //       details: []
   //     }
   // ];
-  import { useState, useEffect } from 'react';
-  import { Box, Button, Typography } from "@mui/material";
+  import { useState } from 'react';
+  import { Box, Button } from "@mui/material";
   import { DataGrid, GridColDef } from "@mui/x-data-grid";
   import { FormattedMessage, useIntl } from "react-intl";
   import BasicHome from "layouts/BasicHome";
