@@ -14,17 +14,18 @@ import {
   Checkbox,
   ListItemText,
   SelectChangeEvent,
+  Divider,
 } from "@mui/material";
-import { createHarvestLog } from "api/harvestLogs";
+import { createHarvestLog, getHarvestLogById } from "api/harvestLogs";
 import useQueryCache from "hooks/useQueryCache";
 import { useAlert } from "context/AlertProvider";
 import { useForm, Controller } from "react-hook-form";
 import { useMutation, useQuery } from "react-query";
 import { IHarvestLogResponse } from "project-2-types/lib/harvestLog";
 import { getPickers } from "api/pickers";
-import { IPicker } from "project-2-types/lib/pickers";
 import { getSeasons } from "api/seasons";
 import { useState } from "react";
+import { IPicker } from "project-2-types/lib/pickers";
 
 interface IHarvestLogForm {
   season: { id: string; label: string };
@@ -65,10 +66,15 @@ const HarvestLogDrawer = ({
   ...props
 }: HarvestLogDrawerProps) => {
   const { showAlert } = useAlert();
-  const { CREATE_MUTATION_KEY } = useQueryCache("harvestLosgs", harvestLogId);
+  const { CREATE_MUTATION_KEY, GET_DETAIL_QUERY_KEY } = useQueryCache(
+    "harvestLosgs",
+    harvestLogId
+  );
 
   const { control, handleSubmit, reset, watch, setValue } =
     useForm<IHarvestLogForm>();
+
+  // const harvestLogData = getValues();
 
   const [deductionName, setdeductionName] = React.useState<string[]>([]);
 
@@ -115,6 +121,18 @@ const HarvestLogDrawer = ({
     },
     onError: (error) => {
       console.log(error);
+    },
+  });
+
+  const { isLoading: isLoadingDetail } = useQuery({
+    queryKey: GET_DETAIL_QUERY_KEY,
+    queryFn: () => getHarvestLogById(harvestLogId),
+    enabled: !!harvestLogId,
+    onSuccess: (result) => {
+      reset(result);
+    },
+    onError: () => {
+      showAlert("Oops! Information couldn't be displayed.");
     },
   });
 
@@ -318,9 +336,41 @@ const HarvestLogDrawer = ({
     </Box>
   );
 
+  const harvestLogDetail = (
+    <Box
+      display="flex"
+      flexDirection="column"
+      padding="3rem"
+      gap={3}
+      width={600}
+      height="100%"
+    >
+      <Box
+        display="flex"
+        flexDirection="column"
+        gap={3}
+        flex={1}
+        justifyContent="flex-start"
+      >
+        <Box display="flex" flexDirection="column">
+          <Typography variant="body1">{"Picker"}</Typography>
+          <Typography variant="h1">{"Picker Name"}</Typography>
+        </Box>
+
+        <Divider />
+
+        <Box display="flex" flexDirection="column">
+          {/* TODO: add rest of info as table */}
+        </Box>
+        {/* TODO: add Back button and Add Correction Note button */}
+      </Box>
+    </Box>
+  );
+
   return (
     <Drawer anchor="right" {...props}>
-      {<>{harvestLogForm}</>}
+      {/* TODO: Display correct page */}
+      {<>{!isLoadingDetail ? harvestLogForm : harvestLogDetail}</>}
     </Drawer>
   );
 };
