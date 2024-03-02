@@ -7,6 +7,7 @@ import { QueryClient, QueryClientProvider } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import paths from "shared/paths";
+import Payroll from "pages/Payroll";
 
 const router = createBrowserRouter([
   {
@@ -28,6 +29,10 @@ const router = createBrowserRouter([
       {
         path: paths.harvestLogs,
         element: <HarvestLogs />,
+      },
+      {
+        path: paths.payroll,
+        element: <Payroll />,
       },
     ],
   },
