@@ -1,6 +1,5 @@
 import {
   Box,
-  Button,
   FormControl,
   InputAdornment,
   OutlinedInput,
@@ -20,6 +19,7 @@ import { getHarvestLogs } from "api/harvestLogs";
 
 import BasicHome from "layouts/BasicHome";
 import { useQuery } from "react-query";
+import UpdateHarvestLog from "components/harvestLogs/UpdateHarvestLog";
 
 const columns: GridColDef[] = [
   {
@@ -56,7 +56,9 @@ const columns: GridColDef[] = [
     field: "action",
     headerName: "",
     width: 200,
-    renderCell: () => <Button>View More</Button>,
+    renderCell: (data: GridRenderCellParams<IHarvestLog & { _id: string }>) => {
+      return <UpdateHarvestLog harvestLogId={data.row._id} />;
+    },
   },
 ];
 
