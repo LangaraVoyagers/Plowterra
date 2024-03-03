@@ -1,4 +1,4 @@
-import { redirect } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { login } from "../../api/login.ts";
 import { useState } from "react";
 
@@ -13,6 +13,8 @@ const Login: React.FC = () => {
     password: "",
   });
 
+  const navigate = useNavigate();
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
@@ -24,7 +26,7 @@ const Login: React.FC = () => {
     const res = await login({ email, password });
 
     if (res) {
-      redirect("/");
+      navigate("/");
     }
   };
 
