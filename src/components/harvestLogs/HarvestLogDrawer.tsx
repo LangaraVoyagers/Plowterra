@@ -66,13 +66,19 @@ const HarvestLogDrawer = ({
   ...props
 }: HarvestLogDrawerProps) => {
   const { showAlert } = useAlert();
-  const { CREATE_MUTATION_KEY, GET_DETAIL_QUERY_KEY } = useQueryCache(
-    "harvestLosgs",
-    harvestLogId
-  );
+  const { CREATE_MUTATION_KEY, GET_DETAIL_QUERY_KEY, UPDATE_MUTATION_KEY } =
+    useQueryCache("harvestLosgs", harvestLogId);
 
-  const { control, handleSubmit, reset, watch, setValue } =
-    useForm<IHarvestLogForm>();
+  const [showEditForm, setShowEditForm] = useState<boolean>(!harvestLogId);
+
+  const {
+    control,
+    handleSubmit,
+    reset,
+    watch,
+    setValue,
+    // getValues
+  } = useForm<IHarvestLogForm>();
 
   // const harvestLogData = getValues();
 
@@ -107,6 +113,7 @@ const HarvestLogDrawer = ({
   const {
     // GET_QUERY_KEY: HARVEST_LOG_QUERY_KEY,
     createCache: createHarvestLogCache,
+    updateCache: updateHarvestLogCache,
   } = useQueryCache("harvestLogs");
 
   const [seasons, setSeasons] = useState<
@@ -138,11 +145,15 @@ const HarvestLogDrawer = ({
 
   const selectedProduct = watch("productName");
 
-  const { mutate: saveHarvestLogMutation } = useMutation({
-    mutationKey: CREATE_MUTATION_KEY,
+  const { mutate: saveHarvestLogMutation, isLoading } = useMutation({
+    mutationKey: harvestLogId ? UPDATE_MUTATION_KEY : CREATE_MUTATION_KEY,
     mutationFn: createHarvestLog,
     onSuccess: (result) => {
-      handleCreateSuccess(result);
+      if (harvestLogId) {
+        handleUpdateSuccess(result);
+      } else {
+        handleCreateSuccess(result);
+      }
     },
     onError: () => {
       showAlert("Oops! The harvest log couldn't be saved.");
@@ -161,6 +172,17 @@ const HarvestLogDrawer = ({
     showAlert(`Harvest Log created successfully`);
     onCreateHarvestLogClose();
   };
+
+  const handleUpdateSuccess = (
+    updated: IHarvestLogResponse & { _id: string }
+  ) => {
+    updateHarvestLogCache(updated);
+    showAlert(`Harvest Log updated successfully`);
+    hideEdit();
+  };
+
+  const showEdit = () => setShowEditForm(true);
+  const hideEdit = () => setShowEditForm(false);
 
   const onSubmit = (data: IHarvestLogForm) => {
     saveHarvestLogMutation({
@@ -327,9 +349,18 @@ const HarvestLogDrawer = ({
         }}
       />
       <Box display="flex" justifyContent="space-between">
-        <Button onClick={onCreateHarvestLogClose}>Cancel</Button>
+        <Button
+          disabled={isLoading}
+          onClick={harvestLogId ? hideEdit : onCreateHarvestLogClose}
+        >
+          Cancel
+        </Button>
 
-        <Button variant="contained" onClick={handleSubmit(onSubmit)}>
+        <Button
+          variant="contained"
+          onClick={handleSubmit(onSubmit)}
+          disabled={isLoading}
+        >
           Save
         </Button>
       </Box>
@@ -363,14 +394,23 @@ const HarvestLogDrawer = ({
           {/* TODO: add rest of info as table */}
         </Box>
         {/* TODO: add Back button and Add Correction Note button */}
+        <Button variant="contained" onClick={showEdit}>
+          Edit
+        </Button>
       </Box>
     </Box>
   );
 
   return (
-    <Drawer anchor="right" {...props}>
+    <Drawer
+      anchor="right"
+      {...props}
+      onClose={!showEditForm ? dismiss : undefined}
+    >
       {/* TODO: Display correct page */}
-      {<>{!isLoadingDetail ? harvestLogForm : harvestLogDetail}</>}
+      {!isLoadingDetail && (
+        <>{showEditForm ? harvestLogForm : harvestLogDetail}</>
+      )}
     </Drawer>
   );
 };
