@@ -14,7 +14,12 @@ import {
   Checkbox,
   ListItemText,
   SelectChangeEvent,
-  Divider,
+  TableContainer,
+  Table,
+  TableHead,
+  TableRow,
+  TableCell,
+  TableBody,
 } from "@mui/material";
 import { createHarvestLog, getHarvestLogById } from "api/harvestLogs";
 import useQueryCache from "hooks/useQueryCache";
@@ -60,6 +65,7 @@ type HarvestLogDrawerProps = DrawerProps & {
   harvestLogId?: string;
   dismiss: () => void;
 };
+
 const HarvestLogDrawer = ({
   dismiss,
   harvestLogId,
@@ -71,16 +77,33 @@ const HarvestLogDrawer = ({
 
   const [showEditForm, setShowEditForm] = useState<boolean>(!harvestLogId);
 
-  const {
-    control,
-    handleSubmit,
-    reset,
-    watch,
-    setValue,
-    // getValues
-  } = useForm<IHarvestLogForm>();
+  const { control, handleSubmit, reset, watch, setValue, getValues } =
+    useForm<IHarvestLogForm>();
 
-  // const harvestLogData = getValues();
+  const harvestLogData = getValues();
+  console.log(harvestLogData);
+
+  function createHarvestLogDataList() {
+    return [
+      ["Date", "2022-03-01"],
+      ["Harvest Season", harvestLogData.season?.name || ""],
+      // ["Harvest Season", harvestLogData.season?.label || ""],
+      ["Product", harvestLogData.season?.product?.name || ""],
+      ["Price Per Unit", harvestLogData.season?.price || ""],
+      ["Amount", harvestLogData.collectedAmount || ""],
+      ["Deduction", harvestLogData.totalDeduction || ""],
+      ["Note", harvestLogData.notes || ""],
+      [
+        "Subtotal",
+        harvestLogData.season?.price * harvestLogData.collectedAmount || "",
+      ], //price per unit * amount
+      [
+        "Total",
+        harvestLogData.season?.price * harvestLogData.collectedAmount -
+          harvestLogData.totalDeduction || "",
+      ], //subtotal - deduction
+    ];
+  }
 
   const [deductionName, setdeductionName] = React.useState<string[]>([]);
 
@@ -384,16 +407,38 @@ const HarvestLogDrawer = ({
         justifyContent="flex-start"
       >
         <Box display="flex" flexDirection="column">
-          <Typography variant="body1">{"Picker"}</Typography>
-          <Typography variant="h1">{"Picker Name"}</Typography>
+          <Typography variant="body1">{"PICKER"}</Typography>
+          <Typography variant="h1">{harvestLogData.picker?.name}</Typography>
         </Box>
-
-        <Divider />
 
         <Box display="flex" flexDirection="column">
-          {/* TODO: add rest of info as table */}
+          <TableContainer>
+            <Table aria-label="Harvest log detail table">
+              <TableHead>
+                <TableRow>
+                  <TableCell>CATEGORY</TableCell>
+                  <TableCell>INFO</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {createHarvestLogDataList().map((row) => (
+                  <TableRow key={row[0]}>
+                    <TableCell component="th" scope="row">
+                      {row[0]}
+                    </TableCell>
+                    <TableCell>{row[1]}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
         </Box>
+      </Box>
+      <Box display="flex" justifyContent="space-between">
         {/* TODO: add Back button and Add Correction Note button */}
+        <Button variant="contained" onClick={onCreateHarvestLogClose}>
+          Back
+        </Button>
         <Button variant="contained" onClick={showEdit}>
           Edit
         </Button>
