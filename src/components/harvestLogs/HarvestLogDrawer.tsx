@@ -46,6 +46,7 @@ interface IHarvestLogForm {
   productName?: string;
   seasonDeductionsIds: Array<string>;
   notes?: string;
+  createdAt?: string;
 }
 
 const currentDate = new Date();
@@ -91,7 +92,7 @@ const HarvestLogDrawer = ({
 
   function createHarvestLogDataList() {
     return [
-      ["Date", "2022-03-01"], //TODO: get actual date
+      ["Date", formatDate(harvestLogData.createdAt || "")],
       ["Harvest Season", harvestLogData.season?.name || ""],
       ["Product", harvestLogData.season?.product?.name || ""],
       ["Price Per Unit", harvestLogData.season?.price || ""],
@@ -108,6 +109,15 @@ const HarvestLogDrawer = ({
           harvestLogData.totalDeduction || "",
       ], //subtotal - deduction
     ];
+
+    function formatDate(date: string): string {
+      const formattedDate = new Date(date).toLocaleDateString("en-US", {
+        day: "numeric",
+        month: "short",
+        year: "numeric",
+      });
+      return formattedDate;
+    }
   }
 
   const [deductionName, setdeductionName] = React.useState<string[]>([]);
