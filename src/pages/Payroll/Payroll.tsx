@@ -33,7 +33,7 @@ const columns : GridColDef[] = [
     field: "totals.collectedAmount",
     headerName: "Total harvest",
     width: 150,
-    renderCell: (params) => <span>{params.row.totals.collectedAmount}</span>,
+    renderCell: (params) => <span>{params.row.totals.collectedAmount} {params.row.season.unit}</span>,
   },
   {
     field: "totals.deductions",
