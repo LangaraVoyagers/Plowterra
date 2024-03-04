@@ -57,13 +57,6 @@ const columns : GridColDef[] = [
     },
 ];
 
-// const formatDate = (timestamp : number) => {
-//   const date = new Date(timestamp);
-//   const month = date.toLocaleString("default", { month: "short" });
-//   const day = date.getDate();
-//   return `${month} ${day}`;
-// };
-
 function formatDate(
   value: number | Date
 ): string {
