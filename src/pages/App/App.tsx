@@ -9,6 +9,7 @@ import Pickers from "pages/Pickers";
 import { ReactQueryDevtools } from "react-query/devtools";
 import Seasons from "pages/Seasons";
 import paths from "shared/paths";
+import Payroll from "pages/Payroll";
 
 const router = createBrowserRouter([
   {
@@ -34,6 +35,10 @@ const router = createBrowserRouter([
       {
         path: paths.harvestLogs,
         element: <HarvestLogs />,
+      },
+      {
+        path: paths.payroll,
+        element: <Payroll />,
       },
     ],
   },
