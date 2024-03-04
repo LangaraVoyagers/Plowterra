@@ -52,12 +52,25 @@ const columns : GridColDef[] = [
     },
 ];
 
-const formatDate = (timestamp : number) => {
-  const date = new Date(timestamp);
+// const formatDate = (timestamp : number) => {
+//   const date = new Date(timestamp);
+//   const month = date.toLocaleString("default", { month: "short" });
+//   const day = date.getDate();
+//   return `${month} ${day}`;
+// };
+
+function formatDate(
+  value: number | Date
+): string {
+  const date = new Date(value);
+  
   const month = date.toLocaleString("default", { month: "short" });
   const day = date.getDate();
-  return `${month} ${day}`;
-};
+
+  return `${month} ${day}`
+}
+
+
 
   const Payroll = () => {
     const intl = useIntl();
