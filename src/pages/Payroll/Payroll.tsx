@@ -8,6 +8,57 @@ import useQueryCache from 'hooks/useQueryCache';
 import { useQuery } from 'react-query';
 import { getPayrollHistory } from 'api/payroll';
   
+const columns : GridColDef[] = [
+  {
+    field: "period",
+    headerName: "Pay Period",
+    width: 200,
+    renderCell: (params) => {
+      const startDate = formatDate(params.row.startDate);
+      const endDate = formatDate(params.row.endDate);
+      return (
+        <span>
+          {`${startDate} - ${endDate}`} 
+        </span>
+      );
+    },
+  },
+  {
+    field: "totals.grossAmount",
+    headerName: "Total Amount ($)",
+    width: 150,
+    renderCell: (params) => <span>{params.row.totals.grossAmount}</span>,
+  },
+  {
+    field: "totals.collectedAmount",
+    headerName: "Total harvest",
+    width: 150,
+    renderCell: (params) => <span>{params.row.totals.collectedAmount}</span>,
+  },
+  {
+    field: "totals.deductions",
+    headerName: "Deductions ($)",
+    width: 150,
+    renderCell: (params) => <span>{params.row.totals.deductions}</span>,
+  },
+  { field: "pickersCount", headerName: "Pickers", width: 150 },
+  { 
+      field: "endDate", 
+      headerName: "Pay date", 
+      width: 150, 
+      renderCell: (params) => (
+        <span>{formatDate(params.value)}</span>
+      ),
+    },
+];
+
+const formatDate = (timestamp : number) => {
+  const date = new Date(timestamp);
+  const month = date.toLocaleString("default", { month: "short" });
+  const day = date.getDate();
+  return `${month} ${day}`;
+};
+
   const Payroll = () => {
     const intl = useIntl();
     const [payrollData, setPayrollData] = useState([]);
@@ -25,56 +76,6 @@ import { getPayrollHistory } from 'api/payroll';
     });
 
 
-  const formatDate = (timestamp : number) => {
-    const date = new Date(timestamp);
-    const month = date.toLocaleString("default", { month: "short" });
-    const day = date.getDate();
-    return `${month} ${day}`;
-  };
-
-  const columns : GridColDef[] = [
-    {
-      field: "period",
-      headerName: "Pay Period",
-      width: 200,
-      renderCell: (params) => {
-        const startDate = formatDate(params.row.startDate);
-        const endDate = formatDate(params.row.endDate);
-        return (
-          <span>
-            {`${startDate} - ${endDate}`} 
-          </span>
-        );
-      },
-    },
-    {
-      field: "totals.grossAmount",
-      headerName: "Total Amount ($)",
-      width: 150,
-      renderCell: (params) => <span>{params.row.totals.grossAmount}</span>,
-    },
-    {
-      field: "totals.collectedAmount",
-      headerName: "Total harvest",
-      width: 150,
-      renderCell: (params) => <span>{params.row.totals.collectedAmount}</span>,
-    },
-    {
-      field: "totals.deductions",
-      headerName: "Deductions ($)",
-      width: 150,
-      renderCell: (params) => <span>{params.row.totals.deductions}</span>,
-    },
-    { field: "pickersCount", headerName: "Pickers", width: 150 },
-    { 
-        field: "endDate", 
-        headerName: "Pay date", 
-        width: 150, 
-        renderCell: (params) => (
-          <span>{formatDate(params.value)}</span>
-        ),
-      },
-  ];
 
   return (
     <BasicHome
