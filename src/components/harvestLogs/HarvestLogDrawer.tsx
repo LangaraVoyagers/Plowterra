@@ -88,7 +88,6 @@ const HarvestLogDrawer = ({
     useForm<IHarvestLogForm>();
 
   const harvestLogData = getValues();
-  console.log(harvestLogData);
 
   function createHarvestLogDataList() {
     return [
@@ -211,7 +210,7 @@ const HarvestLogDrawer = ({
     hideEdit();
   };
 
-  const showEdit = () => setShowEditForm(true);
+  // const showEdit = () => setShowEditForm(true);
   const hideEdit = () => setShowEditForm(false);
 
   const onSubmit = (data: IHarvestLogForm) => {
@@ -439,15 +438,16 @@ const HarvestLogDrawer = ({
               </TableBody>
             </Table>
           </TableContainer>
+          {/* TODO: add correction note tables */}
         </Box>
       </Box>
       <Box display="flex" justifyContent="space-between">
-        {/* TODO: add Back button and Add Correction Note button */}
         <Button variant="contained" onClick={onCreateHarvestLogClose}>
           Back
         </Button>
-        <Button variant="contained" onClick={showEdit}>
-          Edit
+        {/* TODO: link correction note button to correct feature */}
+        <Button variant="contained" onClick={onCreateHarvestLogClose}>
+          Add Correction Note
         </Button>
       </Box>
     </Box>
