@@ -7,6 +7,7 @@ import BasicHome from "layouts/BasicHome";
 import useQueryCache from 'hooks/useQueryCache';
 import { useQuery } from 'react-query';
 import { getPayrollHistory } from 'api/payroll';
+import { User } from "@phosphor-icons/react";
   
 const columns : GridColDef[] = [
   {
@@ -41,7 +42,11 @@ const columns : GridColDef[] = [
     width: 150,
     renderCell: (params) => <span>{params.row.totals.deductions}</span>,
   },
-  { field: "pickersCount", headerName: "Pickers", width: 150 },
+  { field: "pickersCount",
+  headerName: "Pickers",
+  width: 150, 
+  renderCell: (params) => <span><User /> {params.row.pickersCount}</span>,
+  },
   { 
       field: "endDate", 
       headerName: "Pay date", 
