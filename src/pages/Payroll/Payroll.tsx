@@ -8,7 +8,7 @@ import useQueryCache from 'hooks/useQueryCache';
 import { useQuery } from 'react-query';
 import { getPayrollHistory } from 'api/payroll';
   
-  const CustomPayroll = () => {
+  const Payroll = () => {
     const intl = useIntl();
     const [payrollData, setPayrollData] = useState([]);
     const { GET_QUERY_KEY } = useQueryCache("payrolls");
@@ -120,4 +120,4 @@ import { getPayrollHistory } from 'api/payroll';
   );
 };
 
-export default CustomPayroll;
+export default Payroll;
