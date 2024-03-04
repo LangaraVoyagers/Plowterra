@@ -91,9 +91,8 @@ const HarvestLogDrawer = ({
 
   function createHarvestLogDataList() {
     return [
-      ["Date", "2022-03-01"],
+      ["Date", "2022-03-01"], //TODO: get actual date
       ["Harvest Season", harvestLogData.season?.name || ""],
-      // ["Harvest Season", harvestLogData.season?.label || ""],
       ["Product", harvestLogData.season?.product?.name || ""],
       ["Price Per Unit", harvestLogData.season?.price || ""],
       ["Amount", harvestLogData.collectedAmount || ""],
