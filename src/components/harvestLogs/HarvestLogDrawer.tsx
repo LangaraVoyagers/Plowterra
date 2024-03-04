@@ -33,9 +33,16 @@ import { useState } from "react";
 import { IPicker } from "project-2-types/lib/pickers";
 
 interface IHarvestLogForm {
-  season: { id: string; label: string };
-  picker: { id: string; label: string };
+  season: {
+    id: string;
+    label: string;
+    name: string;
+    product: { name: string };
+    price: number;
+  };
+  picker: { id: string; label: string; name: string };
   collectedAmount: number;
+  totalDeduction: number;
   productName?: string;
   seasonDeductionsIds: Array<string>;
   notes?: string;
