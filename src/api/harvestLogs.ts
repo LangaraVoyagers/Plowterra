@@ -1,4 +1,7 @@
-import { IHarvestLog } from "project-2-types/lib/harvestLog";
+import {
+  IHarvestLog,
+  IHarvestLogResponse,
+} from "project-2-types/lib/harvestLog";
 import axios from "./axios";
 import endpoints from "./endpoints";
 
@@ -44,7 +47,7 @@ export const getHarvestLogById = async (id?: string) => {
     const {
       data: { data },
     } = await axios.get(`${endpoints.harvestLogs}/${id}`);
-    return data;
+    return data as IHarvestLogResponse;
   } catch (error) {
     console.log({ error });
     throw error;
