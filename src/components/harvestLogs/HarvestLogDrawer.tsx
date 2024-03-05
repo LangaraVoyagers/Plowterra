@@ -358,19 +358,28 @@ const HarvestLogDrawer = ({
       <Controller
         control={control}
         name="collectedAmount"
-        render={({ field }) => {
+        render={({ field: { ref, value, onChange } }) => {
           return (
             <Box display="flex" flexDirection="column" gap={1}>
               <InputLabel htmlFor="harvest-log-amount">Amount*</InputLabel>
-              <OutlinedInput
-                {...field}
-                {...register("collectedAmount")}
-                type="number"
+
+              <TextField
                 id="harvest-log-amount"
+                ref={ref}
+                value={value}
+                onChange={(event) => {
+                  if (event.target.value) {
+                    onChange(Number(event.target.value));
+                  } else {
+                    onChange(undefined);
+                  }
+                }}
+                margin="dense"
+                type="number"
+                error={!!errors.collectedAmount}
+                helperText={errors.collectedAmount?.message}
+                variant="outlined"
               />
-              {errors.collectedAmount && (
-                <p>{errors.collectedAmount.message}</p>
-              )}
             </Box>
           );
         }}
