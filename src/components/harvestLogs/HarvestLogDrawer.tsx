@@ -136,13 +136,13 @@ const HarvestLogDrawer = ({
     }
   }
 
-  const [deductionName, setdeductionName] = React.useState<string[]>([]);
+  const [deductionName, setDeductionName] = React.useState<string[]>([]);
 
   const handleChange = (event: SelectChangeEvent<typeof deductionName>) => {
     const {
       target: { value },
     } = event;
-    setdeductionName(
+    setDeductionName(
       // On autofill we get a stringified value.
       typeof value === "string" ? value.split(",") : value
     );
