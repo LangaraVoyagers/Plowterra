@@ -34,12 +34,14 @@ import { IPicker } from "project-2-types/lib/pickers";
 import ICreateHarvestLogRequest from "project-2-types/lib/harvestLog.ajv";
 import { ajvResolver } from "@hookform/resolvers/ajv";
 
-const currentDate = new Date();
-const formattedDate = currentDate.toLocaleDateString("en-US", {
-  day: "numeric",
-  month: "short",
-  year: "numeric",
-});
+function formatDate(date: number): string {
+  const formattedDate = new Date(date).toLocaleDateString("en-US", {
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+  });
+  return formattedDate;
+}
 
 const deductions = ["Transport", "Meal", "Storage", "Other"]; //TODO: get actual data
 
@@ -67,34 +69,11 @@ interface ISeason {
 
 interface IHarvestLogForm {
   farmId: string;
-  // season: {
-  //   id: string;
-  //   label: string;
-  //   name: string;
-  //   product: { name: string };
-  //   price: number;
-  // };
-  // picker: { id: string; label: string; name: string };
   seasonId: string;
   pickerId: string;
   collectedAmount: number;
-  // totalDeduction: number;
-  // productName?: string;
   seasonDeductionIds: Array<string>;
-  // notes?: string;
-  // createdAt?: string;
-}
-
-// add notes to the backend and schema
-// add createdAt to IHarvestLogResponse
-
-function formatDate(date: string): string {
-  const formattedDate = new Date(date).toLocaleDateString("en-US", {
-    day: "numeric",
-    month: "short",
-    year: "numeric",
-  });
-  return formattedDate;
+  notes?: string;
 }
 
 const HarvestLogDrawer = ({
@@ -121,18 +100,15 @@ const HarvestLogDrawer = ({
   } = useForm<IHarvestLogForm>({
     defaultValues: {
       farmId: "65d703cf9a00b1a671609458", //TODO: get actual farmId
-      seasonDeductionIds: [],
     },
     resolver: ajvResolver(ICreateHarvestLogRequest),
   });
 
-  // const harvestLogData = getValues();
-
   const createHarvestLogDataList = React.useCallback(() => {
     return [
-      // ["Date", formatDate(harvestLog?.createdAt || "")],
+      ["Date", formatDate(Number(harvestLog?.createdAt || 0))],
       ["Harvest Season", harvestLog?.season?.name || ""],
-      // ["Product", harvestLog?.season?.product?.name || ""],
+      ["Product", harvestLog?.season?.product?.name || ""],
       ["Price Per Unit", harvestLog?.season?.price || ""],
       ["Amount", harvestLog?.collectedAmount || ""],
       ["Deduction", harvestLog?.totalDeduction || ""],
@@ -200,7 +176,6 @@ const HarvestLogDrawer = ({
     queryFn: () => getHarvestLogById(harvestLogId),
     enabled: !!harvestLogId,
     onSuccess: (result) => {
-      // reset(result);
       setHarvestLog(result);
     },
     onError: () => {
@@ -208,8 +183,6 @@ const HarvestLogDrawer = ({
       showAlert("Oops! Information couldn't be displayed.");
     },
   });
-
-  // const selectedProduct = watch("productName");
 
   const { mutate: saveHarvestLogMutation, isLoading } = useMutation({
     mutationKey: harvestLogId ? UPDATE_MUTATION_KEY : CREATE_MUTATION_KEY,
@@ -248,22 +221,20 @@ const HarvestLogDrawer = ({
     hideEdit();
   };
 
-  // const showEdit = () => setShowEditForm(true);
   const hideEdit = () => setShowEditForm(false);
 
   console.log(errors);
   const onSubmit = (data: IHarvestLogForm) => {
     console.log(errors);
 
-    console.log({ data });
-    // saveHarvestLogMutation({
-    //   farmId: data.farmId,
-    //   collectedAmount: data.collectedAmount,
-    //   pickerId: data.pickerId,
-    //   seasonId: data.seasonId,
-    //   seasonDeductionIds: data.seasonDeductionsIds,
-    //   // notes: data.notes, //TODO add to endpoint
-    // });
+    saveHarvestLogMutation({
+      farmId: data.farmId,
+      collectedAmount: data.collectedAmount,
+      pickerId: data.pickerId,
+      seasonId: data.seasonId,
+      seasonDeductionIds: [], //TODO: get actual data
+      notes: data.notes,
+    });
   };
 
   const harvestLogForm = (
@@ -297,12 +268,6 @@ const HarvestLogDrawer = ({
                       (s: { _id: string }) => s._id === newValue?.id
                     )
                   );
-                  // setValue(
-                  //   "productName",
-                  //   seasons?.find(
-                  //     (s: { _id: string }) => s._id === newValue?.id
-                  //   )?.product?.name ?? ""
-                  // );
                 }}
                 getOptionLabel={(option) => option.label}
                 renderInput={(params) => (
@@ -312,12 +277,10 @@ const HarvestLogDrawer = ({
                     </InputLabel>
                     <TextField
                       {...params}
-                      // {...register("season")}
                       id="harvest-log-season"
                       helperText={errors.seasonId?.message}
                       error={!!errors.seasonId}
                     />
-                    {/* {errors.seasonId && <p>{errors.seasonId.message}</p>} */}
                   </div>
                 )}
               />
@@ -327,8 +290,12 @@ const HarvestLogDrawer = ({
       />
 
       <Box display="flex" flexDirection="column" gap={1}>
-        <InputLabel htmlFor="harvest-log-date">Date*</InputLabel>
-        <OutlinedInput id="harvest-log-date" value={formattedDate} disabled />
+        <InputLabel htmlFor="harvest-log-date">Date</InputLabel>
+        <OutlinedInput
+          id="harvest-log-date"
+          value={formatDate(new Date().getTime())}
+          disabled
+        />
       </Box>
 
       <Controller
@@ -354,10 +321,10 @@ const HarvestLogDrawer = ({
                     </InputLabel>
                     <TextField
                       {...params}
-                      // {...register("picker")}
                       id="harvest-log-picker"
+                      helperText={errors.pickerId?.message}
+                      error={!!errors.pickerId}
                     />
-                    {errors.pickerId && <p>{errors.pickerId.message}</p>}
                   </div>
                 )}
                 disablePortal
@@ -408,7 +375,7 @@ const HarvestLogDrawer = ({
       <Controller
         control={control}
         name="seasonDeductionIds"
-        render={({ field }) => {
+        render={() => {
           return (
             <Box display="flex" flexDirection="column" gap={1}>
               <InputLabel id="harvest-log-deductions">Deduction</InputLabel>
@@ -439,27 +406,26 @@ const HarvestLogDrawer = ({
         }}
       />
 
-      {/* Add the field on the backend first */}
-      {/* <Controller
+      <Controller
         control={control}
         name="notes"
         render={({ field }) => {
-          return ( */}
-      <Box display="flex" flexDirection="column" gap={1}>
-        <InputLabel htmlFor="harvest-log-notes">Note</InputLabel>
+          return (
+            <Box display="flex" flexDirection="column" gap={1}>
+              <InputLabel htmlFor="harvest-log-notes">Note</InputLabel>
 
-        <OutlinedInput
-          // {...field}
-          // {...register("notes")}
-          id="harvest-log-notes"
-          multiline
-          rows={3}
-        />
-        {/* {errors.notes && <p>{errors.notes.message}</p>} */}
-      </Box>
-      {/* );
+              <TextField
+                {...field}
+                id="harvest-log-notes"
+                multiline
+                rows={3}
+                error={!!errors.notes}
+                helperText={errors.notes?.message}
+              />
+            </Box>
+          );
         }}
-      /> */}
+      />
       <Box display="flex" justifyContent="space-between">
         <Button
           disabled={isLoading}
