@@ -59,6 +59,24 @@ type HarvestLogDrawerProps = DrawerProps & {
   dismiss: () => void;
 };
 
+interface IHarvestLogForm {
+  farmId: string;
+  season: {
+    id: string;
+    label: string;
+    name: string;
+    product: { name: string };
+    price: number;
+  };
+  picker: { id: string; label: string; name: string };
+  collectedAmount: number;
+  totalDeduction: number;
+  productName?: string;
+  seasonDeductionsIds: Array<string>;
+  notes?: string;
+  createdAt?: string;
+}
+
 const HarvestLogDrawer = ({
   dismiss,
   harvestLogId,
@@ -69,24 +87,6 @@ const HarvestLogDrawer = ({
     useQueryCache("harvestLosgs", harvestLogId);
 
   const [showEditForm, setShowEditForm] = useState<boolean>(!harvestLogId);
-
-  interface IHarvestLogForm {
-    farmId: string;
-    season: {
-      id: string;
-      label: string;
-      name: string;
-      product: { name: string };
-      price: number;
-    };
-    picker: { id: string; label: string; name: string };
-    collectedAmount: number;
-    totalDeduction: number;
-    productName?: string;
-    seasonDeductionsIds: Array<string>;
-    notes?: string;
-    createdAt?: string;
-  }
 
   const {
     register,
