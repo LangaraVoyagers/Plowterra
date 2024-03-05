@@ -1,6 +1,5 @@
 import {
   Box,
-  Button,
   FormControl,
   InputAdornment,
   OutlinedInput,
@@ -12,6 +11,7 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { IHarvestLog } from "project-2-types/lib/harvestLog";
+import CreateHarvestLog from "components/harvestLogs/CreateHarvestLog";
 
 import useQueryCache from "hooks/useQueryCache";
 import { useState } from "react";
@@ -19,6 +19,7 @@ import { getHarvestLogs } from "api/harvestLogs";
 
 import BasicHome from "layouts/BasicHome";
 import { useQuery } from "react-query";
+import UpdateHarvestLog from "components/harvestLogs/UpdateHarvestLog";
 
 const columns: GridColDef[] = [
   {
@@ -55,7 +56,9 @@ const columns: GridColDef[] = [
     field: "action",
     headerName: "",
     width: 200,
-    renderCell: () => <Button>View More</Button>,
+    renderCell: (data: GridRenderCellParams<IHarvestLog & { _id: string }>) => {
+      return <UpdateHarvestLog harvestLogId={data.row._id} />;
+    },
   },
 ];
 
@@ -83,12 +86,13 @@ const HarvestLogs = () => {
         { title: "Farm Name", href: "#" },
         { title: "Harvest Log", href: "" },
       ]}
-      actions={<Button variant="contained">Add New Log</Button>}
+      actions={<CreateHarvestLog />}
     >
       <Box display="flex" justifyContent="space-between">
         <LocalizationProvider dateAdapter={AdapterDayjs}>
           <DemoContainer components={["DatePicker"]}>
-            <DatePicker label="Basic date picker" />
+            <DatePicker label="Start Date" />
+            <DatePicker label="End Date" />
           </DemoContainer>
         </LocalizationProvider>
 
