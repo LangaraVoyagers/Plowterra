@@ -103,7 +103,7 @@ const sidebarItems = [
   {
     title: <FormattedMessage id="sidebar.payroll" defaultMessage="Payroll" />,
     icon: <CurrencyCircleDollar />,
-    href: "",
+    href: paths.payroll,
   },
   {
     title: (

@@ -12,7 +12,8 @@
     "postinstall": "husky install",
     "extract": "formatjs extract",
     "compile": "formatjs compile",
-    "transform-lang": "yarn extract 'src/**/*.ts*' --ignore='**/*.d.ts' --out-file lang/en.json && yarn compile lang/en.json --ast --out-file compiled-lang/en.json"
+    "transform-lang": "yarn extract 'src/**/*.ts*' --ignore='**/*.d.ts' --out-file lang/en.json && yarn compile lang/en.json --ast --out-file compiled-lang/en.json",
+    "transform-lang-es": "yarn compile lang/es.json --ast --out-file compiled-lang/es.json"
   },
   "dependencies": {
     "@emotion/react": "^11.11.3",
