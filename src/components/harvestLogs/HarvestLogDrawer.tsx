@@ -242,8 +242,8 @@ const HarvestLogDrawer = ({
     console.log(errors);
 
     saveHarvestLogMutation({
-      farmId: "65d703cf9a00b1a671609458", //TODO: get actual farmId
-      collectedAmount: Number(data.collectedAmount),
+      farmId: data.farmId,
+      collectedAmount: data.collectedAmount,
       pickerId: data.picker.id,
       seasonId: data.season.id,
       seasonDeductionIds: data.seasonDeductionsIds,
