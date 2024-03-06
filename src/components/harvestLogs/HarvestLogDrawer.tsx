@@ -106,7 +106,7 @@ const HarvestLogDrawer = ({
 
   const createHarvestLogDataList = React.useCallback(() => {
     return [
-      ["Date", formatDate(Number(harvestLog?.createdAt || 0))],
+      ["Date", formatDate(harvestLog?.createdAt || 0)],
       ["Harvest Season", harvestLog?.season?.name || ""],
       ["Product", harvestLog?.season?.product?.name || ""],
       ["Price Per Unit", harvestLog?.season?.price || ""],
@@ -225,8 +225,6 @@ const HarvestLogDrawer = ({
 
   console.log(errors);
   const onSubmit = (data: IHarvestLogForm) => {
-    console.log(errors);
-
     saveHarvestLogMutation({
       farmId: data.farmId,
       collectedAmount: data.collectedAmount,
@@ -380,8 +378,6 @@ const HarvestLogDrawer = ({
             <Box display="flex" flexDirection="column" gap={1}>
               <InputLabel id="harvest-log-deductions">Deduction</InputLabel>
               <Select
-                // {...field}
-                // {...register("seasonDeductionIds")}
                 labelId="harvest-log-deductions"
                 id="demo-multiple-checkbox"
                 value={deductionName}
