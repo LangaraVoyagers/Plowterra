@@ -6,7 +6,6 @@ import {
   GridRenderCellParams,
   GridValueGetterParams,
 } from "@mui/x-data-grid";
-import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
@@ -23,6 +22,7 @@ import { getHarvestLogs } from "api/harvestLogs";
 import BasicHome from "layouts/BasicHome";
 import { useQuery } from "react-query";
 import UpdateHarvestLog from "components/harvestLogs/UpdateHarvestLog";
+import { Dayjs } from "dayjs";
 
 const columns: GridColDef[] = [
   {
@@ -81,6 +81,9 @@ const HarvestLogs = () => {
     },
   });
 
+  const [startDate, setStartDate] = useState<Dayjs | null>(null);
+  const [endDate, setEndDate] = useState<Dayjs | null>(null);
+
   return (
     <BasicHome
       title="Harvest Log"
@@ -92,12 +95,26 @@ const HarvestLogs = () => {
       actions={<CreateHarvestLog />}
     >
       <Box display="flex" justifyContent="space-between">
-        <LocalizationProvider dateAdapter={AdapterDayjs}>
-          <DemoContainer components={["DatePicker"]}>
-            <DatePicker label="Start Date" />
-            <DatePicker label="End Date" />
-          </DemoContainer>
-        </LocalizationProvider>
+        <FormControl>
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <DatePicker
+              label="Start Date"
+              value={startDate}
+              onChange={(newValue) => {
+                setStartDate(newValue);
+                // console.log(newValue);
+              }}
+            />
+            <DatePicker
+              label="End Date"
+              value={endDate}
+              onChange={(newValue) => {
+                setEndDate(newValue);
+                // console.log(newValue);
+              }}
+            />
+          </LocalizationProvider>
+        </FormControl>
 
         <FormControl>
           <OutlinedInput
