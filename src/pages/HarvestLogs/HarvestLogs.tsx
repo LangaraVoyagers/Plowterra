@@ -1,16 +1,19 @@
-import {
-  Box,
-  FormControl,
-  InputAdornment,
-  OutlinedInput,
-} from "@mui/material";
+import { Box, FormControl, InputAdornment, OutlinedInput } from "@mui/material";
 import { MagnifyingGlass } from "@phosphor-icons/react";
-import { DataGrid, GridColDef, GridRenderCellParams } from "@mui/x-data-grid";
+import {
+  DataGrid,
+  GridColDef,
+  GridRenderCellParams,
+  GridValueGetterParams,
+} from "@mui/x-data-grid";
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import { IHarvestLog } from "project-2-types/lib/harvestLog";
+import {
+  IHarvestLog,
+  IHarvestLogResponse,
+} from "project-2-types/lib/harvestLog";
 import CreateHarvestLog from "components/harvestLogs/CreateHarvestLog";
 
 import useQueryCache from "hooks/useQueryCache";
@@ -24,23 +27,23 @@ import UpdateHarvestLog from "components/harvestLogs/UpdateHarvestLog";
 const columns: GridColDef[] = [
   {
     field: "picker",
-    headerName: "Name",
+    renderHeader: () => "Picker",
     width: 200,
-    renderCell: (params: GridRenderCellParams<IHarvestLog>) =>
-      params.value?.name || "",
+    valueGetter: (params: GridValueGetterParams<IHarvestLogResponse>) =>
+      params.row.picker?.name,
   },
   {
     field: "season",
-    headerName: "Product",
+    renderHeader: () => "Product",
     width: 200,
-    renderCell: (params: GridRenderCellParams<IHarvestLog>) =>
-      params.value?.product?.name || "",
+    valueGetter: (params: GridValueGetterParams<IHarvestLogResponse>) =>
+      params.row.season?.product?.name,
   },
   { field: "collectedAmount", headerName: "Amount", width: 200 },
   { field: "totalDeduction", headerName: "Deductions", width: 200 },
   {
     field: "createdAt",
-    headerName: "Date",
+    renderHeader: () => "Date",
     width: 200,
     valueFormatter: (params) => {
       const date = new Date(params.value);
