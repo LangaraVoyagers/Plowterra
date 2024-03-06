@@ -67,7 +67,7 @@ const PickerDrawer = ({ dismiss, pickerId, ...props }: PickerDrawerProps) => {
       reset(result);
     },
     onError: () => {
-      showAlert("Oops! Information couldn't be displayed.");
+      showAlert("Oops! Information couldn't be displayed.", "error");
     },
   });
 
@@ -86,7 +86,8 @@ const PickerDrawer = ({ dismiss, pickerId, ...props }: PickerDrawerProps) => {
         intl.formatMessage({
           id: "pickers.create.picker.response.error",
           defaultMessage: "Oops! The picker couldn't be saved.",
-        })
+        }),
+        "error"
       );
     },
   });
@@ -102,7 +103,8 @@ const PickerDrawer = ({ dismiss, pickerId, ...props }: PickerDrawerProps) => {
       intl.formatMessage({
         id: "pickers.create.picker.response.success",
         defaultMessage: "The picker was created successfully",
-      })
+      }),
+      "success"
     );
     onCreatePickerClose();
   };
@@ -113,7 +115,8 @@ const PickerDrawer = ({ dismiss, pickerId, ...props }: PickerDrawerProps) => {
       intl.formatMessage({
         id: "pickers.update.picker.response.success",
         defaultMessage: "The picker was updated successfully",
-      })
+      }),
+      "success"
     );
     hideEdit();
   };
@@ -127,7 +130,8 @@ const PickerDrawer = ({ dismiss, pickerId, ...props }: PickerDrawerProps) => {
         intl.formatMessage({
           id: "pickers.delete.picker.response.success",
           defaultMessage: "The picker was deleted successfully.",
-        })
+        }),
+        "success"
       );
       dismiss();
     },
@@ -136,7 +140,7 @@ const PickerDrawer = ({ dismiss, pickerId, ...props }: PickerDrawerProps) => {
         intl.formatMessage({
           id: "pickers.delete.picker.response.error",
           defaultMessage: "Oops! The picker couldn't be deleted.",
-        })
+        }), "error"
       );
     },
   });
@@ -510,7 +514,7 @@ const PickerDrawer = ({ dismiss, pickerId, ...props }: PickerDrawerProps) => {
         <Button
           onClick={() =>
             showAlert(
-              "🚧 Thank you for your patience. We are still working on this part 🚧"
+              "🚧 Thank you for your patience. We are still working on this part 🚧", "info"
             )
           }
         >
