@@ -8,6 +8,7 @@ import useQueryCache from 'hooks/useQueryCache';
 import { useQuery } from 'react-query';
 import { getPayrollHistory } from 'api/payroll';
 import { User } from "@phosphor-icons/react";
+import { useUser } from "context/UserProvider";
   
 const columns : GridColDef[] = [
   {
@@ -71,6 +72,9 @@ function formatDate(
 
 
   const Payroll = () => {
+
+    const { user } = useUser();
+
     const intl = useIntl();
     const [payrollData, setPayrollData] = useState([]);
     const { GET_QUERY_KEY } = useQueryCache("payrolls");
@@ -97,20 +101,16 @@ function formatDate(
           "Create the payrolls and view previous payroll records.",
       })}
       breadcrumb={[
-        { title: "Farm Name", href: "/" },
+        { title: user.farm.name, href: "/" },
         {
           title: (
-            <FormattedMessage
-              id="sidebar.payrolls"
-              defaultMessage="Payrolls"
-            />
+            <FormattedMessage id="sidebar.payrolls" defaultMessage="Payrolls" />
           ),
           href: "",
         },
       ]}
       actions={<Button variant="contained">Start a payroll</Button>}
     >
-
       <Box display="flex" flexGrow={1} pb={3}>
         <DataGrid
           rows={payrollData}

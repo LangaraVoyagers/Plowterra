@@ -8,7 +8,9 @@ interface User {
 
 export const login = async (user: User) => {
   try {
-    const { data } = await axios.post(endpoints.signin, user);
+    const {
+      data: { data },
+    } = await axios.post(endpoints.signin, user);
     return data;
   } catch (error) {
     console.log({ error });

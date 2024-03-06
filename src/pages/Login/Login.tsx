@@ -1,4 +1,4 @@
-import { Box, Button, TextField } from "@mui/material";
+import { Box, Button, TextField, Typography } from "@mui/material";
 import endpoints from "api/endpoints.ts";
 import { useAlert } from "context/AlertProvider.tsx";
 import { ISignInRequest } from "project-2-types/lib/signin";
@@ -9,12 +9,14 @@ import { useMutation } from "react-query";
 import { useNavigate } from "react-router-dom";
 import { login } from "../../api/login.ts";
 import { validateResolver } from "shared/ajv.ts";
+import { useUser } from "context/UserProvider.tsx";
 
 interface LoginForm extends ISignInRequest {}
 
 const Login: React.FC = () => {
   const intl = useIntl();
   const { showAlert } = useAlert();
+  const { setUser } = useUser();
 
   const {
     control,
@@ -28,7 +30,8 @@ const Login: React.FC = () => {
   const { isLoading, mutate: signin } = useMutation({
     mutationKey: [endpoints.signin],
     mutationFn: login,
-    onSuccess: () => {
+    onSuccess: (data) => {
+      data?.user && setUser(data.user);
       showAlert(
         intl.formatMessage({
           id: "login.singin.error",
@@ -70,6 +73,8 @@ const Login: React.FC = () => {
           gap={8}
           width="100%"
         >
+          <Typography variant="h1">Login</Typography>
+
           <Box display="flex" flexDirection="column" gap={4} width="100%">
             <Controller
               control={control}
