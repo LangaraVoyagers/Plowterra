@@ -42,6 +42,19 @@ const theme = createTheme({
     h5: undefined,
     h6: undefined,
   },
+  components: {
+    MuiCssBaseline: {
+      // Autofill temporary colors. White bg with Black text
+      styleOverrides: `
+      input:-webkit-autofill,
+      input:-webkit-autofill:hover,
+      input:-webkit-autofill:focus,
+      input:-webkit-autofill:active {
+        -webkit-box-shadow: 0 0 0 30px #ffffff inset !important;
+        -webkit-text-fill-color: #000000 !important;
+      }`,
+    },
+  },
 });
 
 export default theme;
