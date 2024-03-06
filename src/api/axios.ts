@@ -28,7 +28,7 @@ instance.interceptors.response.use(
       const token = response?.data?.data?.token;
       cookies.set("_t", token);
     }
-    // console.log({ response });
+
     return response;
   },
   function (error) {
