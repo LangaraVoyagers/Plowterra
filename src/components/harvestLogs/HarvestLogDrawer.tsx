@@ -207,7 +207,7 @@ const HarvestLogDrawer = ({
     created: IHarvestLogResponse & { _id: string }
   ) => {
     createHarvestLogCache(created);
-    showAlert(`Harvest Log created successfully`, "error");
+    showAlert(`Harvest Log created successfully`, "success");
     onCreateHarvestLogClose();
   };
 
