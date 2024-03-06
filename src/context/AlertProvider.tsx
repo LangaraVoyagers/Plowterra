@@ -27,10 +27,13 @@ export const AlertProvider: React.FC<AlertProviderProps> = ({ children }) => {
     SnackbarMessage | undefined
   >(undefined);
 
-  const showAlert = (message: string) => {
+  const showAlert = (
+    message: string,
+    severity: "success" | "error" | "warning" | "info"
+  ) => {
     setSnackPack((prev) => [
       ...prev,
-      { message, key: new Date().getTime(), severity: "info" },
+      { message, key: new Date().getTime(), severity },
     ]);
   };
 
@@ -76,7 +79,7 @@ export const AlertProvider: React.FC<AlertProviderProps> = ({ children }) => {
       >
         <Alert
           onClose={handleClose}
-          severity={messageInfo ? messageInfo.severity : "info"}
+          severity={messageInfo ? messageInfo.severity : undefined}
           variant="standard"
           sx={{ width: "100%" }}
         >
@@ -97,4 +100,3 @@ export const useAlert = () => {
 
   return context;
 };
-
