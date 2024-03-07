@@ -86,7 +86,6 @@ const Payroll = () => {
       console.log(error);
     },
   });
-  console.log(data);
 
   let seasonOptions: JSX.Element[] = [];
   let uniqueSeasonName: string[] = [];
@@ -120,7 +119,7 @@ const Payroll = () => {
     >
       <Box display="flex" justifyContent="space-between" alignItems="center">
         <h1>Payroll History</h1>
-        <Select>{seasonOptions}</Select>
+        <Select><p>Season: </p>{seasonOptions}</Select>
       </Box>
       <Box display="flex" flexGrow={1} pb={3}>
         <DataGrid
