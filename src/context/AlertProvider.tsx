@@ -2,7 +2,10 @@ import { Alert, Snackbar } from "@mui/material";
 import React, { createContext, useContext } from "react";
 
 export const AlertContext = createContext<{
-  showAlert: (message: string) => void;
+  showAlert: (
+    message: string,
+    severity: "success" | "error" | "warning" | "info"
+  ) => void;
 } | null>(null);
 
 type AlertProviderProps = {
@@ -12,6 +15,7 @@ type AlertProviderProps = {
 export interface SnackbarMessage {
   message: string;
   key: number;
+  severity: "success" | "error" | "warning" | "info";
 }
 
 export const AlertProvider: React.FC<AlertProviderProps> = ({ children }) => {
@@ -23,8 +27,14 @@ export const AlertProvider: React.FC<AlertProviderProps> = ({ children }) => {
     SnackbarMessage | undefined
   >(undefined);
 
-  const showAlert = (message: string) => {
-    setSnackPack((prev) => [...prev, { message, key: new Date().getTime() }]);
+  const showAlert = (
+    message: string,
+    severity: "success" | "error" | "warning" | "info"
+  ) => {
+    setSnackPack((prev) => [
+      ...prev,
+      { message, key: new Date().getTime(), severity },
+    ]);
   };
 
   const handleClose = (
@@ -69,7 +79,7 @@ export const AlertProvider: React.FC<AlertProviderProps> = ({ children }) => {
       >
         <Alert
           onClose={handleClose}
-          severity="info"
+          severity={messageInfo ? messageInfo.severity : undefined}
           variant="standard"
           sx={{ width: "100%" }}
         >
