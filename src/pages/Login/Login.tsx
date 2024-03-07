@@ -36,7 +36,8 @@ const Login: React.FC = () => {
         intl.formatMessage({
           id: "login.singin.error",
           defaultMessage: "Welcome back!",
-        })
+        }),
+        "success"
       );
       navigate("/");
     },
@@ -46,7 +47,8 @@ const Login: React.FC = () => {
           id: "login.signin.error",
           defaultMessage:
             "Oops! Seems like you are having issues when logging in, please contact support.",
-        })
+        }),
+        "error"
       );
     },
   });
