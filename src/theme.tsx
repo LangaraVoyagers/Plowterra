@@ -86,6 +86,7 @@ const colors = {
 
 const themeOptions: ThemeOptions = {
   palette: {
+    mode: "light",
     primary: colors.primary,
     secondary: { ...colors.secondary, main: colors.secondary[500] },
     error: colors.error,
@@ -142,7 +143,12 @@ const themeOptions: ThemeOptions = {
       input:-webkit-autofill:active {
         -webkit-box-shadow: 0 0 0 30px #ffffff inset !important;
         -webkit-text-fill-color: #000000 !important;
-      }`,
+      }
+      
+      ::selection {
+        background: ${colors.secondary[100]};
+      }
+      `,
     },
     MuiBreadcrumbs: {
       defaultProps: {
@@ -230,6 +236,8 @@ const themeOptions: ThemeOptions = {
           borderRadius: "0.5rem",
           textTransform: "capitalize",
           fontWeight: 500,
+          minWidth: "10rem",
+          height: "fit-content",
           ":active": {
             outline: "3px solid transparent",
             "outline-offset": "1px",
@@ -246,12 +254,10 @@ const themeOptions: ThemeOptions = {
         sizeLarge: undefined,
         sizeMedium: {
           padding: "1rem",
-          height: "fit-content",
           lineHeight: "1.5rem",
         },
         sizeSmall: {
           padding: "0.75rem 1rem",
-          height: "fit-content",
           lineHeight: "1.25rem",
         },
       },
