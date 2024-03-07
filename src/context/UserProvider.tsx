@@ -31,10 +31,22 @@ type UserProviderProps = {
 };
 
 export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
-  const [user, setUser] = usePersistedState("user", initialState);
+  const [user, updateUser] = usePersistedState("user", initialState);
 
   const clearUser = () => {
     setUser(initialState);
+  };
+
+  const setUser = (data: IUserState) => {
+    updateUser({
+      name: data?.name ?? "",
+      farm: {
+        _id: data?.farm?._id ?? "",
+        name: data?.farm?.name ?? "",
+        address: data?.farm?.address ?? "",
+        isDisabled: data?.farm?.isDisabled ?? false,
+      },
+    });
   };
 
   return (
