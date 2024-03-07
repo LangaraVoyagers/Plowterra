@@ -1,32 +1,26 @@
-import { MagnifyingGlass  } from "@phosphor-icons/react";
-import {
-  Box,
-  FormControl,
-  InputAdornment,
-  InputLabel,
-  MenuItem,
-  OutlinedInput,
-  Select,
-} from "@mui/material";
+import { Box } from "@mui/material";
 import {
   DataGrid,
   GridColDef,
   GridRenderCellParams,
+  GridSortItem,
   GridValueGetterParams,
 } from "@mui/x-data-grid";
 import { getPickers } from "api/pickers";
 import PickerDrawer from "components/pickers/PickerDrawer";
 import BasicHome from "layouts/BasicHome";
 import { IPicker } from "project-2-types/lib/pickers";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useQuery } from "react-query";
 import paths from "shared/paths";
 import { useParams } from "react-router-dom";
 import CreatePicker from "components/pickers/CreatePicker";
 import UpdatePicker from "components/pickers/UpdatePicker";
 import useQueryCache from "hooks/useQueryCache";
-import { FormattedMessage, useIntl } from "react-intl";
+import { FormattedDate, FormattedMessage, useIntl } from "react-intl";
 import { useUser } from "context/UserProvider";
+import SortDataGrid from "components/SortDataGrid";
+import SearchDataGrid from "components/SearchDataGrid";
 
 const columns: GridColDef[] = [
   {
@@ -67,7 +61,23 @@ const columns: GridColDef[] = [
     valueGetter: (params: GridValueGetterParams<IPicker>) =>
       params.row.emergencyContact.phone,
   },
-
+  {
+    field: "createdAt",
+    headerName: "Created at",
+    width: 200,
+    valueGetter: (params: GridValueGetterParams<IPicker>) =>
+      params.row.createdAt,
+    renderCell: (params: GridRenderCellParams<IPicker>) => {
+      return (
+        <FormattedDate
+          value={params.row.createdAt}
+          year="numeric"
+          month="long"
+          day="numeric"
+        />
+      );
+    },
+  },
   {
     field: "action",
     headerName: "",
@@ -82,11 +92,20 @@ const Pickers = () => {
   const params = useParams<{ id: string }>();
   const intl = useIntl();
   const { user } = useUser();
+  const apiRef = useRef<any>(null);
 
   const { GET_QUERY_KEY } = useQueryCache("pickers");
 
   const [open, setOpen] = useState<boolean>(false);
   const [pickers, setPickers] = useState<Array<IPicker>>([]);
+
+  const [search, setSearch] = useState<string>();
+  const [sortModel, setSortModel] = useState([
+    {
+      field: "name",
+      sort: "asc",
+    },
+  ]);
 
   const showDrawer = () => setOpen(true);
 
@@ -131,41 +150,23 @@ const Pickers = () => {
       actions={<CreatePicker />}
     >
       <Box display="flex" justifyContent="space-between">
-        <FormControl>
-          <InputLabel id="sortby-label">Sort</InputLabel>
+        <SortDataGrid
+          sortModel={sortModel[0]}
+          setSortModel={setSortModel}
+          options={[
+            { field: "name", sort: "asc", label: "A to Z" },
+            { field: "name", sort: "desc", label: "Z to A" },
+            { field: "createdAt", sort: "desc", label: "Recently added first" },
+            { field: "createdAt", sort: "asc", label: "Recently added last" },
+          ]}
+        />
 
-          <Select
-            labelId="sortby-label"
-            id="sortby-select"
-            value={1}
-            label="Sort:"
-            size="small"
-          >
-            <MenuItem value={1}>Latest to Oldest</MenuItem>
-            <MenuItem value={2}>Oldest to Latest</MenuItem>
-            <MenuItem value={3}>A to Z</MenuItem>
-            <MenuItem value={4}>Z to A</MenuItem>
-          </Select>
-        </FormControl>
-
-        <FormControl>
-          <OutlinedInput
-            placeholder={intl.formatMessage({
-              id: "search",
-              defaultMessage: "Search",
-            })}
-            size="small"
-            startAdornment={
-              <InputAdornment position="start">
-                <MagnifyingGlass />
-              </InputAdornment>
-            }
-          />
-        </FormControl>
+        <SearchDataGrid applySearch={setSearch} />
       </Box>
 
       <Box display="flex" flexGrow={1} pb={3}>
         <DataGrid
+          apiRef={apiRef}
           rows={pickers}
           columns={columns}
           loading={isLoading}
@@ -175,6 +176,14 @@ const Pickers = () => {
                 pageSize: 12,
               },
             },
+          }}
+          filterModel={{
+            items: [],
+            quickFilterValues: search ? search?.split(" ") : [],
+          }}
+          sortModel={sortModel as Array<GridSortItem>}
+          onSortModelChange={(model) => {
+            setSortModel(model as any);
           }}
           getRowId={(data) => data?._id}
           pageSizeOptions={[10, 20, 50, 100]}
