@@ -185,7 +185,7 @@ const PickerDrawer = ({ dismiss, pickerId, ...props }: PickerDrawerProps) => {
       gap={3}
       width={600}
     >
-      <Typography variant="h1">
+      <Typography variant="h1" fontWeight={500}>
         {intl.formatMessage(
           {
             id: "pickers.detail.title",
@@ -461,7 +461,7 @@ const PickerDrawer = ({ dismiss, pickerId, ...props }: PickerDrawerProps) => {
       {/* TODO: add confirmation modal later, we probably will standardize the way we handle the delete after design has defined that */}
       {!!pickerId && (
         <Box display="flex" flexDirection="column" mt={4}>
-          <Typography variant="h2">
+          <Typography variant="h2" fontWeight={500}>
             {intl.formatMessage({
               id: "danger.zone.label",
               defaultMessage: "Danger Zone",
@@ -471,7 +471,12 @@ const PickerDrawer = ({ dismiss, pickerId, ...props }: PickerDrawerProps) => {
             severity="error"
             variant="outlined"
             action={
-              <Button color="error" variant="text" onClick={onDelete}>
+              <Button
+                color="error"
+                size="small"
+                variant="text"
+                onClick={onDelete}
+              >
                 {intl.formatMessage(
                   {
                     id: "pickers.button.delete",
@@ -511,7 +516,9 @@ const PickerDrawer = ({ dismiss, pickerId, ...props }: PickerDrawerProps) => {
         justifyContent="flex-start"
       >
         <Box display="flex" flexDirection="column">
-          <Typography variant="h1">{pickerData.name}</Typography>
+          <Typography variant="h1" fontWeight={500}>
+            {pickerData.name}
+          </Typography>
           <Typography variant="body1">{pickerData.phone}</Typography>
         </Box>
 
@@ -579,7 +586,8 @@ const PickerDrawer = ({ dismiss, pickerId, ...props }: PickerDrawerProps) => {
         <Button
           onClick={() =>
             showAlert(
-              "🚧 Thank you for your patience. We are still working on this part 🚧", "info"
+              "🚧 Thank you for your patience. We are still working on this part 🚧",
+              "info"
             )
           }
         >

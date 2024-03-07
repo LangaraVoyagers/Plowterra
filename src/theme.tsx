@@ -163,70 +163,85 @@ const themeOptions: ThemeOptions = {
       variants: [
         {
           props: { variant: "outlined" },
-          style: {
-            backgroundColor: colors.white,
-            color: colors.primary[500],
-            border: `solid 1px ${colors.primary[500]}`,
-            ":hover": {
-              "background-color": "#FFFFFF",
-              "border-color": colors.primary[700],
-              color: colors.primary[700],
-            },
-            ":active": {
-              "border-color": colors.primary[300],
-              "background-color": colors.primary[50],
-              color: colors.primary[800],
-            },
-            ":focus-visible": {
-              "border-color": colors.primary[500],
-              "background-color": colors.white,
-              color: colors.primary[500],
-            },
-            ":disabled": {
-              "border-color": colors.primary[100],
-              color: colors.primary[200],
-            },
+          style: ({ ownerState }: any) => {
+            const color = (ownerState.color ??
+              "primary") as keyof typeof colors;
+
+            return {
+              backgroundColor: colors.white,
+              color: colors[color][500],
+              border: `solid 1px ${colors[color][500]}`,
+              ":hover": {
+                "background-color": "#FFFFFF",
+                "border-color": colors[color][700],
+                color: colors[color][700],
+              },
+              ":active": {
+                "border-color": colors[color][300],
+                "background-color": colors[color][50],
+                color: colors[color][800],
+              },
+              ":focus-visible": {
+                "border-color": colors[color][500],
+                "background-color": colors.white,
+                color: colors[color][500],
+              },
+              ":disabled": {
+                "border-color": colors[color][100],
+                color: colors[color][200],
+              },
+            };
           },
         },
         {
           props: { variant: "text" },
-          style: {
-            color: colors.primary[500],
-            ":hover": {
-              "background-color": colors.primary[50],
-              color: colors.primary[700],
-            },
-            ":active": {
-              "background-color": colors.primary[50],
-              color: colors.primary[800],
-            },
-            ":focus-visible": {
-              "background-color": colors.white,
-              color: colors.primary[500],
-            },
-            ":disabled": {
-              color: colors.primary[200],
-            },
+          style: ({ ownerState }: any) => {
+            const color = (ownerState.color ??
+              "primary") as keyof typeof colors;
+
+            return {
+              color: colors[color][500],
+              ":hover": {
+                "background-color": colors[color][50],
+                color: colors[color][700],
+              },
+              ":active": {
+                "background-color": colors[color][50],
+                color: colors[color][800],
+              },
+              ":focus-visible": {
+                "background-color": colors.white,
+                color: colors[color][500],
+              },
+              ":disabled": {
+                color: colors[color][200],
+              },
+            };
           },
         },
         {
           props: { variant: "contained" },
-          style: {
-            backgroundColor: colors.primary[500],
-            color: colors.white,
-            ":hover": {
-              "background-color": colors.primary[700],
-            },
-            ":active": {
-              "background-color": colors.primary[800],
-            },
-            ":focus-visible": {
-              backgroundColor: colors.primary[500],
-            },
-            ":disabled": {
-              "background-color": colors.primary[200],
+          style: ({ ownerState }: any) => {
+            const color = (ownerState.color ??
+              "primary") as keyof typeof colors;
+
+            return {
+              backgroundColor: colors[color][500],
               color: colors.white,
-            },
+              ":hover": {
+                "background-color": colors[color][700],
+              },
+              ":active": {
+                "background-color": colors[color][800],
+              },
+              ":focus-visible": {
+                backgroundColor: colors[color][500],
+              },
+              ":disabled": {
+                "background-color": colors[color][200],
+                color: colors.white,
+              },
+            };
           },
         },
       ],
