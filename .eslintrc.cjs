@@ -27,6 +27,7 @@ module.exports = {
   plugins: ["formatjs", "@typescript-eslint", "react"],
   rules: {
     "react/react-in-jsx-scope": "off",
+    "@typescript-eslint/no-explicit-any": "off",
     // "formatjs/enforce-id": [
     //   "error",
     //   {
