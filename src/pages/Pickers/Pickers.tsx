@@ -26,6 +26,7 @@ import CreatePicker from "components/pickers/CreatePicker";
 import UpdatePicker from "components/pickers/UpdatePicker";
 import useQueryCache from "hooks/useQueryCache";
 import { FormattedMessage, useIntl } from "react-intl";
+import { useUser } from "context/UserProvider";
 
 const columns: GridColDef[] = [
   {
@@ -80,6 +81,8 @@ const columns: GridColDef[] = [
 const Pickers = () => {
   const params = useParams<{ id: string }>();
   const intl = useIntl();
+  const { user } = useUser();
+
   const { GET_QUERY_KEY } = useQueryCache("pickers");
 
   const [open, setOpen] = useState<boolean>(false);
@@ -117,7 +120,7 @@ const Pickers = () => {
         defaultMessage: "Add and view picker’s profile and information here.",
       })}
       breadcrumb={[
-        { title: "Farm Name", href: "/" },
+        { title: user.farm.name, href: "/" },
         {
           title: (
             <FormattedMessage id="sidebar.pickers" defaultMessage="Pickers" />

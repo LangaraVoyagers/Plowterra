@@ -22,7 +22,9 @@ import { getHarvestLogs } from "api/harvestLogs";
 import BasicHome from "layouts/BasicHome";
 import { useQuery } from "react-query";
 import UpdateHarvestLog from "components/harvestLogs/UpdateHarvestLog";
+import { useUser } from "context/UserProvider";
 import { Dayjs } from "dayjs";
+
 
 const columns: GridColDef[] = [
   {
@@ -67,6 +69,7 @@ const columns: GridColDef[] = [
 
 const HarvestLogs = () => {
   const { GET_QUERY_KEY } = useQueryCache("harvestLogs");
+  const { user } = useUser();
 
   const [harvestLogs, setHarvestLogs] = useState<Array<IHarvestLog>>([]);
 
@@ -89,7 +92,7 @@ const HarvestLogs = () => {
       title="Harvest Log"
       subtitle="Add and view picker’s daily collection data here."
       breadcrumb={[
-        { title: "Farm Name", href: "#" },
+        { title: user.farm.name, href: "#" },
         { title: "Harvest Log", href: "" },
       ]}
       actions={<CreateHarvestLog />}

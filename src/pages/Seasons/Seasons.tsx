@@ -20,6 +20,7 @@ import { getSeasons } from "api/seasons";
 import { useQuery } from "react-query";
 import useQueryCache from "hooks/useQueryCache";
 import { useState } from "react";
+import { useUser } from "context/UserProvider";
 
 const columns: GridColDef[] = [
   {
@@ -63,6 +64,8 @@ const columns: GridColDef[] = [
 ];
 
 const Seasons = () => {
+  const { user } = useUser();
+
   const { GET_QUERY_KEY } = useQueryCache("seasons");
   const [seasons, setSeasons] = useState([]);
 
@@ -82,10 +85,11 @@ const Seasons = () => {
       title="Harvest Season"
       subtitle="Create and close your harvest season here."
       breadcrumb={[
-        { title: "Farm Name", href: "#" },
+        { title: user.farm.name, href: "#" },
         { title: "Harvest Seasons", href: "" },
       ]}
-      actions={<Button variant="contained">Add New Season</Button>}>
+      actions={<Button variant="contained">Add New Season</Button>}
+    >
       <Box display="flex" justifyContent="space-between">
         <FormControl>
           <InputLabel id="filterby-label">Filter</InputLabel>

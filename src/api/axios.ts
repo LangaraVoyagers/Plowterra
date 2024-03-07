@@ -1,4 +1,8 @@
-import axios from "axios";
+import axios, { AxiosRequestConfig } from "axios";
+import endpoints from "./endpoints";
+import { Cookies } from "react-cookie";
+
+const cookies = new Cookies();
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -7,8 +11,10 @@ const instance = axios.create({
 });
 
 instance.interceptors.request.use(
-  function (config) {
-    // TODO: Handle auth token
+  function (config: AxiosRequestConfig) {
+    const token = cookies.get("_t");
+    config.headers = config.headers ?? {};
+    config.headers.Authorization = token;
     return config;
   },
   function (error) {
@@ -18,6 +24,11 @@ instance.interceptors.request.use(
 
 instance.interceptors.response.use(
   function (response) {
+    if (response.config.url === endpoints.signin) {
+      const token = response?.data?.data?.token;
+      cookies.set("_t", token);
+    }
+
     return response;
   },
   function (error) {

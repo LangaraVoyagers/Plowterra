@@ -10,6 +10,7 @@ import { ReactQueryDevtools } from "react-query/devtools";
 import Seasons from "pages/Seasons";
 import paths from "shared/paths";
 import Payroll from "pages/Payroll";
+import { UserProvider } from "context/UserProvider";
 
 const router = createBrowserRouter([
   {
@@ -59,9 +60,11 @@ const queryClient = new QueryClient({
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <AlertProvider>
-        <RouterProvider router={router} />
-      </AlertProvider>
+      <UserProvider>
+        <AlertProvider>
+          <RouterProvider router={router} />
+        </AlertProvider>
+      </UserProvider>
       <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>
   );

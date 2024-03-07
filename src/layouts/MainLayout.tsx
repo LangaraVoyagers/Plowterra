@@ -19,6 +19,7 @@ import {
   List,
   MenuItem,
   Select,
+  Typography,
 } from "@mui/material";
 import { CSSObject, Theme, styled } from "@mui/material/styles";
 import { LANGUAGES, useLocale } from "context/LocaleProvider";
@@ -32,6 +33,7 @@ import MuiDrawer from "@mui/material/Drawer";
 import { Outlet } from "react-router-dom";
 import paths from "shared/paths";
 import { useState } from "react";
+import { useUser } from "context/UserProvider";
 
 const DRAWER_WIDTH = 240;
 
@@ -142,6 +144,7 @@ const quickActions = [
 
 export default function MainLayout() {
   const [open, setOpen] = useState(true);
+  const { user } = useUser();
 
   const { locale, selectLanguage } = useLocale();
 
@@ -227,7 +230,8 @@ export default function MainLayout() {
           </List>
         </Box>
 
-        <Box display="flex" p={2}>
+        <Box display="flex" flexDirection="column" gap={2} p={2}>
+          <Typography>{user.name}</Typography>
           <FormControl fullWidth>
             <InputLabel id="language-label">Language</InputLabel>
 
