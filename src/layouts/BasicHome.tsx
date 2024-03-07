@@ -43,7 +43,9 @@ export default function BasicHome({
 
         <Box display="flex" justifyContent="space-between">
           <Box display="flex" flexDirection="column" gap={1}>
-            <Typography variant="h1">{title}</Typography>
+            <Typography variant="h1" fontWeight={600}>
+              {title}
+            </Typography>
             <Typography
               variant="subtitle1"
               sx={{ display: !subtitle ? "none" : "initial" }}

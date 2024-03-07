@@ -8,6 +8,27 @@
   "danger.zone.label": {
     "defaultMessage": "Danger Zone"
   },
+  "login.button.submit": {
+    "defaultMessage": "{isLoading, plural, one {Loading...} other {Login} }"
+  },
+  "login.email.label": {
+    "defaultMessage": "Email"
+  },
+  "login.password.label": {
+    "defaultMessage": "Password"
+  },
+  "login.signin.error": {
+    "defaultMessage": "Oops! Seems like you are having issues when logging in, please contact support."
+  },
+  "login.singin.error": {
+    "defaultMessage": "Welcome back!"
+  },
+  "payrolls": {
+    "defaultMessage": "Payroll"
+  },
+  "payrolls.subtitle": {
+    "defaultMessage": "Create the payrolls and view previous payroll records."
+  },
   "pickers": {
     "defaultMessage": "Pickers"
   },
@@ -15,10 +36,7 @@
     "defaultMessage": "{isDeleting, plural, one {Deleting...} other {Delete} }"
   },
   "pickers.button.save": {
-    "defaultMessage": "{isLoading, plural, one {Loading...} other {Save} }"
-  },
-  "pickers.create.button.test": {
-    "defaultMessage": "Test"
+    "defaultMessage": "{isLoading, plural, one {Loading...} other {Confirm} }"
   },
   "pickers.create.button.text": {
     "defaultMessage": "Add New Picker"
@@ -74,11 +92,17 @@
   "pickers.detail.emergency_contact_person.label": {
     "defaultMessage": "Emergency Contact Person"
   },
+  "pickers.detail.error": {
+    "defaultMessage": "Oops! Information couldn't be displayed."
+  },
   "pickers.detail.identification_number.label": {
     "defaultMessage": "Identification Number"
   },
   "pickers.detail.title": {
     "defaultMessage": "{isEdit, plural, one {Edit Picker} other {Add Picker} }"
+  },
+  "pickers.sorting.error": {
+    "defaultMessage": "Fail to apply sorting."
   },
   "pickers.subtitle": {
     "defaultMessage": "Add and view picker’s profile and information here."
@@ -112,6 +136,9 @@
   },
   "sidebar.payroll": {
     "defaultMessage": "Payroll"
+  },
+  "sidebar.payrolls": {
+    "defaultMessage": "Payrolls"
   },
   "sidebar.pickers": {
     "defaultMessage": "Pickers"

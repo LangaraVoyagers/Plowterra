@@ -17,6 +17,68 @@
       "value": "Danger Zone"
     }
   ],
+  "login.button.submit": [
+    {
+      "offset": 0,
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Loading..."
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Login"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "isLoading"
+    }
+  ],
+  "login.email.label": [
+    {
+      "type": 0,
+      "value": "Email"
+    }
+  ],
+  "login.password.label": [
+    {
+      "type": 0,
+      "value": "Password"
+    }
+  ],
+  "login.signin.error": [
+    {
+      "type": 0,
+      "value": "Oops! Seems like you are having issues when logging in, please contact support."
+    }
+  ],
+  "login.singin.error": [
+    {
+      "type": 0,
+      "value": "Welcome back!"
+    }
+  ],
+  "payrolls": [
+    {
+      "type": 0,
+      "value": "Payroll"
+    }
+  ],
+  "payrolls.subtitle": [
+    {
+      "type": 0,
+      "value": "Create the payrolls and view previous payroll records."
+    }
+  ],
   "pickers": [
     {
       "type": 0,
@@ -65,7 +127,7 @@
           "value": [
             {
               "type": 0,
-              "value": "Save"
+              "value": "Confirm"
             }
           ]
         }
@@ -73,12 +135,6 @@
       "pluralType": "cardinal",
       "type": 6,
       "value": "isLoading"
-    }
-  ],
-  "pickers.create.button.test": [
-    {
-      "type": 0,
-      "value": "Test"
     }
   ],
   "pickers.create.button.text": [
@@ -189,6 +245,12 @@
       "value": "Emergency Contact Person"
     }
   ],
+  "pickers.detail.error": [
+    {
+      "type": 0,
+      "value": "Oops! Information couldn't be displayed."
+    }
+  ],
   "pickers.detail.identification_number.label": [
     {
       "type": 0,
@@ -219,6 +281,12 @@
       "pluralType": "cardinal",
       "type": 6,
       "value": "isEdit"
+    }
+  ],
+  "pickers.sorting.error": [
+    {
+      "type": 0,
+      "value": "Fail to apply sorting."
     }
   ],
   "pickers.subtitle": [
@@ -285,6 +353,12 @@
     {
       "type": 0,
       "value": "Payroll"
+    }
+  ],
+  "sidebar.payrolls": [
+    {
+      "type": 0,
+      "value": "Payrolls"
     }
   ],
   "sidebar.pickers": [

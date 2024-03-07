@@ -15,30 +15,37 @@ const theme = createTheme({
   },
   typography: {
     allVariants: {
-      // fontFamily: "Plus Jakarta Sans",
+      fontFamily: "PlusJakartaSans, Inter",
     },
     h1: {
-      fontSize: "2.75rem",
-      lineHeight: "3.5rem",
-      letterSpacing: "-0.033rem",
+      fontSize: "3rem",
+      lineHeight: "3.75rem",
+      letterSpacing: "-0.036rem",
     },
     h2: {
-      fontSize: "2rem",
-      lineHeight: "3.5rem",
-      letterSpacing: "-0.033rem",
+      fontSize: "2.25rem",
+      lineHeight: "2.75rem",
+      letterSpacing: "-0.045rem",
+    },
+    h3: {
+      fontSize: "1.875rem",
+      lineHeight: "2.375rem",
+    },
+    h4: {
+      fontSize: "1.5rem",
+      lineHeight: "2rem",
     },
     body1: {
       fontSize: "1rem",
       lineHeight: " 1.5rem",
     },
+    body2: {},
     overline: {
       fontSize: "0.75rem",
       lineHeight: "1.125rem",
       letterSpacing: "0.0225rem",
     },
     // Disable variants
-    h3: undefined,
-    h4: undefined,
     h5: undefined,
     h6: undefined,
   },

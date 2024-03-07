@@ -434,6 +434,7 @@ const PickerDrawer = ({ dismiss, pickerId, ...props }: PickerDrawerProps) => {
         <Button
           disabled={isLoading || isDeleting}
           onClick={pickerId ? hideEdit : onCreatePickerClose}
+          variant="outlined"
         >
           {intl.formatMessage({
             id: "button.cancel",
@@ -450,7 +451,7 @@ const PickerDrawer = ({ dismiss, pickerId, ...props }: PickerDrawerProps) => {
             {
               id: "pickers.button.save",
               defaultMessage:
-                "{isLoading, plural, one {Loading...} other {Save} }",
+                "{isLoading, plural, one {Loading...} other {Confirm} }",
             },
             { isLoading: Number(isLoading) }
           )}
@@ -459,7 +460,7 @@ const PickerDrawer = ({ dismiss, pickerId, ...props }: PickerDrawerProps) => {
 
       {/* TODO: add confirmation modal later, we probably will standardize the way we handle the delete after design has defined that */}
       {!!pickerId && (
-        <Box display="flex" flexDirection="column" gap={4}>
+        <Box display="flex" flexDirection="column" mt={4}>
           <Typography variant="h2">
             {intl.formatMessage({
               id: "danger.zone.label",
