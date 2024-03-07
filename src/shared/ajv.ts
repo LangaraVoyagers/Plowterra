@@ -29,13 +29,11 @@ const validateResolver = <T>(schema: Record<string, unknown>) => {
       };
     }
 
-    const errorsFormatted = errors.reduce(
-      (prev, current) => ({
-        ...prev,
-        [current.instancePath.replace("/", "")]: current,
-      }),
-      {}
-    );
+    const errorsFormatted = errors.reduce((prev, current) => {
+      const nestedObject = buildObjectFromString(current.instancePath, current);
+      mergeObjects(prev, nestedObject);
+      return prev;
+    }, {});
 
     return {
       values: data,
@@ -43,6 +41,28 @@ const validateResolver = <T>(schema: Record<string, unknown>) => {
     };
   };
 };
+
+function buildObjectFromString(str: string, value: any) {
+  const keys = str.split("/").filter(Boolean); // Split the string and remove empty strings
+
+  return keys.reduceRight((acc, key) => {
+    return { [key]: acc };
+  }, value);
+}
+
+function mergeObjects(obj1: any, obj2: any) {
+  for (const key in obj2) {
+    if (
+      Object.prototype.hasOwnProperty.call(obj1, key) &&
+      typeof obj1[key] === "object" &&
+      typeof obj2[key] === "object"
+    ) {
+      mergeObjects(obj1[key], obj2[key]);
+    } else {
+      obj1[key] = obj2[key];
+    }
+  }
+}
 
 export { validateResolver };
 

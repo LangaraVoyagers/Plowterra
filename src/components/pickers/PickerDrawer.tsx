@@ -5,21 +5,24 @@ import {
   Divider,
   Drawer,
   DrawerProps,
-  FormGroup,
+  FormControl,
+  FormHelperText,
   InputLabel,
   MenuItem,
-  OutlinedInput,
   Select,
+  TextField,
   Typography,
 } from "@mui/material";
 import { upsertPicker, getPickerById, deletePicker } from "api/pickers";
 import useQueryCache from "hooks/useQueryCache";
 import { useAlert } from "context/AlertProvider";
 import { BloodType, IPicker, Relationship } from "project-2-types/lib/pickers";
+import PickerSchema from "project-2-types/lib/pickers.ajv";
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useMutation, useQuery } from "react-query";
 import { useIntl } from "react-intl";
+import { validateResolver } from "shared/ajv";
 
 interface IPickerForm extends Omit<IPicker, "id"> {}
 
@@ -54,8 +57,20 @@ const PickerDrawer = ({ dismiss, pickerId, ...props }: PickerDrawerProps) => {
     handleSubmit,
     reset,
     getValues,
-    formState: { isDirty },
-  } = useForm<IPickerForm>();
+    formState: { isDirty, errors },
+  } = useForm<IPickerForm>({
+    mode: "all",
+    defaultValues: {
+      name: "",
+      phone: "",
+      emergencyContact: {
+        name: "",
+        phone: "",
+        relationship: "FAMILY",
+      },
+    },
+    resolver: validateResolver(PickerSchema),
+  });
 
   const pickerData = getValues();
 
@@ -67,7 +82,13 @@ const PickerDrawer = ({ dismiss, pickerId, ...props }: PickerDrawerProps) => {
       reset(result);
     },
     onError: () => {
-      showAlert("Oops! Information couldn't be displayed.", "error");
+
+      showAlert(
+        intl.formatMessage({
+          id: "pickers.detail.error",
+          defaultMessage: "Oops! Information couldn't be displayed.",
+        }),"error"
+      );
     },
   });
 
@@ -187,7 +208,14 @@ const PickerDrawer = ({ dismiss, pickerId, ...props }: PickerDrawerProps) => {
                 })}
                 *
               </InputLabel>
-              <OutlinedInput {...field} id="picker-name-input" size="small" />
+              <TextField
+                {...field}
+                id="picker-name-input"
+                variant="outlined"
+                size="small"
+                error={!!errors.name}
+                helperText={errors.name?.message}
+              />
             </Box>
           );
         }}
@@ -207,7 +235,14 @@ const PickerDrawer = ({ dismiss, pickerId, ...props }: PickerDrawerProps) => {
                 *
               </InputLabel>
 
-              <OutlinedInput {...field} id="picker-phone-input" size="small" />
+              <TextField
+                {...field}
+                id="picker-phone-input"
+                size="small"
+                variant="outlined"
+                error={!!errors.phone}
+                helperText={errors.phone?.message}
+              />
             </Box>
           );
         }}
@@ -227,10 +262,13 @@ const PickerDrawer = ({ dismiss, pickerId, ...props }: PickerDrawerProps) => {
                 *
               </InputLabel>
 
-              <OutlinedInput
+              <TextField
                 {...field}
                 id="picker-contact-name-input"
                 size="small"
+                variant="outlined"
+                error={!!errors.emergencyContact?.name?.message}
+                helperText={errors.emergencyContact?.name?.message}
               />
             </Box>
           );
@@ -250,16 +288,25 @@ const PickerDrawer = ({ dismiss, pickerId, ...props }: PickerDrawerProps) => {
                 })}
                 *
               </InputLabel>
-
-              <Select {...field} id="picker-relation-input" size="small">
-                {relationshipList?.map(({ value, label }) => {
-                  return (
-                    <MenuItem key={value} value={value}>
-                      {label}
-                    </MenuItem>
-                  );
-                })}
-              </Select>
+              <FormControl>
+                <Select
+                  {...field}
+                  id="picker-relation-input"
+                  size="small"
+                  error={!!errors.emergencyContact?.relationship}
+                >
+                  {relationshipList?.map(({ value, label }) => {
+                    return (
+                      <MenuItem key={value} value={value}>
+                        {label}
+                      </MenuItem>
+                    );
+                  })}
+                </Select>
+                <FormHelperText error>
+                  {errors.emergencyContact?.relationship?.message}
+                </FormHelperText>
+              </FormControl>
             </Box>
           );
         }}
@@ -279,18 +326,15 @@ const PickerDrawer = ({ dismiss, pickerId, ...props }: PickerDrawerProps) => {
                 *
               </InputLabel>
 
-              <FormGroup row>
-                <Select defaultValue={1} size="small">
-                  {/* Get the countries list */}
-                  <MenuItem value={1}>COL</MenuItem>
-                </Select>
-                <OutlinedInput
-                  {...field}
-                  id="picker-contact-number-input"
-                  size="small"
-                  sx={{ flex: 1 }}
-                />
-              </FormGroup>
+              <TextField
+                {...field}
+                id="picker-contact-number-input"
+                size="small"
+                variant="outlined"
+                sx={{ flex: 1 }}
+                error={!!errors.emergencyContact?.phone}
+                helperText={errors.emergencyContact?.phone?.message}
+              />
             </Box>
           );
         }}
@@ -309,15 +353,25 @@ const PickerDrawer = ({ dismiss, pickerId, ...props }: PickerDrawerProps) => {
                 })}
               </InputLabel>
 
-              <Select {...field} id="picker-blood-type-input" size="small">
-                {bloodTypeList?.map(({ value, label }) => {
-                  return (
-                    <MenuItem key={value} value={value}>
-                      {label}
-                    </MenuItem>
-                  );
-                })}
-              </Select>
+              <FormControl>
+                <Select
+                  {...field}
+                  id="picker-blood-type-input"
+                  size="small"
+                  error={!!errors.bloodType}
+                >
+                  {bloodTypeList?.map(({ value, label }) => {
+                    return (
+                      <MenuItem key={value} value={value}>
+                        {label}
+                      </MenuItem>
+                    );
+                  })}
+                </Select>
+                <FormHelperText error>
+                  {errors.bloodType?.message}
+                </FormHelperText>
+              </FormControl>
             </Box>
           );
         }}
@@ -336,7 +390,14 @@ const PickerDrawer = ({ dismiss, pickerId, ...props }: PickerDrawerProps) => {
                 })}
               </InputLabel>
 
-              <OutlinedInput {...field} id="picker-gov-id-input" size="small" />
+              <TextField
+                {...field}
+                id="picker-gov-id-input"
+                size="small"
+                variant="outlined"
+                error={!!errors.govId}
+                helperText={errors.govId?.message}
+              />
             </Box>
           );
         }}
@@ -355,11 +416,14 @@ const PickerDrawer = ({ dismiss, pickerId, ...props }: PickerDrawerProps) => {
                 })}
               </InputLabel>
 
-              <OutlinedInput
+              <TextField
                 {...field}
                 id="picker-address-input"
                 multiline
                 rows={2}
+                variant="outlined"
+                error={!!errors.address}
+                helperText={errors.address?.message}
               />
             </Box>
           );
