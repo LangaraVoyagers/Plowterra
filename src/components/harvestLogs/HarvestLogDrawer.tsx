@@ -179,8 +179,7 @@ const HarvestLogDrawer = ({
       setHarvestLog(result);
     },
     onError: () => {
-      setHarvestLog(undefined);
-      showAlert("Oops! Information couldn't be displayed.");
+      showAlert("Oops! Information couldn't be displayed.", "error");
     },
   });
 
@@ -195,7 +194,7 @@ const HarvestLogDrawer = ({
       }
     },
     onError: () => {
-      showAlert("Oops! The harvest log couldn't be saved.");
+      showAlert("Oops! The harvest log couldn't be saved.", "error");
     },
   });
 
@@ -209,7 +208,7 @@ const HarvestLogDrawer = ({
     created: IHarvestLogResponse & { _id: string }
   ) => {
     createHarvestLogCache(created);
-    showAlert(`Harvest Log created successfully`);
+    showAlert(`Harvest Log created successfully`, "success");
     onCreateHarvestLogClose();
   };
 
@@ -217,7 +216,7 @@ const HarvestLogDrawer = ({
     updated: IHarvestLogResponse & { _id: string }
   ) => {
     updateHarvestLogCache(updated);
-    showAlert(`Harvest Log updated successfully`);
+    showAlert(`Harvest Log updated successfully`, "success");
     hideEdit();
   };
 
