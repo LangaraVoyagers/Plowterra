@@ -1,13 +1,13 @@
 import {
-  ArchiveTray,
   CaretLeft,
   CaretRight,
-  CurrencyCircleDollar,
-  EnvelopeSimple,
+  FilePlus,
+  FileText,
+  HandCoins,
   House,
-  NotePencil,
-  Notepad,
-  User,
+  Plant,
+  UserPlus,
+  Users,
 } from "@phosphor-icons/react";
 import {
   Box,
@@ -94,17 +94,17 @@ const sidebarItems = [
     title: (
       <FormattedMessage id="sidebar.harvest_log" defaultMessage="Harvest Log" />
     ),
-    icon: <NotePencil />,
+    icon: <FileText />,
     href: paths.harvestLogs,
   },
   {
     title: <FormattedMessage id="sidebar.pickers" defaultMessage="Pickers" />,
-    icon: <User />,
+    icon: <Users />,
     href: paths.pickers,
   },
   {
     title: <FormattedMessage id="sidebar.payroll" defaultMessage="Payroll" />,
-    icon: <CurrencyCircleDollar />,
+    icon: <HandCoins />,
     href: paths.payroll,
   },
   {
@@ -114,7 +114,7 @@ const sidebarItems = [
         defaultMessage="Harvest Season"
       />
     ),
-    icon: <Notepad />,
+    icon: <Plant />,
     href: paths.seasons,
   },
 ];
@@ -123,22 +123,22 @@ const quickActions = [
   {
     title: (
       <FormattedMessage
-        id="sidebar.quick_actions.add_harvest_log"
-        defaultMessage="Add Daily Harvest"
-      />
-    ),
-    icon: <ArchiveTray />,
-    href: "#",
-  },
-  {
-    title: (
-      <FormattedMessage
         id="sidebar.quick_actions.add_picker"
         defaultMessage="Add Picker"
       />
     ),
-    icon: <EnvelopeSimple />,
+    icon: <UserPlus />,
     href: `${paths.pickers}?new=true`,
+  },
+  {
+    title: (
+      <FormattedMessage
+        id="sidebar.quick_actions.add_harvest_log"
+        defaultMessage="Add Harvest Entry"
+      />
+    ),
+    icon: <FilePlus />,
+    href: "#",
   },
 ];
 
