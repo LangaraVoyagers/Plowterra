@@ -90,7 +90,7 @@ const HarvestLogs = () => {
     onSuccess: (results) => {
       setHarvestLogs(results);
 
-      if (results?.length) {
+      if (results?.length && pickerId) {
         setPicker(results[0].picker);
       }
     },
