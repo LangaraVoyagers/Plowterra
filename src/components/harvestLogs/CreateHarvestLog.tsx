@@ -1,6 +1,7 @@
 import { Button } from "@mui/material";
 import { useState } from "react";
 import HarvestLogDrawer from "./HarvestLogDrawer";
+import { FilePlus } from "@phosphor-icons/react";
 
 const CreateHarvestLog = () => {
   const [open, setOpen] = useState<boolean>(false);
@@ -11,7 +12,7 @@ const CreateHarvestLog = () => {
 
   return (
     <div>
-      <Button variant="contained" onClick={showDrawer}>
+      <Button variant="contained" onClick={showDrawer} endIcon={<FilePlus />}>
         Add New Log
       </Button>
 

@@ -302,7 +302,7 @@
   "sidebar.quick_actions.add_harvest_log": [
     {
       "type": 0,
-      "value": "Add Daily Harvest"
+      "value": "Add Harvest Entry"
     }
   ],
   "sidebar.quick_actions.add_picker": [
