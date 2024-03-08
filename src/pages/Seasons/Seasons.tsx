@@ -8,13 +8,10 @@ import {
   OutlinedInput,
   Select,
 } from "@mui/material";
-import {
-  DataGrid,
-  GridColDef,
-} from "@mui/x-data-grid";
+import { DataGrid, GridColDef } from "@mui/x-data-grid";
 
 import BasicHome from "layouts/BasicHome";
-import { MagnifyingGlass } from "@phosphor-icons/react";
+import { MagnifyingGlass, Plant } from "@phosphor-icons/react";
 import formatDate from "shared/formatDate";
 import { getSeasons } from "api/seasons";
 import { useQuery } from "react-query";
@@ -37,22 +34,21 @@ const columns: GridColDef[] = [
     field: "product",
     headerName: "Product",
     width: 200,
-    valueGetter: (params) =>
-      params.row.product?.name,
+    valueGetter: (params) => params.row.product?.name,
   },
   {
     field: "startDate",
     headerName: "Start Date",
     width: 150,
-    valueFormatter: (params) => 
-      params?.value ? formatDate(params.value) : "-"
+    valueFormatter: (params) =>
+      params?.value ? formatDate(params.value) : "-",
   },
   {
     field: "endDate",
     headerName: "End Date",
     width: 150,
-    valueFormatter: (params) => 
-      params?.value ? formatDate(params.value) : "-"
+    valueFormatter: (params) =>
+      params?.value ? formatDate(params.value) : "-",
   },
   {
     field: "action",
@@ -88,7 +84,11 @@ const Seasons = () => {
         { title: user.farm.name, href: "#" },
         { title: "Harvest Seasons", href: "" },
       ]}
-      actions={<Button variant="contained">Add New Season</Button>}
+      actions={
+        <Button variant="contained" endIcon={<Plant />}>
+          Add New Season
+        </Button>
+      }
     >
       <Box display="flex" justifyContent="space-between">
         <FormControl>

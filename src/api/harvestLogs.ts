@@ -1,4 +1,7 @@
-import { IHarvestLogResponse } from "project-2-types/lib/harvestLog";
+import {
+  IHarvestLogResponse,
+} from "project-2-types/dist/interface";
+
 import axios from "./axios";
 import endpoints from "./endpoints";
 
