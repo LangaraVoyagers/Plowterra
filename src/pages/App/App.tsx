@@ -11,6 +11,8 @@ import Seasons from "pages/Seasons";
 import paths from "shared/paths";
 import Payroll from "pages/Payroll";
 import { UserProvider } from "context/UserProvider";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 
 const router = createBrowserRouter([
   {
@@ -62,7 +64,9 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <UserProvider>
         <AlertProvider>
-          <RouterProvider router={router} />
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <RouterProvider router={router} />
+          </LocalizationProvider>
         </AlertProvider>
       </UserProvider>
       <ReactQueryDevtools initialIsOpen={false} />

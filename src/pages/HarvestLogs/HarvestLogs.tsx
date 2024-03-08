@@ -5,9 +5,8 @@ import {
   GridRenderCellParams,
   GridValueGetterParams,
 } from "@mui/x-data-grid";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { MagnifyingGlass } from "@phosphor-icons/react";
 import CreateHarvestLog from "components/harvestLogs/CreateHarvestLog";
 import { IHarvestLogResponse } from "project-2-types/lib/harvestLog";
@@ -113,26 +112,24 @@ const HarvestLogs = () => {
     >
       <Box display="flex" justifyContent="space-between">
         <FormControl>
-          <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <Box display="flex" gap={3}>
-              <DatePicker
-                label="Start Date"
-                value={startDate}
-                slotProps={{ textField: { size: "small" } }}
-                onChange={(newValue) => {
-                  setStartDate(newValue);
-                }}
-              />
-              <DatePicker
-                label="End Date"
-                value={endDate}
-                slotProps={{ textField: { size: "small" } }}
-                onChange={(newValue) => {
-                  setEndDate(newValue);
-                }}
-              />
-            </Box>
-          </LocalizationProvider>
+          <Box display="flex" gap={3}>
+            <DatePicker
+              label="Start Date"
+              value={startDate}
+              slotProps={{ textField: { size: "small" } }}
+              onChange={(newValue) => {
+                setStartDate(newValue);
+              }}
+            />
+            <DatePicker
+              label="End Date"
+              value={endDate}
+              slotProps={{ textField: { size: "small" } }}
+              onChange={(newValue) => {
+                setEndDate(newValue);
+              }}
+            />
+          </Box>
         </FormControl>
 
         <FormControl>
