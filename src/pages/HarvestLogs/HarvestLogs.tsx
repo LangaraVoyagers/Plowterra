@@ -8,15 +8,14 @@ import {
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { MagnifyingGlass } from "@phosphor-icons/react";
 import { getHarvestLogs } from "api/harvestLogs";
+import { getPickerById } from "api/pickers";
 import CreateHarvestLog from "components/harvestLogs/CreateHarvestLog";
 import UpdateHarvestLog from "components/harvestLogs/UpdateHarvestLog";
 import { useUser } from "context/UserProvider";
 import { Dayjs } from "dayjs";
 import useQueryCache from "hooks/useQueryCache";
 import BasicHome from "layouts/BasicHome";
-import {
-  IHarvestLogResponse,
-} from "project-2-types/dist/interface";
+import { IHarvestLogResponse } from "project-2-types/dist/interface";
 import { useState } from "react";
 import { FormattedDate } from "react-intl";
 import { useQuery } from "react-query";
@@ -88,9 +87,19 @@ const HarvestLogs = () => {
     queryFn: () => getHarvestLogs({ pickerId }),
     onSuccess: (results) => {
       setHarvestLogs(results);
+    },
+    onError: (error) => {
+      console.log(error);
+    },
+  });
 
-      if (results?.length && pickerId) {
-        setPicker(results[0].picker);
+  const { isLoading: isPickerLoading } = useQuery({
+    queryKey: ["pickers", "harvest-logs", pickerId],
+    queryFn: () => getPickerById(pickerId),
+    enabled: !!pickerId,
+    onSuccess: (results) => {
+      if (results?._id) {
+        setPicker(results);
       }
     },
     onError: (error) => {
@@ -145,9 +154,9 @@ const HarvestLogs = () => {
       </Box>
       <Box display="flex" flexGrow={1} pb={3}>
         <DataGrid
-          rows={harvestLogs}
+          rows={harvestLogs ?? []}
           columns={columns}
-          loading={isLoading}
+          loading={isLoading || isPickerLoading}
           initialState={{
             pagination: {
               paginationModel: {

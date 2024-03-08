@@ -19,8 +19,12 @@ export const getPickers = async () => {
   }
 };
 
-export const getPickerById = async (id?: string) => {
+export const getPickerById = async (id?: string | null) => {
   try {
+    console.log({ id });
+    if (!id) {
+      return;
+    }
     const {
       data: { data },
     } = await axios.get(`${endpoints.pickers}/${id}`);
