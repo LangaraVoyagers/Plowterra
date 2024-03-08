@@ -1,4 +1,5 @@
-import { Box, Breadcrumbs, Link, Typography } from "@mui/material";
+import { Box, Breadcrumbs, Link } from "@mui/material";
+import { BodyText, Display } from "ui/Typography";
 
 interface BasicHomeProps {
   breadcrumb: Array<{ title: React.ReactNode; href: string }>;
@@ -22,9 +23,9 @@ export default function BasicHome({
           {breadcrumb.map((item, index) => {
             if (index === breadcrumb.length - 1) {
               return (
-                <Typography key={index} color="text.primary" fontWeight={600}>
+                <BodyText key={index} color="text.primary" fontWeight="Medium">
                   {item.title}
-                </Typography>
+                </BodyText>
               );
             }
 
@@ -43,15 +44,10 @@ export default function BasicHome({
 
         <Box display="flex" justifyContent="space-between">
           <Box display="flex" flexDirection="column" gap={1}>
-            <Typography variant="h1" fontWeight={600}>
-              {title}
-            </Typography>
-            <Typography
-              variant="subtitle1"
-              sx={{ display: !subtitle ? "none" : "initial" }}
-            >
+            <Display>{title}</Display>
+            <BodyText sx={{ display: !subtitle ? "none" : "initial" }}>
               {subtitle}
-            </Typography>
+            </BodyText>
           </Box>
 
           <Box alignSelf="flex-end">{actions}</Box>
