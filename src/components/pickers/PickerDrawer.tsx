@@ -13,15 +13,16 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { upsertPicker, getPickerById, deletePicker } from "api/pickers";
-import useQueryCache from "hooks/useQueryCache";
-import { useAlert } from "context/AlertProvider";
-import { BloodType, IPicker, Relationship } from "project-2-types/lib/pickers";
-import PickerSchema from "project-2-types/lib/pickers.ajv";
-import { useState } from "react";
+import { BloodType, IPicker, Relationship } from "project-2-types/dist/interface";
 import { Controller, useForm } from "react-hook-form";
+import { deletePicker, getPickerById, upsertPicker } from "api/pickers";
 import { useMutation, useQuery } from "react-query";
+
+import PickerSchema from "project-2-types/dist/ajv";
+import { useAlert } from "context/AlertProvider";
 import { useIntl } from "react-intl";
+import useQueryCache from "hooks/useQueryCache";
+import { useState } from "react";
 import { validateResolver } from "shared/ajv";
 
 interface IPickerForm extends Omit<IPicker, "id"> {}

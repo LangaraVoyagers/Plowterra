@@ -7,7 +7,7 @@ import BasicHome from "layouts/BasicHome";
 import useQueryCache from 'hooks/useQueryCache';
 import { useQuery } from 'react-query';
 import { getPayrollHistory } from 'api/payroll';
-import { User } from "@phosphor-icons/react";
+import { CaretRight, User } from "@phosphor-icons/react";
 import { useUser } from "context/UserProvider";
   
 const columns : GridColDef[] = [
@@ -109,7 +109,7 @@ function formatDate(
           href: "",
         },
       ]}
-      actions={<Button variant="contained">Start a payroll</Button>}
+      actions={<Button variant="contained" endIcon={<CaretRight />}>Start a payroll</Button>}
     >
       <Box display="flex" flexGrow={1} pb={3}>
         <DataGrid
