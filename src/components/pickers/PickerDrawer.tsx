@@ -23,6 +23,8 @@ import { Controller, useForm } from "react-hook-form";
 import { useMutation, useQuery } from "react-query";
 import { useIntl } from "react-intl";
 import { validateResolver } from "shared/ajv";
+import { useNavigate } from "react-router-dom";
+import paths from "shared/paths";
 
 interface IPickerForm extends Omit<IPicker, "id"> {}
 
@@ -41,6 +43,8 @@ type PickerDrawerProps = DrawerProps & {
 const PickerDrawer = ({ dismiss, pickerId, ...props }: PickerDrawerProps) => {
   const intl = useIntl();
   const { showAlert } = useAlert();
+  const navigate = useNavigate();
+
   const {
     GET_DETAIL_QUERY_KEY,
     UPDATE_MUTATION_KEY,
@@ -82,12 +86,12 @@ const PickerDrawer = ({ dismiss, pickerId, ...props }: PickerDrawerProps) => {
       reset(result);
     },
     onError: () => {
-
       showAlert(
         intl.formatMessage({
           id: "pickers.detail.error",
           defaultMessage: "Oops! Information couldn't be displayed.",
-        }),"error"
+        }),
+        "error"
       );
     },
   });
@@ -161,7 +165,8 @@ const PickerDrawer = ({ dismiss, pickerId, ...props }: PickerDrawerProps) => {
         intl.formatMessage({
           id: "pickers.delete.picker.response.error",
           defaultMessage: "Oops! The picker couldn't be deleted.",
-        }), "error"
+        }),
+        "error"
       );
     },
   });
@@ -576,11 +581,9 @@ const PickerDrawer = ({ dismiss, pickerId, ...props }: PickerDrawerProps) => {
         </Box>
 
         <Button
-          onClick={() =>
-            showAlert(
-              "🚧 Thank you for your patience. We are still working on this part 🚧", "info"
-            )
-          }
+          onClick={() => {
+            navigate(`${paths.harvestLogs}?pickerId=${pickerId}`);
+          }}
         >
           {intl.formatMessage({
             id: "pickers.detail.button.view_harvest_log",
