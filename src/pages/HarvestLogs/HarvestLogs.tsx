@@ -1,5 +1,4 @@
 import { Box, FormControl, InputAdornment, OutlinedInput } from "@mui/material";
-import { MagnifyingGlass } from "@phosphor-icons/react";
 import {
   DataGrid,
   GridColDef,
@@ -7,30 +6,31 @@ import {
   GridValueGetterParams,
 } from "@mui/x-data-grid";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import {
-  IHarvestLog,
-  IHarvestLogResponse,
-} from "project-2-types/lib/harvestLog";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { MagnifyingGlass } from "@phosphor-icons/react";
 import CreateHarvestLog from "components/harvestLogs/CreateHarvestLog";
+import { IHarvestLogResponse } from "project-2-types/lib/harvestLog";
 
+import { getHarvestLogs } from "api/harvestLogs";
 import useQueryCache from "hooks/useQueryCache";
 import { useState } from "react";
-import { getHarvestLogs } from "api/harvestLogs";
 
-import BasicHome from "layouts/BasicHome";
-import { useQuery } from "react-query";
 import UpdateHarvestLog from "components/harvestLogs/UpdateHarvestLog";
 import { useUser } from "context/UserProvider";
 import { Dayjs } from "dayjs";
-
+import BasicHome from "layouts/BasicHome";
+import { useQuery } from "react-query";
+import { useSearchParams } from "react-router-dom";
+import paths from "shared/paths";
+import { FormattedDate } from "react-intl";
 
 const columns: GridColDef[] = [
   {
     field: "picker",
     renderHeader: () => "Picker",
     width: 200,
+    flex: 1,
     valueGetter: (params: GridValueGetterParams<IHarvestLogResponse>) =>
       params.row.picker?.name,
   },
@@ -47,21 +47,23 @@ const columns: GridColDef[] = [
     field: "createdAt",
     renderHeader: () => "Date",
     width: 200,
-    valueFormatter: (params) => {
-      const date = new Date(params.value);
-      const formattedDate = date.toLocaleDateString("en-US", {
-        day: "numeric",
-        month: "short",
-        year: "numeric",
-      });
-      return formattedDate;
+    flex: 1,
+    renderCell: (params: GridRenderCellParams) => {
+      return (
+        <FormattedDate
+          value={params.row.createdAt}
+          year="numeric"
+          month="short"
+          day="numeric"
+        />
+      );
     },
   },
   {
     field: "action",
     headerName: "",
     width: 200,
-    renderCell: (data: GridRenderCellParams<IHarvestLog & { _id: string }>) => {
+    renderCell: (data: GridRenderCellParams<{ _id: string }>) => {
       return <UpdateHarvestLog harvestLogId={data.row._id} />;
     },
   },
@@ -70,52 +72,66 @@ const columns: GridColDef[] = [
 const HarvestLogs = () => {
   const { GET_QUERY_KEY } = useQueryCache("harvestLogs");
   const { user } = useUser();
+  const [search] = useSearchParams();
 
-  const [harvestLogs, setHarvestLogs] = useState<Array<IHarvestLog>>([]);
+  const pickerId = search.get("pickerId") ?? null;
+
+  const [startDate, setStartDate] = useState<Dayjs | null>(null);
+  const [endDate, setEndDate] = useState<Dayjs | null>(null);
+
+  const [harvestLogs, setHarvestLogs] = useState<Array<IHarvestLogResponse>>(
+    []
+  );
+
+  const [picker, setPicker] = useState<IHarvestLogResponse["picker"]>();
 
   const { isLoading } = useQuery({
     queryKey: GET_QUERY_KEY,
-    queryFn: getHarvestLogs,
+    queryFn: () => getHarvestLogs({ pickerId }),
     onSuccess: (results) => {
       setHarvestLogs(results);
+
+      if (results?.length) {
+        setPicker(results[0].picker);
+      }
     },
     onError: (error) => {
       console.log(error);
     },
   });
 
-  const [startDate, setStartDate] = useState<Dayjs | null>(null);
-  const [endDate, setEndDate] = useState<Dayjs | null>(null);
-
   return (
     <BasicHome
-      title="Harvest Log"
+      title={picker ? picker?.name : "Harvest Log"}
       subtitle="Add and view picker’s daily collection data here."
       breadcrumb={[
-        { title: user.farm.name, href: "#" },
-        { title: "Harvest Log", href: "" },
+        { title: user.farm.name, href: "/" },
+        { title: "Harvest Log", href: paths.harvestLogs },
+        ...(picker ? [{ title: picker?.name, href: "#" }] : []),
       ]}
       actions={<CreateHarvestLog />}
     >
       <Box display="flex" justifyContent="space-between">
         <FormControl>
           <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <DatePicker
-              label="Start Date"
-              value={startDate}
-              onChange={(newValue) => {
-                setStartDate(newValue);
-                // console.log(newValue);
-              }}
-            />
-            <DatePicker
-              label="End Date"
-              value={endDate}
-              onChange={(newValue) => {
-                setEndDate(newValue);
-                // console.log(newValue);
-              }}
-            />
+            <Box display="flex" gap={3}>
+              <DatePicker
+                label="Start Date"
+                value={startDate}
+                slotProps={{ textField: { size: "small" } }}
+                onChange={(newValue) => {
+                  setStartDate(newValue);
+                }}
+              />
+              <DatePicker
+                label="End Date"
+                value={endDate}
+                slotProps={{ textField: { size: "small" } }}
+                onChange={(newValue) => {
+                  setEndDate(newValue);
+                }}
+              />
+            </Box>
           </LocalizationProvider>
         </FormControl>
 
@@ -140,6 +156,11 @@ const HarvestLogs = () => {
             pagination: {
               paginationModel: {
                 pageSize: 12,
+              },
+            },
+            columns: {
+              columnVisibilityModel: {
+                picker: !pickerId,
               },
             },
           }}

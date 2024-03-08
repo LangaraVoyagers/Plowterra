@@ -1,18 +1,15 @@
-import {
-  IHarvestLog,
-  IHarvestLogResponse,
-} from "project-2-types/lib/harvestLog";
+import { IHarvestLogResponse } from "project-2-types/lib/harvestLog";
 import axios from "./axios";
 import endpoints from "./endpoints";
 
-export const getHarvestLogs = async () => {
+export const getHarvestLogs = async (params?: Record<string, unknown>) => {
   try {
     const {
       data: { data },
-    } = await axios.get(endpoints.harvestLogs);
+    } = await axios.get(endpoints.harvestLogs, { params });
 
     if (typeof data === "object") {
-      return data as Array<IHarvestLog>;
+      return data as Array<IHarvestLogResponse>;
     }
     return [];
   } catch (error) {
