@@ -15,30 +15,52 @@ const theme = createTheme({
   },
   typography: {
     allVariants: {
-      // fontFamily: "Plus Jakarta Sans",
+      fontFamily: "PlusJakartaSans, Inter",
+      fontVariantNumeric: "lining-nums tabular-nums",
+      fontFeatureSettings: "'liga' off",
     },
+    // Display/lg
     h1: {
-      fontSize: "2.75rem",
-      lineHeight: "3.5rem",
-      letterSpacing: "-0.033rem",
+      fontSize: "3rem",
+      lineHeight: "3.75rem",
+      letterSpacing: "-0.048rem",
     },
+    // Display/md
     h2: {
-      fontSize: "2rem",
-      lineHeight: "3.5rem",
-      letterSpacing: "-0.033rem",
+      fontSize: "2.25rem",
+      lineHeight: "2.75rem",
+      letterSpacing: "-0.045rem",
     },
+    // Display/sm
+
+    h3: {
+      fontSize: "1.875rem",
+      lineHeight: "2.375rem",
+      letterSpacing: "-0.01875rem",
+    },
+    // Display/xs
+    h4: {
+      fontSize: "1.5rem",
+      lineHeight: "2rem",
+    },
+    // Text/md
     body1: {
       fontSize: "1rem",
-      lineHeight: " 1.5rem",
+      lineHeight: "1.5rem",
     },
+    // Text/sm
+    body2: {
+      fontSize: "0.875rem",
+      lineHeight: "1.25rem",
+    },
+    // Label 2 -> by default is uppercase
     overline: {
       fontSize: "0.75rem",
       lineHeight: "1.125rem",
-      letterSpacing: "0.0225rem",
+      letterSpacing: "0.03rem",
+      fontWeight: 500,
     },
     // Disable variants
-    h3: undefined,
-    h4: undefined,
     h5: undefined,
     h6: undefined,
   },

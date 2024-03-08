@@ -1,4 +1,4 @@
-import { Box, Button, TextField, Typography } from "@mui/material";
+import { Box, Button, TextField } from "@mui/material";
 import { Controller, useForm } from "react-hook-form";
 
 import { ISignInRequest } from "project-2-types/dist/interface";
@@ -11,6 +11,7 @@ import { useMutation } from "react-query";
 import { useNavigate } from "react-router-dom";
 import { useUser } from "context/UserProvider.tsx";
 import { validateResolver } from "shared/ajv.ts";
+import { Display } from "ui/Typography.tsx";
 
 interface LoginForm extends ISignInRequest {}
 
@@ -76,7 +77,7 @@ const Login: React.FC = () => {
           gap={8}
           width="100%"
         >
-          <Typography variant="h1">Login</Typography>
+          <Display>Login</Display>
 
           <Box display="flex" flexDirection="column" gap={4} width="100%">
             <Controller
