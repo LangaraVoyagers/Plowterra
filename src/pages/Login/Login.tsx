@@ -1,15 +1,16 @@
 import { Box, Button, TextField, Typography } from "@mui/material";
-import endpoints from "api/endpoints.ts";
-import { useAlert } from "context/AlertProvider.tsx";
-import { ISignInRequest } from "project-2-types/lib/signin";
-import LoginSchema from "project-2-types/lib/signin.ajv";
 import { Controller, useForm } from "react-hook-form";
+
+import { ISignInRequest } from "project-2-types/dist/interface";
+import LoginSchema from "project-2-types/dist/ajv";
+import endpoints from "api/endpoints.ts";
+import { login } from "../../api/login.ts";
+import { useAlert } from "context/AlertProvider.tsx";
 import { useIntl } from "react-intl";
 import { useMutation } from "react-query";
 import { useNavigate } from "react-router-dom";
-import { login } from "../../api/login.ts";
-import { validateResolver } from "shared/ajv.ts";
 import { useUser } from "context/UserProvider.tsx";
+import { validateResolver } from "shared/ajv.ts";
 
 interface LoginForm extends ISignInRequest {}
 
