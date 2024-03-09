@@ -106,7 +106,7 @@ const Payroll = () => {
     },
   });
 
-  const handleSelectChange = (event: React.ChangeEvent<{ value: unknown }>) => {
+  const handleSelectChange = (event: SelectChangeEvent<any>) => {
     const selectedValue = event.target.value as string;
     const index = seasonOptions.findIndex(
       (option) => option.props.value === selectedValue
@@ -136,15 +136,17 @@ const Payroll = () => {
 
   const [selectedOption, setSelectedOption] = useState<unknown | null>(null);
 
-  const handleSelectChange2 = (event2: React.ChangeEvent<{ value: unknown }>) => {
-    setSelectedOption(event2.target.value as unknown);
-    console.log(selectedOption);
+  const handleSelectChange2 = (event: React.ChangeEvent<{ value: unknown }>) => {
+    setSelectedOption(event.target.value as unknown);
+    console.log(event.target.value);
+    console.log(selectedOption)
   };
 
   const handleBothChanges = React.useCallback((event: SelectChangeEvent<any>) => {
     handleSelectChange(event);
-    handleSelectChange2(event2);
+    handleSelectChange2(event.target.value as React.ChangeEvent<{ value: unknown }>);
   }, [handleSelectChange, handleSelectChange2]);
+  
   
   return (
     <BasicHome
