@@ -21,7 +21,6 @@ export const getPickers = async () => {
 
 export const getPickerById = async (id?: string | null) => {
   try {
-    console.log({ id });
     if (!id) {
       return;
     }

@@ -66,7 +66,7 @@ const PickerDrawer = ({ dismiss, pickerId, ...props }: PickerDrawerProps) => {
     handleSubmit,
     reset,
     getValues,
-    formState: { isDirty, errors },
+    formState: { errors },
   } = useForm<IPickerForm>({
     mode: "all",
     defaultValues: {
@@ -121,6 +121,7 @@ const PickerDrawer = ({ dismiss, pickerId, ...props }: PickerDrawerProps) => {
       );
     },
   });
+
 
   const onCreatePickerClose = () => {
     reset();
@@ -455,7 +456,7 @@ const PickerDrawer = ({ dismiss, pickerId, ...props }: PickerDrawerProps) => {
         <Button
           variant="contained"
           onClick={handleSubmit(onSubmit)}
-          disabled={isLoading || !isDirty || isDeleting}
+          disabled={isLoading || isDeleting}
         >
           {intl.formatMessage(
             {
