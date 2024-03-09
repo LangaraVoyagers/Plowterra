@@ -2,7 +2,7 @@ import { Box, Button, TextField } from "@mui/material";
 import { Controller, useForm } from "react-hook-form";
 
 import { ISignInRequest } from "project-2-types/dist/interface";
-import LoginSchema from "project-2-types/dist/ajv";
+import LoginSchema from "project-2-types/dist/ajv/signin.ajv";
 import endpoints from "api/endpoints.ts";
 import { login } from "../../api/login.ts";
 import { useAlert } from "context/AlertProvider.tsx";

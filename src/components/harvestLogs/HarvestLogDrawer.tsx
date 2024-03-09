@@ -24,10 +24,8 @@ import {
 import { Controller, useForm } from "react-hook-form";
 import { createHarvestLog, getHarvestLogById } from "api/harvestLogs";
 import { useMutation, useQuery } from "react-query";
-
 import HarvestLogSchema from "project-2-types/dist/ajv/harvest-log.ajv";
-import { IHarvestLogResponse } from "project-2-types/dist/interface";
-import { IPicker } from "project-2-types/dist/interface";
+import { IPicker, IHarvestLogResponse } from "project-2-types/dist/interface";
 import { ajvResolver } from "@hookform/resolvers/ajv";
 import { getPickers } from "api/pickers";
 import { getSeasons } from "api/seasons";

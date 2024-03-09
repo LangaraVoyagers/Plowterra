@@ -21,7 +21,7 @@ import { Controller, useForm } from "react-hook-form";
 import { deletePicker, getPickerById, upsertPicker } from "api/pickers";
 import { useMutation, useQuery } from "react-query";
 
-import PickerSchema from "project-2-types/dist/ajv";
+import PickerSchema from "project-2-types/dist/ajv/picker.ajv";
 import { useAlert } from "context/AlertProvider";
 import { useIntl } from "react-intl";
 import useQueryCache from "hooks/useQueryCache";
@@ -121,7 +121,6 @@ const PickerDrawer = ({ dismiss, pickerId, ...props }: PickerDrawerProps) => {
       );
     },
   });
-
 
   const onCreatePickerClose = () => {
     reset();
