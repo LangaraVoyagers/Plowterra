@@ -19,7 +19,7 @@ export default function BasicHome({
   return (
     <Box display="flex" flexDirection="column" height="100%" gap={8}>
       <Box component="header" display="flex" flexDirection="column" gap={4}>
-        <Breadcrumbs maxItems={2} aria-label="breadcrumb">
+        <Breadcrumbs maxItems={3} aria-label="breadcrumb">
           {breadcrumb.map((item, index) => {
             if (index === breadcrumb.length - 1) {
               return (
