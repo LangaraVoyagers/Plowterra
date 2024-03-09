@@ -103,10 +103,10 @@ const Pickers = () => {
   const [search, setSearch] = useState<string>();
   const [sortModel, setSortModel] = useState([
     {
-      field: "name",
-      sort: "asc",
+      field: "createdAt",
+      sort: "desc",
     },
-  ]);
+  ])
 
   const showDrawer = () => setOpen(true);
 
@@ -157,8 +157,8 @@ const Pickers = () => {
           options={[
             { field: "name", sort: "asc", label: "A to Z" },
             { field: "name", sort: "desc", label: "Z to A" },
-            { field: "createdAt", sort: "desc", label: "Recently added first" },
-            { field: "createdAt", sort: "asc", label: "Recently added last" },
+            { field: "createdAt", sort: "asc", label: "Recently added first" },
+            { field: "createdAt", sort: "desc", label: "Recently added last" },
           ]}
         />
 
@@ -184,7 +184,7 @@ const Pickers = () => {
           }}
           sortModel={sortModel as Array<GridSortItem>}
           onSortModelChange={(model) => {
-            setSortModel(model as any);
+            setSortModel(model as any)
           }}
           getRowId={(data) => data?._id}
           pageSizeOptions={[10, 20, 50, 100]}
@@ -197,7 +197,7 @@ const Pickers = () => {
         // Replace with Picker detail
       )}
     </BasicHome>
-  );
+  )
 };
 
 export default Pickers;

@@ -11,13 +11,14 @@ import {
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 
 import BasicHome from "layouts/BasicHome";
-import { MagnifyingGlass, Plant } from "@phosphor-icons/react";
+import { MagnifyingGlass } from "@phosphor-icons/react";
 import formatDate from "shared/formatDate";
 import { getSeasons } from "api/seasons";
 import { useQuery } from "react-query";
 import useQueryCache from "hooks/useQueryCache";
 import { useState } from "react";
 import { useUser } from "context/UserProvider";
+import CreateSeason from "components/seasons/CreateSeason";
 
 const columns: GridColDef[] = [
   {
@@ -84,11 +85,7 @@ const Seasons = () => {
         { title: user.farm.name, href: "#" },
         { title: "Harvest Seasons", href: "" },
       ]}
-      actions={
-        <Button variant="contained" endIcon={<Plant />}>
-          Add New Season
-        </Button>
-      }
+      actions={<CreateSeason />}
     >
       <Box display="flex" justifyContent="space-between">
         <FormControl>
