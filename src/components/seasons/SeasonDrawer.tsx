@@ -1,10 +1,19 @@
-import { Box, Drawer, DrawerProps } from "@mui/material";
+import {
+  Alert,
+  Box,
+  Button,
+  Drawer,
+  DrawerProps,
+  InputLabel,
+  TextField,
+  Typography,
+} from "@mui/material";
 import { deleteSeason, getSeasonById, upsertSeason } from "api/seasons";
 import { useAlert } from "context/AlertProvider";
 import useQueryCache from "hooks/useQueryCache";
 import { ISeason } from "project-2-types/dist/interface";
 import { useState } from "react";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { useIntl } from "react-intl";
 import { useMutation, useQuery } from "react-query";
 
@@ -33,7 +42,7 @@ const SeasonDrawer = ({ dismiss, seasonId, ...props }: SeasonDrawerProps) => {
     control,
     handleSubmit,
     reset,
-    getValues,
+    // getValues,
     formState: { isDirty, errors },
   } = useForm<ISeasonForm>({
     mode: "all",
@@ -43,7 +52,7 @@ const SeasonDrawer = ({ dismiss, seasonId, ...props }: SeasonDrawerProps) => {
     // resolver: validateResolver(SeasonSchema), TODO: Validate schema
   });
 
-  const seasonData = getValues();
+  //   const seasonData = getValues();
 
   const { isLoading: isLoadingDetail } = useQuery({
     queryKey: GET_DETAIL_QUERY_KEY,
@@ -89,7 +98,7 @@ const SeasonDrawer = ({ dismiss, seasonId, ...props }: SeasonDrawerProps) => {
     dismiss();
   };
 
-  const handleCreateSuccess = (created: ISeason) => {
+  const handleCreateSuccess = (created: ISeason & { _id: string }) => {
     createCache(created);
     showAlert(
       intl.formatMessage({
@@ -101,7 +110,7 @@ const SeasonDrawer = ({ dismiss, seasonId, ...props }: SeasonDrawerProps) => {
     onCreateSeasonClose();
   };
 
-  const handleUpdateSuccess = (updated: ISeason) => {
+  const handleUpdateSuccess = (updated: ISeason & { _id: string }) => {
     updateCache(updated);
     showAlert(
       intl.formatMessage({
@@ -142,7 +151,7 @@ const SeasonDrawer = ({ dismiss, seasonId, ...props }: SeasonDrawerProps) => {
   });
 
   const onSubmit = (data: ISeasonForm) => {
-    saveSeasonMutation({ ...data, seasonId });
+    saveSeasonMutation({ ...data, seasonId: seasonId || "" });
   };
 
   const onDelete = () => {
@@ -156,10 +165,118 @@ const SeasonDrawer = ({ dismiss, seasonId, ...props }: SeasonDrawerProps) => {
       padding="3rem"
       gap={3}
       width={600}
-    ></Box>
+    >
+      <Typography variant="h1">
+        {intl.formatMessage(
+          {
+            id: "pickers.detail.title",
+            defaultMessage:
+              "{isEdit, plural, one {Edit Picker} other {Add Picker} }",
+          },
+          { isEdit: Number(!!seasonId) }
+        )}
+      </Typography>
+      <Controller
+        control={control}
+        name="name"
+        render={({ field }) => {
+          return (
+            <Box display="flex" flexDirection="column" gap={1}>
+              <InputLabel htmlFor="picker-name-input">
+                {intl.formatMessage({
+                  id: "pickers.create.form.name.label",
+                  defaultMessage: "Name",
+                })}
+                *
+              </InputLabel>
+              <TextField
+                {...field}
+                id="picker-name-input"
+                variant="outlined"
+                size="small"
+                error={!!errors.name}
+                helperText={errors.name?.message}
+              />
+            </Box>
+          );
+        }}
+      />
+
+      <Box display="flex" justifyContent="space-between">
+        <Button
+          disabled={isLoading || isDeleting}
+          onClick={seasonId ? hideEdit : onCreateSeasonClose}
+        >
+          {intl.formatMessage({
+            id: "button.cancel",
+            defaultMessage: "Cancel",
+          })}
+        </Button>
+
+        <Button
+          variant="contained"
+          onClick={handleSubmit(onSubmit)}
+          disabled={isLoading || !isDirty || isDeleting}
+        >
+          {intl.formatMessage(
+            {
+              id: "pickers.button.save",
+              defaultMessage:
+                "{isLoading, plural, one {Loading...} other {Save} }",
+            },
+            { isLoading: Number(isLoading) }
+          )}
+        </Button>
+      </Box>
+
+      {/* TODO: add confirmation modal later, we probably will standardize the way we handle the delete after design has defined that */}
+      {!!seasonId && (
+        <Box display="flex" flexDirection="column" gap={4}>
+          <Typography variant="h2">
+            {intl.formatMessage({
+              id: "danger.zone.label",
+              defaultMessage: "Danger Zone",
+            })}
+          </Typography>
+          <Alert
+            severity="error"
+            variant="outlined"
+            action={
+              <Button color="error" variant="text" onClick={onDelete}>
+                {intl.formatMessage(
+                  {
+                    id: "pickers.button.delete",
+                    defaultMessage:
+                      "{isDeleting, plural, one {Deleting...} other {Delete} }",
+                  },
+                  { isDeleting: Number(isDeleting) }
+                )}
+              </Button>
+            }
+            sx={{ display: "flex", alignItems: "center" }}
+          >
+            {intl.formatMessage({
+              id: "pickers.delete.label",
+              defaultMessage: "Delete picker data",
+            })}
+          </Alert>
+        </Box>
+      )}
+    </Box>
   );
 
-  const seasonDetail = <Box></Box>;
+  const seasonDetail = (
+    <Box>
+      <Box display="flex" flexDirection="column" alignItems="flex-end">
+        <Button variant="contained" onClick={showEdit}>
+          {intl.formatMessage({
+            id: "button.edit",
+            defaultMessage: "Edit",
+          })}
+        </Button>
+      </Box>
+    </Box>
+  );
 
   return (
     <Drawer

@@ -11,7 +11,7 @@ import {
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 
 import BasicHome from "layouts/BasicHome";
-import { MagnifyingGlass, Plant } from "@phosphor-icons/react";
+import { MagnifyingGlass } from "@phosphor-icons/react";
 import formatDate from "shared/formatDate";
 import { getSeasons } from "api/seasons";
 import { useQuery } from "react-query";
