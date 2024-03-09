@@ -6,45 +6,61 @@ import {
   Drawer,
   DrawerProps,
   FormControl,
+  FormHelperText,
   InputLabel,
   MenuItem,
   Select,
   TextField,
   Typography,
-} from "@mui/material";
-import { DatePicker } from "@mui/x-date-pickers";
-import { deleteSeason, getSeasonById, upsertSeason } from "api/seasons";
-import { useAlert } from "context/AlertProvider";
-import dayjs, { Dayjs } from "dayjs";
-import useQueryCache from "hooks/useQueryCache";
+} from "@mui/material"
+import { DatePicker } from "@mui/x-date-pickers"
+import { getCurrencies } from "api/currencies"
+import { getProducts } from "api/products"
+import { deleteSeason, getSeasonById, upsertSeason } from "api/seasons"
+import { getUnits } from "api/units"
+import { useAlert } from "context/AlertProvider"
+import { useUser } from "context/UserProvider"
+import dayjs, { Dayjs } from "dayjs"
+import useQueryCache from "hooks/useQueryCache"
 import {
   ISeasonRequest,
   ISeasonResponse,
   PayrollTimeframeEnum,
-} from "project-2-types/dist";
-import { useState } from "react";
-import { Controller, useForm } from "react-hook-form";
-import { useIntl } from "react-intl";
-import { useMutation, useQuery } from "react-query";
-import { Display } from "ui/Typography";
+} from "project-2-types/dist"
+import { useState } from "react"
+import { Controller, useForm } from "react-hook-form"
+import { useIntl } from "react-intl"
+import { useMutation, useQuery } from "react-query"
+import { Display } from "ui/Typography"
 
 const payrollTimeframeList = (
   Object.keys(PayrollTimeframeEnum) as Array<keyof typeof PayrollTimeframeEnum>
-).map((key) => ({ value: key, label: PayrollTimeframeEnum[key] }));
+).map((key) => ({ value: key, label: PayrollTimeframeEnum[key] }))
 
 type SeasonDrawerProps = DrawerProps & {
-  seasonId?: string;
-  dismiss: () => void;
-};
+  seasonId?: string
+  dismiss: () => void
+}
 
-interface IProductSchema {
-  _id: string;
-  name: string;
+interface IProduct {
+  _id: string
+  name: string
+}
+
+interface IUnit {
+  _id: string
+  name: string
+}
+
+interface ICurrency {
+  _id: string
+  name: string
 }
 
 const SeasonDrawer = ({ dismiss, seasonId, ...props }: SeasonDrawerProps) => {
-  const intl = useIntl();
-  const { showAlert } = useAlert();
+  const intl = useIntl()
+  const { showAlert } = useAlert()
+  const { user } = useUser()
   const {
     GET_DETAIL_QUERY_KEY,
     UPDATE_MUTATION_KEY,
@@ -52,32 +68,41 @@ const SeasonDrawer = ({ dismiss, seasonId, ...props }: SeasonDrawerProps) => {
     createCache,
     updateCache,
     deleteCache,
-  } = useQueryCache("seasons", seasonId);
+  } = useQueryCache("seasons", seasonId)
 
-  const [showEditForm, setShowEditForm] = useState<boolean>(!seasonId);
+  const { GET_DETAIL_QUERY_KEY: GET_PRODUCTS_KEY } = useQueryCache("products")
 
+  const { GET_DETAIL_QUERY_KEY: GET_UNITS_KEY } = useQueryCache("units")
+
+  const { GET_DETAIL_QUERY_KEY: GET_CURRENCY_KEY } = useQueryCache("currencies")
+
+  const [showEditForm, setShowEditForm] = useState<boolean>(!seasonId)
+
+  const [startDate, setStartDate] = useState<Dayjs | null>(dayjs())
+  const [products, setProducts] = useState<Array<IProduct>>([])
+  const [currencies, setCurrencies] = useState<Array<ICurrency>>([])
+  const [units, setUnits] = useState<Array<IUnit>>([])
   const {
     control,
     handleSubmit,
     reset,
-    // getValues,
     formState: { isDirty, errors },
   } = useForm<ISeasonRequest>({
     mode: "all",
     defaultValues: {
       name: "",
+      startDate: new Date().getTime(),
+      farmId: user.farm._id,
     },
     // resolver: validateResolver(SeasonSchema), TODO: Validate schema
-  });
-
-  //   const seasonData = getValues();
+  })
 
   const { isLoading: isLoadingDetail } = useQuery({
     queryKey: GET_DETAIL_QUERY_KEY,
     queryFn: () => getSeasonById(seasonId),
     enabled: !!seasonId,
     onSuccess: (result) => {
-      reset(result);
+      reset(result)
     },
     onError: () => {
       showAlert(
@@ -86,18 +111,51 @@ const SeasonDrawer = ({ dismiss, seasonId, ...props }: SeasonDrawerProps) => {
           defaultMessage: "Oops! Information couldn't be displayed.",
         }),
         "error"
-      );
+      )
     },
-  });
+  })
+
+  const { isLoading: isLoadingProducts } = useQuery({
+    queryKey: GET_PRODUCTS_KEY,
+    queryFn: getProducts,
+    onSuccess: (result) => {
+      setProducts(result)
+    },
+    onError: (error) => {
+      console.log(error)
+    },
+  })
+
+  const { isLoading: isLoadingUnits } = useQuery({
+    queryKey: GET_UNITS_KEY,
+    queryFn: getUnits,
+    onSuccess: (result) => {
+      setUnits(result)
+    },
+    onError: (error) => {
+      console.log(error)
+    },
+  })
+
+  const { isLoading: isLoadingCurrency } = useQuery({
+    queryKey: GET_CURRENCY_KEY,
+    queryFn: getCurrencies,
+    onSuccess: (result) => {
+      setCurrencies(result)
+    },
+    onError: (error) => {
+      console.log(error)
+    },
+  })
 
   const { mutate: saveSeasonMutation, isLoading } = useMutation({
     mutationKey: seasonId ? UPDATE_MUTATION_KEY : CREATE_MUTATION_KEY,
     mutationFn: upsertSeason,
     onSuccess: (result) => {
       if (seasonId) {
-        handleUpdateSuccess(result);
+        handleUpdateSuccess(result)
       } else {
-        handleCreateSuccess(result);
+        handleCreateSuccess(result)
       }
     },
     onError: () => {
@@ -107,55 +165,55 @@ const SeasonDrawer = ({ dismiss, seasonId, ...props }: SeasonDrawerProps) => {
           defaultMessage: "Oops! The season couldn't be saved.",
         }),
         "error"
-      );
+      )
     },
-  });
+  })
 
   const onCreateSeasonClose = () => {
-    reset();
-    dismiss();
-  };
+    reset()
+    dismiss()
+  }
 
   const handleCreateSuccess = (created: ISeasonResponse & { _id: string }) => {
-    createCache(created);
+    createCache(created)
     showAlert(
       intl.formatMessage({
         id: "seasons.create.season.response.success",
         defaultMessage: "The season was created successfully",
       }),
       "success"
-    );
-    onCreateSeasonClose();
-  };
+    )
+    onCreateSeasonClose()
+  }
 
   const handleUpdateSuccess = (updated: ISeasonResponse & { _id: string }) => {
-    updateCache(updated);
+    updateCache(updated)
     showAlert(
       intl.formatMessage({
         id: "seasons.update.season.response.success",
         defaultMessage: "The season was updated successfully",
       }),
       "success"
-    );
-    hideEdit();
-  };
+    )
+    hideEdit()
+  }
 
-  const showEdit = () => setShowEditForm(true);
-  const hideEdit = () => setShowEditForm(false);
+  const showEdit = () => setShowEditForm(true)
+  const hideEdit = () => setShowEditForm(false)
 
   const { mutate: deleteSeasonMutation, isLoading: isDeleting } = useMutation({
     mutationKey: ["pickers", "delete", seasonId],
     mutationFn: deleteSeason,
     onSuccess: (result) => {
-      deleteCache(result);
+      deleteCache(result)
       showAlert(
         intl.formatMessage({
           id: "seasons.delete.season.response.success",
           defaultMessage: "The season was deleted successfully.",
         }),
         "success"
-      );
-      dismiss();
+      )
+      dismiss()
     },
     onError: () => {
       showAlert(
@@ -164,25 +222,17 @@ const SeasonDrawer = ({ dismiss, seasonId, ...props }: SeasonDrawerProps) => {
           defaultMessage: "Oops! The season couldn't be deleted.",
         }),
         "error"
-      );
+      )
     },
-  });
+  })
 
   const onSubmit = (data: ISeasonRequest) => {
-    saveSeasonMutation({ ...data, seasonId: seasonId || "" });
-  };
+    saveSeasonMutation({ ...data, seasonId: seasonId || "" })
+  }
 
   const onDelete = () => {
-    deleteSeasonMutation(seasonId);
-  };
-
-  const [season, setSeason] = useState<ISeasonResponse | null>(null);
-  const [startDate, setStartDate] = useState<Dayjs | null>(dayjs());
-  // const [endDate, setEndDate] = useState<Dayjs | null>(null);
-  const [products, setProducts] = useState<Array<IProductSchema>>([]);
-  const [product, setProduct] = useState<IProductSchema | null>(null);
-  const [units, setUnits] = useState<Array<IProductSchema>>([]);
-  const [unit, setUnit] = useState<IProductSchema | null>(null);
+    deleteSeasonMutation(seasonId)
+  }
 
   const seasonForm = (
     <Box
@@ -224,7 +274,7 @@ const SeasonDrawer = ({ dismiss, seasonId, ...props }: SeasonDrawerProps) => {
                 helperText={errors.name?.message}
               />
             </Box>
-          );
+          )
         }}
       />
 
@@ -246,14 +296,13 @@ const SeasonDrawer = ({ dismiss, seasonId, ...props }: SeasonDrawerProps) => {
                 value={startDate}
                 slotProps={{ textField: { size: "small" } }}
                 onChange={(newValue) => {
-                  setStartDate(newValue);
+                  setStartDate(newValue)
                 }}
               />
             </Box>
-          );
+          )
         }}
       />
-
       <Controller
         control={control}
         name="payrollTimeframe"
@@ -272,25 +321,24 @@ const SeasonDrawer = ({ dismiss, seasonId, ...props }: SeasonDrawerProps) => {
                   {...field}
                   id="season-payroll-timeframe-input"
                   size="small"
-                  //   error={!!errors.payrollTimeframe}
+                  error={!!errors.payrollTimeframe}
                 >
                   {payrollTimeframeList?.map(({ value, label }) => {
                     return (
                       <MenuItem key={value} value={value}>
                         {label}
                       </MenuItem>
-                    );
+                    )
                   })}
                 </Select>
-                {/* <FormHelperText error>
+                <FormHelperText error>
                   {errors.payrollTimeframe?.message}
-                </FormHelperText> */}
+                </FormHelperText>
               </FormControl>
             </Box>
-          );
+          )
         }}
       />
-      {/* TODO: use free solo with text: https://mui.com/material-ui/react-autocomplete/#creatable */}
       <Controller
         control={control}
         name="productId"
@@ -299,40 +347,33 @@ const SeasonDrawer = ({ dismiss, seasonId, ...props }: SeasonDrawerProps) => {
             <Box display="flex" flexDirection="column" gap={1}>
               <Autocomplete
                 id="season-product-combo-box"
-                freeSolo
-                options={products.map(
-                  (product: { _id: string; name: string }) => ({
-                    id: product._id,
-                    label: product?.name,
-                  })
-                )}
+                options={products.map((product) => ({
+                  id: product._id,
+                  label: product.name,
+                }))}
+                loading={isLoadingProducts}
+                // TODO: use free solo with text: https://mui.com/material-ui/react-autocomplete/#creatable
                 value={value ? { id: value, label: value } : undefined}
                 onChange={(_, newValue) => {
-                  onChange(newValue?.id);
-                  setProduct(
-                    products?.find(
-                      (s: { _id: string }) => s._id === (newValue?.id ?? "")
-                    ) ?? null
-                  );
+                  onChange(newValue?.id)
                 }}
-                getOptionLabel={(option) => option.label}
                 renderInput={(params) => (
                   <div>
                     <InputLabel htmlFor="season-product">Product*</InputLabel>
                     <TextField
                       {...params}
                       id="season-product"
-                      // helperText={errors.seasonId?.message}
-                      // error={!!errors.seasonId}
+                      size="small"
+                      helperText={errors.productId?.message}
+                      error={!!errors.productId}
                     />
                   </div>
                 )}
               />
             </Box>
-          );
+          )
         }}
       />
-      {/* TODO: use free solo with text: https://mui.com/material-ui/react-autocomplete/#creatable */}
       <Controller
         control={control}
         name="unitId"
@@ -341,38 +382,101 @@ const SeasonDrawer = ({ dismiss, seasonId, ...props }: SeasonDrawerProps) => {
             <Box display="flex" flexDirection="column" gap={1}>
               <Autocomplete
                 id="season-unit-combo-box"
-                freeSolo
-                options={units.map((unit: { _id: string; name: string }) => ({
+                options={units.map((unit) => ({
                   id: unit._id,
                   label: unit?.name,
                 }))}
+                loading={isLoadingUnits}
+                // TODO: use free solo with text: https://mui.com/material-ui/react-autocomplete/#creatable
                 value={value ? { id: value, label: value } : undefined}
                 onChange={(_, newValue) => {
-                  onChange(newValue?.id);
-                  setUnit(
-                    units?.find(
-                      (s: { _id: string }) => s._id === (newValue?.id ?? "")
-                    ) ?? null
-                  );
+                  onChange(newValue?.id)
                 }}
-                getOptionLabel={(option) => option.label}
                 renderInput={(params) => (
                   <div>
                     <InputLabel htmlFor="season-unit">Unit*</InputLabel>
                     <TextField
                       {...params}
                       id="season-unit"
-                      // helperText={errors.seasonId?.message}
-                      // error={!!errors.seasonId}
+                      size="small"
+                      helperText={errors.unitId?.message}
+                      error={!!errors.unitId}
                     />
                   </div>
                 )}
               />
             </Box>
-          );
+          )
         }}
       />
 
+      <Controller
+        control={control}
+        name="currencyId"
+        render={({ field: { onChange, value } }) => {
+          return (
+            <Box display="flex" flexDirection="column" gap={1}>
+              <Autocomplete
+                id="season-currency-combo-box"
+                options={currencies.map((currency) => ({
+                  id: currency._id,
+                  label: currency.name,
+                }))}
+                // TODO: use free solo with text: https://mui.com/material-ui/react-autocomplete/#creatable
+                value={value ? { id: value, label: value } : undefined}
+                onChange={(_, newValue) => {
+                  onChange(newValue?.id)
+                }}
+                loading={isLoadingCurrency}
+                renderInput={(params) => (
+                  <div>
+                    <InputLabel htmlFor="season-currency">Currency*</InputLabel>
+                    <TextField
+                      {...params}
+                      size="small"
+                      id="season-currency"
+                      helperText={errors.currencyId?.message}
+                      error={!!errors.currencyId}
+                    />
+                  </div>
+                )}
+              />
+            </Box>
+          )
+        }}
+      />
+
+      <Controller
+        control={control}
+        name="price"
+        render={({ field: { ref, value, onChange } }) => {
+          return (
+            <Box display="flex" flexDirection="column" gap={1}>
+              <InputLabel htmlFor="season-price-input">
+                {intl.formatMessage({
+                  id: "seasons.create.form.price.label",
+                  defaultMessage: "Price",
+                })}
+                *
+              </InputLabel>
+              <TextField
+                ref={ref}
+                value={value}
+                onChange={({ target }) => {
+                  if (target.value) {
+                    onChange(+target.value)
+                  }
+                }}
+                id="season-price-input"
+                variant="outlined"
+                size="small"
+                error={!!errors.name}
+                helperText={errors.name?.message}
+              />
+            </Box>
+          )
+        }}
+      />
       <Box display="flex" justifyContent="space-between">
         <Button
           disabled={isLoading || isDeleting}
@@ -399,7 +503,6 @@ const SeasonDrawer = ({ dismiss, seasonId, ...props }: SeasonDrawerProps) => {
           )}
         </Button>
       </Box>
-
       {/* TODO: add confirmation modal later, we probably will standardize the way we handle the delete after design has defined that */}
       {!!seasonId && (
         <Box display="flex" flexDirection="column" gap={4}>
@@ -434,7 +537,7 @@ const SeasonDrawer = ({ dismiss, seasonId, ...props }: SeasonDrawerProps) => {
         </Box>
       )}
     </Box>
-  );
+  )
 
   const seasonDetail = (
     <Box>
@@ -447,7 +550,7 @@ const SeasonDrawer = ({ dismiss, seasonId, ...props }: SeasonDrawerProps) => {
         </Button>
       </Box>
     </Box>
-  );
+  )
 
   return (
     <Drawer
@@ -457,7 +560,7 @@ const SeasonDrawer = ({ dismiss, seasonId, ...props }: SeasonDrawerProps) => {
     >
       {!isLoadingDetail && <>{showEditForm ? seasonForm : seasonDetail}</>}
     </Drawer>
-  );
-};
+  )
+}
 
-export default SeasonDrawer;
+export default SeasonDrawer
