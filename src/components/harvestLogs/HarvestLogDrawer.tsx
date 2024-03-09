@@ -20,21 +20,19 @@ import {
   TableHead,
   TableRow,
   TextField,
-  Typography,
 } from "@mui/material";
 import { Controller, useForm } from "react-hook-form";
 import { createHarvestLog, getHarvestLogById } from "api/harvestLogs";
 import { useMutation, useQuery } from "react-query";
-
 import HarvestLogSchema from "project-2-types/dist/ajv/harvest-log.ajv";
-import { IHarvestLogResponse } from "project-2-types/dist/interface";
-import { IPicker } from "project-2-types/dist/interface";
+import { IPicker, IHarvestLogResponse } from "project-2-types/dist/interface";
 import { ajvResolver } from "@hookform/resolvers/ajv";
 import { getPickers } from "api/pickers";
 import { getSeasons } from "api/seasons";
 import { useAlert } from "context/AlertProvider";
 import useQueryCache from "hooks/useQueryCache";
 import { useState } from "react";
+import { BodyText, Display } from "ui/Typography";
 
 function formatDate(date: number): string {
   const formattedDate = new Date(date).toLocaleDateString("en-US", {
@@ -244,7 +242,7 @@ const HarvestLogDrawer = ({
       gap={3}
       width={600}
     >
-      <Typography variant="h1">Add Harvest Log</Typography>
+      <Display>Add Harvest Log</Display>
       <Controller
         control={control}
         name="seasonId"
@@ -459,8 +457,8 @@ const HarvestLogDrawer = ({
         justifyContent="flex-start"
       >
         <Box display="flex" flexDirection="column">
-          <Typography variant="body1">{"PICKER"}</Typography>
-          <Typography variant="h1">{harvestLog?.picker?.name}</Typography>
+          <BodyText>PICKER</BodyText>
+          <Display>{harvestLog?.picker?.name}</Display>
         </Box>
 
         <Box display="flex" flexDirection="column">

@@ -13,7 +13,11 @@ const CreatePicker = () => {
 
   return (
     <div>
-      <Button variant="contained" onClick={showDrawer} endIcon={<UserPlus />}>
+      <Button
+        variant="contained"
+        onClick={showDrawer}
+        endIcon={<UserPlus size={20} />}
+      >
         <FormattedMessage
           id="pickers.create.button.text"
           defaultMessage="Add New Picker"
