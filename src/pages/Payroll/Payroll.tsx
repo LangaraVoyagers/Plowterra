@@ -1,97 +1,151 @@
-
-import { useState } from 'react';
+import { useState } from "react";
 import { Box, Button } from "@mui/material";
-import { DataGrid, GridColDef } from "@mui/x-data-grid";
-import { FormattedMessage, useIntl } from "react-intl";
+import { SelectChangeEvent } from '@mui/material/Select';
+
+import { DataGrid, GridColDef, GridRenderCellParams } from "@mui/x-data-grid";
+import { FormattedDate, FormattedMessage, useIntl } from "react-intl";
 import BasicHome from "layouts/BasicHome";
-import useQueryCache from 'hooks/useQueryCache';
-import { useQuery } from 'react-query';
-import { getPayrollHistory } from 'api/payroll';
+import useQueryCache from "hooks/useQueryCache";
+import { useQuery } from "react-query";
+import { getPayrollHistory } from "api/payroll";
 import { CaretRight, User } from "@phosphor-icons/react";
 import { useUser } from "context/UserProvider";
-  
-const columns : GridColDef[] = [
+import { Select, MenuItem } from "@mui/material";
+import { useNavigate } from "react-router-dom";
+import React from "react";
+
+const columns: GridColDef[] = [
   {
     field: "period",
-    headerName: "Pay Period",
+    headerName: "PAY PERIOD",
     width: 200,
-    renderCell: (params) => {
-      const startDate = formatDate(params.row.startDate);
-      const endDate = formatDate(params.row.endDate);
+    renderCell: (params: GridRenderCellParams) => {
       return (
         <span>
-          {`${startDate} - ${endDate}`} 
+          <FormattedDate
+            value={params.row.startDate}
+            month="short"
+            day="numeric"
+          />
+          -
+          <FormattedDate
+            value={params.row.endDate}
+            month="short"
+            day="numeric"
+          />
         </span>
       );
     },
   },
   {
     field: "totals.grossAmount",
-    headerName: "Total Amount ($)",
+    headerName: "TOTAL NET PAY ($)",
     width: 150,
     renderCell: (params) => <span>{params.row.totals.grossAmount}</span>,
   },
   {
     field: "totals.collectedAmount",
-    headerName: "Total harvest",
+    headerName: "HARVEST AMOUNT",
     width: 150,
-    renderCell: (params) => <span>{params.row.totals.collectedAmount} {params.row.season.unit}</span>,
+    renderCell: (params) => (
+      <span>
+        {params.row.totals.collectedAmount} {params.row.season.unit}
+      </span>
+    ),
   },
   {
     field: "totals.deductions",
-    headerName: "Deductions ($)",
+    headerName: "DEDUCTIONS ($)",
     width: 150,
     renderCell: (params) => <span>{params.row.totals.deductions}</span>,
   },
-  { field: "pickersCount",
-  headerName: "Pickers",
-  width: 150, 
-  renderCell: (params) => <span><User /> {params.row.pickersCount}</span>,
+  {
+    field: "pickersCount",
+    headerName: "PICKERS",
+    width: 150,
+    renderCell: (params) => (
+      <span>
+        <User /> {params.row.pickersCount}
+      </span>
+    ),
   },
-  { 
-      field: "endDate", 
-      headerName: "Pay date", 
-      width: 150, 
-      renderCell: (params) => (
-        <span>{formatDate(params.value)}</span>
-      ),
-    },
+  {
+    field: "endDate",
+    headerName: "PAY DATE",
+    width: 150,
+    renderCell: (params) => <span>{formatDate(params.value)}</span>,
+  },
 ];
 
-function formatDate(
-  value: number | Date
-): string {
+function formatDate(value: number | Date): string {
   const date = new Date(value);
-  
+
   const month = date.toLocaleString("default", { month: "short" });
   const day = date.getDate();
 
-  return `${month} ${day}`
+  return `${month} ${day}`;
 }
 
+const Payroll = () => {
+  const [selectedIndex, setSelectedIndex] = useState(0);
+  const [uniqueSeasonId, setUniqueSeasonId] = useState<string[]>([]);
+  const navigate = useNavigate();
+  const { user } = useUser();
+  const intl = useIntl();
+  const [payrollData, setPayrollData] = useState([]);
+  const { GET_QUERY_KEY } = useQueryCache("payrolls");
 
+  const { isLoading, data } = useQuery({
+    queryKey: GET_QUERY_KEY,
+    queryFn: getPayrollHistory,
+    onSuccess: (results) => {
+      setPayrollData(results);
+    },
+    onError: (error) => {
+      console.log(error);
+    },
+  });
 
-  const Payroll = () => {
+  const handleSelectChange = (event: React.ChangeEvent<{ value: unknown }>) => {
+    const selectedValue = event.target.value as string;
+    const index = seasonOptions.findIndex(
+      (option) => option.props.value === selectedValue
+    );
+    setSelectedIndex(index);
+    setUniqueSeasonId([allSeasonId[index]]);
+  };
 
-    const { user } = useUser();
+  let seasonOptions: JSX.Element[] = [];
+  let uniqueSeasonName: string[] = [];
+  let allSeasonId: string[] = [];
+  let uniqueFarmId: string[] = [];
+  if (data && data.length > 0) {
+    uniqueSeasonName = [
+      ...new Set((data as any[]).map((item: any) => item.season.name)),
+    ];
+    allSeasonId = [
+      ...new Set((data as any[]).map((item: any) => item.season.id)),
+    ];
+    uniqueFarmId = [...new Set((data as any[]).map((item: any) => item.farm))];
+    seasonOptions = uniqueSeasonName.map((name: string) => (
+      <MenuItem key={name.toString()} value={name}>
+        {name}
+      </MenuItem>
+    ));
+  }
 
-    const intl = useIntl();
-    const [payrollData, setPayrollData] = useState([]);
-    const { GET_QUERY_KEY } = useQueryCache("payrolls");
+  const [selectedOption, setSelectedOption] = useState<unknown | null>(null);
 
-    const { isLoading } = useQuery({
-      queryKey: GET_QUERY_KEY,
-      queryFn: getPayrollHistory,
-      onSuccess: (results) => {
-        setPayrollData(results);
-      },
-      onError: (error) => {
-        console.log(error);
-      },
-    });
+  const handleSelectChange2 = (event2: React.ChangeEvent<{ value: unknown }>) => {
+    setSelectedOption(event2.target.value as unknown);
+    console.log(selectedOption);
+  };
 
-
-
+  const handleBothChanges = React.useCallback((event: SelectChangeEvent<any>) => {
+    handleSelectChange(event);
+    handleSelectChange2(event2);
+  }, [handleSelectChange, handleSelectChange2]);
+  
   return (
     <BasicHome
       title={intl.formatMessage({ id: "payrolls", defaultMessage: "Payroll" })}
@@ -109,8 +163,36 @@ function formatDate(
           href: "",
         },
       ]}
-      actions={<Button variant="contained" endIcon={<CaretRight />}>Start a payroll</Button>}
+      actions={
+        <Button
+          variant="contained"
+          onClick={() =>
+            navigate("/payroll/preview", {
+              state: { uniqueFarmId, uniqueSeasonId },
+            })
+          }
+          disabled={uniqueSeasonId.length === 0}
+        >
+          Start a payroll
+          <CaretRight size={25} />
+        </Button>
+      }
     >
+      <Box display="flex" justifyContent="space-between" alignItems="center">
+        <h1>Payroll History</h1>
+        <Select
+          value={
+            selectedIndex !== null
+              ? seasonOptions[selectedIndex]?.props.value
+              : null
+          }
+          onChange={handleBothChanges}
+        >
+          <p>Season: </p>
+          {seasonOptions}
+        </Select>
+      </Box>
+
       <Box display="flex" flexGrow={1} pb={3}>
         <DataGrid
           rows={payrollData}

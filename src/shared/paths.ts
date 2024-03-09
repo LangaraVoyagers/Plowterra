@@ -4,5 +4,6 @@ const paths = {
   seasons: "/seasons",
   harvestLogs: "/harvest-logs",
   payroll: "/payroll",
+  preview: "/payroll/preview",
 };
 export default paths;

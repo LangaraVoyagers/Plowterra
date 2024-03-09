@@ -13,6 +13,8 @@ import Payroll from "pages/Payroll";
 import { UserProvider } from "context/UserProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import Preview from "pages/Preview";
+
 
 const router = createBrowserRouter([
   {
@@ -42,6 +44,10 @@ const router = createBrowserRouter([
       {
         path: paths.payroll,
         element: <Payroll />,
+      },
+      {
+        path: paths.preview,
+        element: <Preview />,
       },
     ],
   },
