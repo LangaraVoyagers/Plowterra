@@ -18,6 +18,7 @@ import { useQuery } from "react-query";
 import useQueryCache from "hooks/useQueryCache";
 import { useState } from "react";
 import { useUser } from "context/UserProvider";
+import CreateSeason from "components/seasons/CreateSeason";
 
 const columns: GridColDef[] = [
   {
@@ -84,11 +85,7 @@ const Seasons = () => {
         { title: user.farm.name, href: "#" },
         { title: "Harvest Seasons", href: "" },
       ]}
-      actions={
-        <Button variant="contained" endIcon={<Plant />}>
-          Add New Season
-        </Button>
-      }
+      actions={<CreateSeason />}
     >
       <Box display="flex" justifyContent="space-between">
         <FormControl>
