@@ -19,7 +19,6 @@ import {
   List,
   MenuItem,
   Select,
-  Typography,
 } from "@mui/material";
 import { CSSObject, Theme, styled } from "@mui/material/styles";
 import { LANGUAGES, useLocale } from "context/LocaleProvider";
@@ -34,6 +33,7 @@ import { Outlet } from "react-router-dom";
 import paths from "shared/paths";
 import { useState } from "react";
 import { useUser } from "context/UserProvider";
+import { BodyText } from "ui/Typography";
 
 const DRAWER_WIDTH = 240;
 
@@ -231,7 +231,7 @@ export default function MainLayout() {
         </Box>
 
         <Box display="flex" flexDirection="column" gap={2} p={2}>
-          <Typography>{user.name}</Typography>
+          <BodyText>{user.name}</BodyText>
           <FormControl fullWidth>
             <InputLabel id="language-label">Language</InputLabel>
 
