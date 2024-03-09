@@ -64,3 +64,16 @@ export const deleteSeason = async (seasonId?: string) => {
     throw error;
   }
 };
+
+export const closeSeason = async (seasonId?: string) => {
+  try {
+    const {
+      data: { data },
+    } = await axios.put(`${endpoints.seasons}/${seasonId}/close`)
+
+    return data
+  } catch (error) {
+    console.log({ error })
+    throw error
+  }
+}

@@ -222,7 +222,6 @@ const HarvestLogDrawer = ({
 
   const hideEdit = () => setShowEditForm(false);
 
-  console.log(errors);
   const onSubmit = (data: IHarvestLogForm) => {
     saveHarvestLogMutation({
       farmId: data.farmId,

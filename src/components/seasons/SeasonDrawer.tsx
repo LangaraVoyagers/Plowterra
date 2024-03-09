@@ -10,28 +10,49 @@ import {
   InputLabel,
   MenuItem,
   Select,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
   TextField,
-  Typography,
 } from "@mui/material"
 import { DatePicker } from "@mui/x-date-pickers"
 import { getCurrencies } from "api/currencies"
 import { getProducts } from "api/products"
-import { deleteSeason, getSeasonById, upsertSeason } from "api/seasons"
+import {
+  closeSeason,
+  deleteSeason,
+  getSeasonById,
+  upsertSeason,
+} from "api/seasons"
 import { getUnits } from "api/units"
 import { useAlert } from "context/AlertProvider"
 import { useUser } from "context/UserProvider"
 import dayjs, { Dayjs } from "dayjs"
 import useQueryCache from "hooks/useQueryCache"
 import {
+  ISeasonDeduction,
   ISeasonRequest,
-  ISeasonResponse,
   PayrollTimeframeEnum,
+  StatusEnum,
 } from "project-2-types/dist"
+import React from "react"
 import { useState } from "react"
 import { Controller, useForm } from "react-hook-form"
 import { useIntl } from "react-intl"
 import { useMutation, useQuery } from "react-query"
-import { Display } from "ui/Typography"
+import { Display, Label } from "ui/Typography"
+
+function formatDate(date: number): string {
+  const formattedDate = new Date(date).toLocaleDateString("en-US", {
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+  })
+  return formattedDate
+}
 
 const payrollTimeframeList = (
   Object.keys(PayrollTimeframeEnum) as Array<keyof typeof PayrollTimeframeEnum>
@@ -55,6 +76,20 @@ interface IUnit {
 interface ICurrency {
   _id: string
   name: string
+}
+
+interface ISeasonResponse {
+  name: string
+  startDate: number
+  endDate: number
+  payrollTimeframe: keyof typeof PayrollTimeframeEnum
+  price: number
+  status: keyof typeof StatusEnum
+  product: IProduct
+  currency: ICurrency
+  unit: IUnit
+  hasHarvestLog: boolean
+  deductions: Array<ISeasonDeduction>
 }
 
 const SeasonDrawer = ({ dismiss, seasonId, ...props }: SeasonDrawerProps) => {
@@ -82,6 +117,10 @@ const SeasonDrawer = ({ dismiss, seasonId, ...props }: SeasonDrawerProps) => {
   const [products, setProducts] = useState<Array<IProduct>>([])
   const [currencies, setCurrencies] = useState<Array<ICurrency>>([])
   const [units, setUnits] = useState<Array<IUnit>>([])
+  const [season, setSeason] = useState<ISeasonResponse>()
+
+  const showEdit = () => setShowEditForm(true)
+  const hideEdit = () => setShowEditForm(false)
   const {
     control,
     handleSubmit,
@@ -97,12 +136,18 @@ const SeasonDrawer = ({ dismiss, seasonId, ...props }: SeasonDrawerProps) => {
     // resolver: validateResolver(SeasonSchema), TODO: Validate schema
   })
 
+  const onCreateSeasonClose = () => {
+    reset()
+    dismiss()
+  }
+
+  // Get season by id
   const { isLoading: isLoadingDetail } = useQuery({
     queryKey: GET_DETAIL_QUERY_KEY,
     queryFn: () => getSeasonById(seasonId),
     enabled: !!seasonId,
     onSuccess: (result) => {
-      reset(result)
+      setSeason(result)
     },
     onError: () => {
       showAlert(
@@ -115,6 +160,7 @@ const SeasonDrawer = ({ dismiss, seasonId, ...props }: SeasonDrawerProps) => {
     },
   })
 
+  // Get all products
   const { isLoading: isLoadingProducts } = useQuery({
     queryKey: GET_PRODUCTS_KEY,
     queryFn: getProducts,
@@ -126,6 +172,7 @@ const SeasonDrawer = ({ dismiss, seasonId, ...props }: SeasonDrawerProps) => {
     },
   })
 
+  // Get all units
   const { isLoading: isLoadingUnits } = useQuery({
     queryKey: GET_UNITS_KEY,
     queryFn: getUnits,
@@ -137,6 +184,7 @@ const SeasonDrawer = ({ dismiss, seasonId, ...props }: SeasonDrawerProps) => {
     },
   })
 
+  // Get all currencies
   const { isLoading: isLoadingCurrency } = useQuery({
     queryKey: GET_CURRENCY_KEY,
     queryFn: getCurrencies,
@@ -148,6 +196,7 @@ const SeasonDrawer = ({ dismiss, seasonId, ...props }: SeasonDrawerProps) => {
     },
   })
 
+  // Create or update season
   const { mutate: saveSeasonMutation, isLoading } = useMutation({
     mutationKey: seasonId ? UPDATE_MUTATION_KEY : CREATE_MUTATION_KEY,
     mutationFn: upsertSeason,
@@ -157,6 +206,7 @@ const SeasonDrawer = ({ dismiss, seasonId, ...props }: SeasonDrawerProps) => {
       } else {
         handleCreateSuccess(result)
       }
+      setSeason(result)
     },
     onError: () => {
       showAlert(
@@ -169,10 +219,57 @@ const SeasonDrawer = ({ dismiss, seasonId, ...props }: SeasonDrawerProps) => {
     },
   })
 
-  const onCreateSeasonClose = () => {
-    reset()
-    dismiss()
-  }
+  // Delete season
+  const { mutate: deleteSeasonMutation, isLoading: isDeleting } = useMutation({
+    mutationKey: ["season", "delete", seasonId],
+    mutationFn: deleteSeason,
+    onSuccess: (result) => {
+      deleteCache(result)
+      showAlert(
+        intl.formatMessage({
+          id: "seasons.delete.season.response.success",
+          defaultMessage: "The season was deleted successfully.",
+        }),
+        "success"
+      )
+      dismiss()
+    },
+    onError: () => {
+      showAlert(
+        intl.formatMessage({
+          id: "seasons.delete.season.response.error",
+          defaultMessage: "Oops! The season couldn't be deleted.",
+        }),
+        "error"
+      )
+    },
+  })
+
+  // Close season
+  const { mutate: closeSeasonMutation, isLoading: isClosing } = useMutation({
+    mutationKey: ["season", "close", seasonId],
+    mutationFn: closeSeason,
+    onSuccess: (result) => {
+      updateCache(result)
+      showAlert(
+        intl.formatMessage({
+          id: "seasons.close.season.response.success",
+          defaultMessage: "The season was close successfully.",
+        }),
+        "success"
+      )
+      dismiss()
+    },
+    onError: () => {
+      showAlert(
+        intl.formatMessage({
+          id: "seasons.close.season.response.error",
+          defaultMessage: "Oops! The season couldn't be closed.",
+        }),
+        "error"
+      )
+    },
+  })
 
   const handleCreateSuccess = (created: ISeasonResponse & { _id: string }) => {
     createCache(created)
@@ -197,41 +294,16 @@ const SeasonDrawer = ({ dismiss, seasonId, ...props }: SeasonDrawerProps) => {
     )
     hideEdit()
   }
-
-  const showEdit = () => setShowEditForm(true)
-  const hideEdit = () => setShowEditForm(false)
-
-  const { mutate: deleteSeasonMutation, isLoading: isDeleting } = useMutation({
-    mutationKey: ["pickers", "delete", seasonId],
-    mutationFn: deleteSeason,
-    onSuccess: (result) => {
-      deleteCache(result)
-      showAlert(
-        intl.formatMessage({
-          id: "seasons.delete.season.response.success",
-          defaultMessage: "The season was deleted successfully.",
-        }),
-        "success"
-      )
-      dismiss()
-    },
-    onError: () => {
-      showAlert(
-        intl.formatMessage({
-          id: "seasons.delete.season.response.error",
-          defaultMessage: "Oops! The season couldn't be deleted.",
-        }),
-        "error"
-      )
-    },
-  })
-
   const onSubmit = (data: ISeasonRequest) => {
     saveSeasonMutation({ ...data, seasonId: seasonId || "" })
   }
 
   const onDelete = () => {
     deleteSeasonMutation(seasonId)
+  }
+
+  const onClose = () => {
+    closeSeasonMutation(seasonId)
   }
 
   const seasonForm = (
@@ -353,7 +425,14 @@ const SeasonDrawer = ({ dismiss, seasonId, ...props }: SeasonDrawerProps) => {
                 }))}
                 loading={isLoadingProducts}
                 // TODO: use free solo with text: https://mui.com/material-ui/react-autocomplete/#creatable
-                value={value ? { id: value, label: value } : undefined}
+                value={
+                  value
+                    ? {
+                        id: value,
+                        label: products.find((p) => p._id === value)?.name,
+                      }
+                    : undefined
+                }
                 onChange={(_, newValue) => {
                   onChange(newValue?.id)
                 }}
@@ -388,7 +467,14 @@ const SeasonDrawer = ({ dismiss, seasonId, ...props }: SeasonDrawerProps) => {
                 }))}
                 loading={isLoadingUnits}
                 // TODO: use free solo with text: https://mui.com/material-ui/react-autocomplete/#creatable
-                value={value ? { id: value, label: value } : undefined}
+                value={
+                  value
+                    ? {
+                        id: value,
+                        label: units.find((u) => u._id === value)?.name,
+                      }
+                    : undefined
+                }
                 onChange={(_, newValue) => {
                   onChange(newValue?.id)
                 }}
@@ -423,7 +509,11 @@ const SeasonDrawer = ({ dismiss, seasonId, ...props }: SeasonDrawerProps) => {
                   label: currency.name,
                 }))}
                 // TODO: use free solo with text: https://mui.com/material-ui/react-autocomplete/#creatable
-                value={value ? { id: value, label: value } : undefined}
+                value={
+                  value
+                    ? { id: value, label: currencies.find((c) => c._id)?.name }
+                    : undefined
+                }
                 onChange={(_, newValue) => {
                   onChange(newValue?.id)
                 }}
@@ -465,6 +555,8 @@ const SeasonDrawer = ({ dismiss, seasonId, ...props }: SeasonDrawerProps) => {
                 onChange={({ target }) => {
                   if (target.value) {
                     onChange(+target.value)
+                  } else {
+                    onChange(undefined)
                   }
                 }}
                 id="season-price-input"
@@ -505,13 +597,13 @@ const SeasonDrawer = ({ dismiss, seasonId, ...props }: SeasonDrawerProps) => {
       </Box>
       {/* TODO: add confirmation modal later, we probably will standardize the way we handle the delete after design has defined that */}
       {!!seasonId && (
-        <Box display="flex" flexDirection="column" gap={4}>
-          <Typography variant="h2">
+        <Box display="flex" flexDirection="column" gap={2} marginTop={4}>
+          <Display size="sm" component="h2">
             {intl.formatMessage({
               id: "danger.zone.label",
               defaultMessage: "Danger Zone",
             })}
-          </Typography>
+          </Display>
           <Alert
             severity="error"
             variant="outlined"
@@ -519,7 +611,7 @@ const SeasonDrawer = ({ dismiss, seasonId, ...props }: SeasonDrawerProps) => {
               <Button color="error" variant="text" onClick={onDelete}>
                 {intl.formatMessage(
                   {
-                    id: "pickers.button.delete",
+                    id: "seasons.button.delete",
                     defaultMessage:
                       "{isDeleting, plural, one {Deleting...} other {Delete} }",
                   },
@@ -530,8 +622,8 @@ const SeasonDrawer = ({ dismiss, seasonId, ...props }: SeasonDrawerProps) => {
             sx={{ display: "flex", alignItems: "center" }}
           >
             {intl.formatMessage({
-              id: "pickers.delete.label",
-              defaultMessage: "Delete picker data",
+              id: "seasons.delete.label",
+              defaultMessage: "Delete harvest season data",
             })}
           </Alert>
         </Box>
@@ -539,16 +631,139 @@ const SeasonDrawer = ({ dismiss, seasonId, ...props }: SeasonDrawerProps) => {
     </Box>
   )
 
+  const createSeasonDataList = React.useCallback(() => {
+    return [
+      ["Start Date", formatDate(season?.startDate || 0)],
+      ["End Date", formatDate(season?.endDate || 0)],
+      [
+        "Payroll Timeframe",
+        (season?.payrollTimeframe &&
+          PayrollTimeframeEnum[season?.payrollTimeframe]) ||
+          "",
+      ],
+      ["Product", season?.product?.name || ""],
+      ["Unit", season?.unit?.name || ""],
+      ["Price Per Unit", season?.price || ""],
+      ["Deductions", "-"],
+      ["Status", season?.status ? StatusEnum[season?.status] : ""],
+      ["Production Total", 0],
+      ["Gross Total", 0],
+      ["Deductions Total", 0],
+      ["Net Payment", 0],
+    ]
+  }, [season])
+
   const seasonDetail = (
-    <Box>
-      <Box display="flex" flexDirection="column" alignItems="flex-end">
-        <Button variant="contained" onClick={showEdit}>
-          {intl.formatMessage({
-            id: "button.edit",
-            defaultMessage: "Edit",
-          })}
+    <Box
+      display="flex"
+      flexDirection="column"
+      gap={3}
+      padding="3rem"
+      width={600}
+      height="100%"
+      flex={1}
+    >
+      <Box
+        display="flex"
+        flexDirection="column"
+        gap={3}
+        flex={1}
+        justifyContent="flex-start"
+      >
+        <Box display="flex" flexDirection="column">
+          <Label>Season</Label>
+          <Display>{season?.name}</Display>
+        </Box>
+
+        <Box display="flex" flexDirection="column">
+          <TableContainer>
+            <Table aria-label="Harvest log detail table">
+              <TableHead>
+                <TableRow>
+                  <TableCell>CATEGORY</TableCell>
+                  <TableCell>INFO</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {createSeasonDataList().map((row) => (
+                  <TableRow key={row[0]?.toString()}>
+                    <TableCell component="th" scope="row">
+                      {row[0].toString()}
+                    </TableCell>
+                    <TableCell>{row[1]?.toString()}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </Box>
+      </Box>
+      <Box display="flex" justifyContent="space-between" paddingBottom="3rem">
+        <Button variant="outlined" onClick={onCreateSeasonClose}>
+          Back
+        </Button>
+
+        <Button
+          variant="contained"
+          onClick={() => {
+            reset({
+              name: season?.name,
+              farmId: user.farm._id,
+              startDate: season?.startDate,
+              productId: season?.product._id,
+              currencyId: season?.currency._id,
+              unitId: season?.unit._id,
+              payrollTimeframe: season?.payrollTimeframe,
+              price: season?.price,
+              deductions: [], // TODO
+            })
+            showEdit()
+          }}
+        >
+          Edit
         </Button>
       </Box>
+      {/* TODO: add confirmation modal later, we probably will standardize the way we handle the delete after design has defined that */}
+      {!!seasonId && (
+        <Box display="flex" flexDirection="column" gap={2} paddingBottom="3rem">
+          <Display size="sm" component="h2">
+            {intl.formatMessage(
+              {
+                id: "close.season.zone.label",
+                defaultMessage:
+                  "{isClosing, plural, one {Loading...} other {Close season} }",
+              },
+              { isClosing: Number(isClosing) }
+            )}
+          </Display>
+          <Alert
+            severity="info"
+            variant="outlined"
+            action={
+              <Button
+                color="info"
+                variant="text"
+                onClick={onClose}
+                sx={{ flexShrink: 0 }}
+              >
+                {intl.formatMessage({
+                  id: "season.button.close",
+                  defaultMessage: "Close Season",
+                })}
+              </Button>
+            }
+            sx={{ display: "flex", alignItems: "center" }}
+          >
+            <Box maxWidth={300}>
+              {intl.formatMessage({
+                id: "season.close.description",
+                defaultMessage:
+                  "After closing this season, this cannot be updated, and you will not be able to add more harvest logs.",
+              })}
+            </Box>
+          </Alert>
+        </Box>
+      )}
     </Box>
   )
 

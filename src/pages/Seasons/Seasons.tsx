@@ -1,30 +1,32 @@
 import {
   Box,
-  Button,
   FormControl,
   InputAdornment,
   InputLabel,
   MenuItem,
   OutlinedInput,
   Select,
-} from "@mui/material";
-import { DataGrid, GridColDef } from "@mui/x-data-grid";
+} from "@mui/material"
+import { DataGrid, GridColDef, GridRenderCellParams } from "@mui/x-data-grid"
 
-import BasicHome from "layouts/BasicHome";
-import { MagnifyingGlass } from "@phosphor-icons/react";
-import formatDate from "shared/formatDate";
-import { getSeasons } from "api/seasons";
-import { useQuery } from "react-query";
-import useQueryCache from "hooks/useQueryCache";
-import { useState } from "react";
-import { useUser } from "context/UserProvider";
-import CreateSeason from "components/seasons/CreateSeason";
+import BasicHome from "layouts/BasicHome"
+import { MagnifyingGlass } from "@phosphor-icons/react"
+import formatDate from "shared/formatDate"
+import { getSeasons } from "api/seasons"
+import { useQuery } from "react-query"
+import useQueryCache from "hooks/useQueryCache"
+import { useState } from "react"
+import { useUser } from "context/UserProvider"
+import CreateSeason from "components/seasons/CreateSeason"
+import UpdateSeason from "components/seasons/UpdateSeason"
 
 const columns: GridColDef[] = [
   {
     field: "name",
     headerName: "Name",
     width: 250,
+    flex: 1,
+    minWidth: 250,
   },
   {
     field: "status",
@@ -56,9 +58,11 @@ const columns: GridColDef[] = [
     headerName: "",
     width: 150,
     sortable: false,
-    renderCell: () => <Button>View More</Button>,
+    renderCell: (data: GridRenderCellParams<{ _id: string }>) => {
+      return <UpdateSeason seasonId={data.row._id} />
+    },
   },
-];
+]
 
 const Seasons = () => {
   const { user } = useUser();
