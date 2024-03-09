@@ -28,6 +28,8 @@ import useQueryCache from "hooks/useQueryCache";
 import { useState } from "react";
 import { validateResolver } from "shared/ajv";
 import { BodyText, Display, Label } from "ui/Typography";
+import { useNavigate } from "react-router-dom";
+import paths from "shared/paths";
 
 interface IPickerForm extends Omit<IPicker, "id"> {}
 
@@ -46,6 +48,8 @@ type PickerDrawerProps = DrawerProps & {
 const PickerDrawer = ({ dismiss, pickerId, ...props }: PickerDrawerProps) => {
   const intl = useIntl();
   const { showAlert } = useAlert();
+  const navigate = useNavigate();
+
   const {
     GET_DETAIL_QUERY_KEY,
     UPDATE_MUTATION_KEY,
@@ -62,7 +66,7 @@ const PickerDrawer = ({ dismiss, pickerId, ...props }: PickerDrawerProps) => {
     handleSubmit,
     reset,
     getValues,
-    formState: { isDirty, errors },
+    formState: { errors },
   } = useForm<IPickerForm>({
     mode: "all",
     defaultValues: {
@@ -117,6 +121,7 @@ const PickerDrawer = ({ dismiss, pickerId, ...props }: PickerDrawerProps) => {
       );
     },
   });
+
 
   const onCreatePickerClose = () => {
     reset();
@@ -451,7 +456,7 @@ const PickerDrawer = ({ dismiss, pickerId, ...props }: PickerDrawerProps) => {
         <Button
           variant="contained"
           onClick={handleSubmit(onSubmit)}
-          disabled={isLoading || !isDirty || isDeleting}
+          disabled={isLoading || isDeleting}
         >
           {intl.formatMessage(
             {
@@ -580,12 +585,9 @@ const PickerDrawer = ({ dismiss, pickerId, ...props }: PickerDrawerProps) => {
         </Box>
 
         <Button
-          onClick={() =>
-            showAlert(
-              "🚧 Thank you for your patience. We are still working on this part 🚧",
-              "info"
-            )
-          }
+          onClick={() => {
+            navigate(`${paths.harvestLogs}?pickerId=${pickerId}`);
+          }}
         >
           {intl.formatMessage({
             id: "pickers.detail.button.view_harvest_log",

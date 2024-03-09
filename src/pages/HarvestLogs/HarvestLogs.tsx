@@ -5,20 +5,19 @@ import {
   GridRenderCellParams,
   GridValueGetterParams,
 } from "@mui/x-data-grid";
-import {
-  IHarvestLogResponse,
-} from "project-2-types/dist/interface";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { MagnifyingGlass } from "@phosphor-icons/react";
 import { getHarvestLogs } from "api/harvestLogs";
+import { getPickerById } from "api/pickers";
 import CreateHarvestLog from "components/harvestLogs/CreateHarvestLog";
 import UpdateHarvestLog from "components/harvestLogs/UpdateHarvestLog";
 import { useUser } from "context/UserProvider";
 import { Dayjs } from "dayjs";
 import useQueryCache from "hooks/useQueryCache";
 import BasicHome from "layouts/BasicHome";
+import {
+  IHarvestLogResponse,
+} from "project-2-types/dist/interface";
 import { useState } from "react";
 import { FormattedDate } from "react-intl";
 import { useQuery } from "react-query";
@@ -90,9 +89,19 @@ const HarvestLogs = () => {
     queryFn: () => getHarvestLogs({ pickerId }),
     onSuccess: (results) => {
       setHarvestLogs(results);
+    },
+    onError: (error) => {
+      console.log(error);
+    },
+  });
 
-      if (results?.length) {
-        setPicker(results[0].picker);
+  const { isLoading: isPickerLoading } = useQuery({
+    queryKey: ["pickers", "harvest-logs", pickerId],
+    queryFn: () => getPickerById(pickerId),
+    enabled: !!pickerId,
+    onSuccess: (results) => {
+      if (results?._id) {
+        setPicker(results);
       }
     },
     onError: (error) => {
@@ -113,26 +122,24 @@ const HarvestLogs = () => {
     >
       <Box display="flex" justifyContent="space-between">
         <FormControl>
-          <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <Box display="flex" gap={3}>
-              <DatePicker
-                label="Start Date"
-                value={startDate}
-                slotProps={{ textField: { size: "small" } }}
-                onChange={(newValue) => {
-                  setStartDate(newValue);
-                }}
-              />
-              <DatePicker
-                label="End Date"
-                value={endDate}
-                slotProps={{ textField: { size: "small" } }}
-                onChange={(newValue) => {
-                  setEndDate(newValue);
-                }}
-              />
-            </Box>
-          </LocalizationProvider>
+          <Box display="flex" gap={3}>
+            <DatePicker
+              label="Start Date"
+              value={startDate}
+              slotProps={{ textField: { size: "small" } }}
+              onChange={(newValue) => {
+                setStartDate(newValue);
+              }}
+            />
+            <DatePicker
+              label="End Date"
+              value={endDate}
+              slotProps={{ textField: { size: "small" } }}
+              onChange={(newValue) => {
+                setEndDate(newValue);
+              }}
+            />
+          </Box>
         </FormControl>
 
         <FormControl>
@@ -149,9 +156,9 @@ const HarvestLogs = () => {
       </Box>
       <Box display="flex" flexGrow={1} pb={3}>
         <DataGrid
-          rows={harvestLogs}
+          rows={harvestLogs ?? []}
           columns={columns}
-          loading={isLoading}
+          loading={isLoading || isPickerLoading}
           initialState={{
             pagination: {
               paginationModel: {
