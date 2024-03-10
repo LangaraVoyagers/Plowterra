@@ -73,3 +73,22 @@ export const createPayroll = async (payload: PayrollPayload) => {
     throw error;
   }
 };
+
+export const getSeasons = async () => {
+  try {
+    const response = await axios.get(`${endpoints.seasons}`, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    return response.data;
+  } catch (error) {
+    console.error(
+      "Error:",
+      (error as any).response.status,
+      (error as any).response.statusText
+    );
+    throw error;
+  }
+};

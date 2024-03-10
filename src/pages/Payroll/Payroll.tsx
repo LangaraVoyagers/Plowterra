@@ -1,13 +1,13 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Box, Button } from "@mui/material";
-import { SelectChangeEvent } from '@mui/material/Select';
+import { SelectChangeEvent } from "@mui/material/Select";
 
 import { DataGrid, GridColDef, GridRenderCellParams } from "@mui/x-data-grid";
 import { FormattedDate, FormattedMessage, useIntl } from "react-intl";
 import BasicHome from "layouts/BasicHome";
 import useQueryCache from "hooks/useQueryCache";
 import { useQuery } from "react-query";
-import { getPayrollHistory } from "api/payroll";
+import { getPayrollHistory, getSeasons } from "api/payroll";
 import { CaretRight, User } from "@phosphor-icons/react";
 import { useUser } from "context/UserProvider";
 import { Select, MenuItem } from "@mui/material";
@@ -115,18 +115,40 @@ const Payroll = () => {
     setUniqueSeasonId([allSeasonId[index]]);
   };
 
+  const [seasonsData, setSeasonsData] = useState(null);
+
+  useEffect(() => {
+    const fetchSeasons = async () => {
+      try {
+        const data = await getSeasons();
+        setSeasonsData(data);
+      } catch (error) {
+        console.error(
+          "Error:",
+          (error as any).response.status,
+          (error as any).response.statusText
+        );
+      }
+    };
+
+    fetchSeasons();
+  }, []);
+
+  let uniqueFarmId: string[] = [];
+  if (data && data.length > 0) {
+    uniqueFarmId = [...new Set((data as any[]).map((item: any) => item.farm))];
+  }
+
   let seasonOptions: JSX.Element[] = [];
   let uniqueSeasonName: string[] = [];
   let allSeasonId: string[] = [];
-  let uniqueFarmId: string[] = [];
-  if (data && data.length > 0) {
+  if (seasonsData && (seasonsData as any).data.length > 0) {
     uniqueSeasonName = [
-      ...new Set((data as any[]).map((item: any) => item.season.name)),
+      ...new Set((seasonsData as any).data.map((item: any) => item.name)),
     ];
     allSeasonId = [
-      ...new Set((data as any[]).map((item: any) => item.season.id)),
+      ...new Set((seasonsData as any).data.map((item: any) => item._id)),
     ];
-    uniqueFarmId = [...new Set((data as any[]).map((item: any) => item.farm))];
     seasonOptions = uniqueSeasonName.map((name: string) => (
       <MenuItem key={name.toString()} value={name}>
         {name}
@@ -136,18 +158,23 @@ const Payroll = () => {
 
   const [selectedOption, setSelectedOption] = useState<unknown | null>(null);
 
-  const handleSelectChange2 = (event: React.ChangeEvent<{ value: unknown }>) => {
+  const handleSelectChange2 = (
+    event: React.ChangeEvent<{ value: unknown }>
+  ) => {
     setSelectedOption(event.target.value as unknown);
-    console.log(event.target.value);
-    console.log(selectedOption)
+    console.log(selectedOption);
   };
 
-  const handleBothChanges = React.useCallback((event: SelectChangeEvent<any>) => {
-    handleSelectChange(event);
-    handleSelectChange2(event.target.value as React.ChangeEvent<{ value: unknown }>);
-  }, [handleSelectChange, handleSelectChange2]);
-  
-  
+  const handleBothChanges = React.useCallback(
+    (event: SelectChangeEvent<any>) => {
+      handleSelectChange(event);
+      handleSelectChange2(
+        event.target.value as React.ChangeEvent<{ value: unknown }>
+      );
+    },
+    [handleSelectChange, handleSelectChange2]
+  );
+
   return (
     <BasicHome
       title={intl.formatMessage({ id: "payrolls", defaultMessage: "Payroll" })}

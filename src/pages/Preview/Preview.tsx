@@ -85,8 +85,6 @@ const Preview: React.FC = () => {
   const location = useLocation();
   const seasonId = location.state.uniqueSeasonId[0];
   const farmId = location.state.uniqueFarmId[0];
-  console.log(seasonId);
-  console.log(farmId);
 
   const intl = useIntl();
   const [payrollData, setPayrollData] = useState([]);
@@ -113,7 +111,6 @@ const Preview: React.FC = () => {
         })
       );
 
-      console.log(payrollDataWithId);
       setPayrollData(payrollDataWithId);
       setStartDate(dayjs(data.startDate));
       setNetPay(data.totals.netAmount);
