@@ -115,8 +115,18 @@ const Payroll = () => {
     setUniqueSeasonId([allSeasonId[index]]);
   };
 
-  const [seasonsData, setSeasonsData] = useState(null);
-
+  type Season = {
+    _id: string;
+    // other properties...
+  };
+  
+  type SeasonsData = {
+    data: Season[];
+    // other properties...
+  };
+  
+  const [seasonsData, setSeasonsData] = useState<SeasonsData | null>(null);
+  
   useEffect(() => {
     const fetchSeasons = async () => {
       try {
@@ -130,7 +140,7 @@ const Payroll = () => {
         );
       }
     };
-
+  
     fetchSeasons();
   }, []);
 
@@ -144,11 +154,11 @@ const Payroll = () => {
   let allSeasonId: string[] = [];
   if (seasonsData && (seasonsData as any).data.length > 0) {
     uniqueSeasonName = [
-      ...new Set((seasonsData as any).data.map((item: any) => item.name)),
+      ...new Set((seasonsData.data as any[]).map((item: any) => item.name as string)),
     ];
     allSeasonId = [
-      ...new Set((seasonsData as any).data.map((item: any) => item._id)),
-    ];
+  ...new Set((seasonsData.data as any[]).map((item: any) => item._id as string)),
+];
     seasonOptions = uniqueSeasonName.map((name: string) => (
       <MenuItem key={name.toString()} value={name}>
         {name}
