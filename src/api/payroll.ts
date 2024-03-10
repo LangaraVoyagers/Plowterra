@@ -41,3 +41,35 @@ export const getPayrollPreview = async (payload: PayrollPreviewPayload) => {
   }
 };
 
+
+export interface PayrollPayload {
+  farmId: string;
+  seasonId: string;
+  endDate: number;
+  totals: {
+    totalGrossAmount: number;
+    totalCollectedAmount: number;
+    totalDeductions: number;
+  };
+}
+
+export const createPayroll = async (payload: PayrollPayload) => {
+  try {
+    const response = await axios.post(`${endpoints.payrolls}`, payload,
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    return response.data;
+  } catch (error) {
+    console.error(
+      "Error:",
+      (error as any).response.status,
+      (error as any).response.statusText
+    );
+    throw error;
+  }
+};

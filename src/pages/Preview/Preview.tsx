@@ -8,11 +8,16 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import dayjs, { Dayjs } from "dayjs";
-import { ArrowLeft, ArrowRight, CaretRight, SealCheck,} from "@phosphor-icons/react";
+import {
+  ArrowLeft,
+  ArrowRight,
+  CaretRight,
+  SealCheck,
+} from "@phosphor-icons/react";
 import { useLocation } from "react-router-dom";
 import { useMutation } from "react-query";
 import endpoints from "api/endpoints";
-import { getPayrollPreview } from "api/payroll";
+import { createPayroll, getPayrollPreview, PayrollPayload } from "api/payroll";
 
 const columns: GridColDef[] = [
   {
@@ -95,7 +100,7 @@ const Preview: React.FC = () => {
   const [deductions, setDeductions] = useState(0);
   const [unit, setUnit] = useState(null);
 
-  const {  mutate: getPreview } = useMutation({
+  const { mutate: getPreview } = useMutation({
     mutationKey: [endpoints.payrolls, "preview"],
     mutationFn: getPayrollPreview,
     onSuccess: (data) => {
@@ -118,7 +123,6 @@ const Preview: React.FC = () => {
     },
     onError: () => {},
   });
-
 
   useEffect(() => {
     getPreview({
@@ -178,7 +182,6 @@ const Preview: React.FC = () => {
       )}
 
       {!isButtonClicked && (
-
         <Box
           sx={{
             display: "flex",
@@ -217,32 +220,29 @@ const Preview: React.FC = () => {
             variant="contained"
             color="primary"
             onClick={async () => {
-              const response = await fetch(
-                "https://y2457icv5c.execute-api.us-west-2.amazonaws.com/dev/api/v1/payrolls",
-                {
-                  method: "POST",
-                  headers: {
-                    "Content-Type": "application/json",
+              try {
+                const payload: PayrollPayload = {
+                  farmId: farmId,
+                  seasonId: seasonId,
+                  endDate: new Date().getTime(),
+                  totals: {
+                    totalGrossAmount: netPay,
+                    totalCollectedAmount: collectedAmount,
+                    totalDeductions: deductions,
                   },
-                  body: JSON.stringify({
-                    farmId: farmId,
-                    seasonId: seasonId,
-                    endDate: new Date().getTime(),
-                    totals: {
-                      totalGrossAmount: netPay,
-                      totalCollectedAmount: collectedAmount,
-                      totalDeductions: deductions,
-                    },
-                  }),
-                }
-              );
+                };
 
-              if (!response.ok) {
-                console.error("Error:", response.status, response.statusText);
-              } else {
-                const data = await response.json();
+                const data = await createPayroll(payload);
+
                 console.log(data);
+              } catch (error) {
+                console.error(
+                  "Error:",
+                  (error as any).response.status,
+                  (error as any).response.statusText
+                );
               }
+
               setIsButtonClicked(true);
             }}
           >
