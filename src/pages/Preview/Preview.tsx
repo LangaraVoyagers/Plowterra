@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Box, Button, Grid, Typography } from "@mui/material";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import BasicHome from "layouts/BasicHome";
-import { FormattedMessage, useIntl } from "react-intl";
+import { FormattedDate, FormattedMessage, useIntl } from "react-intl";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
@@ -10,7 +10,6 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import dayjs, { Dayjs } from "dayjs";
 import {
   ArrowLeft,
-  ArrowRight,
   CaretRight,
   SealCheck,
 } from "@phosphor-icons/react";
@@ -78,8 +77,9 @@ const columns: GridColDef[] = [
   },
 ];
 
-function formatDate(value: Dayjs): string {
-  const date = new Date(value.toDate());
+
+function formatDate(value: number | Date): string {
+  const date = new Date(value);
 
   const month = date.toLocaleString("default", { month: "short" });
   const day = date.getDate();
@@ -161,7 +161,6 @@ const Preview: React.FC = () => {
       };
 
       await createPayroll(payload);
-
     } catch (error) {
       console.error(
         "Error:",
@@ -237,7 +236,6 @@ const Preview: React.FC = () => {
               <span>Select the date range:</span>
               <span>From</span>
               <DatePicker
-                
                 value={startDate}
                 onChange={(value) => {
                   if (value) {
@@ -248,7 +246,6 @@ const Preview: React.FC = () => {
               />
               <span>to</span>
               <DatePicker
-              
                 value={endDate}
                 onChange={(value) => {
                   if (value) {
@@ -276,15 +273,21 @@ const Preview: React.FC = () => {
                 Ready to run the payroll?
               </DialogContentText>
             </DialogContent>
-            <Typography>
-              {uniqueSeasonName}
-            </Typography>
-            <Typography>
-              {!!startDate && formatDate(startDate)}{" - "}{formatDate(endDate)}
-            </Typography>
-            <Typography>
-              {netPay}
-            </Typography>
+            <Typography>{uniqueSeasonName}</Typography>
+            <span>
+              <FormattedDate
+                value={formatDate(startDate?.toDate() ?? new Date())}
+                month="short"
+                day="numeric"
+              />
+              -
+              <FormattedDate
+                value={formatDate(endDate.toDate())}
+                month="short"
+                day="numeric"
+              />
+            </span>
+            <Typography>{netPay}</Typography>
             <DialogActions>
               <Button onClick={handleClose} color="primary">
                 Cancel
@@ -322,10 +325,19 @@ const Preview: React.FC = () => {
         </Grid>
         <Grid container spacing={2}>
           <Grid item xs={3}>
-            <Typography variant="body1" gutterBottom>
-              {!!startDate && formatDate(startDate)} <ArrowRight />{" "}
-              {formatDate(endDate)}
-            </Typography>
+            <span>
+              <FormattedDate
+                value={formatDate(startDate?.toDate() ?? new Date())}
+                month="short"
+                day="numeric"
+              />
+              -
+              <FormattedDate
+                value={formatDate(endDate.toDate())}
+                month="short"
+                day="numeric"
+              />
+            </span>
           </Grid>
           <Grid item xs={3}>
             <Typography variant="body1" gutterBottom>
