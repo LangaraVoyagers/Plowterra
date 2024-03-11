@@ -96,7 +96,7 @@ const Payroll = () => {
   const [payrollData, setPayrollData] = useState([]);
   const { GET_QUERY_KEY } = useQueryCache("payrolls");
 
-  const { isLoading, data } = useQuery({
+  const { isLoading } = useQuery({
     queryKey: GET_QUERY_KEY,
     queryFn: getPayrollHistory,
     onSuccess: (results) => {
@@ -146,9 +146,11 @@ const Payroll = () => {
     fetchSeasons();
   }, []);
 
+
   let uniqueFarmId: string[] = [];
-  if (data && data.length > 0) {
-    uniqueFarmId = [...new Set((data as any[]).map((item: any) => item.farm))];
+  
+  if (user && user.farm && user.farm._id) {
+    uniqueFarmId = [user.farm._id];
   }
 
   let seasonOptions: JSX.Element[] = [];
