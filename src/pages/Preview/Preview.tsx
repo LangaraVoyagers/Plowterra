@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Box, Button, Grid, Typography } from "@mui/material";
+import { Box, Button, Grid } from "@mui/material";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import BasicHome from "layouts/BasicHome";
 import { FormattedDate, FormattedMessage, useIntl } from "react-intl";
@@ -24,6 +24,7 @@ import {
   DialogContentText,
   DialogTitle,
 } from "@mui/material";
+import { Label } from "ui/Typography";
 
 const columns: GridColDef[] = [
   {
@@ -274,7 +275,7 @@ const Preview: React.FC = () => {
                 Ready to run the payroll?
               </DialogContentText>
             </DialogContent>
-            <Typography>{uniqueSeasonName}</Typography>
+            <Label>{uniqueSeasonName}</Label>
             <span>
               <FormattedDate
                 value={formatDate(startDate?.toDate() ?? new Date())}
@@ -288,7 +289,7 @@ const Preview: React.FC = () => {
                 day="numeric"
               />
             </span>
-            <Typography>{netPay}</Typography>
+            <Label>{netPay}</Label>
             <DialogActions>
               <Button onClick={handleClose} color="primary">
                 Cancel
@@ -304,24 +305,24 @@ const Preview: React.FC = () => {
       <Box display="flex" flexDirection="column" flexGrow={1} pb={3}>
         <Grid container spacing={2}>
           <Grid item xs={3}>
-            <Typography variant="h6" gutterBottom>
+            <Label variant="h6" gutterBottom>
               Pay Period
-            </Typography>
+            </Label>
           </Grid>
           <Grid item xs={3}>
-            <Typography variant="h6" gutterBottom>
+            <Label variant="h6" gutterBottom>
               Total Net Pay
-            </Typography>
+            </Label>
           </Grid>
           <Grid item xs={3}>
-            <Typography variant="h6" gutterBottom>
+            <Label variant="h6" gutterBottom>
               Total Harvest Amount
-            </Typography>
+            </Label>
           </Grid>
           <Grid item xs={3}>
-            <Typography variant="h6" gutterBottom>
+            <Label variant="h6" gutterBottom>
               Total Deductions
-            </Typography>
+            </Label>
           </Grid>
         </Grid>
         <Grid container spacing={2}>
@@ -341,19 +342,19 @@ const Preview: React.FC = () => {
             </span>
           </Grid>
           <Grid item xs={3}>
-            <Typography variant="body1" gutterBottom>
+            <Label variant="body1" gutterBottom>
               {netPay}
-            </Typography>
+            </Label>
           </Grid>
           <Grid item xs={3}>
-            <Typography variant="body1" gutterBottom>
+            <Label variant="body1" gutterBottom>
               {collectedAmount} {unit}
-            </Typography>
+            </Label>
           </Grid>
           <Grid item xs={3}>
-            <Typography variant="body1" gutterBottom>
+            <Label variant="body1" gutterBottom>
               {deductions}
-            </Typography>
+            </Label>
           </Grid>
         </Grid>
       </Box>
