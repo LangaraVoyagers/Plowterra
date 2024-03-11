@@ -17,7 +17,7 @@ import React from "react";
 const columns: GridColDef[] = [
   {
     field: "period",
-    headerName: "PAY PERIOD",
+    headerName: "Pay Period",
     width: 200,
     renderCell: (params: GridRenderCellParams) => {
       return (
@@ -39,13 +39,13 @@ const columns: GridColDef[] = [
   },
   {
     field: "totals.grossAmount",
-    headerName: "TOTAL NET PAY ($)",
+    headerName: "Total net pay ($)",
     width: 150,
     renderCell: (params) => <span>{params.row.totals.grossAmount}</span>,
   },
   {
     field: "totals.collectedAmount",
-    headerName: "HARVEST AMOUNT",
+    headerName: "Harvest Amount",
     width: 150,
     renderCell: (params) => (
       <span>
@@ -55,13 +55,13 @@ const columns: GridColDef[] = [
   },
   {
     field: "totals.deductions",
-    headerName: "DEDUCTIONS ($)",
+    headerName: "Deductions ($)",
     width: 150,
     renderCell: (params) => <span>{params.row.totals.deductions}</span>,
   },
   {
     field: "pickersCount",
-    headerName: "PICKERS",
+    headerName: "Pickers",
     width: 150,
     renderCell: (params) => (
       <span>
@@ -71,7 +71,7 @@ const columns: GridColDef[] = [
   },
   {
     field: "endDate",
-    headerName: "PAY DATE",
+    headerName: "Pay Date",
     width: 150,
     renderCell: (params) => <span>{formatDate(params.value)}</span>,
   },
