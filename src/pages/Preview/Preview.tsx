@@ -160,9 +160,8 @@ const Preview: React.FC = () => {
         },
       };
 
-      const data = await createPayroll(payload);
+      await createPayroll(payload);
 
-      console.log(data);
     } catch (error) {
       console.error(
         "Error:",
@@ -238,7 +237,7 @@ const Preview: React.FC = () => {
               <span>Select the date range:</span>
               <span>From</span>
               <DatePicker
-                // label="Start Date"
+                
                 value={startDate}
                 onChange={(value) => {
                   if (value) {
@@ -249,7 +248,7 @@ const Preview: React.FC = () => {
               />
               <span>to</span>
               <DatePicker
-                // label="End Date"
+              
                 value={endDate}
                 onChange={(value) => {
                   if (value) {
@@ -302,22 +301,22 @@ const Preview: React.FC = () => {
         <Grid container spacing={2}>
           <Grid item xs={3}>
             <Typography variant="h6" gutterBottom>
-              PAY PERIOD
+              Pay Period
             </Typography>
           </Grid>
           <Grid item xs={3}>
             <Typography variant="h6" gutterBottom>
-              TOTAL NET PAY
+              Total Net Pay
             </Typography>
           </Grid>
           <Grid item xs={3}>
             <Typography variant="h6" gutterBottom>
-              TOTAL HARVEST AMOUNT
+              Total Harvest Amount
             </Typography>
           </Grid>
           <Grid item xs={3}>
             <Typography variant="h6" gutterBottom>
-              TOTAL DEDUCTIONS
+              Total Deductions
             </Typography>
           </Grid>
         </Grid>
