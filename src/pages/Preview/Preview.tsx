@@ -18,6 +18,13 @@ import { useLocation } from "react-router-dom";
 import { useMutation } from "react-query";
 import endpoints from "api/endpoints";
 import { createPayroll, getPayrollPreview, PayrollPayload } from "api/payroll";
+import {
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+} from "@mui/material";
 
 const columns: GridColDef[] = [
   {
@@ -129,6 +136,45 @@ const Preview: React.FC = () => {
     });
   }, [endDate]);
 
+  const [open, setOpen] = useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const handleConfirm = async () => {
+    try {
+      const payload: PayrollPayload = {
+        farmId: farmId,
+        seasonId: seasonId,
+        endDate: new Date().getTime(),
+        totals: {
+          totalGrossAmount: netPay,
+          totalCollectedAmount: collectedAmount,
+          totalDeductions: deductions,
+        },
+      };
+
+      const data = await createPayroll(payload);
+
+      console.log(data);
+    } catch (error) {
+      console.error(
+        "Error:",
+        (error as any).response.status,
+        (error as any).response.statusText
+      );
+    }
+
+    setIsButtonClicked(true);
+
+    setOpen(false);
+  };
+
   return (
     <BasicHome
       title={intl.formatMessage({
@@ -213,39 +259,32 @@ const Preview: React.FC = () => {
             </DemoContainer>
           </LocalizationProvider>
 
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={async () => {
-              try {
-                const payload: PayrollPayload = {
-                  farmId: farmId,
-                  seasonId: seasonId,
-                  endDate: new Date().getTime(),
-                  totals: {
-                    totalGrossAmount: netPay,
-                    totalCollectedAmount: collectedAmount,
-                    totalDeductions: deductions,
-                  },
-                };
-
-                const data = await createPayroll(payload);
-
-                console.log(data);
-              } catch (error) {
-                console.error(
-                  "Error:",
-                  (error as any).response.status,
-                  (error as any).response.statusText
-                );
-              }
-
-              setIsButtonClicked(true);
-            }}
-          >
+          <Button variant="contained" color="primary" onClick={handleClickOpen}>
             Run Payroll
             <CaretRight size={25} />
           </Button>
+
+          <Dialog
+            open={open}
+            onClose={handleClose}
+            aria-labelledby="alert-dialog-title"
+            aria-describedby="alert-dialog-description"
+          >
+            <DialogTitle id="alert-dialog-title">{"ICON"}</DialogTitle>
+            <DialogContent>
+              <DialogContentText id="alert-dialog-description">
+                Ready to run the payroll?
+              </DialogContentText>
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={handleClose} color="primary">
+                Cancel
+              </Button>
+              <Button onClick={handleConfirm} color="primary" autoFocus>
+                Confirm
+              </Button>
+            </DialogActions>
+          </Dialog>
         </Box>
       )}
 
