@@ -92,7 +92,6 @@ const Preview: React.FC = () => {
   const location = useLocation();
   const seasonId = location.state.uniqueSeasonId[0];
   const farmId = location.state.uniqueFarmId[0];
-  const uniqueSeasonName = location.state.uniqueSeasonNa;
 
   const intl = useIntl();
   const [payrollData, setPayrollData] = useState([]);
@@ -105,6 +104,7 @@ const Preview: React.FC = () => {
   const [collectedAmount, setCollectedAmount] = useState(0);
   const [deductions, setDeductions] = useState(0);
   const [unit, setUnit] = useState(null);
+  const [uniqueSeasonName, setUniqueSeasonName] = useState<string[]>([]);
 
   const { mutate: getPreview } = useMutation({
     mutationKey: [endpoints.payrolls, "preview"],
@@ -125,6 +125,7 @@ const Preview: React.FC = () => {
       setCollectedAmount(data.totals.collectedAmount);
       setDeductions(data.totals.deductions);
       setUnit(data.season.unit);
+      setUniqueSeasonName(data.season.name);
     },
     onError: () => {},
   });
