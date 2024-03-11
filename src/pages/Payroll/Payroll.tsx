@@ -89,6 +89,7 @@ function formatDate(value: number | Date): string {
 const Payroll = () => {
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [uniqueSeasonId, setUniqueSeasonId] = useState<string[]>([]);
+  const [uniqueSeasonNa, setUniqueSeasonNa] = useState<string[]>([]);
   const navigate = useNavigate();
   const { user } = useUser();
   const intl = useIntl();
@@ -113,6 +114,7 @@ const Payroll = () => {
     );
     setSelectedIndex(index);
     setUniqueSeasonId([allSeasonId[index]]);
+    setUniqueSeasonNa([uniqueSeasonName[index]]);
   };
 
   type Season = {
@@ -207,7 +209,7 @@ const Payroll = () => {
           variant="contained"
           onClick={() =>
             navigate("/payroll/preview", {
-              state: { uniqueFarmId, uniqueSeasonId },
+              state: { uniqueFarmId, uniqueSeasonId , uniqueSeasonNa},
             })
           }
           disabled={uniqueSeasonId.length === 0}

@@ -92,6 +92,7 @@ const Preview: React.FC = () => {
   const location = useLocation();
   const seasonId = location.state.uniqueSeasonId[0];
   const farmId = location.state.uniqueFarmId[0];
+  const uniqueSeasonName = location.state.uniqueSeasonNa;
 
   const intl = useIntl();
   const [payrollData, setPayrollData] = useState([]);
@@ -276,6 +277,15 @@ const Preview: React.FC = () => {
                 Ready to run the payroll?
               </DialogContentText>
             </DialogContent>
+            <Typography>
+              {uniqueSeasonName}
+            </Typography>
+            <Typography>
+              {!!startDate && formatDate(startDate)}{" - "}{formatDate(endDate)}
+            </Typography>
+            <Typography>
+              {netPay}
+            </Typography>
             <DialogActions>
               <Button onClick={handleClose} color="primary">
                 Cancel
