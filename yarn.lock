@@ -2869,10 +2869,10 @@ prelude-ls@^1.2.1:
   resolved "https://registry.npmjs.org/prelude-ls/-/prelude-ls-1.2.1.tgz"
   integrity sha512-vkcDPrRZo1QZLbn5RLGPpg/WmIQ65qoWWhcGKf/b5eplkkarX0m9z8ppCat4mlOqUsWpyNuYgO3VRyrYHSzX5g==
 
-project-2-types@^1.4.7:
-  version "1.4.7"
-  resolved "https://registry.yarnpkg.com/project-2-types/-/project-2-types-1.4.7.tgz#c062f5f11e5f7051d861f9909d0b2aa648870aeb"
-  integrity sha512-Eu6pIbaSCrG5c+rmErVe9xUXZviAC86D0SbtVvO2OgRTfvEsmXX1RyVaGFo0BH02D3HsAmkl79DyJvK5I49sQw==
+project-2-types@^1.4.8:
+  version "1.5.4"
+  resolved "https://registry.yarnpkg.com/project-2-types/-/project-2-types-1.5.4.tgz#7c32440b106137234b61168f65e0645c07f51905"
+  integrity sha512-NnjwCowLE2YxzIrvJTNlCGWMIBthErw4QOPuo2dW41unq6fo5dNa1vJsB5xzGpV8Hv5Q57gQb6WnFREDUJVxOQ==
   dependencies:
     ajv "^8.12.0"
     mongoose "^8.2.0"

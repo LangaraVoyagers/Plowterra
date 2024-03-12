@@ -3,6 +3,7 @@ import {
   Autocomplete,
   Box,
   Button,
+  Chip,
   Drawer,
   DrawerProps,
   FormControl,
@@ -10,6 +11,7 @@ import {
   InputLabel,
   MenuItem,
   Select,
+  Stack,
   Table,
   TableBody,
   TableCell,
@@ -32,18 +34,14 @@ import { useAlert } from "context/AlertProvider"
 import { useUser } from "context/UserProvider"
 import dayjs, { Dayjs } from "dayjs"
 import useQueryCache from "hooks/useQueryCache"
-import {
-  ISeasonDeduction,
-  ISeasonRequest,
-  PayrollTimeframeEnum,
-  StatusEnum,
-} from "project-2-types/dist"
+import { PayrollTimeframeEnum, StatusEnum } from "project-2-types/dist"
 import React from "react"
 import { useState } from "react"
-import { Controller, useForm } from "react-hook-form"
+import { Controller, FormProvider, useForm } from "react-hook-form"
 import { useIntl } from "react-intl"
 import { useMutation, useQuery } from "react-query"
 import { Display, Label } from "ui/Typography"
+import SeasonDeductions from "./SeasonDeductions"
 
 function formatDate(date: number): string {
   const formattedDate = new Date(date).toLocaleDateString("en-US", {
@@ -89,7 +87,19 @@ interface ISeasonResponse {
   currency: ICurrency
   unit: IUnit
   hasHarvestLog: boolean
-  deductions: Array<ISeasonDeduction>
+  deductions: Array<{ deductionID: string; price: string }>
+}
+
+export interface ISeasonRequest {
+  name: string
+  startDate: number
+  payrollTimeframe: keyof typeof PayrollTimeframeEnum
+  price: number
+  farmId: string
+  productId: string
+  unitId: string
+  currencyId: string
+  deductions: Array<{ deductionID: string; price: string }>
 }
 
 const SeasonDrawer = ({ dismiss, seasonId, ...props }: SeasonDrawerProps) => {
@@ -121,20 +131,28 @@ const SeasonDrawer = ({ dismiss, seasonId, ...props }: SeasonDrawerProps) => {
 
   const showEdit = () => setShowEditForm(true)
   const hideEdit = () => setShowEditForm(false)
-  const {
-    control,
-    handleSubmit,
-    reset,
-    formState: { isDirty, errors },
-  } = useForm<ISeasonRequest>({
+
+  const formMethods = useForm<ISeasonRequest>({
     mode: "all",
     defaultValues: {
       name: "",
       startDate: new Date().getTime(),
       farmId: user.farm._id,
+      deductions: [
+        {
+          deductionID: "",
+          price: undefined,
+        },
+      ],
     },
     // resolver: validateResolver(SeasonSchema), TODO: Validate schema
   })
+  const {
+    control,
+    handleSubmit,
+    reset,
+    formState: { isDirty, errors },
+  } = formMethods
 
   const onCreateSeasonClose = () => {
     reset()
@@ -295,7 +313,14 @@ const SeasonDrawer = ({ dismiss, seasonId, ...props }: SeasonDrawerProps) => {
     hideEdit()
   }
   const onSubmit = (data: ISeasonRequest) => {
-    saveSeasonMutation({ ...data, seasonId: seasonId || "" })
+    saveSeasonMutation({
+      ...data,
+      seasonId: seasonId,
+      deductions: data.deductions.map(({ deductionID, price }) => ({
+        deductionID,
+        price: +price || 0,
+      })),
+    })
   }
 
   const onDelete = () => {
@@ -307,328 +332,347 @@ const SeasonDrawer = ({ dismiss, seasonId, ...props }: SeasonDrawerProps) => {
   }
 
   const seasonForm = (
-    <Box
-      display="flex"
-      flexDirection="column"
-      padding="3rem"
-      gap={3}
-      width={600}
-    >
-      <Display>
-        {intl.formatMessage(
-          {
-            id: "seasons.detail.title",
-            defaultMessage:
-              "{isEdit, plural, one {Edit Season} other {Add New Season} }",
-          },
-          { isEdit: Number(!!seasonId) }
-        )}
-      </Display>
-      <Controller
-        control={control}
-        name="name"
-        render={({ field }) => {
-          return (
-            <Box display="flex" flexDirection="column" gap={1}>
-              <InputLabel htmlFor="season-name-input">
-                {intl.formatMessage({
-                  id: "seasons.create.form.name.label",
-                  defaultMessage: "Harvest Season Name",
-                })}
-                *
-              </InputLabel>
-              <TextField
-                {...field}
-                id="season-name-input"
-                variant="outlined"
-                size="small"
-                error={!!errors.name}
-                helperText={errors.name?.message}
-              />
-            </Box>
-          )
-        }}
-      />
-
-      <Controller
-        control={control}
-        name="startDate"
-        render={() => {
-          return (
-            <Box display="flex" flexDirection="column" gap={1}>
-              <InputLabel htmlFor="season-start-date-input">
-                {intl.formatMessage({
-                  id: "seasons.create.form.start_date.label",
-                  defaultMessage: "Start Date",
-                })}
-                *
-              </InputLabel>
-              <DatePicker
-                // label="Start Date"
-                value={startDate}
-                slotProps={{ textField: { size: "small" } }}
-                onChange={(newValue) => {
-                  setStartDate(newValue)
-                }}
-              />
-            </Box>
-          )
-        }}
-      />
-      <Controller
-        control={control}
-        name="payrollTimeframe"
-        render={({ field }) => {
-          return (
-            <Box display="flex" flexDirection="column" gap={1}>
-              <InputLabel htmlFor="season-payroll-timeframe-input">
-                {intl.formatMessage({
-                  id: "seasons.create.form.payroll_timeframe.label",
-                  defaultMessage: "Payroll Timeframe",
-                })}
-                *
-              </InputLabel>
-              <FormControl>
-                <Select
-                  {...field}
-                  id="season-payroll-timeframe-input"
-                  size="small"
-                  error={!!errors.payrollTimeframe}
-                >
-                  {payrollTimeframeList?.map(({ value, label }) => {
-                    return (
-                      <MenuItem key={value} value={value}>
-                        {label}
-                      </MenuItem>
-                    )
-                  })}
-                </Select>
-                <FormHelperText error>
-                  {errors.payrollTimeframe?.message}
-                </FormHelperText>
-              </FormControl>
-            </Box>
-          )
-        }}
-      />
-      <Controller
-        control={control}
-        name="productId"
-        render={({ field: { onChange, value } }) => {
-          return (
-            <Box display="flex" flexDirection="column" gap={1}>
-              <Autocomplete
-                id="season-product-combo-box"
-                options={products.map((product) => ({
-                  id: product._id,
-                  label: product.name,
-                }))}
-                loading={isLoadingProducts}
-                // TODO: use free solo with text: https://mui.com/material-ui/react-autocomplete/#creatable
-                value={
-                  value
-                    ? {
-                        id: value,
-                        label: products.find((p) => p._id === value)?.name,
-                      }
-                    : undefined
-                }
-                onChange={(_, newValue) => {
-                  onChange(newValue?.id)
-                }}
-                renderInput={(params) => (
-                  <div>
-                    <InputLabel htmlFor="season-product">Product*</InputLabel>
-                    <TextField
-                      {...params}
-                      id="season-product"
-                      size="small"
-                      helperText={errors.productId?.message}
-                      error={!!errors.productId}
-                    />
-                  </div>
-                )}
-              />
-            </Box>
-          )
-        }}
-      />
-      <Controller
-        control={control}
-        name="unitId"
-        render={({ field: { onChange, value } }) => {
-          return (
-            <Box display="flex" flexDirection="column" gap={1}>
-              <Autocomplete
-                id="season-unit-combo-box"
-                options={units.map((unit) => ({
-                  id: unit._id,
-                  label: unit?.name,
-                }))}
-                loading={isLoadingUnits}
-                // TODO: use free solo with text: https://mui.com/material-ui/react-autocomplete/#creatable
-                value={
-                  value
-                    ? {
-                        id: value,
-                        label: units.find((u) => u._id === value)?.name,
-                      }
-                    : undefined
-                }
-                onChange={(_, newValue) => {
-                  onChange(newValue?.id)
-                }}
-                renderInput={(params) => (
-                  <div>
-                    <InputLabel htmlFor="season-unit">Unit*</InputLabel>
-                    <TextField
-                      {...params}
-                      id="season-unit"
-                      size="small"
-                      helperText={errors.unitId?.message}
-                      error={!!errors.unitId}
-                    />
-                  </div>
-                )}
-              />
-            </Box>
-          )
-        }}
-      />
-
-      <Controller
-        control={control}
-        name="currencyId"
-        render={({ field: { onChange, value } }) => {
-          return (
-            <Box display="flex" flexDirection="column" gap={1}>
-              <Autocomplete
-                id="season-currency-combo-box"
-                options={currencies.map((currency) => ({
-                  id: currency._id,
-                  label: currency.name,
-                }))}
-                // TODO: use free solo with text: https://mui.com/material-ui/react-autocomplete/#creatable
-                value={
-                  value
-                    ? { id: value, label: currencies.find((c) => c._id)?.name }
-                    : undefined
-                }
-                onChange={(_, newValue) => {
-                  onChange(newValue?.id)
-                }}
-                loading={isLoadingCurrency}
-                renderInput={(params) => (
-                  <div>
-                    <InputLabel htmlFor="season-currency">Currency*</InputLabel>
-                    <TextField
-                      {...params}
-                      size="small"
-                      id="season-currency"
-                      helperText={errors.currencyId?.message}
-                      error={!!errors.currencyId}
-                    />
-                  </div>
-                )}
-              />
-            </Box>
-          )
-        }}
-      />
-
-      <Controller
-        control={control}
-        name="price"
-        render={({ field: { ref, value, onChange } }) => {
-          return (
-            <Box display="flex" flexDirection="column" gap={1}>
-              <InputLabel htmlFor="season-price-input">
-                {intl.formatMessage({
-                  id: "seasons.create.form.price.label",
-                  defaultMessage: "Price",
-                })}
-                *
-              </InputLabel>
-              <TextField
-                ref={ref}
-                value={value}
-                onChange={({ target }) => {
-                  if (target.value) {
-                    onChange(+target.value)
-                  } else {
-                    onChange(undefined)
-                  }
-                }}
-                id="season-price-input"
-                variant="outlined"
-                size="small"
-                error={!!errors.name}
-                helperText={errors.name?.message}
-              />
-            </Box>
-          )
-        }}
-      />
-      <Box display="flex" justifyContent="space-between">
-        <Button
-          disabled={isLoading || isDeleting}
-          onClick={seasonId ? hideEdit : onCreateSeasonClose}
-        >
-          {intl.formatMessage({
-            id: "button.cancel",
-            defaultMessage: "Cancel",
-          })}
-        </Button>
-
-        <Button
-          variant="contained"
-          onClick={handleSubmit(onSubmit)}
-          disabled={isLoading || !isDirty || isDeleting}
-        >
+    <FormProvider {...formMethods}>
+      <Box
+        display="flex"
+        flexDirection="column"
+        padding="3rem"
+        gap={3}
+        width={600}
+      >
+        <Display>
           {intl.formatMessage(
             {
-              id: "pickers.button.save",
+              id: "seasons.detail.title",
               defaultMessage:
-                "{isLoading, plural, one {Loading...} other {Save} }",
+                "{isEdit, plural, one {Edit Season} other {Add New Season} }",
             },
-            { isLoading: Number(isLoading) }
+            { isEdit: Number(!!seasonId) }
           )}
-        </Button>
-      </Box>
-      {/* TODO: add confirmation modal later, we probably will standardize the way we handle the delete after design has defined that */}
-      {!!seasonId && (
-        <Box display="flex" flexDirection="column" gap={2} marginTop={4}>
-          <Display size="sm" component="h2">
+        </Display>
+        <Controller
+          control={control}
+          name="name"
+          render={({ field }) => {
+            return (
+              <Box display="flex" flexDirection="column" gap={1}>
+                <InputLabel htmlFor="season-name-input">
+                  {intl.formatMessage({
+                    id: "seasons.create.form.name.label",
+                    defaultMessage: "Harvest Season Name",
+                  })}
+                  *
+                </InputLabel>
+                <TextField
+                  {...field}
+                  id="season-name-input"
+                  variant="outlined"
+                  size="small"
+                  error={!!errors.name}
+                  helperText={errors.name?.message}
+                />
+              </Box>
+            )
+          }}
+        />
+
+        <Controller
+          control={control}
+          name="startDate"
+          render={() => {
+            return (
+              <Box display="flex" flexDirection="column" gap={1}>
+                <InputLabel htmlFor="season-start-date-input">
+                  {intl.formatMessage({
+                    id: "seasons.create.form.start_date.label",
+                    defaultMessage: "Start Date",
+                  })}
+                  *
+                </InputLabel>
+                <DatePicker
+                  // label="Start Date"
+                  value={startDate}
+                  slotProps={{ textField: { size: "small" } }}
+                  onChange={(newValue) => {
+                    setStartDate(newValue)
+                  }}
+                />
+              </Box>
+            )
+          }}
+        />
+        <Controller
+          control={control}
+          name="payrollTimeframe"
+          render={({ field }) => {
+            return (
+              <Box display="flex" flexDirection="column" gap={1}>
+                <InputLabel htmlFor="season-payroll-timeframe-input">
+                  {intl.formatMessage({
+                    id: "seasons.create.form.payroll_timeframe.label",
+                    defaultMessage: "Payroll Timeframe",
+                  })}
+                  *
+                </InputLabel>
+                <FormControl>
+                  <Select
+                    {...field}
+                    id="season-payroll-timeframe-input"
+                    size="small"
+                    error={!!errors.payrollTimeframe}
+                  >
+                    {payrollTimeframeList?.map(({ value, label }) => {
+                      return (
+                        <MenuItem key={value} value={value}>
+                          {label}
+                        </MenuItem>
+                      )
+                    })}
+                  </Select>
+                  <FormHelperText error>
+                    {errors.payrollTimeframe?.message}
+                  </FormHelperText>
+                </FormControl>
+              </Box>
+            )
+          }}
+        />
+
+        <Controller
+          control={control}
+          name="productId"
+          render={({ field: { onChange, value } }) => {
+            return (
+              <Box display="flex" flexDirection="column" gap={1}>
+                <Autocomplete
+                  id="season-product-combo-box"
+                  options={products.map((product) => ({
+                    id: product._id,
+                    label: product.name,
+                  }))}
+                  loading={isLoadingProducts}
+                  // TODO: use free solo with text: https://mui.com/material-ui/react-autocomplete/#creatable
+                  value={
+                    value
+                      ? {
+                          id: value,
+                          label: products.find((p) => p._id === value)?.name,
+                        }
+                      : undefined
+                  }
+                  onChange={(_, newValue) => {
+                    onChange(newValue?.id)
+                  }}
+                  renderInput={(params) => (
+                    <div>
+                      <InputLabel htmlFor="season-product">Product*</InputLabel>
+                      <TextField
+                        {...params}
+                        id="season-product"
+                        size="small"
+                        helperText={errors.productId?.message}
+                        error={!!errors.productId}
+                      />
+                    </div>
+                  )}
+                />
+              </Box>
+            )
+          }}
+        />
+        <Controller
+          control={control}
+          name="unitId"
+          render={({ field: { onChange, value } }) => {
+            return (
+              <Box display="flex" flexDirection="column" gap={1}>
+                <Autocomplete
+                  id="season-unit-combo-box"
+                  options={units.map((unit) => ({
+                    id: unit._id,
+                    label: unit?.name,
+                  }))}
+                  loading={isLoadingUnits}
+                  // TODO: use free solo with text: https://mui.com/material-ui/react-autocomplete/#creatable
+                  value={
+                    value
+                      ? {
+                          id: value,
+                          label: units.find((u) => u._id === value)?.name,
+                        }
+                      : undefined
+                  }
+                  onChange={(_, newValue) => {
+                    onChange(newValue?.id)
+                  }}
+                  renderInput={(params) => (
+                    <div>
+                      <InputLabel htmlFor="season-unit">Unit*</InputLabel>
+                      <TextField
+                        {...params}
+                        id="season-unit"
+                        size="small"
+                        helperText={errors.unitId?.message}
+                        error={!!errors.unitId}
+                      />
+                    </div>
+                  )}
+                />
+              </Box>
+            )
+          }}
+        />
+
+        <Controller
+          control={control}
+          name="currencyId"
+          render={({ field: { onChange, value } }) => {
+            return (
+              <Box display="flex" flexDirection="column" gap={1}>
+                <Autocomplete
+                  id="season-currency-combo-box"
+                  options={currencies.map((currency) => ({
+                    id: currency._id,
+                    label: currency.name,
+                  }))}
+                  // TODO: use free solo with text: https://mui.com/material-ui/react-autocomplete/#creatable
+                  value={
+                    value
+                      ? {
+                          id: value,
+                          label: currencies.find((c) => c._id)?.name,
+                        }
+                      : undefined
+                  }
+                  onChange={(_, newValue) => {
+                    onChange(newValue?.id)
+                  }}
+                  loading={isLoadingCurrency}
+                  renderInput={(params) => (
+                    <div>
+                      <InputLabel htmlFor="season-currency">
+                        Currency*
+                      </InputLabel>
+                      <TextField
+                        {...params}
+                        size="small"
+                        id="season-currency"
+                        helperText={errors.currencyId?.message}
+                        error={!!errors.currencyId}
+                      />
+                    </div>
+                  )}
+                />
+              </Box>
+            )
+          }}
+        />
+
+        <Controller
+          control={control}
+          name="price"
+          render={({ field: { ref, value, onChange } }) => {
+            return (
+              <Box display="flex" flexDirection="column" gap={1}>
+                <InputLabel htmlFor="season-price-input">
+                  {intl.formatMessage({
+                    id: "seasons.create.form.price.label",
+                    defaultMessage: "Price per Unit",
+                  })}
+                  *
+                </InputLabel>
+                <TextField
+                  ref={ref}
+                  value={value}
+                  onChange={({ target }) => {
+                    if (target.value) {
+                      onChange(+target.value)
+                    } else {
+                      onChange(undefined)
+                    }
+                  }}
+                  id="season-price-input"
+                  variant="outlined"
+                  size="small"
+                  error={!!errors.name}
+                  helperText={errors.name?.message}
+                />
+              </Box>
+            )
+          }}
+        />
+
+        <Box display="flex" flexDirection="column" gap={1}>
+          <InputLabel>
             {intl.formatMessage({
-              id: "danger.zone.label",
-              defaultMessage: "Danger Zone",
+              id: "seasons.create.form.deductions.label",
+              defaultMessage: "Deductions",
             })}
-          </Display>
-          <Alert
-            severity="error"
-            variant="outlined"
-            action={
-              <Button color="error" variant="text" onClick={onDelete}>
-                {intl.formatMessage(
-                  {
-                    id: "seasons.button.delete",
-                    defaultMessage:
-                      "{isDeleting, plural, one {Deleting...} other {Delete} }",
-                  },
-                  { isDeleting: Number(isDeleting) }
-                )}
-              </Button>
-            }
-            sx={{ display: "flex", alignItems: "center" }}
+          </InputLabel>
+          <SeasonDeductions />
+        </Box>
+
+        <Box display="flex" justifyContent="space-between">
+          <Button
+            disabled={isLoading || isDeleting}
+            onClick={seasonId ? hideEdit : onCreateSeasonClose}
           >
             {intl.formatMessage({
-              id: "seasons.delete.label",
-              defaultMessage: "Delete harvest season data",
+              id: "button.cancel",
+              defaultMessage: "Cancel",
             })}
-          </Alert>
+          </Button>
+
+          <Button
+            variant="contained"
+            onClick={handleSubmit(onSubmit)}
+            disabled={isLoading || !isDirty || isDeleting}
+          >
+            {intl.formatMessage(
+              {
+                id: "pickers.button.save",
+                defaultMessage:
+                  "{isLoading, plural, one {Loading...} other {Save} }",
+              },
+              { isLoading: Number(isLoading) }
+            )}
+          </Button>
         </Box>
-      )}
-    </Box>
+        {/* TODO: add confirmation modal later, we probably will standardize the way we handle the delete after design has defined that */}
+        {!!seasonId && (
+          <Box display="flex" flexDirection="column" gap={2} marginTop={4}>
+            <Display size="sm" component="h2">
+              {intl.formatMessage({
+                id: "danger.zone.label",
+                defaultMessage: "Danger Zone",
+              })}
+            </Display>
+            <Alert
+              severity="error"
+              variant="outlined"
+              action={
+                <Button color="error" variant="text" onClick={onDelete}>
+                  {intl.formatMessage(
+                    {
+                      id: "seasons.button.delete",
+                      defaultMessage:
+                        "{isDeleting, plural, one {Deleting...} other {Delete} }",
+                    },
+                    { isDeleting: Number(isDeleting) }
+                  )}
+                </Button>
+              }
+              sx={{ display: "flex", alignItems: "center" }}
+            >
+              {intl.formatMessage({
+                id: "seasons.delete.label",
+                defaultMessage: "Delete harvest season data",
+              })}
+            </Alert>
+          </Box>
+        )}
+      </Box>
+    </FormProvider>
   )
 
   const createSeasonDataList = React.useCallback(() => {
@@ -644,7 +688,15 @@ const SeasonDrawer = ({ dismiss, seasonId, ...props }: SeasonDrawerProps) => {
       ["Product", season?.product?.name || ""],
       ["Unit", season?.unit?.name || ""],
       ["Price Per Unit", season?.price || ""],
-      ["Deductions", "-"],
+      // add deduction name to display
+      [
+        "Deductions",
+        <Stack direction="row" spacing={1} key="season-deductions">
+          {season?.deductions.map(({ price }, index) => {
+            return <Chip key={index} label={price} size="small" />
+          })}
+        </Stack>,
+      ],
       ["Status", season?.status ? StatusEnum[season?.status] : ""],
       ["Production Total", 0],
       ["Gross Total", 0],
@@ -685,12 +737,12 @@ const SeasonDrawer = ({ dismiss, seasonId, ...props }: SeasonDrawerProps) => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {createSeasonDataList().map((row) => (
-                  <TableRow key={row[0]?.toString()}>
+                {createSeasonDataList().map((row, index) => (
+                  <TableRow key={index}>
                     <TableCell component="th" scope="row">
-                      {row[0].toString()}
+                      {row[0]}
                     </TableCell>
-                    <TableCell>{row[1]?.toString()}</TableCell>
+                    <TableCell>{row[1]}</TableCell>
                   </TableRow>
                 ))}
               </TableBody>
@@ -715,7 +767,7 @@ const SeasonDrawer = ({ dismiss, seasonId, ...props }: SeasonDrawerProps) => {
               unitId: season?.unit._id,
               payrollTimeframe: season?.payrollTimeframe,
               price: season?.price,
-              deductions: [], // TODO
+              deductions: season?.deductions ?? [],
             })
             showEdit()
           }}

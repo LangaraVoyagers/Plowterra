@@ -7,6 +7,7 @@ const endpoints = {
   products: "/products",
   units: "/units",
   currencies: "/currencies",
+  deductions: "/deductions",
 }
 
 export default endpoints;
