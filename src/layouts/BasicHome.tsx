@@ -1,5 +1,5 @@
-import { Box, Breadcrumbs, Link } from "@mui/material";import { BodyText, Display } from "ui/Typography";
-
+import { BodyText, Display } from "ui/Typography";
+import { Box, Breadcrumbs, Link, Typography } from "@mui/material";
 interface BasicHomeProps {
   breadcrumb: Array<{ title: React.ReactNode; href: string }>;
   title: string;
@@ -8,7 +8,7 @@ interface BasicHomeProps {
   children: React.ReactNode;
 }
 
-export default function BasicHome({
+function BasicHome({
   breadcrumb,
   title,
   subtitle,
@@ -18,26 +18,21 @@ export default function BasicHome({
   return (
     <Box display="flex" flexDirection="column" height="100%" gap={8}>
       <Box component="header" display="flex" flexDirection="column" gap={4}>
-        <Breadcrumbs maxItems={3} aria-label="breadcrumb">
+        <Breadcrumbs 
+          separator="/" 
+          maxItems={3} 
+          aria-label="breadcrumb">
           {breadcrumb.map((item, index) => {
-            if (index === breadcrumb.length - 1) {
-              return (
-                <BodyText key={index} color="text.primary" fontWeight="Medium">
-                  {item.title}
-                </BodyText>
-              );
-            }
-
             return (
-              <Link
-                key={index}
-                underline="hover"
-                color="inherit"
-                href={item.href}
-              >
-                {item.title}
+              <Link 
+                underline="none"
+                key={ index } 
+                href={ item.href }>
+                <Typography fontWeight={(index == breadcrumb.length - 1) ? 700 : 400}>
+                  { item.title }
+                </Typography>
               </Link>
-            );
+            )
           })}
         </Breadcrumbs>
 
@@ -59,3 +54,5 @@ export default function BasicHome({
     </Box>
   );
 }
+
+export default BasicHome;
