@@ -86,6 +86,7 @@ const colors = {
 
 const themeOptions: ThemeOptions = {
   palette: {
+    mode: "light",
     primary: colors.primary,
     secondary: { ...colors.secondary, main: colors.secondary[500] },
     error: colors.error,
@@ -157,15 +158,139 @@ const themeOptions: ThemeOptions = {
       input:-webkit-autofill:active {
         -webkit-box-shadow: 0 0 0 30px #ffffff inset !important;
         -webkit-text-fill-color: #000000 !important;
-      }`,
+      }
+      
+      ::selection {
+        background: ${colors.secondary[100]};
+      }
+      `,
     },
     MuiBreadcrumbs: {
       defaultProps: {
         separator: <CaretRight size={16} />,
       },
     },
+    MuiButton: {
+      defaultProps: {
+        disableTouchRipple: true,
+        disableFocusRipple: true,
+      },
+      variants: [
+        {
+          props: { variant: "outlined" },
+          style: ({ ownerState }: any) => {
+            const color = (ownerState.color ?? "primary") as keyof typeof colors
+
+            return {
+              backgroundColor: colors.white,
+              color: colors[color][500],
+              border: `solid 1px ${colors[color][500]}`,
+              ":hover": {
+                "background-color": "#FFFFFF",
+                "border-color": colors[color][700],
+                color: colors[color][700],
+              },
+              ":active": {
+                "border-color": colors[color][300],
+                "background-color": colors[color][50],
+                color: colors[color][800],
+              },
+              ":focus-visible": {
+                "border-color": colors[color][500],
+                "background-color": colors.white,
+                color: colors[color][500],
+              },
+              ":disabled": {
+                "border-color": colors[color][100],
+                color: colors[color][200],
+              },
+            }
+          },
+        },
+        {
+          props: { variant: "text" },
+          style: ({ ownerState }: any) => {
+            const color = (ownerState.color ?? "primary") as keyof typeof colors
+
+            return {
+              color: colors[color][500],
+              ":hover": {
+                "background-color": colors[color][50],
+                color: colors[color][700],
+              },
+              ":active": {
+                "background-color": colors[color][50],
+                color: colors[color][800],
+              },
+              ":focus-visible": {
+                "background-color": colors.white,
+                color: colors[color][500],
+              },
+              ":disabled": {
+                color: colors[color][200],
+              },
+            }
+          },
+        },
+        {
+          props: { variant: "contained" },
+          style: ({ ownerState }: any) => {
+            const color = (ownerState.color ?? "primary") as keyof typeof colors
+
+            return {
+              backgroundColor: colors[color][500],
+              color: colors.white,
+              ":hover": {
+                "background-color": colors[color][700],
+              },
+              ":active": {
+                "background-color": colors[color][800],
+              },
+              ":focus-visible": {
+                backgroundColor: colors[color][500],
+              },
+              ":disabled": {
+                "background-color": colors[color][200],
+                color: colors.white,
+              },
+            }
+          },
+        },
+      ],
+      styleOverrides: {
+        root: {
+          fontSize: "1rem",
+          borderRadius: "0.5rem",
+          textTransform: "capitalize",
+          fontWeight: 500,
+          minWidth: "10rem",
+          height: "fit-content",
+          ":active": {
+            outline: "3px solid transparent",
+            "outline-offset": "1px",
+            "outline-color": colors.primary[100],
+            "box-shadow": "0px 0px 0px 3px rgba(255, 255, 255, 0.60)",
+          },
+          ":focus-visible": {
+            outline: "3px solid transparent",
+            "outline-offset": "1px",
+            "outline-color": colors.primary[100],
+            "box-shadow": "0px 0px 0px 3px rgba(255, 255, 255, 0.60)",
+          },
+        },
+        sizeLarge: undefined,
+        sizeMedium: {
+          padding: "1rem",
+          lineHeight: "1.5rem",
+        },
+        sizeSmall: {
+          padding: "0.75rem 1rem",
+          lineHeight: "1.25rem",
+        },
+      },
+    },
   },
-};
+}
 const theme = createTheme(themeOptions);
 
 export default theme;

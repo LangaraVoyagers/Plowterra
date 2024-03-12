@@ -481,7 +481,12 @@ const PickerDrawer = ({ dismiss, pickerId, ...props }: PickerDrawerProps) => {
             severity="error"
             variant="outlined"
             action={
-              <Button color="error" variant="text" onClick={onDelete}>
+              <Button
+                color="error"
+                size="small"
+                variant="text"
+                onClick={onDelete}
+              >
                 {intl.formatMessage(
                   {
                     id: "pickers.button.delete",
