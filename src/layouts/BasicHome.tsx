@@ -1,5 +1,4 @@
-import { Box, Breadcrumbs, Link } from "@mui/material";
-import { BodyText, Display } from "ui/Typography";
+import { Box, Breadcrumbs, Link } from "@mui/material";import { BodyText, Display } from "ui/Typography";
 
 interface BasicHomeProps {
   breadcrumb: Array<{ title: React.ReactNode; href: string }>;
