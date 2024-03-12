@@ -1,25 +1,25 @@
 
 import axios from "./axios";
 import endpoints from "./endpoints";
+import { IPayrollResponse } from "project-2-types/dist/interface"
 
-export const getPayrollHistory = async () => {
+export const getPayrollHistory = async (params: Record<string, unknown>) => {
   try {
     const {
       data: { data },
-    } = await axios.get(endpoints.payrolls);
+    } = await axios.get(endpoints.payrolls, { params })
 
     if (typeof data === "object") {
-      return data ;
+      return data
     }
-    return [];
+    return []
   } catch (error) {
-    console.log({ error });
-    throw error;
+    console.log({ error })
+    throw error
   }
-};
+}
 
-
-type PayrollPreviewPayload ={
+type PayrollPreviewPayload = {
   farmId: string
   seasonId: string
   endDate?: number
@@ -29,66 +29,41 @@ export const getPayrollPreview = async (payload: PayrollPreviewPayload) => {
   try {
     const {
       data: { data },
-    } = await axios.post(`${endpoints.payrolls}/preview`, payload);
+    } = await axios.post(`${endpoints.payrolls}/preview`, payload)
 
     if (typeof data === "object") {
-      return data ;
+      return data as IPayrollResponse
     }
-    return [];
+    return null
   } catch (error) {
-    console.log({ error });
-    throw error;
+    console.log({ error })
+    throw error
   }
-};
-
+}
 
 export interface PayrollPayload {
-  farmId: string;
-  seasonId: string;
-  endDate: number;
+  farmId: string
+  seasonId: string
+  endDate: number
+  startDate: number
   totals: {
-    totalGrossAmount: number;
-    totalCollectedAmount: number;
-    totalDeductions: number;
-  };
+    totalGrossAmount: number
+    totalCollectedAmount: number
+    totalDeductions: number
+  }
 }
 
 export const createPayroll = async (payload: PayrollPayload) => {
   try {
-    const response = await axios.post(`${endpoints.payrolls}`, payload,
-      {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
+    const response = await axios.post(`${endpoints.payrolls}`, payload)
 
-    return response.data;
+    return response.data
   } catch (error) {
     console.error(
       "Error:",
       (error as any).response.status,
       (error as any).response.statusText
-    );
-    throw error;
+    )
+    throw error
   }
-};
-
-export const getSeasons = async () => {
-  try {
-    const response = await axios.get(`${endpoints.seasons}`, {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-
-    return response.data;
-  } catch (error) {
-    console.error(
-      "Error:",
-      (error as any).response.status,
-      (error as any).response.statusText
-    );
-    throw error;
-  }
-};
+}

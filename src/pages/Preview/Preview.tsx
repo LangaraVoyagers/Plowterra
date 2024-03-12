@@ -1,34 +1,35 @@
-import React, { useState, useEffect } from "react";
-import { Box, Button, Grid } from "@mui/material";
-import { DataGrid, GridColDef } from "@mui/x-data-grid";
-import BasicHome from "layouts/BasicHome";
-import { FormattedDate, FormattedMessage, useIntl } from "react-intl";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
-import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import dayjs, { Dayjs } from "dayjs";
 import {
-  ArrowLeft,
-  CaretRight,
-  SealCheck,
-} from "@phosphor-icons/react";
-import { useLocation } from "react-router-dom";
-import { useMutation } from "react-query";
-import endpoints from "api/endpoints";
-import { createPayroll, getPayrollPreview, PayrollPayload } from "api/payroll";
-import {
+  Box, Button,
   Dialog,
   DialogActions,
   DialogContent,
   DialogContentText,
   DialogTitle,
+  Grid,
 } from "@mui/material";
+import { DataGrid, GridColDef } from "@mui/x-data-grid";
+import {
+  ArrowLeft,
+  CaretRight,
+  SealCheck,
+} from "@phosphor-icons/react";
+import endpoints from "api/endpoints";
+import { PayrollPayload, createPayroll, getPayrollPreview } from "api/payroll";
+import dayjs, { Dayjs } from "dayjs";
+import BasicHome from "layouts/BasicHome";
+import React, { useEffect, useState } from "react";
+import { FormattedDate, FormattedMessage, useIntl } from "react-intl";
+import { useMutation } from "react-query";
+
+import { DatePicker } from "@mui/x-date-pickers";
+import { useUser } from "context/UserProvider";
+import { IPayrollResponse } from "project-2-types/dist/interface";
+import { useSearchParams } from "react-router-dom";
 import { Label } from "ui/Typography";
 
-const columns: GridColDef[] = [
+const columns = (currency: string): GridColDef[] => [
   {
-    field: "no",
+    field: "index",
     headerName: "No.",
     width: 100,
   },
@@ -37,15 +38,15 @@ const columns: GridColDef[] = [
     headerName: "Picker",
     width: 150,
     renderCell: (params) => {
-      return <span>{params.row.picker.name}</span>;
+      return <span>{params.row.picker.name}</span>
     },
   },
   {
     field: "grossAmount",
-    headerName: "Gross Pay ($)",
+    headerName: `Gross Pay ${currency}`,
     width: 150,
     renderCell: (params) => {
-      return <span>{params.row.grossAmount}</span>;
+      return <span>{params.row.grossAmount}</span>
     },
   },
   {
@@ -55,126 +56,112 @@ const columns: GridColDef[] = [
     renderCell: (params) => {
       return (
         <span>
-          {params.row.collectedAmount} {params.row.season.unit}
+          {params.row.collectedAmount} {params.row.season?.unit}
         </span>
-      );
+      )
     },
   },
   {
     field: "deductions",
-    headerName: "Deductions ($)",
+    headerName: `Deductions (${currency})`,
     width: 150,
     renderCell: (params) => {
-      return <span>{params.row.deductions}</span>;
+      return <span>{params.row.deductions}</span>
     },
   },
   {
     field: "netAmount",
-    headerName: "Net Pay ($)",
+    headerName: `Net Pay (${currency})`,
     width: 150,
     renderCell: (params) => {
-      return <span>{params.row.netAmount}</span>;
+      return <span>{params.row.netAmount}</span>
     },
   },
-];
-
+]
 
 function formatDate(value: number | Date): string {
-  const date = new Date(value);
+  const date = new Date(value)
 
-  const month = date.toLocaleString("default", { month: "short" });
-  const day = date.getDate();
+  const month = date.toLocaleString("default", { month: "short" })
+  const day = date.getDate()
 
-  return `${month} ${day}`;
+  return `${month} ${day}`
 }
 
 const Preview: React.FC = () => {
-  const [isButtonClicked, setIsButtonClicked] = useState(false);
-  const location = useLocation();
-  const seasonId = location.state.uniqueSeasonId[0];
-  const farmId = location.state.uniqueFarmId[0];
+  const { user } = useUser()
 
-  const intl = useIntl();
-  const [payrollData, setPayrollData] = useState([]);
-  const [isLoading] = useState(false);
+  const intl = useIntl()
 
-  const [startDate, setStartDate] = useState<Dayjs>();
-  const [endDate, setEndDate] = useState<Dayjs>(dayjs());
+  const [params] = useSearchParams()
+  const seasonId = params.get("seasonId")
 
-  const [netPay, setNetPay] = useState(0);
-  const [collectedAmount, setCollectedAmount] = useState(0);
-  const [deductions, setDeductions] = useState(0);
-  const [unit, setUnit] = useState(null);
-  const [uniqueSeasonName, setUniqueSeasonName] = useState<string[]>([]);
+  const [payrollData, setPayrollData] = useState<IPayrollResponse | null>(null)
+
+  const [startDate, setStartDate] = useState<Dayjs>()
+  const [endDate, setEndDate] = useState<Dayjs>(dayjs())
+
+  const [payrollDone, setPayrollDone] = useState<boolean>(false)
+  const [open, setOpen] = useState(false)
 
   const { mutate: getPreview } = useMutation({
     mutationKey: [endpoints.payrolls, "preview"],
     mutationFn: getPayrollPreview,
     onSuccess: (data) => {
-      const payrollDataWithId = data.details.map(
-        (detail: unknown, index: number) => ({
-          ...(detail as object),
-          id: index,
-          no: index + 1,
-          season: data.season,
-        })
-      );
-
-      setPayrollData(payrollDataWithId);
-      setStartDate(dayjs(data.startDate));
-      setNetPay(data.totals.netAmount);
-      setCollectedAmount(data.totals.collectedAmount);
-      setDeductions(data.totals.deductions);
-      setUnit(data.season.unit);
-      setUniqueSeasonName(data.season.name);
+      setPayrollData(data)
+      setStartDate(dayjs(data?.startDate))
     },
     onError: () => {},
-  });
-
-  useEffect(() => {
-    getPreview({
-      endDate: endDate ? endDate.toDate().getTime() : undefined,
-      farmId,
-      seasonId,
-    });
-  }, [endDate]);
-
-  const [open, setOpen] = useState(false);
+  })
 
   const handleClickOpen = () => {
-    setOpen(true);
-  };
+    setOpen(true)
+  }
 
   const handleClose = () => {
-    setOpen(false);
-  };
+    setOpen(false)
+  }
 
   const handleConfirm = async () => {
     try {
-      const payload: PayrollPayload = {
-        farmId: farmId,
-        seasonId: seasonId,
-        endDate: new Date().getTime(),
-        totals: {
-          totalGrossAmount: netPay,
-          totalCollectedAmount: collectedAmount,
-          totalDeductions: deductions,
-        },
-      };
+      if (!seasonId || !payrollData || !startDate) {
+        return
+      }
 
-      await createPayroll(payload);
+      const payload: PayrollPayload = {
+        farmId: user.farm._id,
+        seasonId: seasonId,
+        endDate: endDate.valueOf(),
+        startDate: startDate.valueOf(),
+        totals: {
+          totalGrossAmount: payrollData?.totals.grossAmount,
+          totalCollectedAmount: payrollData?.totals.collectedAmount,
+          totalDeductions: payrollData?.totals.deductions,
+        },
+      }
+
+      await createPayroll(payload)
+
+      setPayrollDone(true)
     } catch (error) {
       console.error(
         "Error:",
         (error as any).response.status,
         (error as any).response.statusText
-      );
+      )
     }
+    setOpen(false)
+  }
 
-    setIsButtonClicked(true);
-
-    setOpen(false);
-  };
+  useEffect(() => {
+    if (seasonId) {
+      getPreview({
+        endDate: endDate ? endDate.toDate().getTime() : undefined,
+        farmId: user.farm._id,
+        seasonId,
+      })
+    }
+  }, [endDate, seasonId])
 
   return (
     <BasicHome
@@ -186,7 +173,7 @@ const Preview: React.FC = () => {
         { title: "Farm Name", href: "/" },
         {
           title: (
-            <FormattedMessage id="sidebar.payrolls" defaultMessage="Payroll" />
+            <FormattedMessage id="sidebar.payroll" defaultMessage="Payroll" />
           ),
           href: "/payroll",
         },
@@ -201,7 +188,7 @@ const Preview: React.FC = () => {
         },
       ]}
     >
-      {isButtonClicked && (
+      {!!payrollDone && (
         <Box style={{ border: "1px solid #000" }}>
           <div style={{ display: "inline-block" }}>
             <SealCheck size={32} />
@@ -225,7 +212,7 @@ const Preview: React.FC = () => {
         </Box>
       )}
 
-      {!isButtonClicked && (
+      {!payrollDone && (
         <Box
           sx={{
             display: "flex",
@@ -233,30 +220,29 @@ const Preview: React.FC = () => {
             justifyContent: "space-between",
           }}
         >
-          <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <DemoContainer components={["DatePayroll"]}>
-              <span>Select the date range:</span>
-              <span>From</span>
-              <DatePicker
-                value={startDate}
-                onChange={(value) => {
-                  if (value) {
-                    setStartDate(value);
-                  }
-                }}
-                readOnly
-              />
-              <span>to</span>
-              <DatePicker
-                value={endDate}
-                onChange={(value) => {
-                  if (value) {
-                    setEndDate(value);
-                  }
-                }}
-              />
-            </DemoContainer>
-          </LocalizationProvider>
+          <Box display="flex" gap="1rem" alignItems="center">
+            <span>Select the date range:</span>
+            <span>From</span>
+            <DatePicker
+              value={startDate}
+              slotProps={{ textField: { size: "small" } }}
+              onChange={(value) => {
+                if (value) {
+                  setStartDate(value)
+                }
+              }}
+            />
+            <span>to</span>
+            <DatePicker
+              value={endDate}
+              slotProps={{ textField: { size: "small" } }}
+              onChange={(value) => {
+                if (value) {
+                  setEndDate(value)
+                }
+              }}
+            />
+          </Box>
 
           <Button variant="contained" color="primary" onClick={handleClickOpen}>
             Run Payroll
@@ -275,7 +261,7 @@ const Preview: React.FC = () => {
                 Ready to run the payroll?
               </DialogContentText>
             </DialogContent>
-            <Label>{uniqueSeasonName}</Label>
+            <Label>{payrollData?.season?.name}</Label>
             <span>
               <FormattedDate
                 value={formatDate(startDate?.toDate() ?? new Date())}
@@ -289,7 +275,7 @@ const Preview: React.FC = () => {
                 day="numeric"
               />
             </span>
-            <Label>{netPay}</Label>
+            <Label>{payrollData?.totals.netAmount}</Label>
             <DialogActions>
               <Button onClick={handleClose} color="primary">
                 Cancel
@@ -342,18 +328,16 @@ const Preview: React.FC = () => {
             </span>
           </Grid>
           <Grid item xs={3}>
-            <Label variant="body1" gutterBottom>
-              {netPay}
+            <Label gutterBottom>{payrollData?.totals?.netAmount}</Label>
+          </Grid>
+          <Grid item xs={3}>
+            <Label  gutterBottom>
+              {payrollData?.totals.collectedAmount} {payrollData?.season?.unit}
             </Label>
           </Grid>
           <Grid item xs={3}>
-            <Label variant="body1" gutterBottom>
-              {collectedAmount} {unit}
-            </Label>
-          </Grid>
-          <Grid item xs={3}>
-            <Label variant="body1" gutterBottom>
-              {deductions}
+            <Label  gutterBottom>
+              {payrollData?.totals.deductions}
             </Label>
           </Grid>
         </Grid>
@@ -361,22 +345,14 @@ const Preview: React.FC = () => {
 
       <Box display="flex" flexGrow={1} pb={3}>
         <DataGrid
-          rows={payrollData}
-          columns={columns}
-          loading={isLoading}
-          initialState={{
-            pagination: {
-              paginationModel: {
-                pageSize: 12,
-              },
-            },
-          }}
+          rows={payrollData?.details ?? []}
+          columns={columns(payrollData?.season?.currency ?? "")}
           disableRowSelectionOnClick
-          getRowId={(row) => row.id}
+          getRowId={(row) => row?.picker?.id}
         />
       </Box>
     </BasicHome>
-  );
-};
+  )
+}
 
-export default Preview;
+export default Preview
