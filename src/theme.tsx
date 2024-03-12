@@ -99,7 +99,8 @@ const themeOptions: ThemeOptions = {
   },
   typography: {
     allVariants: {
-      fontFamily: "PlusJakartaSans, Inter",
+      fontFamily:
+        "PlusJakartaSans, Inter, system-ui, Avenir, Helvetica, Arial, sans-serif",
       fontVariantNumeric: "lining-nums tabular-nums",
       fontFeatureSettings: "'liga' off",
     },
