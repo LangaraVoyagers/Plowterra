@@ -1,32 +1,32 @@
 import {
   Box,
-  Button,
   FormControl,
   InputAdornment,
   InputLabel,
   MenuItem,
   OutlinedInput,
   Select,
-} from "@mui/material";
-import {
-  DataGrid,
-  GridColDef,
-} from "@mui/x-data-grid";
+} from "@mui/material"
+import { DataGrid, GridColDef, GridRenderCellParams } from "@mui/x-data-grid"
 
-import BasicHome from "layouts/BasicHome";
-import { MagnifyingGlass } from "@phosphor-icons/react";
-import formatDate from "shared/formatDate";
-import { getSeasons } from "api/seasons";
-import { useQuery } from "react-query";
-import useQueryCache from "hooks/useQueryCache";
-import { useState } from "react";
-import { useUser } from "context/UserProvider";
+import BasicHome from "layouts/BasicHome"
+import { MagnifyingGlass } from "@phosphor-icons/react"
+import formatDate from "shared/formatDate"
+import { getSeasons } from "api/seasons"
+import { useQuery } from "react-query"
+import useQueryCache from "hooks/useQueryCache"
+import { useState } from "react"
+import { useUser } from "context/UserProvider"
+import CreateSeason from "components/seasons/CreateSeason"
+import UpdateSeason from "components/seasons/UpdateSeason"
 
 const columns: GridColDef[] = [
   {
     field: "name",
     headerName: "Name",
     width: 250,
+    flex: 1,
+    minWidth: 250,
   },
   {
     field: "status",
@@ -37,31 +37,32 @@ const columns: GridColDef[] = [
     field: "product",
     headerName: "Product",
     width: 200,
-    valueGetter: (params) =>
-      params.row.product?.name,
+    valueGetter: (params) => params.row.product?.name,
   },
   {
     field: "startDate",
     headerName: "Start Date",
     width: 150,
-    valueFormatter: (params) => 
-      params?.value ? formatDate(params.value) : "-"
+    valueFormatter: (params) =>
+      params?.value ? formatDate(params.value) : "-",
   },
   {
     field: "endDate",
     headerName: "End Date",
     width: 150,
-    valueFormatter: (params) => 
-      params?.value ? formatDate(params.value) : "-"
+    valueFormatter: (params) =>
+      params?.value ? formatDate(params.value) : "-",
   },
   {
     field: "action",
     headerName: "",
     width: 150,
     sortable: false,
-    renderCell: () => <Button>View More</Button>,
+    renderCell: (data: GridRenderCellParams<{ _id: string }>) => {
+      return <UpdateSeason seasonId={data.row._id} />
+    },
   },
-];
+]
 
 const Seasons = () => {
   const { user } = useUser();
@@ -88,7 +89,7 @@ const Seasons = () => {
         { title: user.farm.name, href: "#" },
         { title: "Harvest Seasons", href: "" },
       ]}
-      actions={<Button variant="contained">Add New Season</Button>}
+      actions={<CreateSeason />}
     >
       <Box display="flex" justifyContent="space-between">
         <FormControl>

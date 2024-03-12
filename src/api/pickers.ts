@@ -1,4 +1,5 @@
-import { ICreatePickerRequest, IPicker } from "project-2-types/lib/pickers";
+import { ICreatePickerRequest, IPicker } from "project-2-types/dist/interface";
+
 import axios from "./axios";
 import endpoints from "./endpoints";
 
@@ -18,8 +19,11 @@ export const getPickers = async () => {
   }
 };
 
-export const getPickerById = async (id?: string) => {
+export const getPickerById = async (id?: string | null) => {
   try {
+    if (!id) {
+      return;
+    }
     const {
       data: { data },
     } = await axios.get(`${endpoints.pickers}/${id}`);

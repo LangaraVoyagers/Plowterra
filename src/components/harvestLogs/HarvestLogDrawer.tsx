@@ -1,38 +1,38 @@
 import * as React from "react";
+
 import {
+  Autocomplete,
   Box,
   Button,
+  Checkbox,
   Drawer,
   DrawerProps,
   InputLabel,
+  ListItemText,
   MenuItem,
   OutlinedInput,
   Select,
-  Typography,
-  TextField,
-  Autocomplete,
-  Checkbox,
-  ListItemText,
   SelectChangeEvent,
-  TableContainer,
   Table,
+  TableBody,
+  TableCell,
+  TableContainer,
   TableHead,
   TableRow,
-  TableCell,
-  TableBody,
+  TextField,
 } from "@mui/material";
+import { Controller, useForm } from "react-hook-form";
 import { createHarvestLog, getHarvestLogById } from "api/harvestLogs";
-import useQueryCache from "hooks/useQueryCache";
-import { useAlert } from "context/AlertProvider";
-import { useForm, Controller } from "react-hook-form";
 import { useMutation, useQuery } from "react-query";
-import { IHarvestLogResponse } from "project-2-types/lib/harvestLog";
+import HarvestLogSchema from "project-2-types/dist/ajv/harvest-log.ajv";
+import { IPicker, IHarvestLogResponse } from "project-2-types/dist/interface";
+import { ajvResolver } from "@hookform/resolvers/ajv";
 import { getPickers } from "api/pickers";
 import { getSeasons } from "api/seasons";
+import { useAlert } from "context/AlertProvider";
+import useQueryCache from "hooks/useQueryCache";
 import { useState } from "react";
-import { IPicker } from "project-2-types/lib/pickers";
-import ICreateHarvestLogRequest from "project-2-types/lib/harvestLog.ajv";
-import { ajvResolver } from "@hookform/resolvers/ajv";
+import { BodyText, Display } from "ui/Typography";
 
 function formatDate(date: number): string {
   const formattedDate = new Date(date).toLocaleDateString("en-US", {
@@ -101,7 +101,7 @@ const HarvestLogDrawer = ({
     defaultValues: {
       farmId: "65d703cf9a00b1a671609458", //TODO: get actual farmId
     },
-    resolver: ajvResolver(ICreateHarvestLogRequest),
+    resolver: ajvResolver(HarvestLogSchema),
   });
 
   const createHarvestLogDataList = React.useCallback(() => {
@@ -222,7 +222,6 @@ const HarvestLogDrawer = ({
 
   const hideEdit = () => setShowEditForm(false);
 
-  console.log(errors);
   const onSubmit = (data: IHarvestLogForm) => {
     saveHarvestLogMutation({
       farmId: data.farmId,
@@ -242,7 +241,7 @@ const HarvestLogDrawer = ({
       gap={3}
       width={600}
     >
-      <Typography variant="h1">Add Harvest Log</Typography>
+      <Display>Add Harvest Log</Display>
       <Controller
         control={control}
         name="seasonId"
@@ -457,8 +456,8 @@ const HarvestLogDrawer = ({
         justifyContent="flex-start"
       >
         <Box display="flex" flexDirection="column">
-          <Typography variant="body1">{"PICKER"}</Typography>
-          <Typography variant="h1">{harvestLog?.picker?.name}</Typography>
+          <BodyText>PICKER</BodyText>
+          <Display>{harvestLog?.picker?.name}</Display>
         </Box>
 
         <Box display="flex" flexDirection="column">

@@ -4,6 +4,9 @@ const endpoints = {
   seasons: "/seasons",
   harvestLogs: "/harvest-logs",
   payrolls: "/payrolls",
-};
+  products: "/products",
+  units: "/units",
+  currencies: "/currencies",
+}
 
 export default endpoints;

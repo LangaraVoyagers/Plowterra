@@ -11,18 +11,25 @@ import {
   MenuItem,
   Select,
   TextField,
-  Typography,
 } from "@mui/material";
-import { upsertPicker, getPickerById, deletePicker } from "api/pickers";
-import useQueryCache from "hooks/useQueryCache";
-import { useAlert } from "context/AlertProvider";
-import { BloodType, IPicker, Relationship } from "project-2-types/lib/pickers";
-import PickerSchema from "project-2-types/lib/pickers.ajv";
-import { useState } from "react";
+import {
+  BloodType,
+  IPicker,
+  Relationship,
+} from "project-2-types/dist/interface";
 import { Controller, useForm } from "react-hook-form";
+import { deletePicker, getPickerById, upsertPicker } from "api/pickers";
 import { useMutation, useQuery } from "react-query";
+
+import PickerSchema from "project-2-types/dist/ajv/picker.ajv";
+import { useAlert } from "context/AlertProvider";
 import { useIntl } from "react-intl";
+import useQueryCache from "hooks/useQueryCache";
+import { useState } from "react";
 import { validateResolver } from "shared/ajv";
+import { BodyText, Display, Label } from "ui/Typography";
+import { useNavigate } from "react-router-dom";
+import paths from "shared/paths";
 
 interface IPickerForm extends Omit<IPicker, "id"> {}
 
@@ -41,6 +48,8 @@ type PickerDrawerProps = DrawerProps & {
 const PickerDrawer = ({ dismiss, pickerId, ...props }: PickerDrawerProps) => {
   const intl = useIntl();
   const { showAlert } = useAlert();
+  const navigate = useNavigate();
+
   const {
     GET_DETAIL_QUERY_KEY,
     UPDATE_MUTATION_KEY,
@@ -57,7 +66,7 @@ const PickerDrawer = ({ dismiss, pickerId, ...props }: PickerDrawerProps) => {
     handleSubmit,
     reset,
     getValues,
-    formState: { isDirty, errors },
+    formState: { errors },
   } = useForm<IPickerForm>({
     mode: "all",
     defaultValues: {
@@ -82,12 +91,12 @@ const PickerDrawer = ({ dismiss, pickerId, ...props }: PickerDrawerProps) => {
       reset(result);
     },
     onError: () => {
-
       showAlert(
         intl.formatMessage({
           id: "pickers.detail.error",
           defaultMessage: "Oops! Information couldn't be displayed.",
-        }),"error"
+        }),
+        "error"
       );
     },
   });
@@ -161,7 +170,8 @@ const PickerDrawer = ({ dismiss, pickerId, ...props }: PickerDrawerProps) => {
         intl.formatMessage({
           id: "pickers.delete.picker.response.error",
           defaultMessage: "Oops! The picker couldn't be deleted.",
-        }), "error"
+        }),
+        "error"
       );
     },
   });
@@ -185,7 +195,7 @@ const PickerDrawer = ({ dismiss, pickerId, ...props }: PickerDrawerProps) => {
       gap={3}
       width={600}
     >
-      <Typography variant="h1" fontWeight={500}>
+      <Display>
         {intl.formatMessage(
           {
             id: "pickers.detail.title",
@@ -194,7 +204,7 @@ const PickerDrawer = ({ dismiss, pickerId, ...props }: PickerDrawerProps) => {
           },
           { isEdit: Number(!!pickerId) }
         )}
-      </Typography>
+      </Display>
       <Controller
         control={control}
         name="name"
@@ -445,7 +455,7 @@ const PickerDrawer = ({ dismiss, pickerId, ...props }: PickerDrawerProps) => {
         <Button
           variant="contained"
           onClick={handleSubmit(onSubmit)}
-          disabled={isLoading || !isDirty || isDeleting}
+          disabled={isLoading || isDeleting}
         >
           {intl.formatMessage(
             {
@@ -461,12 +471,12 @@ const PickerDrawer = ({ dismiss, pickerId, ...props }: PickerDrawerProps) => {
       {/* TODO: add confirmation modal later, we probably will standardize the way we handle the delete after design has defined that */}
       {!!pickerId && (
         <Box display="flex" flexDirection="column" mt={4}>
-          <Typography variant="h2" fontWeight={500}>
+          <Display size="sm" component="h2">
             {intl.formatMessage({
               id: "danger.zone.label",
               defaultMessage: "Danger Zone",
             })}
-          </Typography>
+          </Display>
           <Alert
             severity="error"
             variant="outlined"
@@ -516,80 +526,72 @@ const PickerDrawer = ({ dismiss, pickerId, ...props }: PickerDrawerProps) => {
         justifyContent="flex-start"
       >
         <Box display="flex" flexDirection="column">
-          <Typography variant="h1" fontWeight={500}>
-            {pickerData.name}
-          </Typography>
-          <Typography variant="body1">{pickerData.phone}</Typography>
+          <Display>{pickerData.name}</Display>
+          <BodyText>{pickerData.phone}</BodyText>
         </Box>
 
         <Divider />
 
         <Box display="flex" flexDirection="column">
-          <Typography variant="overline">
+          <Label component="label" htmlFor="emergency-contact-name">
             {intl.formatMessage({
               id: "pickers.detail.emergency_contact_person.label",
               defaultMessage: "Emergency Contact Person",
             })}
-          </Typography>
-          <Typography variant="body1" fontWeight={600}>
+          </Label>
+          <BodyText fontWeight="Medium" id="emergency-contact-name">
             {pickerData.emergencyContact?.name
               ? `${pickerData.emergencyContact?.name} (${
                   Relationship[pickerData.emergencyContact?.relationship]
                 })`
               : "-"}
-          </Typography>
-          <Typography variant="body1">
-            {pickerData.emergencyContact?.phone}
-          </Typography>
+          </BodyText>
+          <BodyText>{pickerData.emergencyContact?.phone}</BodyText>
         </Box>
 
         <Divider />
 
         <Box display="flex" flexDirection="column">
-          <Typography variant="overline">
+          <Label component="label" htmlFor="blood-type">
             {intl.formatMessage({
               id: "pickers.detail.blood_type.label",
               defaultMessage: "Blood Type",
             })}
-          </Typography>
-
-          <Typography variant="body1">
+          </Label>
+          <BodyText id="blood-type">
             {pickerData.bloodType ? BloodType[pickerData.bloodType] : "-"}
-          </Typography>
+          </BodyText>
         </Box>
 
         <Divider />
 
         <Box display="flex" flexDirection="column">
-          <Typography variant="overline">
+          <Label component="label" htmlFor="gov-id">
             {intl.formatMessage({
               id: "pickers.detail.identification_number.label",
               defaultMessage: "Identification Number",
             })}
-          </Typography>
+          </Label>
 
-          <Typography variant="body1">{pickerData.govId ?? "-"}</Typography>
+          <BodyText id="gov-id">{pickerData.govId ?? "-"}</BodyText>
         </Box>
 
         <Divider />
 
         <Box display="flex" flexDirection="column">
-          <Typography variant="overline">
+          <Label component="label" htmlFor="address">
             {intl.formatMessage({
               id: "pickers.detail.address.label",
               defaultMessage: "Address",
             })}
-          </Typography>
-          <Typography variant="body1">{pickerData.address ?? "-"}</Typography>
+          </Label>
+          <BodyText id="address">{pickerData.address ?? "-"}</BodyText>
         </Box>
 
         <Button
-          onClick={() =>
-            showAlert(
-              "🚧 Thank you for your patience. We are still working on this part 🚧",
-              "info"
-            )
-          }
+          onClick={() => {
+            navigate(`${paths.harvestLogs}?pickerId=${pickerId}`);
+          }}
         >
           {intl.formatMessage({
             id: "pickers.detail.button.view_harvest_log",

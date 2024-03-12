@@ -100,34 +100,49 @@ const themeOptions: ThemeOptions = {
   typography: {
     allVariants: {
       fontFamily: "PlusJakartaSans, Inter",
+      fontVariantNumeric: "lining-nums tabular-nums",
+      fontFeatureSettings: "'liga' off",
     },
+    // Display/lg
     h1: {
       fontSize: "3rem",
       lineHeight: "3.75rem",
-      letterSpacing: "-0.036rem",
+      letterSpacing: "-0.048rem",
     },
+    // Display/md
     h2: {
       fontSize: "2.25rem",
       lineHeight: "2.75rem",
       letterSpacing: "-0.045rem",
     },
+    // Display/sm
+
     h3: {
       fontSize: "1.875rem",
       lineHeight: "2.375rem",
+      letterSpacing: "-0.01875rem",
     },
+    // Display/xs
     h4: {
       fontSize: "1.5rem",
       lineHeight: "2rem",
     },
+    // Text/md
     body1: {
       fontSize: "1rem",
-      lineHeight: " 1.5rem",
+      lineHeight: "1.5rem",
     },
-    body2: {},
+    // Text/sm
+    body2: {
+      fontSize: "0.875rem",
+      lineHeight: "1.25rem",
+    },
+    // Label 2 -> by default is uppercase
     overline: {
       fontSize: "0.75rem",
       lineHeight: "1.125rem",
-      letterSpacing: "0.0225rem",
+      letterSpacing: "0.03rem",
+      fontWeight: 500,
     },
     // Disable variants
     h5: undefined,
@@ -164,8 +179,7 @@ const themeOptions: ThemeOptions = {
         {
           props: { variant: "outlined" },
           style: ({ ownerState }: any) => {
-            const color = (ownerState.color ??
-              "primary") as keyof typeof colors;
+            const color = (ownerState.color ?? "primary") as keyof typeof colors
 
             return {
               backgroundColor: colors.white,
@@ -190,14 +204,13 @@ const themeOptions: ThemeOptions = {
                 "border-color": colors[color][100],
                 color: colors[color][200],
               },
-            };
+            }
           },
         },
         {
           props: { variant: "text" },
           style: ({ ownerState }: any) => {
-            const color = (ownerState.color ??
-              "primary") as keyof typeof colors;
+            const color = (ownerState.color ?? "primary") as keyof typeof colors
 
             return {
               color: colors[color][500],
@@ -216,14 +229,13 @@ const themeOptions: ThemeOptions = {
               ":disabled": {
                 color: colors[color][200],
               },
-            };
+            }
           },
         },
         {
           props: { variant: "contained" },
           style: ({ ownerState }: any) => {
-            const color = (ownerState.color ??
-              "primary") as keyof typeof colors;
+            const color = (ownerState.color ?? "primary") as keyof typeof colors
 
             return {
               backgroundColor: colors[color][500],
@@ -241,7 +253,7 @@ const themeOptions: ThemeOptions = {
                 "background-color": colors[color][200],
                 color: colors.white,
               },
-            };
+            }
           },
         },
       ],
@@ -278,7 +290,7 @@ const themeOptions: ThemeOptions = {
       },
     },
   },
-};
+}
 const theme = createTheme(themeOptions);
 
 export default theme;
