@@ -2,13 +2,10 @@ import { ThemeOptions, createTheme } from "@mui/material/styles";
 import { CaretRight } from "@phosphor-icons/react";
 
 const white = "#FFFFFF";
-const black = "#000000";
+// const black = "#000000";
 const background = "#F1EFEE";
 
 const colors = {
-  white,
-  black,
-  background,
   primary: {
     50: "#E6EFEC",
     100: "#B2CDC4",
@@ -82,7 +79,7 @@ const colors = {
     800: "#292524",
     900: "#1C1917",
   },
-};
+}
 
 const themeOptions: ThemeOptions = {
   palette: {
@@ -94,7 +91,7 @@ const themeOptions: ThemeOptions = {
     grey: colors.grey,
     success: colors.success,
     background: {
-      default: colors.background,
+      default: background,
     },
   },
   typography: {
@@ -180,10 +177,13 @@ const themeOptions: ThemeOptions = {
         {
           props: { variant: "outlined" },
           style: ({ ownerState }: any) => {
+            if (!Object.keys(colors).includes(ownerState.color)) {
+              return {}
+            }
             const color = (ownerState.color ?? "primary") as keyof typeof colors
 
             return {
-              backgroundColor: colors.white,
+              backgroundColor: white,
               color: colors[color][500],
               border: `solid 1px ${colors[color][500]}`,
               ":hover": {
@@ -198,7 +198,7 @@ const themeOptions: ThemeOptions = {
               },
               ":focus-visible": {
                 "border-color": colors[color][500],
-                "background-color": colors.white,
+                "background-color": white,
                 color: colors[color][500],
               },
               ":disabled": {
@@ -211,6 +211,9 @@ const themeOptions: ThemeOptions = {
         {
           props: { variant: "text" },
           style: ({ ownerState }: any) => {
+            if (!Object.keys(colors).includes(ownerState.color)) {
+              return {}
+            }
             const color = (ownerState.color ?? "primary") as keyof typeof colors
 
             return {
@@ -224,7 +227,7 @@ const themeOptions: ThemeOptions = {
                 color: colors[color][800],
               },
               ":focus-visible": {
-                "background-color": colors.white,
+                "background-color": white,
                 color: colors[color][500],
               },
               ":disabled": {
@@ -236,11 +239,14 @@ const themeOptions: ThemeOptions = {
         {
           props: { variant: "contained" },
           style: ({ ownerState }: any) => {
+            if (!Object.keys(colors).includes(ownerState.color)) {
+              return {}
+            }
             const color = (ownerState.color ?? "primary") as keyof typeof colors
 
             return {
               backgroundColor: colors[color][500],
-              color: colors.white,
+              color: white,
               ":hover": {
                 "background-color": colors[color][700],
               },
@@ -252,7 +258,7 @@ const themeOptions: ThemeOptions = {
               },
               ":disabled": {
                 "background-color": colors[color][200],
-                color: colors.white,
+                color: white,
               },
             }
           },

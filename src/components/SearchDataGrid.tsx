@@ -18,8 +18,7 @@ const SearchDataGrid = (props: SearchDataGridProps) => {
       })}
       size="small"
       onChange={debounce((event) => {
-        console.log(event.target.value);
-        applySearch(event.target.value);
+        applySearch(event.target.value)
       }, 500)}
       startAdornment={
         <InputAdornment position="start">
@@ -27,7 +26,7 @@ const SearchDataGrid = (props: SearchDataGridProps) => {
         </InputAdornment>
       }
     />
-  );
+  )
 };
 
 export default SearchDataGrid;
