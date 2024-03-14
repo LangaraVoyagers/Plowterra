@@ -8,11 +8,7 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import dayjs, { Dayjs } from "dayjs";
-import {
-  ArrowLeft,
-  CaretRight,
-  SealCheck,
-} from "@phosphor-icons/react";
+import { ArrowLeft, CaretRight, SealCheck, X } from "@phosphor-icons/react";
 import { useLocation } from "react-router-dom";
 import { useMutation } from "react-query";
 import endpoints from "api/endpoints";
@@ -25,6 +21,7 @@ import {
   DialogTitle,
 } from "@mui/material";
 import { Label } from "ui/Typography";
+import IconModalPayroll from "./IconModalPayroll.svg";
 
 const columns: GridColDef[] = [
   {
@@ -77,7 +74,6 @@ const columns: GridColDef[] = [
     },
   },
 ];
-
 
 function formatDate(value: number | Date): string {
   const date = new Date(value);
@@ -176,6 +172,21 @@ const Preview: React.FC = () => {
     setOpen(false);
   };
 
+  const StyledSpan = ({ children }: { children: React.ReactNode }) => (
+    <span
+      style={{
+        borderRadius: "var(--radius-md, 8px)",
+        background: "var(--Colors-Gray-warm-100, #F5F5F4)",
+        padding: "10px",
+        width: "100%",
+        minWidth: "162px",
+        textAlign: "center",
+      }}
+    >
+      {children}
+    </span>
+  );
+
   return (
     <BasicHome
       title={intl.formatMessage({
@@ -263,41 +274,117 @@ const Preview: React.FC = () => {
             <CaretRight size={25} />
           </Button>
 
+          {/* Modal Preview */}
           <Dialog
             open={open}
             onClose={handleClose}
             aria-labelledby="alert-dialog-title"
             aria-describedby="alert-dialog-description"
           >
-            <DialogTitle id="alert-dialog-title">{"ICON"}</DialogTitle>
+            <DialogTitle
+              id="alert-dialog-title"
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                position: "relative",
+              }}
+            >
+              <img
+                src={IconModalPayroll}
+                alt="Icon Modal Payroll"
+                style={{
+                  width: "80px",
+                  height: "80px",
+                  marginTop: "16px",
+                }}
+              />
+              <button
+                style={{
+                  position: "absolute",
+                  right: "34px",
+                  top: "28px",
+                  border: "none",
+                  background: "none",
+                }}
+                onClick={handleClose}
+              >
+                <X size={24} color="#292524" />
+              </button>
+            </DialogTitle>
             <DialogContent>
-              <DialogContentText id="alert-dialog-description">
+              <DialogContentText
+                id="alert-dialog-description"
+                style={{
+                  color: "var(--Colors-Gray-warm-900, #1C1917)",
+                  textAlign: "center",
+                  fontVariantNumeric: "lining-nums tabular-nums",
+                  fontFamily: '"Plus Jakarta Sans"',
+                  fontSize: "24px",
+                  fontStyle: "normal",
+                  fontWeight: 600,
+                  lineHeight: "32px",
+                }}
+              >
                 Ready to run the payroll?
               </DialogContentText>
             </DialogContent>
-            <Label>{uniqueSeasonName}</Label>
-            <span>
-              <FormattedDate
-                value={formatDate(startDate?.toDate() ?? new Date())}
-                month="short"
-                day="numeric"
-              />
-              -
-              <FormattedDate
-                value={formatDate(endDate.toDate())}
-                month="short"
-                day="numeric"
-              />
-            </span>
-            <Label>{netPay}</Label>
-            <DialogActions>
-              <Button onClick={handleClose} color="primary">
-                Cancel
-              </Button>
-              <Button onClick={handleConfirm} color="primary" autoFocus>
-                Confirm
-              </Button>
-            </DialogActions>
+            <div
+              style={{
+                display: "flex",
+                height: "44px",
+                padding: "20px",
+                flexDirection: "row",
+                justifyContent: "space-between",
+                alignItems: "center",
+                flex: "0 1 auto",
+                gap: "12px",
+              }}
+            >
+              <StyledSpan>{uniqueSeasonName}</StyledSpan>
+              <StyledSpan>
+                <FormattedDate
+                  value={formatDate(startDate?.toDate() ?? new Date())}
+                  month="short"
+                  day="numeric"
+                />
+                -
+                <FormattedDate
+                  value={formatDate(endDate.toDate())}
+                  month="short"
+                  day="numeric"
+                />
+              </StyledSpan>
+              <StyledSpan>{netPay}</StyledSpan>
+            </div>
+            <div style={{ padding: "0 32px" }}>
+              <DialogActions
+                style={{
+                  borderTop: "1px solid var(--Colors-Brand-200, #E7E5E4)",
+                  marginTop: "32px",
+                  paddingTop: "32px",
+                  paddingBottom: "32px",
+                  display: "flex",
+                  justifyContent: "space-between",
+                }}
+              >
+                <Button
+                  onClick={handleClose}
+                  color="primary"
+                  style={{ flex: 1, marginRight: "12px", height: "48px" }}
+                >
+                  Cancel
+                </Button>
+                <Button
+                  onClick={handleConfirm}
+                  variant="contained"
+                  color="primary"
+                  autoFocus
+                  style={{ flex: 1, marginLeft: "12px", height: "48px" }}
+                >
+                  Confirm
+                </Button>
+              </DialogActions>
+            </div>
           </Dialog>
         </Box>
       )}
