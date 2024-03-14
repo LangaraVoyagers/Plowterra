@@ -318,7 +318,6 @@ const Preview: React.FC = () => {
                   color: "var(--Colors-Gray-warm-900, #1C1917)",
                   textAlign: "center",
                   fontVariantNumeric: "lining-nums tabular-nums",
-                  fontFamily: '"Plus Jakarta Sans"',
                   fontSize: "24px",
                   fontStyle: "normal",
                   fontWeight: 600,
