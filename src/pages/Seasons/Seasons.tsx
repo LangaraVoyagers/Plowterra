@@ -1,58 +1,99 @@
+import { Box } from "@mui/material";
 import {
-  Box,
-  FormControl,
-  InputAdornment,
-  InputLabel,
-  MenuItem,
-  OutlinedInput,
-  Select,
-} from "@mui/material"
-import { DataGrid, GridColDef, GridRenderCellParams } from "@mui/x-data-grid"
+  DataGrid,
+  GridColDef,
+  GridRenderCellParams,
+  GridValueGetterParams,
+} from "@mui/x-data-grid";
 
-import BasicHome from "layouts/BasicHome"
-import { MagnifyingGlass } from "@phosphor-icons/react"
-import formatDate from "shared/formatDate"
-import { getSeasons } from "api/seasons"
-import { useQuery } from "react-query"
-import useQueryCache from "hooks/useQueryCache"
-import { useState } from "react"
-import { useUser } from "context/UserProvider"
-import CreateSeason from "components/seasons/CreateSeason"
-import UpdateSeason from "components/seasons/UpdateSeason"
-import { ISeasonResponse } from "project-2-types"
+import BasicHome from "layouts/BasicHome";
+import { getSeasons } from "api/seasons";
+import { useQuery } from "react-query";
+import useQueryCache from "hooks/useQueryCache";
+import { useState } from "react";
+import { useUser } from "context/UserProvider";
+import CreateSeason from "components/seasons/CreateSeason";
+import UpdateSeason from "components/seasons/UpdateSeason";
+import SearchDataGrid from "components/SearchDataGrid";
+import { FormattedDate, FormattedMessage, useIntl } from "react-intl";
+import { ISeasonResponse } from "project-2-types";
+import FilterDataGrid from "components/FilterDataGrid";
 
 const columns: GridColDef[] = [
   {
     field: "name",
-    headerName: "Name",
+    renderHeader: () => (
+      <FormattedMessage id="seasons.table.column.name" defaultMessage="Name" />
+    ),
     width: 250,
-    flex: 1,
     minWidth: 250,
   },
   {
     field: "status",
-    headerName: "Status",
+    renderHeader: () => (
+      <FormattedMessage
+        id="seasons.table.column.status"
+        defaultMessage="Status"
+      />
+    ),
     width: 200,
   },
   {
     field: "product",
-    headerName: "Product",
+    renderHeader: () => (
+      <FormattedMessage
+        id="seasons.table.column.product"
+        defaultMessage="Product"
+      />
+    ),
     width: 200,
     valueGetter: (params) => params.row.product?.name,
   },
   {
     field: "startDate",
-    headerName: "Start Date",
+    renderHeader: () => (
+      <FormattedMessage
+        id="seasons.table.column.start_date"
+        defaultMessage="Start Date"
+      />
+    ),
     width: 150,
-    valueFormatter: (params) =>
-      params?.value ? formatDate(params.value) : "-",
+    valueGetter: (params: GridValueGetterParams<ISeasonResponse>) =>
+      params.row.startDate,
+    renderCell: (params: GridRenderCellParams<ISeasonResponse>) => {
+      return (
+        <FormattedDate
+          value={params.row.startDate}
+          year="numeric"
+          month="long"
+          day="numeric"
+        />
+      );
+    },
   },
   {
     field: "endDate",
-    headerName: "End Date",
+    renderHeader: () => (
+      <FormattedMessage
+        id="seasons.table.column.end_date"
+        defaultMessage="End Date"
+      />
+    ),
     width: 150,
-    valueFormatter: (params) =>
-      params?.value ? formatDate(params.value) : "-",
+    valueGetter: (params: GridValueGetterParams<ISeasonResponse>) =>
+      params.row.endDate,
+    renderCell: (params: GridRenderCellParams<ISeasonResponse>) => {
+      if (params.row.endDate) {
+        return (
+          <FormattedDate
+            value={params.row.endDate}
+            year="numeric"
+            month="long"
+            day="numeric"
+          />
+        );
+      } else return "-";
+    },
   },
   {
     field: "action",
@@ -60,16 +101,26 @@ const columns: GridColDef[] = [
     width: 150,
     sortable: false,
     renderCell: (data: GridRenderCellParams<{ _id: string }>) => {
-      return <UpdateSeason seasonId={data.row._id} />
+      return <UpdateSeason seasonId={data.row._id} />;
     },
   },
-]
+];
 
 const Seasons = () => {
   const { user } = useUser();
+  const intl = useIntl();
 
   const { GET_QUERY_KEY } = useQueryCache("seasons");
-  const [seasons, setSeasons] = useState<Array<ISeasonResponse>>([])
+  const [seasons, setSeasons] = useState<Array<ISeasonResponse>>([]);
+
+  const [search, setSearch] = useState<string>();
+  const [filterModel, setFilterModel] = useState([
+    {
+      field: "status",
+      operator: "equals",
+      value: "ACTIVE",
+    },
+  ]);
 
   const { isLoading } = useQuery({
     queryKey: GET_QUERY_KEY,
@@ -84,42 +135,55 @@ const Seasons = () => {
 
   return (
     <BasicHome
-      title="Harvest Season"
-      subtitle="Create and close your harvest season here."
+      title={intl.formatMessage({
+        id: "harvestSeason",
+        defaultMessage: "Harvest Season",
+      })}
+      subtitle={intl.formatMessage({
+        id: "harvestSeason.subtitle",
+        defaultMessage: "Create and close your harvest season here.",
+      })}
       breadcrumb={[
         { title: user.farm.name, href: "#" },
-        { title: "Harvest Seasons", href: "" },
+        {
+          title: (
+            <FormattedMessage
+              id="sidebar.harvestSeason"
+              defaultMessage="Harvest Season"
+            />
+          ),
+          href: "",
+        },
       ]}
       actions={<CreateSeason />}
     >
       <Box display="flex" justifyContent="space-between">
-        <FormControl>
-          <InputLabel id="filterby-label">Filter</InputLabel>
+        <FilterDataGrid
+          filterModel={filterModel[0]}
+          setFilterModel={setFilterModel}
+          options={[
+            {
+              field: "status",
+              operator: "equals",
+              value: "",
+              label: "All",
+            },
+            {
+              field: "status",
+              operator: "equals",
+              value: "ACTIVE",
+              label: "Active",
+            },
+            {
+              field: "status",
+              operator: "equals",
+              value: "Closed",
+              label: "Closed",
+            },
+          ]}
+        />
 
-          <Select
-            labelId="filterby-label"
-            id="filterby-select"
-            value={2}
-            label="Filter:"
-            size="small"
-          >
-            <MenuItem value={1}>All</MenuItem>
-            <MenuItem value={2}>Active</MenuItem>
-            <MenuItem value={3}>Closed</MenuItem>
-          </Select>
-        </FormControl>
-
-        <FormControl>
-          <OutlinedInput
-            placeholder="Search"
-            size="small"
-            startAdornment={
-              <InputAdornment position="start">
-                <MagnifyingGlass />
-              </InputAdornment>
-            }
-          />
-        </FormControl>
+        <SearchDataGrid applySearch={setSearch} />
       </Box>
 
       <Box display="flex" flexGrow={1} pb={3}>
@@ -133,6 +197,13 @@ const Seasons = () => {
                 pageSize: 12,
               },
             },
+          }}
+          filterModel={{
+            items: [filterModel[0]],
+            quickFilterValues: search ? search?.split(" ") : [],
+          }}
+          onFilterModelChange={(model) => {
+            setFilterModel(model.items as any);
           }}
           getRowId={(data) => data?._id}
           pageSizeOptions={[10, 20, 50, 100]}
