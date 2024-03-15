@@ -1,24 +1,16 @@
-import {
-  Box,
-  FormControl,
-  InputAdornment,
-  InputLabel,
-  MenuItem,
-  OutlinedInput,
-  Select,
-} from "@mui/material"
-import { DataGrid, GridColDef, GridRenderCellParams } from "@mui/x-data-grid"
+import { Box, FormControl, InputLabel, MenuItem, Select } from "@mui/material";
+import { DataGrid, GridColDef, GridRenderCellParams } from "@mui/x-data-grid";
 
-import BasicHome from "layouts/BasicHome"
-import { MagnifyingGlass } from "@phosphor-icons/react"
-import formatDate from "shared/formatDate"
-import { getSeasons } from "api/seasons"
-import { useQuery } from "react-query"
-import useQueryCache from "hooks/useQueryCache"
-import { useState } from "react"
-import { useUser } from "context/UserProvider"
-import CreateSeason from "components/seasons/CreateSeason"
-import UpdateSeason from "components/seasons/UpdateSeason"
+import BasicHome from "layouts/BasicHome";
+import formatDate from "shared/formatDate";
+import { getSeasons } from "api/seasons";
+import { useQuery } from "react-query";
+import useQueryCache from "hooks/useQueryCache";
+import { useState } from "react";
+import { useUser } from "context/UserProvider";
+import CreateSeason from "components/seasons/CreateSeason";
+import UpdateSeason from "components/seasons/UpdateSeason";
+import SearchDataGrid from "components/SearchDataGrid";
 
 const columns: GridColDef[] = [
   {
@@ -59,16 +51,18 @@ const columns: GridColDef[] = [
     width: 150,
     sortable: false,
     renderCell: (data: GridRenderCellParams<{ _id: string }>) => {
-      return <UpdateSeason seasonId={data.row._id} />
+      return <UpdateSeason seasonId={data.row._id} />;
     },
   },
-]
+];
 
 const Seasons = () => {
   const { user } = useUser();
 
   const { GET_QUERY_KEY } = useQueryCache("seasons");
   const [seasons, setSeasons] = useState([]);
+
+  const [search, setSearch] = useState<string>();
 
   const { isLoading } = useQuery({
     queryKey: GET_QUERY_KEY,
@@ -108,17 +102,7 @@ const Seasons = () => {
           </Select>
         </FormControl>
 
-        <FormControl>
-          <OutlinedInput
-            placeholder="Search"
-            size="small"
-            startAdornment={
-              <InputAdornment position="start">
-                <MagnifyingGlass />
-              </InputAdornment>
-            }
-          />
-        </FormControl>
+        <SearchDataGrid applySearch={setSearch} />
       </Box>
 
       <Box display="flex" flexGrow={1} pb={3}>
@@ -132,6 +116,10 @@ const Seasons = () => {
                 pageSize: 12,
               },
             },
+          }}
+          filterModel={{
+            items: [],
+            quickFilterValues: search ? search?.split(" ") : [],
           }}
           getRowId={(data) => data?._id}
           pageSizeOptions={[10, 20, 50, 100]}
