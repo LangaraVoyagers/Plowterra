@@ -203,7 +203,7 @@ const Seasons = () => {
             quickFilterValues: search ? search?.split(" ") : [],
           }}
           onFilterModelChange={(model) => {
-            setFilterModel(model as any);
+            setFilterModel(model.items as any);
           }}
           getRowId={(data) => data?._id}
           pageSizeOptions={[10, 20, 50, 100]}
