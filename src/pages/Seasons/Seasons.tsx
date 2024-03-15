@@ -12,6 +12,8 @@ import CreateSeason from "components/seasons/CreateSeason";
 import UpdateSeason from "components/seasons/UpdateSeason";
 import SearchDataGrid from "components/SearchDataGrid";
 
+const statuses = ["Active", "Closed"];
+
 const columns: GridColDef[] = [
   {
     field: "name",
@@ -63,6 +65,21 @@ const Seasons = () => {
   const [seasons, setSeasons] = useState([]);
 
   const [search, setSearch] = useState<string>();
+  const [filterStatus, setFilterStatus] = useState("Active");
+  const [filteredRows, setFilteredRows] = useState(seasons);
+
+  const handleFilterChange = (event: { target: { value: any } }) => {
+    const value = event.target.value;
+    setFilterStatus(value);
+    if (value === "All") {
+      setFilteredRows(seasons);
+    } else {
+      const filtered = seasons.filter(
+        (row: { status: string }) => row.status === value
+      );
+      setFilteredRows(filtered);
+    }
+  };
 
   const { isLoading } = useQuery({
     queryKey: GET_QUERY_KEY,
@@ -89,16 +106,13 @@ const Seasons = () => {
         <FormControl>
           <InputLabel id="filterby-label">Filter</InputLabel>
 
-          <Select
-            labelId="filterby-label"
-            id="filterby-select"
-            value={2}
-            label="Filter:"
-            size="small"
-          >
-            <MenuItem value={1}>All</MenuItem>
-            <MenuItem value={2}>Active</MenuItem>
-            <MenuItem value={3}>Closed</MenuItem>
+          <Select value={filterStatus} onChange={handleFilterChange}>
+            <MenuItem value="All">All</MenuItem>
+            {statuses.map((status) => (
+              <MenuItem key={status} value={status}>
+                {status}
+              </MenuItem>
+            ))}
           </Select>
         </FormControl>
 
@@ -107,7 +121,7 @@ const Seasons = () => {
 
       <Box display="flex" flexGrow={1} pb={3}>
         <DataGrid
-          rows={seasons}
+          rows={filteredRows}
           columns={columns}
           loading={isLoading}
           initialState={{
