@@ -16,7 +16,7 @@ import CreateSeason from "components/seasons/CreateSeason";
 import UpdateSeason from "components/seasons/UpdateSeason";
 import SearchDataGrid from "components/SearchDataGrid";
 import { FormattedDate, FormattedMessage, useIntl } from "react-intl";
-import { ISeason } from "project-2-types";
+import { ISeasonResponse } from "project-2-types";
 import FilterDataGrid from "components/FilterDataGrid";
 
 const columns: GridColDef[] = [
@@ -58,9 +58,9 @@ const columns: GridColDef[] = [
       />
     ),
     width: 150,
-    valueGetter: (params: GridValueGetterParams<ISeason>) =>
+    valueGetter: (params: GridValueGetterParams<ISeasonResponse>) =>
       params.row.startDate,
-    renderCell: (params: GridRenderCellParams<ISeason>) => {
+    renderCell: (params: GridRenderCellParams<ISeasonResponse>) => {
       return (
         <FormattedDate
           value={params.row.startDate}
@@ -80,8 +80,8 @@ const columns: GridColDef[] = [
       />
     ),
     width: 150,
-    valueGetter: (params: GridValueGetterParams<ISeason>) => params.row.endDate,
-    renderCell: (params: GridRenderCellParams<ISeason>) => {
+    valueGetter: (params: GridValueGetterParams<ISeasonResponse>) => params.row.endDate,
+    renderCell: (params: GridRenderCellParams<ISeasonResponse>) => {
       if (params.row.endDate) {
         return (
           <FormattedDate
@@ -110,7 +110,7 @@ const Seasons = () => {
   const intl = useIntl();
 
   const { GET_QUERY_KEY } = useQueryCache("seasons");
-  const [seasons, setSeasons] = useState([]);
+  const [seasons, setSeasons] = useState<Array<ISeasonResponse>>([])
 
   const [search, setSearch] = useState<string>();
   const [filterModel, setFilterModel] = useState([

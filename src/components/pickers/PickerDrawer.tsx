@@ -14,9 +14,9 @@ import {
 } from "@mui/material";
 import {
   BloodType,
-  IPicker,
+  IPickerResponse,
   Relationship,
-} from "project-2-types/dist/interface";
+} from "project-2-types/dist/interface"
 import { Controller, useForm } from "react-hook-form";
 import { deletePicker, getPickerById, upsertPicker } from "api/pickers";
 import { useMutation, useQuery } from "react-query";
@@ -31,24 +31,24 @@ import { BodyText, Display, Label } from "ui/Typography";
 import { useNavigate } from "react-router-dom";
 import paths from "shared/paths";
 
-interface IPickerForm extends Omit<IPicker, "id"> {}
+interface IPickerForm extends Omit<IPickerResponse, "id"> {}
 
 const relationshipList = (
   Object.keys(Relationship) as Array<keyof typeof Relationship>
-).map((key) => ({ value: key, label: Relationship[key] }));
+).map((key) => ({ value: key, label: Relationship[key] }))
 
 const bloodTypeList = (
   Object.keys(BloodType) as Array<keyof typeof BloodType>
-).map((key) => ({ value: key, label: BloodType[key] }));
+).map((key) => ({ value: key, label: BloodType[key] }))
 
 type PickerDrawerProps = DrawerProps & {
-  pickerId?: string;
-  dismiss: () => void;
-};
+  pickerId?: string
+  dismiss: () => void
+}
 const PickerDrawer = ({ dismiss, pickerId, ...props }: PickerDrawerProps) => {
-  const intl = useIntl();
-  const { showAlert } = useAlert();
-  const navigate = useNavigate();
+  const intl = useIntl()
+  const { showAlert } = useAlert()
+  const navigate = useNavigate()
 
   const {
     GET_DETAIL_QUERY_KEY,
@@ -57,9 +57,9 @@ const PickerDrawer = ({ dismiss, pickerId, ...props }: PickerDrawerProps) => {
     createCache,
     updateCache,
     deleteCache,
-  } = useQueryCache("pickers", pickerId);
+  } = useQueryCache("pickers", pickerId)
 
-  const [showEditForm, setShowEditForm] = useState<boolean>(!pickerId);
+  const [showEditForm, setShowEditForm] = useState<boolean>(!pickerId)
 
   const {
     control,
@@ -79,16 +79,16 @@ const PickerDrawer = ({ dismiss, pickerId, ...props }: PickerDrawerProps) => {
       },
     },
     resolver: validateResolver(PickerSchema),
-  });
+  })
 
-  const pickerData = getValues();
+  const pickerData = getValues()
 
   const { isLoading: isLoadingDetail } = useQuery({
     queryKey: GET_DETAIL_QUERY_KEY,
     queryFn: () => getPickerById(pickerId),
     enabled: !!pickerId,
     onSuccess: (result) => {
-      reset(result);
+      reset(result)
     },
     onError: () => {
       showAlert(
@@ -97,18 +97,18 @@ const PickerDrawer = ({ dismiss, pickerId, ...props }: PickerDrawerProps) => {
           defaultMessage: "Oops! Information couldn't be displayed.",
         }),
         "error"
-      );
+      )
     },
-  });
+  })
 
   const { mutate: savePickerMutation, isLoading } = useMutation({
     mutationKey: pickerId ? UPDATE_MUTATION_KEY : CREATE_MUTATION_KEY,
     mutationFn: upsertPicker,
     onSuccess: (result) => {
       if (pickerId) {
-        handleUpdateSuccess(result);
+        handleUpdateSuccess(result)
       } else {
-        handleCreateSuccess(result);
+        handleCreateSuccess(result)
       }
     },
     onError: () => {
@@ -118,52 +118,52 @@ const PickerDrawer = ({ dismiss, pickerId, ...props }: PickerDrawerProps) => {
           defaultMessage: "Oops! The picker couldn't be saved.",
         }),
         "error"
-      );
+      )
     },
-  });
+  })
 
   const onCreatePickerClose = () => {
-    reset();
-    dismiss();
-  };
+    reset()
+    dismiss()
+  }
 
-  const handleCreateSuccess = (created: IPicker) => {
-    createCache(created);
+  const handleCreateSuccess = (created: IPickerResponse) => {
+    createCache(created)
     showAlert(
       intl.formatMessage({
         id: "pickers.create.picker.response.success",
         defaultMessage: "The picker was created successfully",
       }),
       "success"
-    );
-    onCreatePickerClose();
-  };
+    )
+    onCreatePickerClose()
+  }
 
-  const handleUpdateSuccess = (updated: IPicker) => {
-    updateCache(updated);
+  const handleUpdateSuccess = (updated: IPickerResponse) => {
+    updateCache(updated)
     showAlert(
       intl.formatMessage({
         id: "pickers.update.picker.response.success",
         defaultMessage: "The picker was updated successfully",
       }),
       "success"
-    );
-    hideEdit();
-  };
+    )
+    hideEdit()
+  }
 
   const { mutate: deletePickerMutation, isLoading: isDeleting } = useMutation({
     mutationKey: ["pickers", "delete", pickerId],
     mutationFn: deletePicker,
     onSuccess: (result) => {
-      deleteCache(result);
+      deleteCache(result)
       showAlert(
         intl.formatMessage({
           id: "pickers.delete.picker.response.success",
           defaultMessage: "The picker was deleted successfully.",
         }),
         "success"
-      );
-      dismiss();
+      )
+      dismiss()
     },
     onError: () => {
       showAlert(
@@ -172,20 +172,20 @@ const PickerDrawer = ({ dismiss, pickerId, ...props }: PickerDrawerProps) => {
           defaultMessage: "Oops! The picker couldn't be deleted.",
         }),
         "error"
-      );
+      )
     },
-  });
+  })
 
   const onSubmit = (data: IPickerForm) => {
-    savePickerMutation({ ...data, pickerId });
-  };
+    savePickerMutation({ ...data, pickerId })
+  }
 
   const onDelete = () => {
-    deletePickerMutation(pickerId);
-  };
+    deletePickerMutation(pickerId)
+  }
 
-  const showEdit = () => setShowEditForm(true);
-  const hideEdit = () => setShowEditForm(false);
+  const showEdit = () => setShowEditForm(true)
+  const hideEdit = () => setShowEditForm(false)
 
   const pickerForm = (
     <Box
@@ -227,7 +227,7 @@ const PickerDrawer = ({ dismiss, pickerId, ...props }: PickerDrawerProps) => {
                 helperText={errors.name?.message}
               />
             </Box>
-          );
+          )
         }}
       />
 
@@ -254,7 +254,7 @@ const PickerDrawer = ({ dismiss, pickerId, ...props }: PickerDrawerProps) => {
                 helperText={errors.phone?.message}
               />
             </Box>
-          );
+          )
         }}
       />
 
@@ -281,7 +281,7 @@ const PickerDrawer = ({ dismiss, pickerId, ...props }: PickerDrawerProps) => {
                 helperText={errors.emergencyContact?.name?.message}
               />
             </Box>
-          );
+          )
         }}
       />
 
@@ -310,7 +310,7 @@ const PickerDrawer = ({ dismiss, pickerId, ...props }: PickerDrawerProps) => {
                       <MenuItem key={value} value={value}>
                         {label}
                       </MenuItem>
-                    );
+                    )
                   })}
                 </Select>
                 <FormHelperText error>
@@ -318,7 +318,7 @@ const PickerDrawer = ({ dismiss, pickerId, ...props }: PickerDrawerProps) => {
                 </FormHelperText>
               </FormControl>
             </Box>
-          );
+          )
         }}
       />
 
@@ -346,7 +346,7 @@ const PickerDrawer = ({ dismiss, pickerId, ...props }: PickerDrawerProps) => {
                 helperText={errors.emergencyContact?.phone?.message}
               />
             </Box>
-          );
+          )
         }}
       />
 
@@ -375,7 +375,7 @@ const PickerDrawer = ({ dismiss, pickerId, ...props }: PickerDrawerProps) => {
                       <MenuItem key={value} value={value}>
                         {label}
                       </MenuItem>
-                    );
+                    )
                   })}
                 </Select>
                 <FormHelperText error>
@@ -383,7 +383,7 @@ const PickerDrawer = ({ dismiss, pickerId, ...props }: PickerDrawerProps) => {
                 </FormHelperText>
               </FormControl>
             </Box>
-          );
+          )
         }}
       />
 
@@ -409,7 +409,7 @@ const PickerDrawer = ({ dismiss, pickerId, ...props }: PickerDrawerProps) => {
                 helperText={errors.govId?.message}
               />
             </Box>
-          );
+          )
         }}
       />
 
@@ -436,7 +436,7 @@ const PickerDrawer = ({ dismiss, pickerId, ...props }: PickerDrawerProps) => {
                 helperText={errors.address?.message}
               />
             </Box>
-          );
+          )
         }}
       />
 
@@ -507,7 +507,7 @@ const PickerDrawer = ({ dismiss, pickerId, ...props }: PickerDrawerProps) => {
         </Box>
       )}
     </Box>
-  );
+  )
 
   const pickerDetail = (
     <Box
@@ -590,7 +590,7 @@ const PickerDrawer = ({ dismiss, pickerId, ...props }: PickerDrawerProps) => {
 
         <Button
           onClick={() => {
-            navigate(`${paths.harvestLogs}?pickerId=${pickerId}`);
+            navigate(`${paths.harvestLogs}?pickerId=${pickerId}`)
           }}
         >
           {intl.formatMessage({
@@ -609,7 +609,7 @@ const PickerDrawer = ({ dismiss, pickerId, ...props }: PickerDrawerProps) => {
         </Button>
       </Box>
     </Box>
-  );
+  )
 
   return (
     <Drawer
@@ -619,7 +619,7 @@ const PickerDrawer = ({ dismiss, pickerId, ...props }: PickerDrawerProps) => {
     >
       {!isLoadingDetail && <>{showEditForm ? pickerForm : pickerDetail}</>}
     </Drawer>
-  );
-};
+  )
+}
 
 export default PickerDrawer;

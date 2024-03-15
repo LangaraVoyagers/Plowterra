@@ -656,6 +656,14 @@
     prop-types "^15.8.1"
     react-transition-group "^4.4.5"
 
+"@ngneat/falso@^7.2.0":
+  version "7.2.0"
+  resolved "https://registry.yarnpkg.com/@ngneat/falso/-/falso-7.2.0.tgz#0683a643a1ab0ea99d0d461cb2333f108b2329bb"
+  integrity sha512-283EXBFd05kCbGuGSXgmvhCsQYEYzvD/eJaE7lxd05qRB0tgREvZX7TRlJ1KSp8nHxoK6Ws029G1Y30mt4IVAA==
+  dependencies:
+    seedrandom "3.0.5"
+    uuid "8.3.2"
+
 "@nodelib/fs.scandir@2.1.5":
   version "2.1.5"
   resolved "https://registry.npmjs.org/@nodelib/fs.scandir/-/fs.scandir-2.1.5.tgz"
@@ -2686,10 +2694,10 @@ prelude-ls@^1.2.1:
   resolved "https://registry.npmjs.org/prelude-ls/-/prelude-ls-1.2.1.tgz"
   integrity sha512-vkcDPrRZo1QZLbn5RLGPpg/WmIQ65qoWWhcGKf/b5eplkkarX0m9z8ppCat4mlOqUsWpyNuYgO3VRyrYHSzX5g==
 
-project-2-types@^1.4.8:
-  version "1.5.4"
-  resolved "https://registry.npmjs.org/project-2-types/-/project-2-types-1.5.4.tgz"
-  integrity sha512-NnjwCowLE2YxzIrvJTNlCGWMIBthErw4QOPuo2dW41unq6fo5dNa1vJsB5xzGpV8Hv5Q57gQb6WnFREDUJVxOQ==
+project-2-types@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/project-2-types/-/project-2-types-2.0.1.tgz#c440602c0c2753ca5edd973ba01361e276364639"
+  integrity sha512-yd6PCXN0P99Er2XirigCZIaSjEkd/Gu6Xfvj50sr7xtr4qRlyw2Qivc3wsl61gE1A+y9Qaxsfop8daAgLue1ow==
   dependencies:
     ajv "^8.12.0"
     mongoose "^8.2.0"
@@ -2940,6 +2948,11 @@ scheduler@^0.23.0:
   integrity sha512-CtuThmgHNg7zIZWAXi3AsyIzA3n4xx7aNyjwC2VJldO2LMVDhFK+63xGqq6CsJH4rTAt6/M+N4GhZiDYPx9eUw==
   dependencies:
     loose-envify "^1.1.0"
+
+seedrandom@3.0.5:
+  version "3.0.5"
+  resolved "https://registry.yarnpkg.com/seedrandom/-/seedrandom-3.0.5.tgz#54edc85c95222525b0c7a6f6b3543d8e0b3aa0a7"
+  integrity sha512-8OwmbklUNzwezjGInmZ+2clQmExQPvomqjL7LFqOYqtmuxRgQYqOD3mHaU+MvZn5FLUeVxVfQjwLZW/n/JFuqg==
 
 semver@^6.3.1:
   version "6.3.1"
@@ -3284,6 +3297,11 @@ uri-js@^4.2.2:
   integrity sha512-7rKUyy33Q1yc98pQ1DAmLtwX109F7TIfWlW1Ydo8Wl1ii1SeHieeh0HHfPeL2fMXK6z0s8ecKs9frCuLJvndBg==
   dependencies:
     punycode "^2.1.0"
+
+uuid@8.3.2:
+  version "8.3.2"
+  resolved "https://registry.yarnpkg.com/uuid/-/uuid-8.3.2.tgz#80d5b5ced271bb9af6c445f21a1a04c606cefbe2"
+  integrity sha512-+NYs2QeMWy+GWFOEm9xnn6HCDp0l7QBD7ml8zLUmJ+93Q5NF0NocErnwkTkXVFNiX3/fpC6afS8Dhb/gz7R7eg==
 
 vite-tsconfig-paths@^4.2.3:
   version "4.3.1"

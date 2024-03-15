@@ -19,23 +19,24 @@ import {
   List,
   MenuItem,
   Select,
-} from "@mui/material";
-import { CSSObject, Theme, styled } from "@mui/material/styles";
-import { LANGUAGES, useLocale } from "context/LocaleProvider";
+  useMediaQuery,
+} from "@mui/material"
+import { CSSObject, Theme, styled, useTheme } from "@mui/material/styles"
+import { LANGUAGES, useLocale } from "context/LocaleProvider"
 
-import { FormattedMessage } from "react-intl";
-import ListItem from "@mui/material/ListItem";
-import ListItemButton from "@mui/material/ListItemButton";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import ListItemText from "@mui/material/ListItemText";
-import MuiDrawer from "@mui/material/Drawer";
-import { Outlet } from "react-router-dom";
-import paths from "shared/paths";
-import { useState } from "react";
-import { useUser } from "context/UserProvider";
-import { BodyText } from "ui/Typography";
+import { FormattedMessage } from "react-intl"
+import ListItem from "@mui/material/ListItem"
+import ListItemButton from "@mui/material/ListItemButton"
+import ListItemIcon from "@mui/material/ListItemIcon"
+import ListItemText from "@mui/material/ListItemText"
+import MuiDrawer from "@mui/material/Drawer"
+import { Outlet } from "react-router-dom"
+import paths from "shared/paths"
+import { useState } from "react"
+import { useUser } from "context/UserProvider"
+import { BodyText } from "ui/Typography"
 
-const DRAWER_WIDTH = 240;
+const DRAWER_WIDTH = 240
 
 const openedMixin = (theme: Theme): CSSObject => ({
   width: DRAWER_WIDTH,
@@ -44,7 +45,7 @@ const openedMixin = (theme: Theme): CSSObject => ({
     duration: theme.transitions.duration.enteringScreen,
   }),
   overflowX: "hidden",
-});
+})
 
 const closedMixin = (theme: Theme): CSSObject => ({
   transition: theme.transitions.create("width", {
@@ -56,7 +57,7 @@ const closedMixin = (theme: Theme): CSSObject => ({
   [theme.breakpoints.up("sm")]: {
     width: `calc(${theme.spacing(8)} + 1px)`,
   },
-});
+})
 
 const DrawerHeader = styled("div")(({ theme }) => ({
   display: "flex",
@@ -65,7 +66,7 @@ const DrawerHeader = styled("div")(({ theme }) => ({
   padding: theme.spacing(0, 1),
   // necessary for content to be below app bar
   ...theme.mixins.toolbar,
-}));
+}))
 
 const Drawer = styled(MuiDrawer, {
   shouldForwardProp: (prop) => prop !== "open",
@@ -82,7 +83,7 @@ const Drawer = styled(MuiDrawer, {
     ...closedMixin(theme),
     "& .MuiDrawer-paper": closedMixin(theme),
   }),
-}));
+}))
 
 const sidebarItems = [
   {
@@ -117,7 +118,7 @@ const sidebarItems = [
     icon: <Plant />,
     href: paths.seasons,
   },
-];
+]
 
 const quickActions = [
   {
@@ -140,123 +141,181 @@ const quickActions = [
     icon: <FilePlus />,
     href: "#",
   },
-];
+]
+const container = window !== undefined ? () => window.document.body : undefined
 
 export default function MainLayout() {
-  const [open, setOpen] = useState(true);
-  const { user } = useUser();
+  const theme = useTheme()
+  const mobile = useMediaQuery(theme.breakpoints.down("md"))
 
-  const { locale, selectLanguage } = useLocale();
+  const [open, setOpen] = useState(true)
+  const [mobileOpen, setMobileOpen] = useState(false)
+  const { user } = useUser()
+
+  const { locale, selectLanguage } = useLocale()
 
   const handleDrawerClose = () => {
-    setOpen(!open);
-  };
+    if (mobile) {
+      setMobileOpen(!mobileOpen)
+    } else {
+      setOpen(!open)
+    }
+  }
+
+  const drawer = (
+    <>
+      <Box display="flex" flex={1} flexDirection="column">
+        <DrawerHeader>
+          <IconButton onClick={handleDrawerClose}>
+            {!open || !!mobileOpen ? <CaretRight /> : <CaretLeft />}
+          </IconButton>
+        </DrawerHeader>
+        <Divider />
+        <List>
+          {sidebarItems.map(({ title, icon, href }, index) => (
+            <ListItem key={index} disablePadding sx={{ display: "block" }}>
+              <ListItemButton
+                sx={{
+                  minHeight: 48,
+                  justifyContent: open ? "initial" : "center",
+                  px: 2.5,
+                }}
+                href={href}
+              >
+                <ListItemIcon
+                  sx={{
+                    minWidth: 0,
+                    mr: open ? 3 : "auto",
+                    justifyContent: "center",
+                  }}
+                >
+                  {icon}
+                </ListItemIcon>
+
+                <ListItemText primary={title} sx={{ opacity: open ? 1 : 0 }} />
+              </ListItemButton>
+            </ListItem>
+          ))}
+        </List>
+        <Divider />
+        <ListItem sx={{ opacity: open ? 1 : 0 }}>
+          <FormattedMessage
+            id="sidebar.quick_actions"
+            defaultMessage="Quick Actions"
+          />
+        </ListItem>
+        <List>
+          {quickActions.map((data, index) => (
+            <ListItem key={index} disablePadding sx={{ display: "block" }}>
+              <ListItemButton
+                sx={{
+                  minHeight: 48,
+                  justifyContent: open ? "initial" : "center",
+                  px: 2.5,
+                }}
+                href={data.href}
+              >
+                <ListItemIcon
+                  sx={{
+                    minWidth: 0,
+                    mr: open ? 3 : "auto",
+                    justifyContent: "center",
+                  }}
+                >
+                  {data.icon}
+                </ListItemIcon>
+                <ListItemText
+                  primary={data.title}
+                  sx={{ opacity: open ? 1 : 0 }}
+                />
+              </ListItemButton>
+            </ListItem>
+          ))}
+        </List>
+      </Box>
+
+      <Box display="flex" flexDirection="column" gap={2} p={2}>
+        <BodyText>{user.name}</BodyText>
+        <FormControl fullWidth>
+          <InputLabel id="language-label">Language</InputLabel>
+
+          <Select
+            labelId="language-label"
+            id="language-select"
+            value={locale}
+            size="small"
+            onChange={async (event) => {
+              await selectLanguage(event.target.value as keyof typeof LANGUAGES)
+            }}
+            label="Language"
+          >
+            <MenuItem value={LANGUAGES.en}>English</MenuItem>
+            <MenuItem value={LANGUAGES.es}>Spanish</MenuItem>
+          </Select>
+        </FormControl>
+      </Box>
+    </>
+  )
 
   return (
     <Box height="100%" display="flex">
       <CssBaseline />
       {/* Sidebar */}
-      <Drawer component="aside" variant="permanent" open={open}>
-        <Box display="flex" flex={1} flexDirection="column">
-          <DrawerHeader>
+      {/* Mobile */}
+      <MuiDrawer
+        anchor="right"
+        container={container}
+        variant="temporary"
+        open={mobileOpen}
+        onClose={handleDrawerClose}
+        ModalProps={{
+          keepMounted: true, // Better open performance on mobile.
+        }}
+        sx={{
+          display: { xs: "block", md: "none" },
+        }}
+      >
+        {drawer}
+      </MuiDrawer>
+      <Drawer
+        component="aside"
+        variant="permanent"
+        open={open}
+        sx={{
+          display: { xs: "none", md: "block" },
+        }}
+      >
+        {drawer}
+      </Drawer>
+      {/* Content */}
+      <Box
+        component="main"
+        display="flex"
+        flexDirection="column"
+        height="100%"
+        flexGrow={1}
+      >
+        {!!mobile && (
+          <Header
+            height="4.25rem"
+            display="flex"
+            justifyContent="space-between"
+          >
+            Plowterra Logo
             <IconButton onClick={handleDrawerClose}>
               {!open ? <CaretRight /> : <CaretLeft />}
             </IconButton>
-          </DrawerHeader>
-          <Divider />
-          <List>
-            {sidebarItems.map(({ title, icon, href }, index) => (
-              <ListItem key={index} disablePadding sx={{ display: "block" }}>
-                <ListItemButton
-                  sx={{
-                    minHeight: 48,
-                    justifyContent: open ? "initial" : "center",
-                    px: 2.5,
-                  }}
-                  href={href}
-                >
-                  <ListItemIcon
-                    sx={{
-                      minWidth: 0,
-                      mr: open ? 3 : "auto",
-                      justifyContent: "center",
-                    }}
-                  >
-                    {icon}
-                  </ListItemIcon>
-
-                  <ListItemText
-                    primary={title}
-                    sx={{ opacity: open ? 1 : 0 }}
-                  />
-                </ListItemButton>
-              </ListItem>
-            ))}
-          </List>
-          <Divider />
-          <ListItem sx={{ opacity: open ? 1 : 0 }}>
-            <FormattedMessage
-              id="sidebar.quick_actions"
-              defaultMessage="Quick Actions"
-            />
-          </ListItem>
-          <List>
-            {quickActions.map((data, index) => (
-              <ListItem key={index} disablePadding sx={{ display: "block" }}>
-                <ListItemButton
-                  sx={{
-                    minHeight: 48,
-                    justifyContent: open ? "initial" : "center",
-                    px: 2.5,
-                  }}
-                  href={data.href}
-                >
-                  <ListItemIcon
-                    sx={{
-                      minWidth: 0,
-                      mr: open ? 3 : "auto",
-                      justifyContent: "center",
-                    }}
-                  >
-                    {data.icon}
-                  </ListItemIcon>
-                  <ListItemText
-                    primary={data.title}
-                    sx={{ opacity: open ? 1 : 0 }}
-                  />
-                </ListItemButton>
-              </ListItem>
-            ))}
-          </List>
+          </Header>
+        )}
+        <Box height="100%" p={3}>
+          <Outlet />
         </Box>
-
-        <Box display="flex" flexDirection="column" gap={2} p={2}>
-          <BodyText>{user.name}</BodyText>
-          <FormControl fullWidth>
-            <InputLabel id="language-label">Language</InputLabel>
-
-            <Select
-              labelId="language-label"
-              id="language-select"
-              value={locale}
-              size="small"
-              onChange={async (event) => {
-                await selectLanguage(
-                  event.target.value as keyof typeof LANGUAGES
-                );
-              }}
-              label="Language"
-            >
-              <MenuItem value={LANGUAGES.en}>English</MenuItem>
-              <MenuItem value={LANGUAGES.es}>Spanish</MenuItem>
-            </Select>
-          </FormControl>
-        </Box>
-      </Drawer>
-      {/* Content */}
-      <Box component="main" height="100%" flexGrow={1} p={3}>
-        <Outlet />
       </Box>
     </Box>
-  );
+  )
 }
+
+const Header = styled(Box)`
+  background: ${({ theme }) => theme.palette.background.paper};
+  padding: 1.0625rem 1rem;
+`
