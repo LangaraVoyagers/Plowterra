@@ -80,7 +80,8 @@ const columns: GridColDef[] = [
       />
     ),
     width: 150,
-    valueGetter: (params: GridValueGetterParams<ISeasonResponse>) => params.row.endDate,
+    valueGetter: (params: GridValueGetterParams<ISeasonResponse>) =>
+      params.row.endDate,
     renderCell: (params: GridRenderCellParams<ISeasonResponse>) => {
       if (params.row.endDate) {
         return (
@@ -110,7 +111,7 @@ const Seasons = () => {
   const intl = useIntl();
 
   const { GET_QUERY_KEY } = useQueryCache("seasons");
-  const [seasons, setSeasons] = useState<Array<ISeasonResponse>>([])
+  const [seasons, setSeasons] = useState<Array<ISeasonResponse>>([]);
 
   const [search, setSearch] = useState<string>();
   const [filterModel, setFilterModel] = useState([
@@ -203,7 +204,6 @@ const Seasons = () => {
           }}
           onFilterModelChange={(model) => {
             setFilterModel(model as any);
-            console.log(model);
           }}
           getRowId={(data) => data?._id}
           pageSizeOptions={[10, 20, 50, 100]}
