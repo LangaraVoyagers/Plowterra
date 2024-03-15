@@ -1,4 +1,4 @@
-import { Box, FormControl, InputLabel, MenuItem, Select } from "@mui/material";
+import { Box } from "@mui/material";
 import {
   DataGrid,
   GridColDef,
@@ -17,8 +17,7 @@ import UpdateSeason from "components/seasons/UpdateSeason";
 import SearchDataGrid from "components/SearchDataGrid";
 import { FormattedDate, FormattedMessage, useIntl } from "react-intl";
 import { ISeason } from "project-2-types";
-
-const statuses = ["Active", "Closed"];
+import FilterDataGrid from "components/FilterDataGrid";
 
 const columns: GridColDef[] = [
   {
@@ -81,12 +80,9 @@ const columns: GridColDef[] = [
       />
     ),
     width: 150,
-    // valueFormatter: (params) =>
-    //   params?.value ? formatDate(params.value) : "-",
     valueGetter: (params: GridValueGetterParams<ISeason>) => params.row.endDate,
     renderCell: (params: GridRenderCellParams<ISeason>) => {
-      if (!params?.row.endDate) return "-";
-      else
+      if (params.row.endDate) {
         return (
           <FormattedDate
             value={params.row.endDate}
@@ -95,6 +91,7 @@ const columns: GridColDef[] = [
             day="numeric"
           />
         );
+      } else return "-";
     },
   },
   {
@@ -116,21 +113,13 @@ const Seasons = () => {
   const [seasons, setSeasons] = useState([]);
 
   const [search, setSearch] = useState<string>();
-  const [filterStatus, setFilterStatus] = useState("Active");
-  const [filteredRows, setFilteredRows] = useState(seasons);
-
-  const handleFilterChange = (event: { target: { value: any } }) => {
-    const value = event.target.value;
-    setFilterStatus(value);
-    if (value === "All") {
-      setFilteredRows(seasons);
-    } else {
-      const filtered = seasons.filter(
-        (row: { status: string }) => row.status === value
-      );
-      setFilteredRows(filtered);
-    }
-  };
+  const [filterModel, setFilterModel] = useState([
+    {
+      field: "status",
+      operator: "equals",
+      value: "ACTIVE",
+    },
+  ]);
 
   const { isLoading } = useQuery({
     queryKey: GET_QUERY_KEY,
@@ -168,25 +157,37 @@ const Seasons = () => {
       actions={<CreateSeason />}
     >
       <Box display="flex" justifyContent="space-between">
-        <FormControl>
-          <InputLabel id="filterby-label">Filter</InputLabel>
-
-          <Select value={filterStatus} onChange={handleFilterChange}>
-            <MenuItem value="All">All</MenuItem>
-            {statuses.map((status) => (
-              <MenuItem key={status} value={status}>
-                {status}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
+        <FilterDataGrid
+          filterModel={filterModel[0]}
+          setFilterModel={setFilterModel}
+          options={[
+            {
+              field: "status",
+              operator: "equals",
+              value: "",
+              label: "All",
+            },
+            {
+              field: "status",
+              operator: "equals",
+              value: "ACTIVE",
+              label: "Active",
+            },
+            {
+              field: "status",
+              operator: "equals",
+              value: "Closed",
+              label: "Closed",
+            },
+          ]}
+        />
 
         <SearchDataGrid applySearch={setSearch} />
       </Box>
 
       <Box display="flex" flexGrow={1} pb={3}>
         <DataGrid
-          rows={filteredRows}
+          rows={seasons}
           columns={columns}
           loading={isLoading}
           initialState={{
@@ -197,8 +198,12 @@ const Seasons = () => {
             },
           }}
           filterModel={{
-            items: [],
+            items: [filterModel[0]],
             quickFilterValues: search ? search?.split(" ") : [],
+          }}
+          onFilterModelChange={(model) => {
+            setFilterModel(model as any);
+            console.log(model);
           }}
           getRowId={(data) => data?._id}
           pageSizeOptions={[10, 20, 50, 100]}
