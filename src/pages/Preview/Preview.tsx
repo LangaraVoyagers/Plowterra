@@ -21,7 +21,7 @@ import {
   DialogTitle,
 } from "@mui/material";
 import { Label } from "ui/Typography";
-import IconModalPayroll from "./IconModalPayroll.svg";
+import IconModalPayroll from '../../../assets/icons/IconModalPayroll.svg';
 
 const columns: GridColDef[] = [
   {

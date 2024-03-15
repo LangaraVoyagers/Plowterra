@@ -1,7 +1,7 @@
 import React from "react";
 import { Drawer, Button } from "@mui/material";
-// import IconModalPayroll from '../../assets/icons/IconModalPayroll.svg';
-import IconPicker from "./picker.svg";
+import IconPicker from '../../../assets/icons/picker.svg';
+
 
 interface SuccessDrawerProps {
   open: boolean;
@@ -35,7 +35,6 @@ const SuccessDrawer: React.FC<SuccessDrawerProps> = ({ open, dismiss }) => {
               color: "var(--Colors-Gray-warm-800, #292524)",
               fontVariantNumeric: "lining-nums tabular-nums",
               fontFeatureSettings: "'liga' off",
-              //   fontFamily: '"Plus Jakarta Sans"',
               fontSize: 30,
               fontStyle: "normal",
               fontWeight: 600,
@@ -54,7 +53,6 @@ const SuccessDrawer: React.FC<SuccessDrawerProps> = ({ open, dismiss }) => {
               textAlign: "center",
               fontVariantNumeric: "lining-nums tabular-nums",
               fontFeatureSettings: "'liga' off",
-              //   fontFamily: '"Plus Jakarta Sans"',
               fontSize: 16,
               fontStyle: "normal",
               fontWeight: 500,
@@ -69,7 +67,6 @@ const SuccessDrawer: React.FC<SuccessDrawerProps> = ({ open, dismiss }) => {
               textAlign: "center",
               fontVariantNumeric: "lining-nums tabular-nums",
               fontFeatureSettings: "'liga' off",
-              //   fontFamily: '"Plus Jakarta Sans"',
               fontSize: 16,
               fontStyle: "normal",
               fontWeight: 500,
