@@ -11,7 +11,7 @@ import { useEffect, useRef, useState } from "react";
 import BasicHome from "layouts/BasicHome";
 import { Box } from "@mui/material";
 import CreatePicker from "components/pickers/CreatePicker";
-import { IPicker } from "project-2-types/dist/interface";
+import { IPickerResponse } from "project-2-types/dist/interface"
 import PickerDrawer from "components/pickers/PickerDrawer";
 import SearchDataGrid from "components/SearchDataGrid";
 import SortDataGrid from "components/SortDataGrid";
@@ -51,7 +51,7 @@ const columns: GridColDef[] = [
       />
     ),
     width: 200,
-    valueGetter: (params: GridValueGetterParams<IPicker>) =>
+    valueGetter: (params: GridValueGetterParams<IPickerResponse>) =>
       params.row.emergencyContact.name,
   },
   {
@@ -59,16 +59,16 @@ const columns: GridColDef[] = [
     headerName: "",
     width: 150,
     flex: 1,
-    valueGetter: (params: GridValueGetterParams<IPicker>) =>
+    valueGetter: (params: GridValueGetterParams<IPickerResponse>) =>
       params.row.emergencyContact.phone,
   },
   {
     field: "createdAt",
     headerName: "Created at",
     width: 200,
-    valueGetter: (params: GridValueGetterParams<IPicker>) =>
+    valueGetter: (params: GridValueGetterParams<IPickerResponse>) =>
       params.row.createdAt,
-    renderCell: (params: GridRenderCellParams<IPicker>) => {
+    renderCell: (params: GridRenderCellParams<IPickerResponse>) => {
       return (
         <FormattedDate
           value={params.row.createdAt}
@@ -76,18 +76,18 @@ const columns: GridColDef[] = [
           month="long"
           day="numeric"
         />
-      );
+      )
     },
   },
   {
     field: "action",
     headerName: "",
     width: 150,
-    renderCell: (data: GridRenderCellParams<IPicker>) => {
-      return <UpdatePicker pickerId={data.row._id} />;
+    renderCell: (data: GridRenderCellParams<IPickerResponse>) => {
+      return <UpdatePicker pickerId={data.row._id} />
     },
   },
-];
+]
 
 const Pickers = () => {
   const params = useParams<{ id: string }>();
@@ -98,7 +98,7 @@ const Pickers = () => {
   const { GET_QUERY_KEY } = useQueryCache("pickers");
 
   const [open, setOpen] = useState<boolean>(false);
-  const [pickers, setPickers] = useState<Array<IPicker>>([]);
+  const [pickers, setPickers] = useState<Array<IPickerResponse>>([])
 
   const [search, setSearch] = useState<string>();
   const [sortModel, setSortModel] = useState([

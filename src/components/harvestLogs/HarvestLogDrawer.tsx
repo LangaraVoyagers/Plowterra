@@ -25,7 +25,10 @@ import { Controller, useForm } from "react-hook-form";
 import { createHarvestLog, getHarvestLogById } from "api/harvestLogs";
 import { useMutation, useQuery } from "react-query";
 import HarvestLogSchema from "project-2-types/dist/ajv/harvest-log.ajv";
-import { IPicker, IHarvestLogResponse } from "project-2-types/dist/interface";
+import {
+  IPickerResponse,
+  IHarvestLogResponse,
+} from "project-2-types/dist/interface"
 import { ajvResolver } from "@hookform/resolvers/ajv";
 import { getPickers } from "api/pickers";
 import { getSeasons } from "api/seasons";
@@ -140,7 +143,7 @@ const HarvestLogDrawer = ({
 
   const { GET_QUERY_KEY: PICKERS_QUERY_KEY } = useQueryCache("pickers");
 
-  const [pickers, setPickers] = React.useState<Array<IPicker>>([]);
+  const [pickers, setPickers] = React.useState<Array<IPickerResponse>>([])
 
   useQuery({
     queryKey: PICKERS_QUERY_KEY,
