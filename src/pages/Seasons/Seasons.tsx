@@ -19,6 +19,7 @@ import { useState } from "react"
 import { useUser } from "context/UserProvider"
 import CreateSeason from "components/seasons/CreateSeason"
 import UpdateSeason from "components/seasons/UpdateSeason"
+import { ISeasonResponse } from "project-2-types"
 
 const columns: GridColDef[] = [
   {
@@ -68,7 +69,7 @@ const Seasons = () => {
   const { user } = useUser();
 
   const { GET_QUERY_KEY } = useQueryCache("seasons");
-  const [seasons, setSeasons] = useState([]);
+  const [seasons, setSeasons] = useState<Array<ISeasonResponse>>([])
 
   const { isLoading } = useQuery({
     queryKey: GET_QUERY_KEY,
