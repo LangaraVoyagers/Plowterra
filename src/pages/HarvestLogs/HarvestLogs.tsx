@@ -28,7 +28,7 @@ const columns: GridColDef[] = [
   {
     field: "picker",
     renderHeader: () => "Picker",
-    width: 200,
+    minWidth: 200,
     flex: 1,
     valueGetter: (params: GridValueGetterParams<IHarvestLogResponse>) =>
       params.row.picker?.name,
@@ -45,7 +45,7 @@ const columns: GridColDef[] = [
   {
     field: "createdAt",
     renderHeader: () => "Date",
-    width: 200,
+    minWidth: 200,
     flex: 1,
     renderCell: (params: GridRenderCellParams) => {
       return (
@@ -55,7 +55,7 @@ const columns: GridColDef[] = [
           month="short"
           day="numeric"
         />
-      );
+      )
     },
   },
   {
@@ -63,10 +63,10 @@ const columns: GridColDef[] = [
     headerName: "",
     width: 200,
     renderCell: (data: GridRenderCellParams<{ _id: string }>) => {
-      return <UpdateHarvestLog harvestLogId={data.row._id} />;
+      return <UpdateHarvestLog harvestLogId={data.row._id} />
     },
   },
-];
+]
 
 const HarvestLogs = () => {
   const { GET_QUERY_KEY } = useQueryCache("harvestLogs");

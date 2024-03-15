@@ -23,6 +23,7 @@ type PayrollPreviewPayload = {
   farmId: string
   seasonId: string
   endDate?: number
+  startDate?: number
 }
 
 export const getPayrollPreview = async (payload: PayrollPreviewPayload) => {

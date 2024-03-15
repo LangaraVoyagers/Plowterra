@@ -1,38 +1,41 @@
-import { ICreatePickerRequest, IPicker } from "project-2-types/dist/interface";
+import {
+  ICreatePickerRequest,
+  IPickerResponse,
+} from "project-2-types/dist/interface"
 
-import axios from "./axios";
-import endpoints from "./endpoints";
+import axios from "./axios"
+import endpoints from "./endpoints"
 
 export const getPickers = async () => {
   try {
     const {
       data: { data },
-    } = await axios.get(endpoints.pickers);
+    } = await axios.get(endpoints.pickers)
 
     if (typeof data === "object") {
-      return data as Array<IPicker>;
+      return data as Array<IPickerResponse>
     }
-    return [];
+    return []
   } catch (error) {
-    console.log({ error });
-    throw error;
+    console.log({ error })
+    throw error
   }
-};
+}
 
 export const getPickerById = async (id?: string | null) => {
   try {
     if (!id) {
-      return;
+      return
     }
     const {
       data: { data },
-    } = await axios.get(`${endpoints.pickers}/${id}`);
-    return data as IPicker;
+    } = await axios.get(`${endpoints.pickers}/${id}`)
+    return data as IPickerResponse
   } catch (error) {
-    console.log({ error });
-    throw error;
+    console.log({ error })
+    throw error
   }
-};
+}
 
 export const upsertPicker = async ({
   pickerId,
@@ -42,29 +45,29 @@ export const upsertPicker = async ({
     if (pickerId) {
       const {
         data: { data },
-      } = await axios.put(`${endpoints.pickers}/${pickerId}`, payload);
+      } = await axios.put(`${endpoints.pickers}/${pickerId}`, payload)
 
-      return data as IPicker;
+      return data as IPickerResponse
     }
     const {
       data: { data },
-    } = await axios.post(endpoints.pickers, payload);
-    return data as IPicker;
+    } = await axios.post(endpoints.pickers, payload)
+    return data as IPickerResponse
   } catch (error) {
-    console.log({ error });
-    throw error;
+    console.log({ error })
+    throw error
   }
-};
+}
 
 export const deletePicker = async (pickerId?: string) => {
   try {
     const {
       data: { data },
-    } = await axios.delete(`${endpoints.pickers}/${pickerId}`);
+    } = await axios.delete(`${endpoints.pickers}/${pickerId}`)
 
-    return data as IPicker;
+    return data as IPickerResponse
   } catch (error) {
-    console.log({ error });
-    throw error;
+    console.log({ error })
+    throw error
   }
-};
+}

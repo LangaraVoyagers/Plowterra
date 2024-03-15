@@ -92,6 +92,7 @@ const themeOptions: ThemeOptions = {
     success: colors.success,
     background: {
       default: background,
+      paper: white,
     },
   },
   typography: {
