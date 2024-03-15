@@ -5,6 +5,10 @@ import {
   Box,
   Button,
   Checkbox,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
   Drawer,
   DrawerProps,
   InputLabel,
@@ -33,6 +37,7 @@ import { useAlert } from "context/AlertProvider";
 import useQueryCache from "hooks/useQueryCache";
 import { useState } from "react";
 import { BodyText, Display } from "ui/Typography";
+import { TelegramLogo } from "@phosphor-icons/react";
 
 function formatDate(date: number): string {
   const formattedDate = new Date(date).toLocaleDateString("en-US", {
@@ -91,6 +96,10 @@ const HarvestLogDrawer = ({
   const [showEditForm, setShowEditForm] = useState<boolean>(!harvestLogId);
   // Update this to ISeasonResponse
   const [season, setSeason] = useState<ISeason>();
+  const [selectedPicker, setSelectedPicker] = React.useState<{
+    id: string;
+    label: string;
+  } | null>(null);
 
   const {
     control,
@@ -233,6 +242,15 @@ const HarvestLogDrawer = ({
     });
   };
 
+  const [open, setOpen] = React.useState(false);
+  const handleOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
   const harvestLogForm = (
     <Box
       display="flex"
@@ -304,6 +322,7 @@ const HarvestLogDrawer = ({
                 id="picker-combo-box"
                 value={value ? { id: value, label: value } : undefined}
                 onChange={(_, newValue) => {
+                  setSelectedPicker(newValue);
                   onChange(newValue?.id);
                 }}
                 options={pickers.map((picker) => ({
@@ -428,13 +447,67 @@ const HarvestLogDrawer = ({
           Cancel
         </Button>
 
-        <Button
-          variant="contained"
-          onClick={handleSubmit(onSubmit)}
-          disabled={isLoading}
-        >
+        <Button variant="contained" onClick={handleOpen} disabled={isLoading}>
           Save
         </Button>
+
+        <Dialog open={open} onClose={handleClose}>
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "center",
+              padding: "40px 24px 28px 24px",
+              borderRadius: "16px",
+            }}
+          >
+            <TelegramLogo size={40} style={{ color: "#055E40" }} />
+            <DialogTitle
+              style={{
+                fontSize: "30px",
+                fontStyle: "normal",
+                fontWeight: 600,
+                lineHeight: "38px",
+                letterSpacing: "-0.3px",
+                paddingTop: "20px",
+              }}
+            >
+              Harvest Entry Completed!
+            </DialogTitle>
+            <DialogContent
+              style={{
+                paddingBottom: "32px",
+                fontSize: "16px",
+                fontStyle: "normal",
+                fontWeight: 500,
+                lineHeight: "24px",
+              }}
+            >
+              {selectedPicker?.label} will receive an SMS with the summary.
+            </DialogContent>
+            <DialogActions
+              style={{ justifyContent: "space-between", width: "100%" }}
+            >
+              <Button
+                onClick={handleClose}
+                style={{
+                  border: "1px solid var(--Colors-Brand-500, #055E40)",
+                }}
+              >
+                Cancel
+              </Button>
+              <Button
+                onClick={handleSubmit(onSubmit)}
+                variant="contained"
+                color="primary"
+                autoFocus
+              >
+                Confirm
+              </Button>
+            </DialogActions>
+          </div>
+        </Dialog>
       </Box>
     </Box>
   );
