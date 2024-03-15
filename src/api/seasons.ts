@@ -1,4 +1,4 @@
-import { ISeasonRequest } from "project-2-types"
+import { ISeasonResponse, ISeasonRequest } from "project-2-types/dist/interface"
 import axios from "./axios"
 import endpoints from "./endpoints"
 
@@ -9,7 +9,7 @@ export const getSeasons = async () => {
     } = await axios.get(endpoints.seasons)
 
     if (typeof data === "object") {
-      return data
+      return data as Array<ISeasonResponse>
     }
     return []
   } catch (error) {

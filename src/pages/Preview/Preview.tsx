@@ -1,176 +1,226 @@
-import React, { useState, useEffect } from "react";
-import { Box, Button, Grid } from "@mui/material";
-import { DataGrid, GridColDef } from "@mui/x-data-grid";
-import BasicHome from "layouts/BasicHome";
-import { FormattedDate, FormattedMessage, useIntl } from "react-intl";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
-import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import dayjs, { Dayjs } from "dayjs";
-import { ArrowLeft, CaretRight, SealCheck, X } from "@phosphor-icons/react";
-import { useLocation } from "react-router-dom";
-import { useMutation } from "react-query";
-import endpoints from "api/endpoints";
-import { createPayroll, getPayrollPreview, PayrollPayload } from "api/payroll";
 import {
+  Box,
+  Button,
   Dialog,
   DialogActions,
   DialogContent,
   DialogContentText,
   DialogTitle,
-} from "@mui/material";
-import { Label } from "ui/Typography";
-import IconModalPayroll from '../../../assets/icons/IconModalPayroll.svg';
+  useTheme,
+} from "@mui/material"
+import { DataGrid, GridColDef } from "@mui/x-data-grid"
+import { ArrowLeft, CaretRight, SealCheck, X } from "@phosphor-icons/react"
+import endpoints from "api/endpoints"
+import { PayrollPayload, createPayroll, getPayrollPreview } from "api/payroll"
+import dayjs, { Dayjs } from "dayjs"
+import BasicHome from "layouts/BasicHome"
+import React, { useEffect, useState } from "react"
+import {
+  FormattedDate,
+  FormattedMessage,
+  FormattedNumber,
+  useIntl,
+} from "react-intl"
+import { useMutation } from "react-query"
+import IconModalPayroll from "../../../assets/icons/IconModalPayroll.svg"
+import { DatePicker } from "@mui/x-date-pickers"
+import { useUser } from "context/UserProvider"
+import { IPayrollResponse } from "project-2-types/dist/interface"
+import { useSearchParams } from "react-router-dom"
+import { BodyText, Display, Label } from "ui/Typography"
+import { useAlert } from "context/AlertProvider"
+import { styled, useMediaQuery } from "@mui/system"
 
-const columns: GridColDef[] = [
+const columns = (currency: string, unit: string): GridColDef[] => [
   {
-    field: "no",
-    headerName: "No.",
-    width: 100,
+    field: "index",
+    renderHeader: () => (
+      <FormattedMessage
+        id="payroll.preview.columns.no.header"
+        defaultMessage="No."
+      />
+    ),
+    width: 50,
+    valueGetter: (params) => {
+      return params.row.index + 1
+    },
   },
   {
     field: "name",
-    headerName: "Picker",
-    width: 150,
-    renderCell: (params) => {
-      return <span>{params.row.picker.name}</span>;
+    renderHeader: () => (
+      <FormattedMessage
+        id="payroll.preview.columns.picker.header"
+        defaultMessage="Picker"
+      />
+    ),
+    flex: 1,
+    minWidth: 100,
+    valueGetter: (params) => {
+      return params.row.picker.name
     },
   },
   {
     field: "grossAmount",
-    headerName: "Gross Pay ($)",
+    renderHeader: () => (
+      <FormattedMessage
+        id="payroll.preview.columns.gross_pay.header"
+        defaultMessage="Gross Pay {currency}"
+        values={{ currency }}
+      />
+    ),
+    headerAlign: "right",
+    align: "right",
     width: 150,
     renderCell: (params) => {
-      return <span>{params.row.grossAmount}</span>;
+      return <FormattedNumber value={params.row.grossAmount} />
     },
   },
   {
     field: "collectedAmount",
-    headerName: "Harvest Amount",
+    renderHeader: () => (
+      <FormattedMessage
+        id="payroll.preview.columns.harvest_amount.header"
+        defaultMessage="Harvest Amount"
+      />
+    ),
+    headerAlign: "right",
+    align: "right",
     width: 150,
     renderCell: (params) => {
       return (
         <span>
-          {params.row.collectedAmount} {params.row.season.unit}
+          <FormattedNumber value={params.row.collectedAmount} /> {unit}
         </span>
-      );
+      )
     },
   },
   {
     field: "deductions",
-    headerName: "Deductions ($)",
+    renderHeader: () => (
+      <FormattedMessage
+        id="payroll.preview.columns.deductions.header"
+        defaultMessage="Deductions {currency}"
+        values={{ currency }}
+      />
+    ),
+    headerAlign: "right",
+    align: "right",
     width: 150,
     renderCell: (params) => {
-      return <span>{params.row.deductions}</span>;
+      return <FormattedNumber value={params.row.deductions} />
     },
   },
   {
     field: "netAmount",
-    headerName: "Net Pay ($)",
-    width: 150,
+    renderHeader: () => (
+      <FormattedMessage
+        id="payroll.preview.columns.net_pay.header"
+        defaultMessage="Net Pay {currency}"
+        values={{ currency }}
+      />
+    ),
+    headerAlign: "right",
+    align: "right",
+    width: 100,
     renderCell: (params) => {
-      return <span>{params.row.netAmount}</span>;
+      return <FormattedNumber value={params.row.netAmount} />
     },
   },
-];
-
-function formatDate(value: number | Date): string {
-  const date = new Date(value);
-
-  const month = date.toLocaleString("default", { month: "short" });
-  const day = date.getDate();
-
-  return `${month} ${day}`;
-}
+  {
+    field: "actions",
+    width: 50,
+  },
+]
 
 const Preview: React.FC = () => {
-  const [isButtonClicked, setIsButtonClicked] = useState(false);
-  const location = useLocation();
-  const seasonId = location.state.uniqueSeasonId[0];
-  const farmId = location.state.uniqueFarmId[0];
+  const { user } = useUser()
+  const { showAlert } = useAlert()
 
-  const intl = useIntl();
-  const [payrollData, setPayrollData] = useState([]);
-  const [isLoading] = useState(false);
+  const intl = useIntl()
 
-  const [startDate, setStartDate] = useState<Dayjs>();
-  const [endDate, setEndDate] = useState<Dayjs>(dayjs());
+  const theme = useTheme()
+  const desktop = useMediaQuery(theme.breakpoints.up("md"))
 
-  const [netPay, setNetPay] = useState(0);
-  const [collectedAmount, setCollectedAmount] = useState(0);
-  const [deductions, setDeductions] = useState(0);
-  const [unit, setUnit] = useState(null);
-  const [uniqueSeasonName, setUniqueSeasonName] = useState<string[]>([]);
+  const [params] = useSearchParams()
+  const seasonId = params.get("seasonId")
+
+  const [payrollData, setPayrollData] = useState<IPayrollResponse | null>(null)
+
+  const [startDate, setStartDate] = useState<Dayjs>()
+  const [endDate, setEndDate] = useState<Dayjs>()
+
+  const [payrollDone, setPayrollDone] = useState<boolean>(false)
+  const [open, setOpen] = useState(false)
 
   const { mutate: getPreview } = useMutation({
     mutationKey: [endpoints.payrolls, "preview"],
     mutationFn: getPayrollPreview,
-    onSuccess: (data) => {
-      const payrollDataWithId = data.details.map(
-        (detail: unknown, index: number) => ({
-          ...(detail as object),
-          id: index,
-          no: index + 1,
-          season: data.season,
-        })
-      );
+    onSuccess: (data: any) => {
+      setPayrollData(data)
 
-      setPayrollData(payrollDataWithId);
-      setStartDate(dayjs(data.startDate));
-      setNetPay(data.totals.netAmount);
-      setCollectedAmount(data.totals.collectedAmount);
-      setDeductions(data.totals.deductions);
-      setUnit(data.season.unit);
-      setUniqueSeasonName(data.season.name);
+      !startDate && setStartDate(dayjs(data?.nextEstimatedPayroll.startDate))
+      !endDate && setEndDate(dayjs(data?.nextEstimatedPayroll.endDate))
     },
-    onError: () => {},
-  });
-
-  useEffect(() => {
-    getPreview({
-      endDate: endDate ? endDate.toDate().getTime() : undefined,
-      farmId,
-      seasonId,
-    });
-  }, [endDate]);
-
-  const [open, setOpen] = useState(false);
+    onError: () => {
+      showAlert(
+        intl.formatMessage({
+          id: "payroll.preview.get.error",
+          defaultMessage: "Oops! Preview is not available.",
+        }),
+        "error"
+      )
+    },
+  })
 
   const handleClickOpen = () => {
-    setOpen(true);
-  };
+    setOpen(true)
+  }
 
   const handleClose = () => {
-    setOpen(false);
-  };
+    setOpen(false)
+  }
 
   const handleConfirm = async () => {
     try {
-      const payload: PayrollPayload = {
-        farmId: farmId,
-        seasonId: seasonId,
-        endDate: new Date().getTime(),
-        totals: {
-          totalGrossAmount: netPay,
-          totalCollectedAmount: collectedAmount,
-          totalDeductions: deductions,
-        },
-      };
+      if (!seasonId || !payrollData || !startDate || !endDate) {
+        return
+      }
 
-      await createPayroll(payload);
+      const payload: PayrollPayload = {
+        farmId: user.farm._id,
+        seasonId: seasonId,
+        endDate: endDate.valueOf(),
+        startDate: startDate.valueOf(),
+        totals: {
+          totalGrossAmount: payrollData?.totals.grossAmount,
+          totalCollectedAmount: payrollData?.totals.collectedAmount,
+          totalDeductions: payrollData?.totals.deductions,
+        },
+      }
+
+      await createPayroll(payload)
+
+      setPayrollDone(true)
     } catch (error) {
       console.error(
         "Error:",
         (error as any).response.status,
         (error as any).response.statusText
-      );
+      )
     }
+    setOpen(false)
+  }
 
-    setIsButtonClicked(true);
-
-    setOpen(false);
-  };
+  useEffect(() => {
+    if (seasonId) {
+      getPreview({
+        endDate: endDate ? endDate.toDate().getTime() : undefined,
+        startDate: startDate ? startDate.toDate().getTime() : undefined,
+        farmId: user.farm._id,
+        seasonId,
+      })
+    }
+  }, [endDate, seasonId])
 
   const StyledSpan = ({ children }: { children: React.ReactNode }) => (
     <span
@@ -197,22 +247,22 @@ const Preview: React.FC = () => {
         { title: "Farm Name", href: "/" },
         {
           title: (
-            <FormattedMessage id="sidebar.payrolls" defaultMessage="Payroll" />
+            <FormattedMessage id="sidebar.payroll" defaultMessage="Payroll" />
           ),
           href: "/payroll",
         },
         {
           title: (
             <FormattedMessage
-              id="start.payroll"
-              defaultMessage="Start a Payroll"
+              id="breadcrumb.run_payroll"
+              defaultMessage="Run a Payroll"
             />
           ),
           href: "",
         },
       ]}
     >
-      {isButtonClicked && (
+      {!!payrollDone && (
         <Box style={{ border: "1px solid #000" }}>
           <div style={{ display: "inline-block" }}>
             <SealCheck size={32} />
@@ -236,233 +286,309 @@ const Preview: React.FC = () => {
         </Box>
       )}
 
-      {!isButtonClicked && (
-        <Box
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-          }}
-        >
-          <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <DemoContainer components={["DatePayroll"]}>
-              <span>Select the date range:</span>
-              <span>From</span>
-              <DatePicker
-                value={startDate}
-                onChange={(value) => {
-                  if (value) {
-                    setStartDate(value);
-                  }
-                }}
-                readOnly
-              />
-              <span>to</span>
-              <DatePicker
-                value={endDate}
-                onChange={(value) => {
-                  if (value) {
-                    setEndDate(value);
-                  }
-                }}
-              />
-            </DemoContainer>
-          </LocalizationProvider>
+      {!payrollDone && (
+        <PayrollFilters>
+          <div className="filter-container">
+            <BodyText size="md" fontWeight="Medium">
+              Select the date range:
+            </BodyText>
+            <div className="filters">
+              <div className="date-filter">
+                <BodyText size="md">From</BodyText>
+                <DatePicker
+                  value={startDate}
+                  slotProps={{ textField: { size: "small" } }}
+                  onChange={(value) => {
+                    if (value) {
+                      setStartDate(value)
+                    }
+                  }}
+                />
+              </div>
+              <div className="date-filter">
+                <BodyText size="md">to</BodyText>
+                <DatePicker
+                  value={endDate}
+                  slotProps={{ textField: { size: "small" } }}
+                  onChange={(value) => {
+                    if (value) {
+                      setEndDate(value)
+                    }
+                  }}
+                />
+              </div>
+            </div>
+          </div>
 
-          <Button variant="contained" color="primary" onClick={handleClickOpen}>
+          <PayrollTotals className="totals-container">
+            <Card>
+              <Label size="sm" fontWeight="SemiBold">
+                Pay Period
+              </Label>
+              <Display size="xs" fontWeight="SemiBold">
+                <FormattedDate
+                  value={startDate?.toDate()}
+                  month="short"
+                  day="numeric"
+                />{" "}
+                -{" "}
+                <FormattedDate
+                  value={endDate?.toDate()}
+                  month="short"
+                  day="numeric"
+                />
+              </Display>
+            </Card>
+            <Card>
+              <Label size="sm" fontWeight="SemiBold">
+                Total Net Pay
+              </Label>
+              <Display size="xs" fontWeight="SemiBold">
+                {payrollData?.totals?.netAmount}
+              </Display>
+            </Card>
+            <Card>
+              <Label size="sm" fontWeight="SemiBold">
+                Total Harvest Amount
+              </Label>
+              <Display size="xs" fontWeight="SemiBold">
+                {payrollData?.totals.collectedAmount}{" "}
+                {payrollData?.season?.unit}
+              </Display>
+            </Card>
+            <Card>
+              <Label size="sm" fontWeight="SemiBold">
+                Total Deductions
+              </Label>
+              <Display size="xs" fontWeight="SemiBold">
+                {payrollData?.totals.deductions}
+              </Display>
+            </Card>
+          </PayrollTotals>
+
+          <Button
+            variant="contained"
+            color="primary"
+            sx={{ width: "min-content" }}
+            onClick={handleClickOpen}
+            className="run-payroll-button"
+          >
             Run Payroll
             <CaretRight size={25} />
           </Button>
-
-          {/* Modal Preview */}
-          <Dialog
-            open={open}
-            onClose={handleClose}
-            aria-labelledby="alert-dialog-title"
-            aria-describedby="alert-dialog-description"
-          >
-            <DialogTitle
-              id="alert-dialog-title"
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                position: "relative",
-              }}
-            >
-              <img
-                src={IconModalPayroll}
-                alt="Icon Modal Payroll"
-                style={{
-                  width: "80px",
-                  height: "80px",
-                  marginTop: "16px",
-                }}
-              />
-              <button
-                style={{
-                  position: "absolute",
-                  right: "34px",
-                  top: "28px",
-                  border: "none",
-                  background: "none",
-                }}
-                onClick={handleClose}
-              >
-                <X size={24} color="#292524" />
-              </button>
-            </DialogTitle>
-            <DialogContent>
-              <DialogContentText
-                id="alert-dialog-description"
-                style={{
-                  color: "var(--Colors-Gray-warm-900, #1C1917)",
-                  textAlign: "center",
-                  fontVariantNumeric: "lining-nums tabular-nums",
-                  fontSize: "24px",
-                  fontStyle: "normal",
-                  fontWeight: 600,
-                  lineHeight: "32px",
-                }}
-              >
-                Ready to run the payroll?
-              </DialogContentText>
-            </DialogContent>
-            <div
-              style={{
-                display: "flex",
-                height: "44px",
-                padding: "20px",
-                flexDirection: "row",
-                justifyContent: "space-between",
-                alignItems: "center",
-                flex: "0 1 auto",
-                gap: "12px",
-              }}
-            >
-              <StyledSpan>{uniqueSeasonName}</StyledSpan>
-              <StyledSpan>
-                <FormattedDate
-                  value={formatDate(startDate?.toDate() ?? new Date())}
-                  month="short"
-                  day="numeric"
-                />
-                -
-                <FormattedDate
-                  value={formatDate(endDate.toDate())}
-                  month="short"
-                  day="numeric"
-                />
-              </StyledSpan>
-              <StyledSpan>{netPay}</StyledSpan>
-            </div>
-            <div style={{ padding: "0 32px" }}>
-              <DialogActions
-                style={{
-                  borderTop: "1px solid var(--Colors-Brand-200, #E7E5E4)",
-                  marginTop: "32px",
-                  paddingTop: "32px",
-                  paddingBottom: "32px",
-                  display: "flex",
-                  justifyContent: "space-between",
-                }}
-              >
-                <Button
-                  onClick={handleClose}
-                  color="primary"
-                  style={{ flex: 1, marginRight: "12px", height: "48px" }}
-                >
-                  Cancel
-                </Button>
-                <Button
-                  onClick={handleConfirm}
-                  variant="contained"
-                  color="primary"
-                  autoFocus
-                  style={{ flex: 1, marginLeft: "12px", height: "48px" }}
-                >
-                  Confirm
-                </Button>
-              </DialogActions>
-            </div>
-          </Dialog>
-        </Box>
+        </PayrollFilters>
       )}
 
-      <Box display="flex" flexDirection="column" flexGrow={1} pb={3}>
-        <Grid container spacing={2}>
-          <Grid item xs={3}>
-            <Label variant="h6" gutterBottom>
-              Pay Period
-            </Label>
-          </Grid>
-          <Grid item xs={3}>
-            <Label variant="h6" gutterBottom>
-              Total Net Pay
-            </Label>
-          </Grid>
-          <Grid item xs={3}>
-            <Label variant="h6" gutterBottom>
-              Total Harvest Amount
-            </Label>
-          </Grid>
-          <Grid item xs={3}>
-            <Label variant="h6" gutterBottom>
-              Total Deductions
-            </Label>
-          </Grid>
-        </Grid>
-        <Grid container spacing={2}>
-          <Grid item xs={3}>
-            <span>
-              <FormattedDate
-                value={formatDate(startDate?.toDate() ?? new Date())}
-                month="short"
-                day="numeric"
-              />
-              -
-              <FormattedDate
-                value={formatDate(endDate.toDate())}
-                month="short"
-                day="numeric"
-              />
-            </span>
-          </Grid>
-          <Grid item xs={3}>
-            <Label variant="body1" gutterBottom>
-              {netPay}
-            </Label>
-          </Grid>
-          <Grid item xs={3}>
-            <Label variant="body1" gutterBottom>
-              {collectedAmount} {unit}
-            </Label>
-          </Grid>
-          <Grid item xs={3}>
-            <Label variant="body1" gutterBottom>
-              {deductions}
-            </Label>
-          </Grid>
-        </Grid>
-      </Box>
+      {/* Modal Preview */}
+      <Dialog
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle
+          id="alert-dialog-title"
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            position: "relative",
+          }}
+        >
+          <img
+            src={IconModalPayroll}
+            alt="Icon Modal Payroll"
+            style={{
+              width: "80px",
+              height: "80px",
+              marginTop: "16px",
+            }}
+          />
+          <button
+            style={{
+              position: "absolute",
+              right: "34px",
+              top: "28px",
+              border: "none",
+              background: "none",
+            }}
+            onClick={handleClose}
+          >
+            <X size={24} color="#292524" />
+          </button>
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText
+            id="alert-dialog-description"
+            style={{
+              color: "var(--Colors-Gray-warm-900, #1C1917)",
+              textAlign: "center",
+              fontVariantNumeric: "lining-nums tabular-nums",
+              fontSize: "24px",
+              fontStyle: "normal",
+              fontWeight: 600,
+              lineHeight: "32px",
+            }}
+          >
+            Ready to run the payroll?
+          </DialogContentText>
+        </DialogContent>
+        <div
+          style={{
+            display: "flex",
+            height: "44px",
+            padding: "20px",
+            flexDirection: "row",
+            justifyContent: "space-between",
+            alignItems: "center",
+            flex: "0 1 auto",
+            gap: "12px",
+          }}
+        >
+          <StyledSpan>{payrollData?.season.name}</StyledSpan>
+          <StyledSpan>
+            <FormattedDate
+              value={startDate?.toDate()}
+              month="short"
+              day="numeric"
+            />
+            -
+            <FormattedDate
+              value={endDate?.toDate()}
+              month="short"
+              day="numeric"
+            />
+          </StyledSpan>
+          <StyledSpan>{payrollData?.totals.netAmount}</StyledSpan>
+        </div>
+        <div style={{ padding: "0 32px" }}>
+          <DialogActions
+            style={{
+              borderTop: "1px solid var(--Colors-Brand-200, #E7E5E4)",
+              marginTop: "32px",
+              paddingTop: "32px",
+              paddingBottom: "32px",
+              display: "flex",
+              justifyContent: "space-between",
+            }}
+          >
+            <Button
+              onClick={handleClose}
+              color="primary"
+              style={{ flex: 1, marginRight: "12px", height: "48px" }}
+            >
+              Cancel
+            </Button>
+            <Button
+              onClick={handleConfirm}
+              variant="contained"
+              color="primary"
+              autoFocus
+              style={{ flex: 1, marginLeft: "12px", height: "48px" }}
+            >
+              Confirm
+            </Button>
+          </DialogActions>
+        </div>
+      </Dialog>
 
       <Box display="flex" flexGrow={1} pb={3}>
         <DataGrid
-          rows={payrollData}
-          columns={columns}
-          loading={isLoading}
           initialState={{
-            pagination: {
-              paginationModel: {
-                pageSize: 12,
+            columns: {
+              columnVisibilityModel: {
+                index: !!desktop,
+                grossAmount: !!desktop,
+                collectedAmount: !!desktop,
+                deductions: !!desktop,
               },
             },
           }}
+          rows={payrollData?.details ?? []}
+          columns={columns(
+            payrollData?.season?.currency ?? "",
+            payrollData?.season?.unit ?? ""
+          )}
           disableRowSelectionOnClick
-          getRowId={(row) => row.id}
+          getRowId={(row) => row?.picker?.id}
         />
       </Box>
     </BasicHome>
-  );
-};
+  )
+}
 
-export default Preview;
+const Card = styled(Box)`
+  background-color: white;
+  padding: ${({ theme }) => theme.spacing(3)};
+  display: flex;
+  flex-direction: column;
+  gap: ${({ theme }) => theme.spacing(0.75)};
+  border-radius: 0.5rem;
+  flex: 1;
+`
+
+const PayrollTotals = styled(Box)`
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+
+  gap: ${({ theme }) => theme.spacing(2)};
+  ${(props) => props.theme.breakpoints.up("md")} {
+    grid-template-columns: repeat(4, 1fr);
+  }
+`
+
+const PayrollFilters = styled(Box)`
+  // Mobile
+  display: flex;
+  flex-direction: column;
+  gap: ${({ theme }) => theme.spacing(2)};
+
+  .filter-container {
+    display: flex;
+    flex-direction: column;
+    gap: ${({ theme }) => theme.spacing(1)};
+
+    .filters {
+      display: flex;
+      flex-direction: row;
+      gap: ${({ theme }) => theme.spacing(2)};
+
+      .date-filter {
+        display: flex;
+        flex-direction: column;
+        gap: ${({ theme }) => theme.spacing(0.5)};
+      }
+    }
+  }
+
+  // Desktop
+  ${(props) => props.theme.breakpoints.up("md")} {
+    display: grid;
+    grid-template-columns: auto 10rem;
+
+    .filter-container {
+      grid-column: 1;
+      display: flex;
+      align-items: center;
+      flex-direction: row;
+
+      .filters {
+        .date-filter {
+          flex-direction: row !important;
+          align-items: center;
+          gap: ${({ theme }) => theme.spacing(1.25)} !important;
+        }
+      }
+    }
+
+    .totals-container {
+      grid-column: 1/-1;
+      grid-row: 2;
+    }
+
+    .run-payroll-button {
+      grid-column: 2;
+    }
+  }
+`
+
+export default Preview
