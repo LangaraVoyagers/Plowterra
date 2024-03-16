@@ -1,6 +1,9 @@
 import * as React from "react";
 
 import {
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
   Autocomplete,
   Box,
   Button,
@@ -8,6 +11,9 @@ import {
   Drawer,
   DrawerProps,
   InputLabel,
+  List,
+  ListItem,
+  ListItemButton,
   ListItemText,
   MenuItem,
   OutlinedInput,
@@ -28,7 +34,7 @@ import HarvestLogSchema from "project-2-types/dist/ajv/harvest-log.ajv";
 import {
   IPickerResponse,
   IHarvestLogResponse,
-} from "project-2-types/dist/interface"
+} from "project-2-types/dist/interface";
 import { ajvResolver } from "@hookform/resolvers/ajv";
 import { getPickers } from "api/pickers";
 import { getSeasons } from "api/seasons";
@@ -36,6 +42,7 @@ import { useAlert } from "context/AlertProvider";
 import useQueryCache from "hooks/useQueryCache";
 import { useState } from "react";
 import { BodyText, Display } from "ui/Typography";
+import { CaretDown } from "@phosphor-icons/react";
 
 function formatDate(date: number): string {
   const formattedDate = new Date(date).toLocaleDateString("en-US", {
@@ -143,7 +150,7 @@ const HarvestLogDrawer = ({
 
   const { GET_QUERY_KEY: PICKERS_QUERY_KEY } = useQueryCache("pickers");
 
-  const [pickers, setPickers] = React.useState<Array<IPickerResponse>>([])
+  const [pickers, setPickers] = React.useState<Array<IPickerResponse>>([]);
 
   useQuery({
     queryKey: PICKERS_QUERY_KEY,
@@ -484,9 +491,34 @@ const HarvestLogDrawer = ({
               </TableBody>
             </Table>
           </TableContainer>
-          {/* TODO: add correction note tables */}
         </Box>
+
+        {harvestLog?.correctionLogs?.length > 0 && (
+          <Box>
+            <Accordion>
+              <AccordionSummary
+                expandIcon={<CaretDown />}
+                aria-controls="panel1-content"
+                id="panel1-header"
+              >
+                Correction Entries
+              </AccordionSummary>
+              <AccordionDetails>
+                <List>
+                  {harvestLog.correctionLogs.map((correctionEntry) => (
+                    <ListItem disablePadding key={correctionEntry.id}>
+                      <ListItemButton component="a" href="#simple-list">
+                        <ListItemText primary={correctionEntry.id} />
+                      </ListItemButton>
+                    </ListItem>
+                  ))}
+                </List>
+              </AccordionDetails>
+            </Accordion>
+          </Box>
+        )}
       </Box>
+      
       <Box display="flex" justifyContent="space-between">
         <Button variant="contained" onClick={onCreateHarvestLogClose}>
           Back
