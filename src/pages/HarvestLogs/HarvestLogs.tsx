@@ -75,6 +75,16 @@ const HarvestLogs = () => {
 
   const [startDate, setStartDate] = useState<Dayjs | null>(null);
   const [endDate, setEndDate] = useState<Dayjs | null>(null);
+  const [cleared, setCleared] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (cleared) {
+      const timeout = setTimeout(() => {
+        setCleared(false);
+      }, 1500);
+      return () => clearTimeout(timeout);
+    }
+  }, [cleared]);
 
   const [searchTable, setSearchTable] = useState<string>();
 
@@ -98,7 +108,7 @@ const HarvestLogs = () => {
   useEffect(() => {
     if (startDate !== null && endDate !== null) {
       const fromDate = dayjs(startDate).startOf("day").toDate().getTime();
-      const toDate = dayjs(startDate).endOf("day").toDate().getTime();
+      const toDate = dayjs(endDate).endOf("day").toDate().getTime();
 
       getHarvestLogs({ pickerId, fromDate, toDate })
         .then((results) => {
@@ -141,7 +151,10 @@ const HarvestLogs = () => {
             <DatePicker
               label="Start Date"
               value={startDate}
-              slotProps={{ textField: { size: "small" } }}
+              slotProps={{
+                field: { clearable: true, onClear: () => setCleared(true) },
+                textField: { size: "small" },
+              }}
               onChange={(newValue) => {
                 setStartDate(newValue);
               }}
@@ -149,7 +162,10 @@ const HarvestLogs = () => {
             <DatePicker
               label="End Date"
               value={endDate}
-              slotProps={{ textField: { size: "small" } }}
+              slotProps={{
+                field: { clearable: true, onClear: () => setCleared(true) },
+                textField: { size: "small" },
+              }}
               onChange={(newValue) => {
                 setEndDate(newValue);
               }}
