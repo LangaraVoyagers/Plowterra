@@ -11,9 +11,12 @@ const CreatePicker = () => {
 
   const showDrawer = () => setOpen(true);
 
-  const hideDrawer = () => {
+  const hideDrawer = (success: boolean, button: 'confirm' | 'cancel') => {
+    console.log(`Button clicked: ${button}`);
     setOpen(false);
-    setOpenAnother(true);
+    if (button === 'confirm' && success) {
+      setOpenAnother(true);
+    }
   };
 
   return (

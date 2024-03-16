@@ -43,7 +43,7 @@ const bloodTypeList = (
 
 type PickerDrawerProps = DrawerProps & {
   pickerId?: string
-  dismiss: () => void
+  dismiss: (success: boolean, button: 'confirm' | 'cancel') => void;
 }
 const PickerDrawer = ({ dismiss, pickerId, ...props }: PickerDrawerProps) => {
   const intl = useIntl()
@@ -124,7 +124,7 @@ const PickerDrawer = ({ dismiss, pickerId, ...props }: PickerDrawerProps) => {
 
   const onCreatePickerClose = () => {
     reset()
-    dismiss()
+    dismiss(false, 'cancel');
   }
 
   const handleCreateSuccess = (created: IPickerResponse) => {
@@ -163,7 +163,7 @@ const PickerDrawer = ({ dismiss, pickerId, ...props }: PickerDrawerProps) => {
         }),
         "success"
       )
-      dismiss()
+      dismiss(true, 'confirm');
     },
     onError: () => {
       showAlert(
@@ -186,6 +186,14 @@ const PickerDrawer = ({ dismiss, pickerId, ...props }: PickerDrawerProps) => {
 
   const showEdit = () => setShowEditForm(true)
   const hideEdit = () => setShowEditForm(false)
+
+  const handleClose = (_event: React.MouseEvent, reason: 'backdropClick' | 'escapeKeyDown') => {
+    if (!showEditForm) {
+      if (reason === 'backdropClick' || reason === 'escapeKeyDown') {
+        dismiss(false, 'cancel');
+      }
+    }
+  };
 
   const pickerForm = (
     <Box
@@ -615,7 +623,7 @@ const PickerDrawer = ({ dismiss, pickerId, ...props }: PickerDrawerProps) => {
     <Drawer
       anchor="right"
       {...props}
-      onClose={!showEditForm ? dismiss : undefined}
+      onClose={handleClose}
     >
       {!isLoadingDetail && <>{showEditForm ? pickerForm : pickerDetail}</>}
     </Drawer>
