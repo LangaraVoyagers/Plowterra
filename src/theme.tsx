@@ -1,9 +1,9 @@
-import { ThemeOptions, createTheme } from "@mui/material/styles";
-import { CaretRight } from "@phosphor-icons/react";
+import { ThemeOptions, createTheme } from "@mui/material/styles"
+import { CaretRight } from "@phosphor-icons/react"
 
-const white = "#FFFFFF";
+const white = "#FFFFFF"
 // const black = "#000000";
-const background = "#F1EFEE";
+const background = "#F1EFEE"
 
 const colors = {
   primary: {
@@ -115,7 +115,6 @@ const themeOptions: ThemeOptions = {
       letterSpacing: "-0.045rem",
     },
     // Display/sm
-
     h3: {
       fontSize: "1.875rem",
       lineHeight: "2.375rem",
@@ -163,6 +162,79 @@ const themeOptions: ThemeOptions = {
         background: ${colors.secondary[100]};
       }
       `,
+    },
+    MuiTypography: {
+      variants: [
+        {
+          props: { variant: "h1" },
+          style: ({ theme }) => {
+            const { fontSize, lineHeight, letterSpacing } = theme.typography.h3
+            return {
+              [theme.breakpoints.down("sm")]: {
+                fontSize,
+                lineHeight,
+                letterSpacing,
+              },
+            }
+          },
+        },
+        {
+          props: { variant: "h2" },
+          style: ({ theme }) => {
+            const { fontSize, lineHeight, letterSpacing } = theme.typography.h4
+            return {
+              [theme.breakpoints.down("sm")]: {
+                fontSize,
+                lineHeight,
+                letterSpacing,
+              },
+            }
+          },
+        },
+        {
+          props: { variant: "h3" },
+          style: ({ theme }) => {
+            const { fontSize, lineHeight, letterSpacing } =
+              theme.typography.body1
+            return {
+              [theme.breakpoints.down("sm")]: {
+                fontSize,
+                lineHeight,
+                letterSpacing,
+              },
+            }
+          },
+        },
+        {
+          props: { variant: "h4" },
+          style: ({ theme }) => {
+            const { fontSize, lineHeight, letterSpacing } =
+              theme.typography.body1
+            return {
+              [theme.breakpoints.down("sm")]: {
+                fontSize,
+                lineHeight,
+                letterSpacing,
+              },
+            }
+          },
+        },
+        {
+          props: { variant: "body1" },
+          style: ({ theme }) => {
+            const { fontSize, lineHeight, letterSpacing } =
+              theme.typography.body2
+            return {
+              [theme.breakpoints.down("sm")]: {
+                fontSize,
+                lineHeight,
+                letterSpacing,
+              },
+            }
+          },
+        },
+        //overline or label handled in the Label component
+      ],
     },
     MuiBreadcrumbs: {
       defaultProps: {
@@ -299,6 +371,7 @@ const themeOptions: ThemeOptions = {
     },
   },
 }
-const theme = createTheme(themeOptions);
 
-export default theme;
+const theme = createTheme(themeOptions)
+
+export default theme
