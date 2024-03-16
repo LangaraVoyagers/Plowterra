@@ -57,8 +57,8 @@ const payrollTimeframeList = (
 ).map((key) => ({ value: key, label: PayrollTimeframeEnum[key] }))
 
 type SeasonDrawerProps = DrawerProps & {
-  seasonId?: string
-  dismiss: () => void
+  seasonId?: string;
+  dismiss: (success: boolean, button: 'confirm' | 'cancel') => void;
 }
 
 interface IProduct {
@@ -130,7 +130,9 @@ const SeasonDrawer = ({ dismiss, seasonId, ...props }: SeasonDrawerProps) => {
   const [season, setSeason] = useState<ISeasonResponse>()
 
   const showEdit = () => setShowEditForm(true)
-  const hideEdit = () => setShowEditForm(false)
+  const hideEdit = () => {
+    dismiss(false, 'cancel');
+  };
 
   const formMethods = useForm<ISeasonRequest>({
     mode: "all",
@@ -156,7 +158,7 @@ const SeasonDrawer = ({ dismiss, seasonId, ...props }: SeasonDrawerProps) => {
 
   const onCreateSeasonClose = () => {
     reset()
-    dismiss()
+    dismiss(false, 'cancel');
   }
 
   // Get season by id
@@ -250,7 +252,7 @@ const SeasonDrawer = ({ dismiss, seasonId, ...props }: SeasonDrawerProps) => {
         }),
         "success"
       )
-      dismiss()
+      dismiss(true, 'confirm')
     },
     onError: () => {
       showAlert(
@@ -276,7 +278,7 @@ const SeasonDrawer = ({ dismiss, seasonId, ...props }: SeasonDrawerProps) => {
         }),
         "success"
       )
-      dismiss()
+      dismiss(true, 'confirm')
     },
     onError: () => {
       showAlert(
@@ -320,8 +322,10 @@ const SeasonDrawer = ({ dismiss, seasonId, ...props }: SeasonDrawerProps) => {
         deductionID,
         price: +price || 0,
       })),
-    })
-  }
+    });
+  
+    dismiss(true, 'confirm');
+  };
 
   const onDelete = () => {
     deleteSeasonMutation(seasonId)
@@ -331,6 +335,15 @@ const SeasonDrawer = ({ dismiss, seasonId, ...props }: SeasonDrawerProps) => {
     closeSeasonMutation(seasonId)
   }
 
+  const handleClose = (_event: React.MouseEvent, reason: 'backdropClick' | 'escapeKeyDown') => {
+    if (!showEditForm) {
+      if (reason === 'backdropClick' || reason === 'escapeKeyDown') {
+        dismiss(false, 'cancel');
+      }
+    }
+  };
+  
+  
   const seasonForm = (
     <FormProvider {...formMethods}>
       <Box
@@ -624,6 +637,7 @@ const SeasonDrawer = ({ dismiss, seasonId, ...props }: SeasonDrawerProps) => {
           </Button>
 
           <Button
+          
             variant="contained"
             onClick={handleSubmit(onSubmit)}
             disabled={isLoading || !isDirty || isDeleting}
@@ -823,11 +837,11 @@ const SeasonDrawer = ({ dismiss, seasonId, ...props }: SeasonDrawerProps) => {
     <Drawer
       anchor="right"
       {...props}
-      onClose={!showEditForm ? dismiss : undefined}
+      onClose={handleClose}
     >
       {!isLoadingDetail && <>{showEditForm ? seasonForm : seasonDetail}</>}
     </Drawer>
-  )
+  );
 }
 
 export default SeasonDrawer
