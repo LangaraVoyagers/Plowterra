@@ -12,7 +12,7 @@ import SearchDataGrid from "components/SearchDataGrid";
 import CreateHarvestLog from "components/harvestLogs/CreateHarvestLog";
 import UpdateHarvestLog from "components/harvestLogs/UpdateHarvestLog";
 import { useUser } from "context/UserProvider";
-import { Dayjs } from "dayjs";
+import dayjs, { Dayjs } from "dayjs";
 import useQueryCache from "hooks/useQueryCache";
 import BasicHome from "layouts/BasicHome";
 import { IHarvestLogResponse } from "project-2-types/dist/interface";
@@ -97,8 +97,8 @@ const HarvestLogs = () => {
 
   useEffect(() => {
     if (startDate !== null && endDate !== null) {
-      const fromDate = Date.parse(startDate.toString());
-      const toDate = Date.parse(endDate.toString());
+      const fromDate = dayjs(startDate).startOf("day").toDate().getTime();
+      const toDate = dayjs(startDate).endOf("day").toDate().getTime();
 
       getHarvestLogs({ pickerId, fromDate, toDate })
         .then((results) => {
