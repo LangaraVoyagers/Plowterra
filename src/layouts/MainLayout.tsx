@@ -1,6 +1,4 @@
 import {
-  CaretLeft,
-  CaretRight,
   FilePlus,
   FileText,
   HandCoins,
@@ -36,8 +34,12 @@ import paths from "shared/paths"
 import { useState } from "react"
 import { useUser } from "context/UserProvider"
 import { BodyText } from "ui/Typography"
+import SidebarIcon from "../assets/icons/SidebarIcon.svg"
+import Logo from "../assets/images/Logo.svg"
+import LogoSquare from "../assets/images/LogoSquare.svg"
 
 const DRAWER_WIDTH = 240
+
 
 const openedMixin = (theme: Theme): CSSObject => ({
   width: DRAWER_WIDTH,
@@ -167,9 +169,44 @@ export default function MainLayout() {
     <>
       <Box display="flex" flex={1} flexDirection="column">
         <DrawerHeader>
-          <IconButton onClick={handleDrawerClose}>
-            {!open || !!mobileOpen ? <CaretRight /> : <CaretLeft />}
-          </IconButton>
+          <Box
+            height="4.25rem"
+            display="flex"
+            justifyContent="space-between"
+            alignItems="center"
+            sx={{
+              transform: "translateX(8px)",
+              transition: "all 300ms",
+            }}
+            paddingRight={2}
+            width="100%"
+          >
+            {!!open || !!mobileOpen ? (
+              <img src={Logo} alt="Plowterra logo" height={30} aria-hidden />
+            ) : (
+              <img
+                src={LogoSquare}
+                alt="Plowterra logo"
+                height={30}
+                onClick={handleDrawerClose}
+                aria-hidden
+              />
+            )}
+            {(!!open || !!mobileOpen) && (
+              <IconButton
+                onClick={handleDrawerClose}
+                aria-label="Close sidebar"
+              >
+                <img
+                  src={SidebarIcon}
+                  alt="sidebaricon"
+                  width={18}
+                  height={18}
+                  aria-hidden
+                />
+              </IconButton>
+            )}
+          </Box>
         </DrawerHeader>
         <Divider />
         <List>
@@ -272,6 +309,9 @@ export default function MainLayout() {
         ModalProps={{
           keepMounted: true, // Better open performance on mobile.
         }}
+        PaperProps={{
+          sx: { width: "100%" },
+        }}
         sx={{
           display: { xs: "block", md: "none" },
         }}
@@ -301,8 +341,9 @@ export default function MainLayout() {
             height="4.25rem"
             display="flex"
             justifyContent="space-between"
+            alignItems="center"
           >
-            Plowterra Logo
+            <img src={Logo} alt="Plowterra logo" height={30} aria-hidden />
             <IconButton onClick={handleDrawerClose}>
               <ListIcon size="1.25rem" />
             </IconButton>
@@ -318,5 +359,5 @@ export default function MainLayout() {
 
 const Header = styled(Box)`
   background: ${({ theme }) => theme.palette.background.paper};
-  padding: 1.0625rem 1rem;
+  padding: 1.0625rem 1rem 1.0625rem 1rem;
 `
