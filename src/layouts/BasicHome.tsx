@@ -27,7 +27,7 @@ export default function BasicHome({
   const mobile = useMediaQuery(theme.breakpoints.down("sm"))
 
   return (
-    <Container display="flex" flexDirection="column" height="100%">
+    <Container display="flex" flexDirection="column" height="100%" gap={3}>
       <Box component="header" display="flex" flexDirection="column" gap={4}>
         {!mobile && (
           <Breadcrumbs maxItems={3} aria-label="breadcrumb">
@@ -38,6 +38,7 @@ export default function BasicHome({
                     key={index}
                     color="text.primary"
                     fontWeight="Medium"
+                    tabindex={0}
                   >
                     {item.title}
                   </BodyText>
@@ -58,19 +59,29 @@ export default function BasicHome({
           </Breadcrumbs>
         )}
 
-        <Box display="flex" justifyContent="space-between">
+        <Header display="flex" flexDirection="column" gap={1.25}>
           <Box display="flex" flexDirection="column" gap={1}>
-            <Display>{title}</Display>
-            <BodyText sx={{ display: !subtitle ? "none" : "initial" }}>
+            <Display
+              size="lg"
+              tabindex={0}
+              fontWeight="Bold"
+              sx={{ typography: { md: "SemiBold" } }}
+            >
+              {title}
+            </Display>
+            <BodyText
+              tabindex={0}
+              sx={{ display: !subtitle ? "none" : "initial" }}
+            >
               {subtitle}
             </BodyText>
           </Box>
 
-          <Box alignSelf="flex-end">{actions}</Box>
-        </Box>
+          <Box>{actions}</Box>
+        </Header>
       </Box>
 
-      <Box display="flex" flexDirection="column" height="100%" gap={4}>
+      <Box display="flex" flexDirection="column" height="100%" gap={2}>
         {children}
       </Box>
     </Container>
@@ -78,8 +89,15 @@ export default function BasicHome({
 }
 
 const Container = styled(Box)`
-  gap: ${({ theme }) => theme.spacing(1.5)};
+  gap: ${({ theme }) => theme.spacing(3)};
   ${(props) => props.theme.breakpoints.up("sm")} {
     gap: ${({ theme }) => theme.spacing(8)};
+  }
+`
+
+const Header = styled(Box)`
+  ${(props) => props.theme.breakpoints.up("sm")} {
+    flex-direction: row;
+    justify-content: space-between;
   }
 `

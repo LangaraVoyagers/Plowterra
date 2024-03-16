@@ -8,7 +8,8 @@ import {
   Plant,
   UserPlus,
   Users,
-} from "@phosphor-icons/react";
+  List as ListIcon,
+} from "@phosphor-icons/react"
 import {
   Box,
   CssBaseline,
@@ -303,7 +304,7 @@ export default function MainLayout() {
           >
             Plowterra Logo
             <IconButton onClick={handleDrawerClose}>
-              {!open ? <CaretRight /> : <CaretLeft />}
+              <ListIcon size="1.25rem" />
             </IconButton>
           </Header>
         )}
