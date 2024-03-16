@@ -86,7 +86,7 @@ const HarvestLogs = () => {
 
   const { isLoading } = useQuery({
     queryKey: GET_QUERY_KEY,
-    queryFn: () => getHarvestLogs({ pickerId, startDate, endDate}),
+    queryFn: () => getHarvestLogs({ pickerId, startDate, endDate }),
     onSuccess: (results) => {
       setHarvestLogs(results);
     },
@@ -96,10 +96,9 @@ const HarvestLogs = () => {
   });
 
   useEffect(() => {
-
     if (startDate !== null && endDate !== null) {
-      let fromDate = Date.parse(startDate.toString());
-      let toDate = Date.parse(endDate.toString());
+      const fromDate = Date.parse(startDate.toString());
+      const toDate = Date.parse(endDate.toString());
 
       getHarvestLogs({ pickerId, fromDate, toDate })
         .then((results) => {
