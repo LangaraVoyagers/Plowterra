@@ -16,7 +16,7 @@ import { Dayjs } from "dayjs";
 import useQueryCache from "hooks/useQueryCache";
 import BasicHome from "layouts/BasicHome";
 import { IHarvestLogResponse } from "project-2-types/dist/interface";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FormattedDate } from "react-intl";
 import { useQuery } from "react-query";
 import { useSearchParams } from "react-router-dom";
@@ -86,7 +86,7 @@ const HarvestLogs = () => {
 
   const { isLoading } = useQuery({
     queryKey: GET_QUERY_KEY,
-    queryFn: () => getHarvestLogs({ pickerId }),
+    queryFn: () => getHarvestLogs({ pickerId, startDate, endDate}),
     onSuccess: (results) => {
       setHarvestLogs(results);
     },
@@ -94,6 +94,22 @@ const HarvestLogs = () => {
       console.log(error);
     },
   });
+
+  useEffect(() => {
+
+    if (startDate !== null && endDate !== null) {
+      let fromDate = Date.parse(startDate.toString());
+      let toDate = Date.parse(endDate.toString());
+
+      getHarvestLogs({ pickerId, fromDate, toDate })
+        .then((results) => {
+          setHarvestLogs(results);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+  }, [startDate, endDate, pickerId]);
 
   const { isLoading: isPickerLoading } = useQuery({
     queryKey: ["pickers", "harvest-logs", pickerId],
