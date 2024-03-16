@@ -12,7 +12,6 @@ const CreateSeason = () => {
   const showDrawer = () => setOpen(true);
 
   const hideDrawer = (success: boolean, button: 'confirm' | 'cancel') => {
-    console.log(`Button clicked: ${button}`);
     setOpen(false);
     if (button === 'confirm' && success) {
       setOpenAnother(true);

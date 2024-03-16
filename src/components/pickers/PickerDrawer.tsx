@@ -178,6 +178,7 @@ const PickerDrawer = ({ dismiss, pickerId, ...props }: PickerDrawerProps) => {
 
   const onSubmit = (data: IPickerForm) => {
     savePickerMutation({ ...data, pickerId })
+    dismiss(true, 'confirm');
   }
 
   const onDelete = () => {
