@@ -493,7 +493,7 @@ const HarvestLogDrawer = ({
           </TableContainer>
         </Box>
 
-        {harvestLog?.correctionLogs?.length > 0 && (
+        {!!harvestLog?.correctionLogs?.length && (
           <Box>
             <Accordion>
               <AccordionSummary
@@ -505,7 +505,7 @@ const HarvestLogDrawer = ({
               </AccordionSummary>
               <AccordionDetails>
                 <List>
-                  {harvestLog.correctionLogs.map((correctionEntry) => (
+                  {harvestLog.correctionLogs.map((correctionEntry: any) => (
                     <ListItem disablePadding key={correctionEntry.id}>
                       <ListItemButton component="a" href="#simple-list">
                         <ListItemText primary={correctionEntry.id} />
@@ -518,7 +518,7 @@ const HarvestLogDrawer = ({
           </Box>
         )}
       </Box>
-      
+
       <Box display="flex" justifyContent="space-between">
         <Button variant="contained" onClick={onCreateHarvestLogClose}>
           Back
