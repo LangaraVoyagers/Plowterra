@@ -1,15 +1,4 @@
 import {
-  CaretLeft,
-  CaretRight,
-  FilePlus,
-  FileText,
-  HandCoins,
-  House,
-  Plant,
-  UserPlus,
-  Users,
-} from "@phosphor-icons/react";
-import {
   Box,
   CssBaseline,
   Divider,
@@ -22,8 +11,21 @@ import {
   useMediaQuery,
 } from "@mui/material"
 import { CSSObject, Theme, styled, useTheme } from "@mui/material/styles"
+import {
+  CaretLeft,
+  CaretRight,
+  FilePlus,
+  FileText,
+  HandCoins,
+  House,
+  Plant,
+  SignOut,
+  UserPlus,
+  Users,
+} from "@phosphor-icons/react";
 import { LANGUAGES, useLocale } from "context/LocaleProvider"
 
+import { BodyText } from "ui/Typography"
 import { FormattedMessage } from "react-intl"
 import ListItem from "@mui/material/ListItem"
 import ListItemButton from "@mui/material/ListItemButton"
@@ -32,9 +34,9 @@ import ListItemText from "@mui/material/ListItemText"
 import MuiDrawer from "@mui/material/Drawer"
 import { Outlet } from "react-router-dom"
 import paths from "shared/paths"
+import { useNavigate } from "react-router-dom";
 import { useState } from "react"
 import { useUser } from "context/UserProvider"
-import { BodyText } from "ui/Typography"
 
 const DRAWER_WIDTH = 240
 
@@ -145,12 +147,13 @@ const quickActions = [
 const container = window !== undefined ? () => window.document.body : undefined
 
 export default function MainLayout() {
-  const theme = useTheme()
-  const mobile = useMediaQuery(theme.breakpoints.down("md"))
+  const theme = useTheme();
+  const navigate = useNavigate();
+  const mobile = useMediaQuery(theme.breakpoints.down("md"));
 
   const [open, setOpen] = useState(true)
   const [mobileOpen, setMobileOpen] = useState(false)
-  const { user } = useUser()
+  const { user, clearUser } = useUser()
 
   const { locale, selectLanguage } = useLocale()
 
@@ -160,6 +163,11 @@ export default function MainLayout() {
     } else {
       setOpen(!open)
     }
+  }
+
+  const signout = () => {
+    clearUser();
+    navigate("/login");
   }
 
   const drawer = (
@@ -231,6 +239,17 @@ export default function MainLayout() {
               </ListItemButton>
             </ListItem>
           ))}
+        </List>
+      </Box>
+
+      <Box 
+        display="flex" 
+        flexDirection="column" 
+        gap={2} p={2}>
+        <List>
+          <ListItemButton onClick={signout}>
+            <SignOut /> Log out
+          </ListItemButton>
         </List>
       </Box>
 
