@@ -1,14 +1,19 @@
 import React from "react";
 import { Drawer, Button } from "@mui/material";
-import IconPicker from '../../../assets/icons/picker.svg';
-
+import IconPicker from "../../../assets/icons/picker.svg";
 
 interface SuccessDrawerProps {
   open: boolean;
   dismiss: () => void;
+  data: any;
 }
 
-const SuccessDrawer: React.FC<SuccessDrawerProps> = ({ open, dismiss }) => {
+const SuccessPickerDrawer: React.FC<SuccessDrawerProps> = ({
+  open,
+  dismiss,
+  data,
+}) => {
+  console.log(data.name);
   return (
     <Drawer anchor="right" open={open} onClose={dismiss}>
       <div
@@ -73,7 +78,20 @@ const SuccessDrawer: React.FC<SuccessDrawerProps> = ({ open, dismiss }) => {
               lineHeight: "24px",
             }}
           >
-            a new picker to your picker list.
+            <span
+              style={{
+                color: "var(--Colors-Secondary-700, #9E6600)",
+                fontVariantNumeric: "lining-nums tabular-nums",
+                fontFeatureSettings: "'liga' off",
+                fontSize: "16px",
+                fontStyle: "normal",
+                fontWeight: 700,
+                lineHeight: "24px",
+              }}
+            >
+              {data.name}
+            </span>
+            {" to your picker list."}
           </p>
         </div>
         <Button
@@ -95,4 +113,4 @@ const SuccessDrawer: React.FC<SuccessDrawerProps> = ({ open, dismiss }) => {
   );
 };
 
-export default SuccessDrawer;
+export default SuccessPickerDrawer;

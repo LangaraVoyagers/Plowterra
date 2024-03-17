@@ -43,7 +43,7 @@ const bloodTypeList = (
 
 type PickerDrawerProps = DrawerProps & {
   pickerId?: string
-  dismiss: (success: boolean, button: 'confirm' | 'cancel') => void;
+  dismiss: (success: boolean, button: 'confirm' | 'cancel', data: any) => void;
 }
 const PickerDrawer = ({ dismiss, pickerId, ...props }: PickerDrawerProps) => {
   const intl = useIntl()
@@ -124,7 +124,7 @@ const PickerDrawer = ({ dismiss, pickerId, ...props }: PickerDrawerProps) => {
 
   const onCreatePickerClose = () => {
     reset()
-    dismiss(false, 'cancel');
+    dismiss(false, 'cancel', null);
   }
 
   const handleCreateSuccess = (created: IPickerResponse) => {
@@ -163,7 +163,7 @@ const PickerDrawer = ({ dismiss, pickerId, ...props }: PickerDrawerProps) => {
         }),
         "success"
       )
-      dismiss(true, 'confirm');
+      dismiss(true, 'confirm', null);
     },
     onError: () => {
       showAlert(
@@ -178,7 +178,7 @@ const PickerDrawer = ({ dismiss, pickerId, ...props }: PickerDrawerProps) => {
 
   const onSubmit = (data: IPickerForm) => {
     savePickerMutation({ ...data, pickerId })
-    dismiss(true, 'confirm');
+    dismiss(true, 'confirm', data);
   }
 
   const onDelete = () => {
@@ -191,7 +191,7 @@ const PickerDrawer = ({ dismiss, pickerId, ...props }: PickerDrawerProps) => {
   const handleClose = (_event: React.MouseEvent, reason: 'backdropClick' | 'escapeKeyDown') => {
     if (!showEditForm) {
       if (reason === 'backdropClick' || reason === 'escapeKeyDown') {
-        dismiss(false, 'cancel');
+        dismiss(false, 'cancel', null);
       }
     }
   };
