@@ -1,14 +1,19 @@
 import React from "react";
 import { Drawer, Button } from "@mui/material";
-import IconModalSeason from '../../../assets/icons/season.svg';
-
+import IconModalSeason from "../../../assets/icons/season.svg";
 
 interface SuccessDrawerProps {
   open: boolean;
   dismiss: () => void;
+  data: any;
 }
 
-const SuccessDrawer: React.FC<SuccessDrawerProps> = ({ open, dismiss }) => {
+const SuccessSeasonDrawer: React.FC<SuccessDrawerProps> = ({
+  open,
+  dismiss,
+  data,
+}) => {
+  console.log(data.name);
   return (
     <Drawer anchor="right" open={open} onClose={dismiss}>
       <div
@@ -59,7 +64,21 @@ const SuccessDrawer: React.FC<SuccessDrawerProps> = ({ open, dismiss }) => {
               lineHeight: "24px",
             }}
           >
-            Harvest season 2024 Spring Q1 has
+            {"Harvest season "}
+            <span
+              style={{
+                color: "var(--Colors-Secondary-700, #9E6600)",
+                fontVariantNumeric: "lining-nums tabular-nums",
+                fontFeatureSettings: "'liga' off",
+                fontSize: "16px",
+                fontStyle: "normal",
+                fontWeight: 700,
+                lineHeight: "24px",
+              }}
+            >
+              {data.name}
+            </span>
+            {" has"}
           </p>
           <p
             style={{
@@ -95,4 +114,4 @@ const SuccessDrawer: React.FC<SuccessDrawerProps> = ({ open, dismiss }) => {
   );
 };
 
-export default SuccessDrawer;
+export default SuccessSeasonDrawer;
