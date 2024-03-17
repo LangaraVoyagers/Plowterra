@@ -243,6 +243,7 @@ const HarvestLogDrawer = ({
       seasonDeductionIds: [], //TODO: get actual data
       notes: data.notes,
     });
+    handleClose();
   };
 
   const [open, setOpen] = React.useState(false);
