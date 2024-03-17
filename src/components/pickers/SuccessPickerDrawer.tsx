@@ -13,7 +13,7 @@ const SuccessPickerDrawer: React.FC<SuccessDrawerProps> = ({
   dismiss,
   data,
 }) => {
-  console.log(data.name);
+  const name = data ? data.name : ' ';
   return (
     <Drawer anchor="right" open={open} onClose={dismiss}>
       <div
@@ -89,7 +89,7 @@ const SuccessPickerDrawer: React.FC<SuccessDrawerProps> = ({
                 lineHeight: "24px",
               }}
             >
-              {data.name}
+              {name}
             </span>
             {" to your picker list."}
           </p>
