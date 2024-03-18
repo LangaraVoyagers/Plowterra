@@ -322,21 +322,47 @@ const Preview: React.FC = () => {
 
           <PayrollTotals className="totals-container">
             <Card>
-              <Label size="sm" fontWeight="SemiBold">
+              <Label
+                size="sm"
+                fontWeight="SemiBold"
+                tabindex={0}
+                arial-label={`Pay period from ${intl.formatDate(
+                  startDate?.toDate(),
+                  {
+                    month: "long",
+                    day: "numeric",
+                    year: "numeric",
+                  }
+                )} to ${intl.formatDate(endDate?.toDate(), {
+                  month: "long",
+                  day: "numeric",
+                  year: "numeric",
+                })} `}
+              >
                 Pay Period
               </Label>
-              <Display size="xs" fontWeight="SemiBold">
-                <FormattedDate
-                  value={startDate?.toDate()}
-                  month="short"
-                  day="numeric"
-                />{" "}
-                -{" "}
-                <FormattedDate
-                  value={endDate?.toDate()}
-                  month="short"
-                  day="numeric"
-                />
+              <Display
+                aria-hidden
+                size="xs"
+                fontWeight="SemiBold"
+                display="flex"
+                gap={1}
+              >
+                <Box aria-hidden>
+                  <FormattedDate
+                    value={startDate?.toDate()}
+                    month="short"
+                    day="numeric"
+                  />
+                </Box>
+                <Box aria-hidden>-</Box>
+                <Box aria-hidden>
+                  <FormattedDate
+                    value={endDate?.toDate()}
+                    month="short"
+                    day="numeric"
+                  />
+                </Box>
               </Display>
             </Card>
             <Card>

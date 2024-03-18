@@ -1,5 +1,5 @@
-import { SxProps, Theme } from "@mui/material";
-import MUITypography, { TypographyProps } from "@mui/material/Typography";
+import { SxProps, Theme } from "@mui/material"
+import MUITypography, { TypographyProps } from "@mui/material/Typography"
 
 enum WEIGHT_ENUM {
   Regular = 400,
@@ -16,8 +16,8 @@ enum DISPLAY_SIZE_ENUM {
 }
 
 interface DisplayProps {
-  fontWeight?: keyof typeof WEIGHT_ENUM;
-  size?: keyof typeof DISPLAY_SIZE_ENUM;
+  fontWeight?: keyof typeof WEIGHT_ENUM
+  size?: keyof typeof DISPLAY_SIZE_ENUM
 }
 
 export const Display = <C extends React.ElementType>({
@@ -31,12 +31,13 @@ export const Display = <C extends React.ElementType>({
   >) => {
   return (
     <MUITypography
+      tabindex={0}
       {...props}
       fontWeight={WEIGHT_ENUM[fontWeight]}
       variant={DISPLAY_SIZE_ENUM[size]}
     />
-  );
-};
+  )
+}
 
 enum TEXT_SIZE_ENUM {
   md = "body1",
@@ -45,8 +46,8 @@ enum TEXT_SIZE_ENUM {
 }
 
 interface TextBodyProps {
-  fontWeight?: keyof typeof WEIGHT_ENUM;
-  size?: keyof typeof TEXT_SIZE_ENUM;
+  fontWeight?: keyof typeof WEIGHT_ENUM
+  size?: keyof typeof TEXT_SIZE_ENUM
 }
 
 export const BodyText = <C extends React.ElementType>({
@@ -60,12 +61,13 @@ export const BodyText = <C extends React.ElementType>({
   >) => {
   return (
     <MUITypography
+      tabindex={0}
       {...props}
       fontWeight={WEIGHT_ENUM[fontWeight]}
       variant={TEXT_SIZE_ENUM[size]}
     />
-  );
-};
+  )
+}
 
 enum LABEL_SIZE_ENUM {
   sm,
@@ -83,16 +85,18 @@ const labelStyles: Record<keyof typeof LABEL_SIZE_ENUM, SxProps<Theme>> = {
     lineHeight: "1.125rem",
     letterSpacing: "0.03rem",
   },
-};
+}
 
 interface LabelProps {
-  fontWeight?: keyof typeof WEIGHT_ENUM;
-  size?: keyof typeof LABEL_SIZE_ENUM;
+  fontWeight?: keyof typeof WEIGHT_ENUM
+  size?: keyof typeof LABEL_SIZE_ENUM
+  mobile?: keyof typeof LABEL_SIZE_ENUM
 }
 
 export const Label = <C extends React.ElementType>({
   fontWeight = "Medium",
-  size = "xs",
+  size = "sm",
+  mobile = "xs",
   ...props
 }: LabelProps &
   Omit<
@@ -101,12 +105,16 @@ export const Label = <C extends React.ElementType>({
   >) => {
   return (
     <MUITypography
+      tabindex={0}
       {...props}
       fontWeight={WEIGHT_ENUM[fontWeight]}
       variant="overline"
       sx={{
-        ...labelStyles[size],
+        typography: {
+          sm: labelStyles[mobile],
+          md: labelStyles[size],
+        },
       }}
     />
-  );
-};
+  )
+}

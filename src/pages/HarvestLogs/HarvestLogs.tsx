@@ -1,4 +1,4 @@
-import { Box, FormControl, InputAdornment, OutlinedInput } from "@mui/material";
+import { Box, FormControl } from "@mui/material";
 import {
   DataGrid,
   GridColDef,
@@ -6,19 +6,17 @@ import {
   GridValueGetterParams,
 } from "@mui/x-data-grid";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import { MagnifyingGlass } from "@phosphor-icons/react";
 import { getHarvestLogs } from "api/harvestLogs";
 import { getPickerById } from "api/pickers";
+import SearchDataGrid from "components/SearchDataGrid";
 import CreateHarvestLog from "components/harvestLogs/CreateHarvestLog";
 import UpdateHarvestLog from "components/harvestLogs/UpdateHarvestLog";
 import { useUser } from "context/UserProvider";
-import { Dayjs } from "dayjs";
+import dayjs, { Dayjs } from "dayjs";
 import useQueryCache from "hooks/useQueryCache";
 import BasicHome from "layouts/BasicHome";
-import {
-  IHarvestLogResponse,
-} from "project-2-types/dist/interface";
-import { useState } from "react";
+import { IHarvestLogResponse } from "project-2-types/dist/interface";
+import { useEffect, useState } from "react";
 import { FormattedDate } from "react-intl";
 import { useQuery } from "react-query";
 import { useSearchParams } from "react-router-dom";
@@ -55,7 +53,7 @@ const columns: GridColDef[] = [
           month="short"
           day="numeric"
         />
-      )
+      );
     },
   },
   {
@@ -63,10 +61,10 @@ const columns: GridColDef[] = [
     headerName: "",
     width: 200,
     renderCell: (data: GridRenderCellParams<{ _id: string }>) => {
-      return <UpdateHarvestLog harvestLogId={data.row._id} />
+      return <UpdateHarvestLog harvestLogId={data.row._id} />;
     },
   },
-]
+];
 
 const HarvestLogs = () => {
   const { GET_QUERY_KEY } = useQueryCache("harvestLogs");
@@ -77,6 +75,18 @@ const HarvestLogs = () => {
 
   const [startDate, setStartDate] = useState<Dayjs | null>(null);
   const [endDate, setEndDate] = useState<Dayjs | null>(null);
+  const [cleared, setCleared] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (cleared) {
+      const timeout = setTimeout(() => {
+        setCleared(false);
+      }, 1500);
+      return () => clearTimeout(timeout);
+    }
+  }, [cleared]);
+
+  const [searchTable, setSearchTable] = useState<string>();
 
   const [harvestLogs, setHarvestLogs] = useState<Array<IHarvestLogResponse>>(
     []
@@ -86,7 +96,7 @@ const HarvestLogs = () => {
 
   const { isLoading } = useQuery({
     queryKey: GET_QUERY_KEY,
-    queryFn: () => getHarvestLogs({ pickerId }),
+    queryFn: () => getHarvestLogs({ pickerId, startDate, endDate }),
     onSuccess: (results) => {
       setHarvestLogs(results);
     },
@@ -94,6 +104,21 @@ const HarvestLogs = () => {
       console.log(error);
     },
   });
+
+  useEffect(() => {
+    if (startDate !== null && endDate !== null) {
+      const fromDate = dayjs(startDate).startOf("day").toDate().getTime();
+      const toDate = dayjs(endDate).endOf("day").toDate().getTime();
+
+      getHarvestLogs({ pickerId, fromDate, toDate })
+        .then((results) => {
+          setHarvestLogs(results);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+  }, [startDate, endDate, pickerId]);
 
   const { isLoading: isPickerLoading } = useQuery({
     queryKey: ["pickers", "harvest-logs", pickerId],
@@ -126,7 +151,10 @@ const HarvestLogs = () => {
             <DatePicker
               label="Start Date"
               value={startDate}
-              slotProps={{ textField: { size: "small" } }}
+              slotProps={{
+                field: { clearable: true, onClear: () => setCleared(true) },
+                textField: { size: "small" },
+              }}
               onChange={(newValue) => {
                 setStartDate(newValue);
               }}
@@ -134,7 +162,10 @@ const HarvestLogs = () => {
             <DatePicker
               label="End Date"
               value={endDate}
-              slotProps={{ textField: { size: "small" } }}
+              slotProps={{
+                field: { clearable: true, onClear: () => setCleared(true) },
+                textField: { size: "small" },
+              }}
               onChange={(newValue) => {
                 setEndDate(newValue);
               }}
@@ -142,17 +173,7 @@ const HarvestLogs = () => {
           </Box>
         </FormControl>
 
-        <FormControl>
-          <OutlinedInput
-            placeholder="Search"
-            size="small"
-            startAdornment={
-              <InputAdornment position="start">
-                <MagnifyingGlass />
-              </InputAdornment>
-            }
-          />
-        </FormControl>
+        <SearchDataGrid applySearch={setSearchTable} />
       </Box>
       <Box display="flex" flexGrow={1} pb={3}>
         <DataGrid
@@ -170,6 +191,10 @@ const HarvestLogs = () => {
                 picker: !pickerId,
               },
             },
+          }}
+          filterModel={{
+            items: [],
+            quickFilterValues: searchTable ? searchTable?.split(" ") : [],
           }}
           getRowId={(data) => data?._id}
           pageSizeOptions={[10, 20, 50, 100]}

@@ -1,4 +1,11 @@
-import { Box, Button, MenuItem, Select } from "@mui/material"
+import {
+  Box,
+  Button,
+  MenuItem,
+  Select,
+  useMediaQuery,
+  useTheme,
+} from "@mui/material"
 import { SelectChangeEvent } from "@mui/material/Select"
 import { DataGrid, GridColDef, GridRenderCellParams } from "@mui/x-data-grid"
 import { CaretRight, User } from "@phosphor-icons/react"
@@ -9,16 +16,27 @@ import useQueryCache from "hooks/useQueryCache"
 import BasicHome from "layouts/BasicHome"
 import { ISeasonResponse } from "project-2-types/dist/interface"
 import { useState } from "react"
-import { FormattedDate, FormattedMessage, useIntl } from "react-intl"
+import {
+  FormattedDate,
+  FormattedMessage,
+  FormattedNumber,
+  useIntl,
+} from "react-intl"
 import { useQuery } from "react-query"
 import { useNavigate } from "react-router-dom"
 import { Display } from "ui/Typography"
 
-const columns: GridColDef[] = [
+const columns = (currency: string): GridColDef[] => [
   {
     field: "period",
-    headerName: "Pay Period",
-    width: 200,
+    renderHeader: () => (
+      <FormattedMessage
+        id="payroll.history.columns.pay_period.header"
+        defaultMessage="Pay Period"
+      />
+    ),
+    minWidth: 100,
+    flex: 1,
     renderCell: (params: GridRenderCellParams) => {
       return (
         <span>
@@ -38,58 +56,101 @@ const columns: GridColDef[] = [
     },
   },
   {
-    field: "totals.grossAmount",
-    headerName: "Total net pay ($)",
-    width: 150,
-    renderCell: (params) => <span>{params.row.totals.grossAmount}</span>,
-  },
-  {
-    field: "totals.collectedAmount",
-    headerName: "Harvest Amount",
+    field: "netAmount",
+    renderHeader: () => (
+      <FormattedMessage
+        id="payroll.history.columns.net_pay.header"
+        defaultMessage="Total net pay {currency}"
+        values={{ currency }}
+      />
+    ),
+    headerAlign: "right",
+    align: "right",
     width: 150,
     renderCell: (params) => (
-      <span>
-        {params.row.totals.collectedAmount} {params.row.season.unit}
-      </span>
+      <FormattedNumber value={params.row.totals.netAmount} />
     ),
   },
   {
-    field: "totals.deductions",
-    headerName: "Deductions ($)",
+    field: "collectedAmount",
+    renderHeader: () => (
+      <FormattedMessage
+        id="payroll.history.columns.harvest_amount.header"
+        defaultMessage="Harvest Amount"
+      />
+    ),
     width: 150,
-    renderCell: (params) => <span>{params.row.totals.deductions}</span>,
+    headerAlign: "right",
+    align: "right",
+    renderCell: (params) => (
+      <Box display="flex" gap={0.88} paddingLeft="3rem">
+        <FormattedNumber value={params.row.totals.collectedAmount} />
+        {params.row.season.unit}
+      </Box>
+    ),
+  },
+  {
+    field: "deductions",
+    renderHeader: () => (
+      <FormattedMessage
+        id="payroll.history.columns.deductions.header"
+        defaultMessage="Deductions {currency}"
+        values={{ currency }}
+      />
+    ),
+    headerAlign: "right",
+    align: "right",
+    width: 150,
+    renderCell: (params) => (
+      <FormattedNumber value={params.row.totals.deductions} />
+    ),
   },
   {
     field: "pickersCount",
-    headerName: "Pickers",
+    headerAlign: "center",
+    renderHeader: () => (
+      <FormattedMessage
+        id="payroll.history.columns.pickers.header"
+        defaultMessage="Pickers"
+      />
+    ),
     width: 150,
     renderCell: (params) => (
-      <span>
-        <User /> {params.row.pickersCount}
-      </span>
+      <Box display="flex" gap={0.88} paddingLeft="3rem">
+        <User size="1.25rem" />
+        <FormattedNumber value={params.row.pickersCount} />
+      </Box>
     ),
   },
   {
-    field: "endDate",
-    headerName: "Pay Date",
+    field: "createdAt",
+    renderHeader: () => (
+      <FormattedMessage
+        id="payroll.history.columns.pay_date.header"
+        defaultMessage="Pay Date"
+      />
+    ),
     width: 150,
-    renderCell: (params) => <span>{formatDate(params.value)}</span>,
+    renderCell: (params) => (
+      <FormattedDate value={params.value} month="short" day="2-digit" />
+    ),
+  },
+  {
+    field: "actions",
+    headerName: "",
+    width: 150,
+    renderCell: () => <Button variant="text">View More</Button>,
   },
 ]
-
-function formatDate(value: number | Date): string {
-  const date = new Date(value)
-
-  const month = date.toLocaleString("default", { month: "short" })
-  const day = date.getDate()
-
-  return `${month} ${day}`
-}
 
 const Payroll = () => {
   const navigate = useNavigate()
   const { user } = useUser()
   const intl = useIntl()
+
+  const theme = useTheme()
+  const desktop = useMediaQuery(theme.breakpoints.up("md"))
+  const tablet = useMediaQuery(theme.breakpoints.up("sm"))
 
   const { GET_QUERY_KEY } = useQueryCache("payrolls")
   const { GET_QUERY_KEY: SEASONS_QUERY_KEY } = useQueryCache("seasons")
@@ -158,7 +219,9 @@ const Payroll = () => {
       }
     >
       <Box display="flex" justifyContent="space-between" alignItems="center">
-        <Display size="md">Payroll History</Display>
+        <Display component="h2" size="xs" fontWeight="SemiBold">
+          Payroll History
+        </Display>
         {!!seasonsData?.length && (
           <Select
             defaultValue={selectedSeason?._id}
@@ -178,8 +241,19 @@ const Payroll = () => {
       <Box display="flex" flexGrow={1} pb={3}>
         <DataGrid
           rows={payrollData}
-          columns={columns}
+          columns={columns(selectedSeason?.currency.name ?? "")}
           loading={isLoading}
+          initialState={{
+            columns: {
+              columnVisibilityModel: {
+                createdAt: !!desktop,
+                collectedAmount: !!desktop,
+                deductions: !!desktop,
+                pickersCount: !!desktop,
+                netAmount: !!tablet,
+              },
+            },
+          }}
           getRowId={(data) => data?._id}
           pageSizeOptions={[10, 20, 50, 100]}
           disableRowSelectionOnClick
