@@ -26,7 +26,7 @@ const filterDataGrid = (props: FilterDataGridProps) => {
           ? `${filterModel.field}--${filterModel.operator}--${filterModel.value}`
           : undefined
       }
-      size="medium"
+      size="small"
       onChange={({ target: { value } }) => {
         try {
           const data = value?.split("--") ?? []

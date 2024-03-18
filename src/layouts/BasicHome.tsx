@@ -36,9 +36,9 @@ export default function BasicHome({
                 return (
                   <BodyText
                     key={index}
-                    color="text.primary"
+                    color="grey-800"
                     fontWeight="Medium"
-                    tabindex={0}
+                    tabIndex={0}
                   >
                     {item.title}
                   </BodyText>
@@ -63,14 +63,14 @@ export default function BasicHome({
           <Box display="flex" flexDirection="column" gap={1}>
             <Display
               size="lg"
-              tabindex={0}
+              tabIndex={0}
               fontWeight="Bold"
               sx={{ typography: { md: "SemiBold" } }}
             >
               {title}
             </Display>
             <BodyText
-              tabindex={0}
+              tabIndex={0}
               sx={{ display: !subtitle ? "none" : "initial" }}
             >
               {subtitle}
