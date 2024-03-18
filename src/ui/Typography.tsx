@@ -2,49 +2,6 @@ import { SxProps, Theme } from "@mui/material"
 import MUITypography, { TypographyProps } from "@mui/material/Typography"
 import { colors } from "shared/colors"
 
-enum WEIGHT_ENUM {
-  Regular = 400,
-  Medium = 500,
-  SemiBold = 600,
-  Bold = 700,
-}
-
-enum DISPLAY_SIZE_ENUM {
-  lg = "h1",
-  md = "h2",
-  sm = "h3",
-  xs = "h4",
-}
-
-interface DisplayProps {
-  fontWeight?: keyof typeof WEIGHT_ENUM
-  size?: keyof typeof DISPLAY_SIZE_ENUM
-}
-
-export const Display = <C extends React.ElementType>({
-  fontWeight = "Medium",
-  size = "lg",
-  ...props
-}: DisplayProps &
-  Omit<
-    TypographyProps<C, { component?: C }>,
-    "fontWeight" | "size" | "variant"
-  >) => {
-  return (
-    <MUITypography
-      tabIndex={0}
-      {...props}
-      fontWeight={WEIGHT_ENUM[fontWeight]}
-      variant={DISPLAY_SIZE_ENUM[size]}
-    />
-  )
-}
-
-enum TEXT_SIZE_ENUM {
-  md = "body1",
-  sm = "body2",
-  xs = "overline",
-}
 
 type ColorsType =
   | "primary"
@@ -65,6 +22,53 @@ type ColorsLevel =
   | "700"
   | "800"
   | "900"
+
+enum WEIGHT_ENUM {
+  Regular = 400,
+  Medium = 500,
+  SemiBold = 600,
+  Bold = 700,
+}
+
+enum DISPLAY_SIZE_ENUM {
+  lg = "h1",
+  md = "h2",
+  sm = "h3",
+  xs = "h4",
+}
+
+interface DisplayProps {
+  fontWeight?: keyof typeof WEIGHT_ENUM
+  size?: keyof typeof DISPLAY_SIZE_ENUM
+  color?: `${ColorsType}-${ColorsLevel}`
+}
+
+export const Display = <C extends React.ElementType>({
+  fontWeight = "Medium",
+  size = "lg",
+  color = "grey-800",
+  ...props
+}: DisplayProps &
+  Omit<
+    TypographyProps<C, { component?: C }>,
+    "fontWeight" | "size" | "variant" | "color"
+  >) => {
+  return (
+    <MUITypography
+      tabIndex={0}
+      {...props}
+      color={getColor(color)}
+      fontWeight={WEIGHT_ENUM[fontWeight]}
+      variant={DISPLAY_SIZE_ENUM[size]}
+    />
+  )
+}
+
+enum TEXT_SIZE_ENUM {
+  md = "body1",
+  sm = "body2",
+  xs = "overline",
+}
 interface TextBodyProps {
   fontWeight?: keyof typeof WEIGHT_ENUM
   size?: keyof typeof TEXT_SIZE_ENUM
@@ -81,11 +85,6 @@ export const BodyText = <C extends React.ElementType>({
     TypographyProps<C, { component?: C }>,
     "fontWeight" | "size" | "variant" | "color"
   >) => {
-  const getColor = (colorKey: `${ColorsType}-${ColorsLevel}`) => {
-    const [name, level] = colorKey.split("-")
-
-    return colors?.[name as ColorsType]?.[level as ColorsLevel]
-  }
   return (
     <MUITypography
       tabIndex={0}
@@ -123,17 +122,19 @@ interface LabelProps {
   fontWeight?: keyof typeof WEIGHT_ENUM
   size?: keyof typeof LABEL_SIZE_ENUM
   mobile?: keyof typeof LABEL_SIZE_ENUM
+  color?: `${ColorsType}-${ColorsLevel}`
 }
 
 export const Label = <C extends React.ElementType>({
   fontWeight = "Medium",
   size = "sm",
   mobile = "xs",
+  color = "grey-800",
   ...props
 }: LabelProps &
   Omit<
     TypographyProps<C, { component?: C }>,
-    "fontWeight" | "size" | "variant"
+    "fontWeight" | "size" | "variant" | "color"
   >) => {
   return (
     <MUITypography
@@ -141,6 +142,7 @@ export const Label = <C extends React.ElementType>({
       {...props}
       fontWeight={WEIGHT_ENUM[fontWeight]}
       variant="overline"
+      color={getColor(color)}
       sx={{
         typography: {
           sm: labelStyles[mobile],
@@ -149,4 +151,11 @@ export const Label = <C extends React.ElementType>({
       }}
     />
   )
+}
+
+
+const getColor = (colorKey: `${ColorsType}-${ColorsLevel}`) => {
+  const [name, level] = colorKey.split("-")
+
+  return colors?.[name as ColorsType]?.[level as ColorsLevel]
 }

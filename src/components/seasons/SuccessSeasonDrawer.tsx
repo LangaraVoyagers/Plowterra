@@ -1,11 +1,12 @@
 import React from "react";
 import { Drawer, Button } from "@mui/material";
 import IconModalSeason from "../../../assets/icons/season.svg";
+import { Display } from "ui/Typography"
 
 interface SuccessDrawerProps {
-  open: boolean;
-  dismiss: () => void;
-  data: any;
+  open: boolean
+  dismiss: () => void
+  data: any
 }
 
 const SuccessSeasonDrawer: React.FC<SuccessDrawerProps> = ({
@@ -13,7 +14,7 @@ const SuccessSeasonDrawer: React.FC<SuccessDrawerProps> = ({
   dismiss,
   data,
 }) => {
-  const name = data ? data.name : ' ';
+  const name = data ? data.name : " "
   return (
     <Drawer anchor="right" open={open} onClose={dismiss}>
       <div
@@ -35,23 +36,18 @@ const SuccessSeasonDrawer: React.FC<SuccessDrawerProps> = ({
           }}
         />
         <div style={{ width: 600, padding: 20 }}>
-          <p
+          <Display
+            color="grey-800"
+            size="sm"
+            fontWeight="SemiBold"
             style={{
-              color: "var(--Colors-Gray-warm-800, #292524)",
-              fontVariantNumeric: "lining-nums tabular-nums",
-              fontFeatureSettings: "'liga' off",
-              fontSize: 30,
-              fontStyle: "normal",
-              fontWeight: 600,
-              lineHeight: "38px",
-              letterSpacing: "-0.3px",
               textAlign: "center",
               marginTop: "45px",
               marginBottom: "24px",
             }}
           >
             New Season Created!
-          </p>
+          </Display>
           <p
             style={{
               color: "var(--Colors-Gray-warm-800, #292524)",
@@ -111,7 +107,7 @@ const SuccessSeasonDrawer: React.FC<SuccessDrawerProps> = ({
         </Button>
       </div>
     </Drawer>
-  );
-};
+  )
+}
 
 export default SuccessSeasonDrawer;
