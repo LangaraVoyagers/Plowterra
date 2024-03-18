@@ -13,12 +13,12 @@ const CreateHarvestLog = () => {
   return (
     <div>
       <Button variant="contained" onClick={showDrawer} endIcon={<FilePlus />}>
-        Add New Log
+        Add Entry
       </Button>
 
       <HarvestLogDrawer open={open} dismiss={hideDrawer} />
     </div>
-  );
+  )
 };
 
 export default CreateHarvestLog;

@@ -325,7 +325,7 @@ const Preview: React.FC = () => {
               <Label
                 size="sm"
                 fontWeight="SemiBold"
-                tabindex={0}
+                tabIndex={0}
                 arial-label={`Pay period from ${intl.formatDate(
                   startDate?.toDate(),
                   {
