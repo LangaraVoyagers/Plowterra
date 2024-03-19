@@ -1,12 +1,12 @@
 import React from "react";
 import { Drawer, Button } from "@mui/material";
 import IconModalSeason from "../../../assets/icons/season.svg";
-import { Display } from "ui/Typography"
+import { BodyText, Display } from "ui/Typography";
 
 interface SuccessDrawerProps {
-  open: boolean
-  dismiss: () => void
-  data: any
+  open: boolean;
+  dismiss: () => void;
+  data: any;
 }
 
 const SuccessSeasonDrawer: React.FC<SuccessDrawerProps> = ({
@@ -14,7 +14,7 @@ const SuccessSeasonDrawer: React.FC<SuccessDrawerProps> = ({
   dismiss,
   data,
 }) => {
-  const name = data ? data.name : " "
+  const name = data ? data.name : " ";
   return (
     <Drawer anchor="right" open={open} onClose={dismiss}>
       <div
@@ -48,48 +48,26 @@ const SuccessSeasonDrawer: React.FC<SuccessDrawerProps> = ({
           >
             New Season Created!
           </Display>
-          <p
+          <BodyText
+            size="md"
             style={{
-              color: "var(--Colors-Gray-warm-800, #292524)",
+              color: "grey-800",
               textAlign: "center",
-              fontVariantNumeric: "lining-nums tabular-nums",
-              fontFeatureSettings: "'liga' off",
-              fontSize: 16,
-              fontStyle: "normal",
-              fontWeight: 500,
-              lineHeight: "24px",
+              fontWeight: "Medium",
             }}
           >
             {"Harvest season "}
             <span
               style={{
                 color: "var(--Colors-Secondary-700, #9E6600)",
-                fontVariantNumeric: "lining-nums tabular-nums",
-                fontFeatureSettings: "'liga' off",
-                fontSize: "16px",
                 fontStyle: "normal",
-                fontWeight: 700,
-                lineHeight: "24px",
+                fontWeight: "Bold",
               }}
             >
-              {name}
+              {name + " "}
             </span>
-            {" has"}
-          </p>
-          <p
-            style={{
-              color: "var(--Colors-Gray-warm-800, #292524)",
-              textAlign: "center",
-              fontVariantNumeric: "lining-nums tabular-nums",
-              fontFeatureSettings: "'liga' off",
-              fontSize: 16,
-              fontStyle: "normal",
-              fontWeight: 500,
-              lineHeight: "24px",
-            }}
-          >
-            been created.
-          </p>
+            has <br /> been created.
+          </BodyText>
         </div>
         <Button
           onClick={dismiss}
@@ -107,7 +85,7 @@ const SuccessSeasonDrawer: React.FC<SuccessDrawerProps> = ({
         </Button>
       </div>
     </Drawer>
-  )
-}
+  );
+};
 
 export default SuccessSeasonDrawer;
