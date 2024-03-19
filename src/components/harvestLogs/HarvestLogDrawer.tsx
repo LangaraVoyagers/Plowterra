@@ -7,8 +7,6 @@ import {
   Checkbox,
   Dialog,
   DialogActions,
-  DialogContent,
-  DialogTitle,
   Drawer,
   DrawerProps,
   InputLabel,
@@ -32,7 +30,7 @@ import HarvestLogSchema from "project-2-types/dist/ajv/harvest-log.ajv";
 import {
   IPickerResponse,
   IHarvestLogResponse,
-} from "project-2-types/dist/interface"
+} from "project-2-types/dist/interface";
 import { ajvResolver } from "@hookform/resolvers/ajv";
 import { getPickers } from "api/pickers";
 import { getSeasons } from "api/seasons";
@@ -152,7 +150,7 @@ const HarvestLogDrawer = ({
 
   const { GET_QUERY_KEY: PICKERS_QUERY_KEY } = useQueryCache("pickers");
 
-  const [pickers, setPickers] = React.useState<Array<IPickerResponse>>([])
+  const [pickers, setPickers] = React.useState<Array<IPickerResponse>>([]);
 
   useQuery({
     queryKey: PICKERS_QUERY_KEY,
@@ -467,34 +465,34 @@ const HarvestLogDrawer = ({
             }}
           >
             <TelegramLogo size={40} style={{ color: "#055E40" }} />
-            <DialogTitle
+            <Display
+              color="grey-800"
+              size="sm"
+              fontWeight="SemiBold"
               style={{
-                fontSize: "30px",
-                fontStyle: "normal",
-                fontWeight: 600,
-                lineHeight: "38px",
-                letterSpacing: "-0.3px",
+                textAlign: "center",
                 paddingTop: "20px",
               }}
             >
-              Harvest Entry Completed!
-            </DialogTitle>
-            <DialogContent
+              New Season Created!
+            </Display>
+            <BodyText
+              size="md"
               style={{
+                color: "grey-800",
+                textAlign: "center",
                 paddingBottom: "32px",
-                fontSize: "16px",
-                fontStyle: "normal",
-                fontWeight: 500,
-                lineHeight: "24px",
+                paddingTop: "32px",
               }}
             >
               {selectedPicker?.label} will receive an SMS with the summary.
-            </DialogContent>
+            </BodyText>
             <DialogActions
               style={{ justifyContent: "space-between", width: "100%" }}
             >
               <Button
                 onClick={handleClose}
+                color="primary"
                 style={{
                   border: "1px solid var(--Colors-Brand-500, #055E40)",
                 }}
