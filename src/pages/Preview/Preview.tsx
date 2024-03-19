@@ -4,7 +4,6 @@ import {
   Dialog,
   DialogActions,
   DialogContent,
-  DialogContentText,
   DialogTitle,
   useTheme,
 } from "@mui/material"
@@ -439,11 +438,11 @@ const Preview: React.FC = () => {
             }}
             onClick={handleClose}
           >
-            <X size={24} color="#292524" />
+            <X size={24} color="Gray-warm-800" />
           </button>
         </DialogTitle>
         <DialogContent>
-          <DialogContentText
+          {/* <DialogContentText
             id="alert-dialog-description"
             style={{
               color: "var(--Colors-Gray-warm-900, #1C1917)",
@@ -456,7 +455,18 @@ const Preview: React.FC = () => {
             }}
           >
             Ready to run the payroll?
-          </DialogContentText>
+          </DialogContentText> */}
+          <Display
+              color="grey-900"
+              size="sm"
+              fontWeight="SemiBold"
+              style={{
+                textAlign: "center",
+                // paddingTop: "20px",
+              }}
+            >
+              Ready to run the payroll?
+            </Display>
         </DialogContent>
         <div
           style={{
@@ -500,7 +510,7 @@ const Preview: React.FC = () => {
             <Button
               onClick={handleClose}
               color="primary"
-              style={{ flex: 1, marginRight: "12px", height: "48px" }}
+              style={{ flex: 1, marginRight: "12px", height: "48px", border: "1px solid var(--Colors-Brand-500, #055E40)" }}
             >
               Cancel
             </Button>
