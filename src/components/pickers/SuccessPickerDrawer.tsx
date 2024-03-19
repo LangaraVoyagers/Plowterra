@@ -1,6 +1,7 @@
 import React from "react";
 import { Drawer, Button } from "@mui/material";
 import IconPicker from "../../../assets/icons/picker.svg";
+import { BodyText, Display } from "ui/Typography";
 
 interface SuccessDrawerProps {
   open: boolean;
@@ -35,64 +36,47 @@ const SuccessPickerDrawer: React.FC<SuccessDrawerProps> = ({
           }}
         />
         <div style={{ width: 600, padding: 20 }}>
-          <p
+        <Display
+            color="grey-800"
+            size="sm"
+            fontWeight="SemiBold"
             style={{
-              color: "var(--Colors-Gray-warm-800, #292524)",
-              fontVariantNumeric: "lining-nums tabular-nums",
-              fontFeatureSettings: "'liga' off",
-              fontSize: 30,
-              fontStyle: "normal",
-              fontWeight: 600,
-              lineHeight: "38px",
-              letterSpacing: "-0.3px",
               textAlign: "center",
               marginTop: "45px",
               marginBottom: "24px",
             }}
           >
             New Picker Added!
-          </p>
-          <p
+          </Display>
+          <BodyText
+            size="md"
             style={{
-              color: "var(--Colors-Gray-warm-800, #292524)",
+              color: "grey-800",
               textAlign: "center",
-              fontVariantNumeric: "lining-nums tabular-nums",
-              fontFeatureSettings: "'liga' off",
-              fontSize: 16,
-              fontStyle: "normal",
-              fontWeight: 500,
-              lineHeight: "24px",
+              fontWeight: "Medium",
             }}
           >
             You have successfully added
-          </p>
-          <p
+          </BodyText>
+          <BodyText
+            size="md"
             style={{
-              color: "var(--Colors-Gray-warm-800, #292524)",
+              color: "grey-800",
               textAlign: "center",
-              fontVariantNumeric: "lining-nums tabular-nums",
-              fontFeatureSettings: "'liga' off",
-              fontSize: 16,
-              fontStyle: "normal",
-              fontWeight: 500,
-              lineHeight: "24px",
+              fontWeight: "Medium",
             }}
           >
             <span
               style={{
                 color: "var(--Colors-Secondary-700, #9E6600)",
-                fontVariantNumeric: "lining-nums tabular-nums",
-                fontFeatureSettings: "'liga' off",
-                fontSize: "16px",
                 fontStyle: "normal",
-                fontWeight: 700,
-                lineHeight: "24px",
+                fontWeight: "Bold",
               }}
             >
               {name}
             </span>
             {" to your picker list."}
-          </p>
+          </BodyText>
         </div>
         <Button
           onClick={dismiss}
