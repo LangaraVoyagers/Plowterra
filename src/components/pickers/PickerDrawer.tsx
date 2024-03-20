@@ -20,7 +20,7 @@ import {
 import { Controller, useForm } from "react-hook-form";
 import { deletePicker, getPickerById, upsertPicker } from "api/pickers";
 import { useMutation, useQuery } from "react-query";
-import PickerImage from "../../../assets/icons/picker.svg"
+import PickerImage from "../../assets/images/PickerSuccess.svg"
 import PickerSchema from "project-2-types/dist/ajv/picker.ajv"
 import { useAlert } from "context/AlertProvider"
 import { useIntl } from "react-intl"

@@ -43,7 +43,7 @@ import { useMutation, useQuery } from "react-query"
 import { BodyText, Display, Label } from "ui/Typography"
 import SeasonDeductions from "./SeasonDeductions"
 import ConfirmationDrawer from "ui/ConfirmationDrawer"
-import SeasonImage from "../../../assets/icons/season.svg"
+import SeasonImage from "../../assets/images/SeasonSuccess.svg"
 
 const payrollTimeframeList = (
   Object.keys(PayrollTimeframeEnum) as Array<keyof typeof PayrollTimeframeEnum>
@@ -862,7 +862,7 @@ const SeasonDrawer = ({ dismiss, seasonId, ...props }: SeasonDrawerProps) => {
             }
           )}
           backButtonTitle={intl.formatMessage({
-            id: "seasons.create.seaspm.success.drawer.back.button",
+            id: "seasons.create.season.success.drawer.back.button",
             defaultMessage: "Back to Harvest Season",
           })}
           onClose={() => {

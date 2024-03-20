@@ -1,21 +1,22 @@
 import React from "react"
-import { Drawer, Button, DrawerProps, Box } from "@mui/material"
-import IconModalSeason from "../../assets/icons/season.svg"
+import { Drawer, Button, DrawerProps, Box } from "@mui/material";
 import { BodyText, Display } from "ui/Typography"
 
 interface ConfirmationDrawerProps extends DrawerProps {
-  image?: string
-  title: string
-  message: string | React.ReactNode
-  backButtonTitle: string
-  onClose: () => void
+  image: string;
+  imageStyle?: React.CSSProperties;
+  title: string;
+  message: string | React.ReactNode;
+  backButtonTitle: string;
+  onClose: () => void;
 }
 
 const ConfirmationDrawer: React.FC<ConfirmationDrawerProps> = ({
-  image = IconModalSeason,
+  image,
   title,
   message,
   backButtonTitle,
+  imageStyle = {},
   ...rest
 }) => {
   return (
@@ -35,6 +36,7 @@ const ConfirmationDrawer: React.FC<ConfirmationDrawerProps> = ({
           style={{
             width: "221px",
             height: "229px",
+            ...imageStyle,
           }}
         />
         <Box
@@ -69,7 +71,7 @@ const ConfirmationDrawer: React.FC<ConfirmationDrawerProps> = ({
         </Box>
       </Box>
     </Drawer>
-  )
-}
+  );
+};
 
 export default ConfirmationDrawer

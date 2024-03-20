@@ -21,7 +21,7 @@ import {
   useIntl,
 } from "react-intl"
 import { useMutation } from "react-query"
-import IconModalPayroll from "../../../assets/icons/IconModalPayroll.svg"
+import IconModalPayroll from "../../assets/images/PayrollSuccess.svg"
 import { DatePicker } from "@mui/x-date-pickers"
 import { useUser } from "context/UserProvider"
 import { IPayrollResponse } from "project-2-types/dist/interface"
