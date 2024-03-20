@@ -192,7 +192,6 @@ const HarvestLogs = () => {
   const [isSeasonsFetch, setSeasonsFetch] = useState<boolean>(false);
   const [picker, setPicker] = useState<IHarvestLogResponse["picker"]>();
 
-  console.log({ selectedSeason });
   const { GET_QUERY_KEY } = useQueryCache("harvestLogs");
 
   const { isLoading } = useQuery({

@@ -1,16 +1,9 @@
-import {
-  Box,
-  Button,
-  MenuItem,
-  Select,
-  useMediaQuery,
-  useTheme,
-} from "@mui/material"
-import { SelectChangeEvent } from "@mui/material/Select"
+import { Box, Button, useMediaQuery, useTheme } from "@mui/material";
 import { DataGrid, GridColDef, GridRenderCellParams } from "@mui/x-data-grid"
 import { CaretRight, User } from "@phosphor-icons/react"
-import { getPayrollHistory } from "api/payroll"
-import { getSeasons } from "api/seasons"
+import { getPayrollHistory } from "api/payroll";
+import SeasonFilterDataGrid from "components/SeasonFilterDataGrid";
+import { useAlert } from "context/AlertProvider";
 import { useUser } from "context/UserProvider"
 import useQueryCache from "hooks/useQueryCache"
 import BasicHome from "layouts/BasicHome"
@@ -147,47 +140,37 @@ const Payroll = () => {
   const navigate = useNavigate()
   const { user } = useUser()
   const intl = useIntl()
+  const { showAlert } = useAlert();
 
-  const theme = useTheme()
-  const desktop = useMediaQuery(theme.breakpoints.up("md"))
-  const tablet = useMediaQuery(theme.breakpoints.up("sm"))
+  const theme = useTheme();
+  const desktop = useMediaQuery(theme.breakpoints.up("md"));
+  const tablet = useMediaQuery(theme.breakpoints.up("sm"));
 
-  const { GET_QUERY_KEY } = useQueryCache("payrolls")
-  const { GET_QUERY_KEY: SEASONS_QUERY_KEY } = useQueryCache("seasons")
+  const { GET_QUERY_KEY } = useQueryCache("payrolls");
 
-  const [payrollData, setPayrollData] = useState([])
-  const [seasonsData, setSeasonsData] = useState<Array<ISeasonResponse>>()
-  const [selectedSeason, setSelectedSeason] = useState<ISeasonResponse>()
-
-  // Get seasons
-  const { isFetched } = useQuery({
-    queryKey: SEASONS_QUERY_KEY,
-    queryFn: getSeasons,
-    onSuccess: (results) => {
-      setSeasonsData(results)
-      setSelectedSeason(results?.[0])
-    },
-    onError: (error) => {
-      console.log(error)
-    },
-  })
-
+  const [payrollData, setPayrollData] = useState([]);
+  const [selectedSeason, setSelectedSeason] = useState<ISeasonResponse>();
+  const [isSeasonsFetch, setSeasonsFetch] = useState<boolean>(false);
+ 
   const { isLoading } = useQuery({
     queryKey: [...GET_QUERY_KEY, selectedSeason?._id],
     queryFn: () => getPayrollHistory({ seasonId: selectedSeason?._id }),
-    enabled: !!selectedSeason?._id || isFetched,
+    enabled: !!selectedSeason?._id || isSeasonsFetch,
     onSuccess: (results) => {
-      setPayrollData(results)
+      setPayrollData(results);
     },
     onError: (error) => {
-      console.log(error)
+      console.log(error);
+      showAlert(
+        intl.formatMessage({
+          id: "payroll.get.payroll.history.error",
+          defaultMessage: "No payroll history found",
+        }),
+        "error"
+      );
     },
-  })
+  });
 
-  const onSeasonChange = (event: SelectChangeEvent<any>) => {
-    const season = seasonsData?.find((s) => s._id === event.target.value)
-    setSelectedSeason(season)
-  }
 
   return (
     <BasicHome
@@ -222,20 +205,10 @@ const Payroll = () => {
         <Display component="h2" size="xs" fontWeight="SemiBold">
           Payroll History
         </Display>
-        {!!seasonsData?.length && (
-          <Select
-            defaultValue={selectedSeason?._id}
-            value={selectedSeason?._id}
-            size="small"
-            onChange={onSeasonChange}
-          >
-            {seasonsData?.map((season) => (
-              <MenuItem key={season._id} value={season._id}>
-                {season.name}
-              </MenuItem>
-            ))}
-          </Select>
-        )}
+        <SeasonFilterDataGrid
+          onChange={setSelectedSeason}
+          onFetch={() => setSeasonsFetch(true)}
+        />
       </Box>
 
       <Box display="flex" flexGrow={1} pb={3}>
@@ -260,7 +233,7 @@ const Payroll = () => {
         />
       </Box>
     </BasicHome>
-  )
+  );
 }
 
 export default Payroll

@@ -22,6 +22,7 @@ import { useQuery } from "react-query"
 import useQueryCache from "hooks/useQueryCache"
 import { useUser } from "context/UserProvider"
 import DataTable from "ui/DataTable"
+import { useAlert } from "context/AlertProvider";
 
 const columns: GridColDef[] = [
   {
@@ -96,40 +97,48 @@ const Pickers = () => {
   const params = useParams<{ id: string }>()
   const intl = useIntl()
   const { user } = useUser()
+  const { showAlert } = useAlert();
 
-  const theme = useTheme()
-  const desktop = useMediaQuery(theme.breakpoints.up("md"))
+  const theme = useTheme();
+  const desktop = useMediaQuery(theme.breakpoints.up("md"));
 
-  const { GET_QUERY_KEY } = useQueryCache("pickers")
+  const { GET_QUERY_KEY } = useQueryCache("pickers");
 
-  const [open, setOpen] = useState<boolean>(false)
-  const [pickers, setPickers] = useState<Array<IPickerResponse>>([])
+  const [open, setOpen] = useState<boolean>(false);
+  const [pickers, setPickers] = useState<Array<IPickerResponse>>([]);
 
-  const [search, setSearch] = useState<string>()
+  const [search, setSearch] = useState<string>();
   const [sortModel, setSortModel] = useState([
     {
       field: "createdAt",
       sort: "desc",
     },
-  ])
+  ]);
 
-  const showDrawer = () => setOpen(true)
+  const showDrawer = () => setOpen(true);
 
   const hideDrawer = () => {
-    setOpen(false)
-    window.location.replace(paths.pickers)
-  }
+    setOpen(false);
+    window.location.replace(paths.pickers);
+  };
 
   const { isLoading } = useQuery({
     queryKey: GET_QUERY_KEY,
     queryFn: getPickers,
     onSuccess: (results) => {
-      setPickers(results)
+      setPickers(results);
     },
     onError: (error) => {
-      console.log(error)
+      console.log(error);
+      showAlert(
+        intl.formatMessage({
+          id: "pickers.get.pickers.error",
+          defaultMessage: "No pickers found",
+        }),
+        "error"
+      );
     },
-  })
+  });
 
   useEffect(() => {
     if (params.id) {

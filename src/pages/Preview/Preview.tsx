@@ -1,14 +1,6 @@
-import {
-  Box,
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-  useTheme,
-} from "@mui/material"
+import { Box, Button, useTheme } from "@mui/material";
 import { DataGrid, GridColDef } from "@mui/x-data-grid"
-import { ArrowLeft, CaretRight, SealCheck, X } from "@phosphor-icons/react"
+import { ArrowLeft, CaretRight, SealCheck } from "@phosphor-icons/react";
 import endpoints from "api/endpoints"
 import { PayrollPayload, createPayroll, getPayrollPreview } from "api/payroll"
 import dayjs, { Dayjs } from "dayjs"
@@ -20,15 +12,18 @@ import {
   FormattedNumber,
   useIntl,
 } from "react-intl"
-import { useMutation } from "react-query"
-import IconModalPayroll from "../../assets/images/PayrollSuccess.svg"
-import { DatePicker } from "@mui/x-date-pickers"
-import { useUser } from "context/UserProvider"
-import { IPayrollResponse } from "project-2-types/dist/interface"
-import { useSearchParams } from "react-router-dom"
-import { BodyText, Display, Label } from "ui/Typography"
-import { useAlert } from "context/AlertProvider"
-import { styled, useMediaQuery } from "@mui/system"
+import { useMutation } from "react-query";
+import { DatePicker } from "@mui/x-date-pickers";
+import { useUser } from "context/UserProvider";
+import {
+  IPayrollResponse,
+  ISeasonResponse,
+} from "project-2-types/dist/interface";
+import { BodyText, Display, Label } from "ui/Typography";
+import { useAlert } from "context/AlertProvider";
+import { styled, useMediaQuery } from "@mui/system";
+import SeasonFilterDataGrid from "components/SeasonFilterDataGrid";
+import PayrollConfirmationModal from "components/payroll/PayrollConfirmationModal";
 
 const columns = (currency: string, unit: string): GridColDef[] => [
   {
@@ -41,7 +36,7 @@ const columns = (currency: string, unit: string): GridColDef[] => [
     ),
     width: 50,
     valueGetter: (params) => {
-      return params.row.index + 1
+      return params.row.index + 1;
     },
   },
   {
@@ -55,7 +50,7 @@ const columns = (currency: string, unit: string): GridColDef[] => [
     flex: 1,
     minWidth: 100,
     valueGetter: (params) => {
-      return params.row.picker.name
+      return params.row.picker.name;
     },
   },
   {
@@ -71,7 +66,7 @@ const columns = (currency: string, unit: string): GridColDef[] => [
     align: "right",
     width: 150,
     renderCell: (params) => {
-      return <FormattedNumber value={params.row.grossAmount} />
+      return <FormattedNumber value={params.row.grossAmount} />;
     },
   },
   {
@@ -90,7 +85,7 @@ const columns = (currency: string, unit: string): GridColDef[] => [
         <span>
           <FormattedNumber value={params.row.collectedAmount} /> {unit}
         </span>
-      )
+      );
     },
   },
   {
@@ -106,7 +101,7 @@ const columns = (currency: string, unit: string): GridColDef[] => [
     align: "right",
     width: 150,
     renderCell: (params) => {
-      return <FormattedNumber value={params.row.deductions} />
+      return <FormattedNumber value={params.row.deductions} />;
     },
   },
   {
@@ -122,43 +117,46 @@ const columns = (currency: string, unit: string): GridColDef[] => [
     align: "right",
     width: 100,
     renderCell: (params) => {
-      return <FormattedNumber value={params.row.netAmount} />
+      return <FormattedNumber value={params.row.netAmount} />;
     },
   },
   {
     field: "actions",
     width: 50,
   },
-]
+];
 
 const Preview: React.FC = () => {
-  const { user } = useUser()
-  const { showAlert } = useAlert()
+  const { user } = useUser();
+  const { showAlert } = useAlert();
 
-  const intl = useIntl()
+  const intl = useIntl();
 
-  const theme = useTheme()
-  const desktop = useMediaQuery(theme.breakpoints.up("md"))
+  const theme = useTheme();
+  const desktop = useMediaQuery(theme.breakpoints.up("md"));
 
-  const [params] = useSearchParams()
-  const seasonId = params.get("seasonId")
+  // const [params] = useSearchParams()
+  // const seasonId = params.get("seasonId")
 
-  const [payrollData, setPayrollData] = useState<IPayrollResponse | null>(null)
+  const [payrollData, setPayrollData] = useState<IPayrollResponse | null>(null);
 
-  const [startDate, setStartDate] = useState<Dayjs>()
-  const [endDate, setEndDate] = useState<Dayjs>()
+  const [startDate, setStartDate] = useState<Dayjs>();
+  const [endDate, setEndDate] = useState<Dayjs>();
 
-  const [payrollDone, setPayrollDone] = useState<boolean>(false)
-  const [open, setOpen] = useState(false)
+  const [selectedSeason, setSelectedSeason] = useState<ISeasonResponse>();
+
+  const [payrollDone, setPayrollDone] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [open, setOpen] = useState(false);
 
   const { mutate: getPreview } = useMutation({
     mutationKey: [endpoints.payrolls, "preview"],
     mutationFn: getPayrollPreview,
     onSuccess: (data: any) => {
-      setPayrollData(data)
+      setPayrollData(data);
 
-      !startDate && setStartDate(dayjs(data?.nextEstimatedPayroll.startDate))
-      !endDate && setEndDate(dayjs(data?.nextEstimatedPayroll.endDate))
+      !startDate && setStartDate(dayjs(data?.nextEstimatedPayroll.startDate));
+      !endDate && setEndDate(dayjs(data?.nextEstimatedPayroll.endDate));
     },
     onError: () => {
       showAlert(
@@ -167,27 +165,28 @@ const Preview: React.FC = () => {
           defaultMessage: "Oops! Preview is not available.",
         }),
         "error"
-      )
+      );
     },
-  })
+  });
 
   const handleClickOpen = () => {
-    setOpen(true)
-  }
+    setOpen(true);
+  };
 
   const handleClose = () => {
-    setOpen(false)
-  }
+    setOpen(false);
+  };
 
   const handleConfirm = async () => {
     try {
-      if (!seasonId || !payrollData || !startDate || !endDate) {
-        return
+      if (!selectedSeason?._id || !payrollData || !startDate || !endDate) {
+        return;
       }
+      setIsLoading(true);
 
       const payload: PayrollPayload = {
         farmId: user.farm._id,
-        seasonId: seasonId,
+        seasonId: selectedSeason?._id,
         endDate: endDate.valueOf(),
         startDate: startDate.valueOf(),
         totals: {
@@ -195,46 +194,35 @@ const Preview: React.FC = () => {
           totalCollectedAmount: payrollData?.totals.collectedAmount,
           totalDeductions: payrollData?.totals.deductions,
         },
-      }
+      };
 
-      await createPayroll(payload)
-
-      setPayrollDone(true)
+      await createPayroll(payload);
+      setPayrollDone(true);
+      setOpen(false);
     } catch (error) {
-      console.error(
-        "Error:",
-        (error as any).response.status,
-        (error as any).response.statusText
-      )
+      console.log(error);
+      showAlert(
+        intl.formatMessage({
+          id: "payroll.preview.run.error",
+          defaultMessage: "Oops! Payroll could not be saved.",
+        }),
+        "error"
+      );
+    } finally {
+      setIsLoading(false);
     }
-    setOpen(false)
-  }
+  };
 
   useEffect(() => {
-    if (seasonId) {
+    if (selectedSeason?._id) {
       getPreview({
         endDate: endDate ? endDate.toDate().getTime() : undefined,
         startDate: startDate ? startDate.toDate().getTime() : undefined,
         farmId: user.farm._id,
-        seasonId,
-      })
+        seasonId: selectedSeason?._id,
+      });
     }
-  }, [endDate, seasonId])
-
-  const StyledSpan = ({ children }: { children: React.ReactNode }) => (
-    <span
-      style={{
-        borderRadius: "var(--radius-md, 8px)",
-        background: "var(--Colors-Gray-warm-100, #F5F5F4)",
-        padding: "10px",
-        width: "100%",
-        minWidth: "162px",
-        textAlign: "center",
-      }}
-    >
-      {children}
-    </span>
-  );
+  }, [endDate, selectedSeason?._id]);
 
   return (
     <BasicHome
@@ -288,9 +276,17 @@ const Preview: React.FC = () => {
       {!payrollDone && (
         <PayrollFilters>
           <div className="filter-container">
-            <BodyText size="md" fontWeight="Medium">
-              Select the date range:
-            </BodyText>
+            <div className="date-filter">
+              <BodyText size="md" sx={{ flexShrink: 0 }}>
+                Active Season
+              </BodyText>
+              <SeasonFilterDataGrid
+                onChange={setSelectedSeason}
+                status="ACTIVE"
+                sx={{ width: !desktop ? "100%" : undefined }}
+                defaultFirst={false}
+              />
+            </div>
             <div className="filters">
               <div className="date-filter">
                 <BodyText size="md">From</BodyText>
@@ -299,7 +295,7 @@ const Preview: React.FC = () => {
                   slotProps={{ textField: { size: "small" } }}
                   onChange={(value) => {
                     if (value) {
-                      setStartDate(value)
+                      setStartDate(value);
                     }
                   }}
                 />
@@ -311,7 +307,7 @@ const Preview: React.FC = () => {
                   slotProps={{ textField: { size: "small" } }}
                   onChange={(value) => {
                     if (value) {
-                      setEndDate(value)
+                      setEndDate(value);
                     }
                   }}
                 />
@@ -404,128 +400,21 @@ const Preview: React.FC = () => {
         </PayrollFilters>
       )}
 
-      {/* Modal Preview */}
-      <Dialog
+      {/* Payroll Confirmation Modal */}
+      <PayrollConfirmationModal
         open={open}
         onClose={handleClose}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
-      >
-        <DialogTitle
-          id="alert-dialog-title"
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            position: "relative",
-          }}
-        >
-          <img
-            src={IconModalPayroll}
-            alt="Icon Modal Payroll"
-            style={{
-              width: "80px",
-              height: "80px",
-              marginTop: "16px",
-            }}
-          />
-          <button
-            style={{
-              position: "absolute",
-              right: "34px",
-              top: "28px",
-              border: "none",
-              background: "none",
-            }}
-            onClick={handleClose}
-          >
-            <X size={24} color="Gray-warm-800" />
-          </button>
-        </DialogTitle>
-        <DialogContent>
-          {/* <DialogContentText
-            id="alert-dialog-description"
-            style={{
-              color: "var(--Colors-Gray-warm-900, #1C1917)",
-              textAlign: "center",
-              fontVariantNumeric: "lining-nums tabular-nums",
-              fontSize: "24px",
-              fontStyle: "normal",
-              fontWeight: 600,
-              lineHeight: "32px",
-            }}
-          >
-            Ready to run the payroll?
-          </DialogContentText> */}
-          <Display
-              color="grey-900"
-              size="sm"
-              fontWeight="SemiBold"
-              style={{
-                textAlign: "center",
-                // paddingTop: "20px",
-              }}
-            >
-              Ready to run the payroll?
-            </Display>
-        </DialogContent>
-        <div
-          style={{
-            display: "flex",
-            height: "44px",
-            padding: "20px",
-            flexDirection: "row",
-            justifyContent: "space-between",
-            alignItems: "center",
-            flex: "0 1 auto",
-            gap: "12px",
-          }}
-        >
-          <StyledSpan>{payrollData?.season.name}</StyledSpan>
-          <StyledSpan>
-            <FormattedDate
-              value={startDate?.toDate()}
-              month="short"
-              day="numeric"
-            />
-            -
-            <FormattedDate
-              value={endDate?.toDate()}
-              month="short"
-              day="numeric"
-            />
-          </StyledSpan>
-          <StyledSpan>{payrollData?.totals.netAmount}</StyledSpan>
-        </div>
-        <div style={{ padding: "0 32px" }}>
-          <DialogActions
-            style={{
-              borderTop: "1px solid var(--Colors-Brand-200, #E7E5E4)",
-              marginTop: "32px",
-              paddingTop: "32px",
-              paddingBottom: "32px",
-              display: "flex",
-              justifyContent: "space-between",
-            }}
-          >
-            <Button
-              onClick={handleClose}
-              color="primary"
-              style={{ flex: 1, marginRight: "12px", height: "48px", border: "1px solid var(--Colors-Brand-500, #055E40)" }}
-            >
-              Cancel
-            </Button>
-            <Button
-              onClick={handleConfirm}
-              variant="contained"
-              color="primary"
-              autoFocus
-              style={{ flex: 1, marginLeft: "12px", height: "48px" }}
-            >
-              Confirm
-            </Button>
-          </DialogActions>
-        </div>
-      </Dialog>
+        onCancel={handleClose}
+        isLoading={isLoading}
+        data={{
+          seasonName: payrollData?.season.name,
+          startDate: startDate?.toDate(),
+          endDate: endDate?.toDate(),
+          netAmount: payrollData?.totals.netAmount,
+          currency: payrollData?.season.currency,
+        }}
+        onConfirm={handleConfirm}
+      />
 
       <Box display="flex" flexGrow={1} pb={3}>
         <DataGrid
@@ -549,8 +438,8 @@ const Preview: React.FC = () => {
         />
       </Box>
     </BasicHome>
-  )
-}
+  );
+};
 
 const Card = styled(Box)`
   background-color: white;
@@ -560,7 +449,7 @@ const Card = styled(Box)`
   gap: ${({ theme }) => theme.spacing(0.75)};
   border-radius: 0.5rem;
   flex: 1;
-`
+`;
 
 const PayrollTotals = styled(Box)`
   display: grid;
@@ -570,7 +459,7 @@ const PayrollTotals = styled(Box)`
   ${(props) => props.theme.breakpoints.up("md")} {
     grid-template-columns: repeat(4, 1fr);
   }
-`
+`;
 
 const PayrollFilters = styled(Box)`
   // Mobile
@@ -580,6 +469,7 @@ const PayrollFilters = styled(Box)`
 
   .filter-container {
     display: flex;
+    flex-wrap: wrap;
     flex-direction: column;
     gap: ${({ theme }) => theme.spacing(1)};
 
@@ -607,12 +497,11 @@ const PayrollFilters = styled(Box)`
       align-items: center;
       flex-direction: row;
 
-      .filters {
-        .date-filter {
-          flex-direction: row !important;
-          align-items: center;
-          gap: ${({ theme }) => theme.spacing(1.25)} !important;
-        }
+      .date-filter {
+        display: flex;
+        flex-direction: row !important;
+        align-items: center;
+        gap: ${({ theme }) => theme.spacing(1.25)} !important;
       }
     }
 
@@ -625,6 +514,6 @@ const PayrollFilters = styled(Box)`
       grid-column: 2;
     }
   }
-`
+`;
 
 export default Preview

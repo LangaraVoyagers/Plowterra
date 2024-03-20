@@ -124,7 +124,7 @@ const Seasons = () => {
 
   const { isLoading } = useQuery({
     queryKey: GET_QUERY_KEY,
-    queryFn: getSeasons,
+    queryFn: () => getSeasons(),
     onSuccess: (results) => {
       setSeasons(results);
     },

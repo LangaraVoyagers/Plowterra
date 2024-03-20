@@ -152,17 +152,31 @@ const HarvestLogDrawer = ({
     },
     onError: (error) => {
       console.log(error);
+      showAlert(
+        intl.formatMessage({
+          id: "harvest.log.drawer.get.pickers.error",
+          defaultMessage: "No pickers found",
+        }),
+        "error"
+      );
     },
   });
 
   useQuery({
     queryKey: SEASONS_QUERY_KEY,
-    queryFn: getSeasons,
+    queryFn: () => getSeasons({ status: "ACTIVE" }),
     onSuccess: (results) => {
       setSeasons(results);
     },
     onError: (error) => {
       console.log(error);
+      showAlert(
+        intl.formatMessage({
+          id: "harvest.log.drawer.get.seasons.error",
+          defaultMessage: "No seasons found",
+        }),
+        "error"
+      );
     },
   });
 
@@ -173,8 +187,15 @@ const HarvestLogDrawer = ({
     onSuccess: (result) => {
       setHarvestLog(result);
     },
-    onError: () => {
-      showAlert("Oops! Information couldn't be displayed.", "error");
+    onError: (error) => {
+      console.log(error);
+      showAlert(
+        intl.formatMessage({
+          id: "harvest.log.drawer.get.harvest.log.detail.error",
+          defaultMessage: "No harvest log found",
+        }),
+        "error"
+      );
     },
   });
 
@@ -188,8 +209,15 @@ const HarvestLogDrawer = ({
         handleCreateSuccess(result);
       }
     },
-    onError: () => {
-      showAlert("Oops! The harvest log couldn't be saved.", "error");
+    onError: (error) => {
+      console.log(error);
+      showAlert(
+        intl.formatMessage({
+          id: "harvest.log.drawer.save.harvest.log.error",
+          defaultMessage: "Oops! The harvest log couldn't be saved.",
+        }),
+        "error"
+      );
     },
   });
 
