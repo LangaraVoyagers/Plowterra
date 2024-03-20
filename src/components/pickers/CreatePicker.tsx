@@ -2,14 +2,16 @@ import { Button } from "@mui/material";
 import { useState } from "react";
 import PickerDrawer from "./PickerDrawer";
 import { FormattedMessage } from "react-intl";
-import { UserPlus } from "@phosphor-icons/react";
+import { UserPlus } from "@phosphor-icons/react"
 
 const CreatePicker = () => {
-  const [open, setOpen] = useState<boolean>(false);
+  const [open, setOpen] = useState<boolean>(false)
 
-  const showDrawer = () => setOpen(true);
+  const showDrawer = () => setOpen(true)
 
-  const hideDrawer = () => setOpen(false);
+  const hideDrawer = () => {
+    setOpen(false)
+  }
 
   return (
     <div>
@@ -26,7 +28,7 @@ const CreatePicker = () => {
 
       <PickerDrawer open={open} dismiss={hideDrawer} />
     </div>
-  );
-};
+  )
+}
 
 export default CreatePicker;

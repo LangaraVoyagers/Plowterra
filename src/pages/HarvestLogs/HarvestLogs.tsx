@@ -8,25 +8,52 @@ import {
 import { DatePicker } from "@mui/x-date-pickers/DatePicker"
 import { getHarvestLogs } from "api/harvestLogs"
 import { getPickerById } from "api/pickers"
-import SearchDataGrid from "components/SearchDataGrid"
-import CreateHarvestLog from "components/harvestLogs/CreateHarvestLog"
-import UpdateHarvestLog from "components/harvestLogs/UpdateHarvestLog"
-import { useUser } from "context/UserProvider"
-import dayjs, { Dayjs } from "dayjs"
-import useQueryCache from "hooks/useQueryCache"
-import BasicHome from "layouts/BasicHome"
-import { IHarvestLogResponse } from "project-2-types/dist/interface"
-import { useEffect, useState } from "react"
-import { FormattedDate } from "react-intl"
-import { useQuery } from "react-query"
-import { useSearchParams } from "react-router-dom"
-import paths from "shared/paths"
-import { BodyText } from "ui/Typography"
+import SeasonFilterDataGrid from "components/SeasonFilterDataGrid";
+import CreateHarvestLog from "components/harvestLogs/CreateHarvestLog";
+import UpdateHarvestLog from "components/harvestLogs/UpdateHarvestLog";
+import { useAlert } from "context/AlertProvider";
+import { useUser } from "context/UserProvider";
+import { Dayjs } from "dayjs";
+import useQueryCache from "hooks/useQueryCache";
+import BasicHome from "layouts/BasicHome";
+import {
+  IHarvestLogResponse,
+  ISeasonResponse,
+} from "project-2-types/dist/interface";
+import { useState } from "react";
+import {
+  FormattedDate,
+  FormattedMessage,
+  FormattedNumber,
+  useIntl,
+} from "react-intl";
+import { useQuery } from "react-query";
+import { useSearchParams } from "react-router-dom";
+import paths from "shared/paths";
+import { BodyText } from "ui/Typography";
 
-const columns: GridColDef[] = [
+const columns = (currency: string): GridColDef[] => [
+  // {
+  //   field: "index",
+  //   renderHeader: () => (
+  //     <FormattedMessage
+  //       id="harvest.logs.table.columns.no.header"
+  //       defaultMessage="No"
+  //     />
+  //   ),
+  //   width: 50,
+  //   valueGetter: (params) => {
+  //     return params.row.index + 1;
+  //   },
+  // },
   {
     field: "picker",
-    renderHeader: () => "Picker",
+    renderHeader: () => (
+      <FormattedMessage
+        id="harvest.logs.table.column.picker"
+        defaultMessage="Picker"
+      />
+    ),
     minWidth: 200,
     flex: 1,
     valueGetter: (params: GridValueGetterParams<IHarvestLogResponse>) =>
@@ -34,7 +61,12 @@ const columns: GridColDef[] = [
   },
   {
     field: "pickerList",
-    renderHeader: () => "Picker List",
+    renderHeader: () => (
+      <FormattedMessage
+        id="harvest.logs.table.column.picker_list"
+        defaultMessage="Picker List"
+      />
+    ),
     minWidth: 150,
     flex: 1,
     renderCell: (params) => {
@@ -51,19 +83,29 @@ const columns: GridColDef[] = [
             - {params.row.season?.product?.name}
           </BodyText>
         </Box>
-      )
+      );
     },
   },
   {
-    field: "season",
-    renderHeader: () => "Product",
+    field: "product",
+    renderHeader: () => (
+      <FormattedMessage
+        id="harvest.logs.table.column.product"
+        defaultMessage="Product"
+      />
+    ),
     width: 200,
     valueGetter: (params: GridValueGetterParams<IHarvestLogResponse>) =>
       params.row.season?.product?.name,
   },
   {
-    field: "collectedAmount",
-    headerName: "Amount",
+    field: "amount",
+    renderHeader: () => (
+      <FormattedMessage
+        id="harvest.logs.table.column.amount"
+        defaultMessage="Amount"
+      />
+    ),
     width: 100,
     headerAlign: "right",
     align: "right",
@@ -72,21 +114,37 @@ const columns: GridColDef[] = [
         <BodyText>
           {params.row.collectedAmount} {params.row.season?.unit?.name}
         </BodyText>
-      )
+      );
     },
   },
   {
-    field: "totalDeduction",
-    headerName: "Deductions",
+    field: "deductions",
+    renderHeader: () => (
+      <FormattedMessage
+        id="harvest.logs.table.column.deductions"
+        defaultMessage="Deduct {currency}"
+        values={{ currency: currency ? `(${currency})` : "" }}
+      />
+    ),
     width: 200,
     headerAlign: "right",
     align: "right",
+    renderCell: (params: GridRenderCellParams) => {
+      return <FormattedNumber value={params.row.totalDeduction} />;
+    },
   },
   {
     field: "createdAt",
-    renderHeader: () => "Date",
+    headerAlign: "center",
+    renderHeader: () => (
+      <FormattedMessage
+        id="harvest.logs.table.column.created_at"
+        defaultMessage="Date"
+      />
+    ),
     minWidth: 200,
     flex: 1,
+    align: "center",
     renderCell: (params: GridRenderCellParams) => {
       return (
         <FormattedDate
@@ -95,73 +153,77 @@ const columns: GridColDef[] = [
           month="short"
           day="numeric"
         />
-      )
+      );
     },
   },
   {
-    field: "action",
-    headerName: "",
+    field: "actions",
+    renderHeader: () => (
+      <FormattedMessage id="datagrid.column.actions" defaultMessage="Actions" />
+    ),
+    headerAlign: "center",
+    align: "center",
     width: 200,
     renderCell: (data: GridRenderCellParams<{ _id: string }>) => {
-      return <UpdateHarvestLog harvestLogId={data.row._id} />
+      return <UpdateHarvestLog harvestLogId={data.row._id} />;
     },
   },
-]
+];
 
 const HarvestLogs = () => {
-  const { GET_QUERY_KEY } = useQueryCache("harvestLogs")
-  const { user } = useUser()
-  const [search] = useSearchParams()
+  const { user } = useUser();
+  const intl = useIntl();
+  const { showAlert } = useAlert();
 
-  const theme = useTheme()
-  const desktop = useMediaQuery(theme.breakpoints.up("md"))
+  const [search] = useSearchParams();
 
-  const pickerId = search.get("pickerId") ?? null
+  const theme = useTheme();
+  const desktop = useMediaQuery(theme.breakpoints.up("md"));
 
-  const [startDate, setStartDate] = useState<Dayjs | null>(null)
-  const [endDate, setEndDate] = useState<Dayjs | null>(null)
-  const [cleared, setCleared] = useState<boolean>(false)
+  const pickerId = search.get("pickerId") ?? null;
 
-  useEffect(() => {
-    if (cleared) {
-      const timeout = setTimeout(() => {
-        setCleared(false)
-      }, 1500)
-      return () => clearTimeout(timeout)
-    }
-  }, [cleared])
+  const [startDate, setStartDate] = useState<Dayjs | null>(null);
+  const [endDate, setEndDate] = useState<Dayjs | null>(null);
 
-  const [searchTable, setSearchTable] = useState<string>()
+  const [harvestLogs, setHarvestLogs] = useState<Array<IHarvestLogResponse>>(
+    []
+  );
+  const [selectedSeason, setSelectedSeason] = useState<ISeasonResponse>();
+  const [isSeasonsFetch, setSeasonsFetch] = useState<boolean>(false);
+  const [picker, setPicker] = useState<IHarvestLogResponse["picker"]>();
 
-  const [harvestLogs, setHarvestLogs] = useState<Array<IHarvestLogResponse>>([])
-
-  const [picker, setPicker] = useState<IHarvestLogResponse["picker"]>()
+  const { GET_QUERY_KEY } = useQueryCache("harvestLogs");
 
   const { isLoading } = useQuery({
-    queryKey: GET_QUERY_KEY,
-    queryFn: () => getHarvestLogs({ pickerId, startDate, endDate }),
+    queryKey: [
+      ...GET_QUERY_KEY,
+      pickerId,
+      startDate,
+      endDate,
+      selectedSeason?._id,
+    ],
+    queryFn: () =>
+      getHarvestLogs({
+        pickerId,
+        startDate,
+        endDate,
+        seasonId: selectedSeason?._id,
+      }),
     onSuccess: (results) => {
-      setHarvestLogs(results)
+      setHarvestLogs(results);
     },
+    enabled: !!isSeasonsFetch,
     onError: (error) => {
-      console.log(error)
+      console.log(error);
+      showAlert(
+        intl.formatMessage({
+          id: "harvest.logs.get.harvest.logs.error",
+          defaultMessage: "No harvest logs found",
+        }),
+        "error"
+      );
     },
-  })
-
-  useEffect(() => {
-    if (startDate !== null && endDate !== null) {
-      const fromDate = dayjs(startDate).startOf("day").toDate().getTime()
-      const toDate = dayjs(endDate).endOf("day").toDate().getTime()
-
-      getHarvestLogs({ pickerId, fromDate, toDate })
-        .then((results) => {
-          setHarvestLogs(results)
-        })
-        .catch((error) => {
-          console.log(error)
-        })
-    }
-  }, [startDate, endDate, pickerId])
+  });
 
   const { isLoading: isPickerLoading } = useQuery({
     queryKey: ["pickers", "harvest-logs", pickerId],
@@ -169,13 +231,20 @@ const HarvestLogs = () => {
     enabled: !!pickerId,
     onSuccess: (results) => {
       if (results?._id) {
-        setPicker(results)
+        setPicker(results);
       }
     },
     onError: (error) => {
-      console.log(error)
+      console.log(error);
+      showAlert(
+        intl.formatMessage({
+          id: "harvest.logs.get.pickers.error",
+          defaultMessage: "No picker found",
+        }),
+        "error"
+      );
     },
-  })
+  });
 
   return (
     <BasicHome
@@ -196,34 +265,37 @@ const HarvestLogs = () => {
                 label="Start Date"
                 value={startDate}
                 slotProps={{
-                  field: { clearable: true, onClear: () => setCleared(true) },
+                  field: { clearable: true, onClear: () => setStartDate(null) },
                   textField: { size: "small" },
                 }}
                 onChange={(newValue) => {
-                  setStartDate(newValue)
+                  setStartDate(newValue);
                 }}
               />
               <DatePicker
                 label="End Date"
                 value={endDate}
                 slotProps={{
-                  field: { clearable: true, onClear: () => setCleared(true) },
+                  field: { clearable: true, onClear: () => setEndDate(null) },
                   textField: { size: "small" },
                 }}
                 onChange={(newValue) => {
-                  setEndDate(newValue)
+                  setEndDate(newValue);
                 }}
               />
             </Box>
           </FormControl>
 
-          <SearchDataGrid applySearch={setSearchTable} />
+          <SeasonFilterDataGrid
+            onChange={setSelectedSeason}
+            onFetch={() => setSeasonsFetch(true)}
+          />
         </Box>
       )}
       <Box display="flex" flexGrow={1} pb={3}>
         <DataGrid
           rows={harvestLogs ?? []}
-          columns={columns}
+          columns={columns(selectedSeason?.currency.name ?? "")}
           loading={isLoading || isPickerLoading}
           initialState={{
             pagination: {
@@ -235,16 +307,15 @@ const HarvestLogs = () => {
               columnVisibilityModel: {
                 picker: !pickerId && !!desktop,
                 pickerList: !desktop,
-                season: !!desktop,
                 product: !!desktop,
-                totalDeduction: !!desktop,
+                deductions: !!desktop,
                 createdAt: !!desktop,
               },
             },
           }}
           filterModel={{
             items: [],
-            quickFilterValues: searchTable ? searchTable?.split(" ") : [],
+            // quickFilterValues: searchTable ? searchTable?.split(" ") : [],
           }}
           getRowId={(data) => data?._id}
           pageSizeOptions={[10, 20, 50, 100]}
@@ -252,7 +323,7 @@ const HarvestLogs = () => {
         />
       </Box>
     </BasicHome>
-  )
-}
+  );
+};
 
 export default HarvestLogs

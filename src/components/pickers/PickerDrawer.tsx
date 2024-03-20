@@ -20,16 +20,17 @@ import {
 import { Controller, useForm } from "react-hook-form";
 import { deletePicker, getPickerById, upsertPicker } from "api/pickers";
 import { useMutation, useQuery } from "react-query";
-
-import PickerSchema from "project-2-types/dist/ajv/picker.ajv";
-import { useAlert } from "context/AlertProvider";
-import { useIntl } from "react-intl";
-import useQueryCache from "hooks/useQueryCache";
-import { useState } from "react";
-import { validateResolver } from "shared/ajv";
-import { BodyText, Display, Label } from "ui/Typography";
-import { useNavigate } from "react-router-dom";
-import paths from "shared/paths";
+import PickerImage from "../../assets/images/PickerSuccess.svg"
+import PickerSchema from "project-2-types/dist/ajv/picker.ajv"
+import { useAlert } from "context/AlertProvider"
+import { useIntl } from "react-intl"
+import useQueryCache from "hooks/useQueryCache"
+import { useState } from "react"
+import { validateResolver } from "shared/ajv"
+import { BodyText, Display, Label } from "ui/Typography"
+import { useNavigate } from "react-router-dom"
+import paths from "shared/paths"
+import ConfirmationDrawer from "ui/ConfirmationDrawer"
 
 interface IPickerForm extends Omit<IPickerResponse, "id"> {}
 
@@ -60,6 +61,7 @@ const PickerDrawer = ({ dismiss, pickerId, ...props }: PickerDrawerProps) => {
   } = useQueryCache("pickers", pickerId)
 
   const [showEditForm, setShowEditForm] = useState<boolean>(!pickerId)
+  const [showSuccess, setShowSuccess] = useState<boolean>(false)
 
   const {
     control,
@@ -122,35 +124,6 @@ const PickerDrawer = ({ dismiss, pickerId, ...props }: PickerDrawerProps) => {
     },
   })
 
-  const onCreatePickerClose = () => {
-    reset()
-    dismiss()
-  }
-
-  const handleCreateSuccess = (created: IPickerResponse) => {
-    createCache(created)
-    showAlert(
-      intl.formatMessage({
-        id: "pickers.create.picker.response.success",
-        defaultMessage: "The picker was created successfully",
-      }),
-      "success"
-    )
-    onCreatePickerClose()
-  }
-
-  const handleUpdateSuccess = (updated: IPickerResponse) => {
-    updateCache(updated)
-    showAlert(
-      intl.formatMessage({
-        id: "pickers.update.picker.response.success",
-        defaultMessage: "The picker was updated successfully",
-      }),
-      "success"
-    )
-    hideEdit()
-  }
-
   const { mutate: deletePickerMutation, isLoading: isDeleting } = useMutation({
     mutationKey: ["pickers", "delete", pickerId],
     mutationFn: deletePicker,
@@ -176,6 +149,29 @@ const PickerDrawer = ({ dismiss, pickerId, ...props }: PickerDrawerProps) => {
     },
   })
 
+  const onCreatePickerClose = () => {
+    reset()
+    dismiss()
+  }
+
+  const handleCreateSuccess = (created: IPickerResponse) => {
+    createCache(created)
+    setShowSuccess(true)
+    onCreatePickerClose()
+  }
+
+  const handleUpdateSuccess = (updated: IPickerResponse) => {
+    updateCache(updated)
+    showAlert(
+      intl.formatMessage({
+        id: "pickers.update.picker.response.success",
+        defaultMessage: "The picker was updated successfully",
+      }),
+      "success"
+    )
+    hideEdit()
+  }
+
   const onSubmit = (data: IPickerForm) => {
     savePickerMutation({ ...data, pickerId })
   }
@@ -186,6 +182,17 @@ const PickerDrawer = ({ dismiss, pickerId, ...props }: PickerDrawerProps) => {
 
   const showEdit = () => setShowEditForm(true)
   const hideEdit = () => setShowEditForm(false)
+
+  const handleClose = (
+    _event: React.MouseEvent,
+    reason: "backdropClick" | "escapeKeyDown"
+  ) => {
+    if (!showEditForm) {
+      if (reason === "backdropClick" || reason === "escapeKeyDown") {
+        dismiss()
+      }
+    }
+  }
 
   const pickerForm = (
     <Box
@@ -612,13 +619,47 @@ const PickerDrawer = ({ dismiss, pickerId, ...props }: PickerDrawerProps) => {
   )
 
   return (
-    <Drawer
-      anchor="right"
-      {...props}
-      onClose={!showEditForm ? dismiss : undefined}
-    >
-      {!isLoadingDetail && <>{showEditForm ? pickerForm : pickerDetail}</>}
-    </Drawer>
+    <>
+      <Drawer anchor="right" {...props} onClose={handleClose}>
+        {!isLoadingDetail && <>{showEditForm ? pickerForm : pickerDetail}</>}
+      </Drawer>
+      {!!showSuccess && (
+        <ConfirmationDrawer
+          open
+          image={PickerImage}
+          title={intl.formatMessage({
+            id: "pickers.create.picker.success.drawer.title",
+            defaultMessage: "New Picker Added!",
+          })}
+          message={intl.formatMessage(
+            {
+              id: "pickers.create.picker.success.drawer.message",
+              defaultMessage: `You have successfully added 
+                   {pickerName} to your picker list.`,
+            },
+            {
+              pickerName: (
+                <BodyText
+                  component="span"
+                  fontWeight="Bold"
+                  color="secondary-700"
+                >
+                  {pickerData.name}
+                </BodyText>
+              ),
+            }
+          )}
+          backButtonTitle={intl.formatMessage({
+            id: "pickers.create.picker.success.drawer.back.button",
+            defaultMessage: "Back to Picker List",
+          })}
+          onClose={() => {
+            setShowSuccess(false)
+            dismiss()
+          }}
+        />
+      )}
+    </>
   )
 }
 
