@@ -1,5 +1,5 @@
 import { Box, Button, useMediaQuery, useTheme } from "@mui/material";
-import { DataGrid, GridColDef, GridRenderCellParams } from "@mui/x-data-grid"
+import { GridColDef, GridRenderCellParams } from "@mui/x-data-grid";
 import { CaretRight, User } from "@phosphor-icons/react"
 import { getPayrollHistory } from "api/payroll";
 import SeasonFilterDataGrid from "components/SeasonFilterDataGrid";
@@ -17,7 +17,8 @@ import {
 } from "react-intl"
 import { useQuery } from "react-query"
 import { useNavigate } from "react-router-dom"
-import { Display } from "ui/Typography"
+import DataTable from "ui/DataTable";
+import { Display } from "ui/Typography";
 
 const columns = (currency: string): GridColDef[] => [
   {
@@ -45,7 +46,7 @@ const columns = (currency: string): GridColDef[] => [
             day="numeric"
           />
         </span>
-      )
+      );
     },
   },
   {
@@ -134,12 +135,12 @@ const columns = (currency: string): GridColDef[] => [
     width: 150,
     renderCell: () => <Button variant="text">View More</Button>,
   },
-]
+];
 
 const Payroll = () => {
-  const navigate = useNavigate()
-  const { user } = useUser()
-  const intl = useIntl()
+  const navigate = useNavigate();
+  const { user } = useUser();
+  const intl = useIntl();
   const { showAlert } = useAlert();
 
   const theme = useTheme();
@@ -151,7 +152,7 @@ const Payroll = () => {
   const [payrollData, setPayrollData] = useState([]);
   const [selectedSeason, setSelectedSeason] = useState<ISeasonResponse>();
   const [isSeasonsFetch, setSeasonsFetch] = useState<boolean>(false);
- 
+
   const { isLoading } = useQuery({
     queryKey: [...GET_QUERY_KEY, selectedSeason?._id],
     queryFn: () => getPayrollHistory({ seasonId: selectedSeason?._id }),
@@ -170,7 +171,6 @@ const Payroll = () => {
       );
     },
   });
-
 
   return (
     <BasicHome
@@ -212,7 +212,7 @@ const Payroll = () => {
       </Box>
 
       <Box display="flex" flexGrow={1} pb={3}>
-        <DataGrid
+        <DataTable
           rows={payrollData}
           columns={columns(selectedSeason?.currency.name ?? "")}
           loading={isLoading}
@@ -228,12 +228,11 @@ const Payroll = () => {
             },
           }}
           getRowId={(data) => data?._id}
-          pageSizeOptions={[10, 20, 50, 100]}
           disableRowSelectionOnClick
         />
       </Box>
     </BasicHome>
   );
-}
+};
 
 export default Payroll

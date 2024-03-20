@@ -22,13 +22,13 @@ const CreatePicker = () => {
       >
         <FormattedMessage
           id="pickers.create.button.text"
-          defaultMessage="Add New Picker"
+          defaultMessage="Add Picker"
         />
       </Button>
 
       <PickerDrawer open={open} dismiss={hideDrawer} />
     </div>
-  )
+  );
 }
 
 export default CreatePicker;

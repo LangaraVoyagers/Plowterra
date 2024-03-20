@@ -1,10 +1,9 @@
 import { Box, FormControl, useMediaQuery, useTheme } from "@mui/material"
 import {
-  DataGrid,
   GridColDef,
   GridRenderCellParams,
   GridValueGetterParams,
-} from "@mui/x-data-grid"
+} from "@mui/x-data-grid";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker"
 import { getHarvestLogs } from "api/harvestLogs"
 import { getPickerById } from "api/pickers"
@@ -30,6 +29,7 @@ import {
 import { useQuery } from "react-query";
 import { useSearchParams } from "react-router-dom";
 import paths from "shared/paths";
+import DataTable from "ui/DataTable";
 import { BodyText } from "ui/Typography";
 
 const columns = (currency: string): GridColDef[] => [
@@ -292,17 +292,12 @@ const HarvestLogs = () => {
           />
         </Box>
       )}
-      <Box display="flex" flexGrow={1} pb={3}>
-        <DataGrid
+      <Box display="flex" flexGrow={1}>
+        <DataTable
           rows={harvestLogs ?? []}
           columns={columns(selectedSeason?.currency.name ?? "")}
           loading={isLoading || isPickerLoading}
           initialState={{
-            pagination: {
-              paginationModel: {
-                pageSize: 12,
-              },
-            },
             columns: {
               columnVisibilityModel: {
                 picker: !pickerId && !!desktop,
@@ -313,12 +308,7 @@ const HarvestLogs = () => {
               },
             },
           }}
-          filterModel={{
-            items: [],
-            // quickFilterValues: searchTable ? searchTable?.split(" ") : [],
-          }}
           getRowId={(data) => data?._id}
-          pageSizeOptions={[10, 20, 50, 100]}
           disableRowSelectionOnClick
         />
       </Box>

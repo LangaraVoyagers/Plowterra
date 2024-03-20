@@ -23,8 +23,32 @@ import useQueryCache from "hooks/useQueryCache"
 import { useUser } from "context/UserProvider"
 import DataTable from "ui/DataTable"
 import { useAlert } from "context/AlertProvider";
+import { BodyText } from "ui/Typography";
 
 const columns: GridColDef[] = [
+  {
+    field: "pickerList",
+    renderHeader: () => (
+      <FormattedMessage
+        id="pickers.table.column.picker_list"
+        defaultMessage="Picker List"
+      />
+    ),
+    minWidth: 150,
+    flex: 1,
+    renderCell: (params) => {
+      return (
+        <Box>
+          <BodyText size="md" fontWeight="Medium">
+            {params.row.name}
+          </BodyText>
+          <BodyText size="xs" color="grey-500">
+            {params.row.phone}
+          </BodyText>
+        </Box>
+      );
+    },
+  },
   {
     field: "name",
     renderHeader: () => (
@@ -80,23 +104,27 @@ const columns: GridColDef[] = [
           month="long"
           day="numeric"
         />
-      )
+      );
     },
   },
   {
-    field: "action",
-    headerName: "",
+    field: "actions",
+    renderHeader: () => (
+      <FormattedMessage id="table.column.actions" defaultMessage="Actions" />
+    ),
     width: 150,
+    align: "center",
+    headerAlign: "center",
     renderCell: (data: GridRenderCellParams<IPickerResponse>) => {
-      return <UpdatePicker pickerId={data.row._id} />
+      return <UpdatePicker pickerId={data.row._id} />;
     },
   },
-]
+];
 
 const Pickers = () => {
-  const params = useParams<{ id: string }>()
-  const intl = useIntl()
-  const { user } = useUser()
+  const params = useParams<{ id: string }>();
+  const intl = useIntl();
+  const { user } = useUser();
   const { showAlert } = useAlert();
 
   const theme = useTheme();
@@ -142,9 +170,9 @@ const Pickers = () => {
 
   useEffect(() => {
     if (params.id) {
-      showDrawer()
+      showDrawer();
     }
-  }, [params.id])
+  }, [params.id]);
 
   return (
     <BasicHome
@@ -162,7 +190,7 @@ const Pickers = () => {
           href: "",
         },
       ]}
-      actions={<CreatePicker />}
+      actions={!!desktop && <CreatePicker />}
     >
       <Box display="flex" justifyContent="space-between">
         <SortDataGrid
@@ -175,11 +203,14 @@ const Pickers = () => {
             { field: "createdAt", sort: "asc", label: "Long-standing" },
           ]}
         />
-
-        <SearchDataGrid applySearch={setSearch} />
+        {desktop ? (
+          <SearchDataGrid applySearch={setSearch} />
+        ) : (
+          <CreatePicker />
+        )}
       </Box>
 
-      <Box display="flex" flexGrow={1} pb={3}>
+      <Box display="flex" flexGrow={1}>
         <DataTable
           rows={pickers}
           columns={columns}
@@ -187,7 +218,9 @@ const Pickers = () => {
           initialState={{
             columns: {
               columnVisibilityModel: {
+                name: !!desktop,
                 phone: !!desktop,
+                pickerList: !desktop,
                 contactName: !!desktop,
                 contactPhone: !!desktop,
                 createdAt: !!desktop,
@@ -200,7 +233,7 @@ const Pickers = () => {
           }}
           sortModel={sortModel as Array<GridSortItem>}
           onSortModelChange={(model) => {
-            setSortModel(model as any)
+            setSortModel(model as any);
           }}
           disableRowSelectionOnClick
         />
@@ -211,7 +244,7 @@ const Pickers = () => {
         // Replace with Picker detail
       )}
     </BasicHome>
-  )
-}
+  );
+};
 
 export default Pickers
