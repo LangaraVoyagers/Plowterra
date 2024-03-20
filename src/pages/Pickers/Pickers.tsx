@@ -1,27 +1,28 @@
 import {
-  DataGrid,
   GridColDef,
   GridRenderCellParams,
   GridSortItem,
   GridValueGetterParams,
-} from "@mui/x-data-grid";
-import { FormattedDate, FormattedMessage, useIntl } from "react-intl";
-import { useEffect, useRef, useState } from "react";
+} from "@mui/x-data-grid"
+import { FormattedDate, FormattedMessage, useIntl } from "react-intl"
+import { useEffect, useState } from "react"
 
-import BasicHome from "layouts/BasicHome";
-import { Box } from "@mui/material";
-import CreatePicker from "components/pickers/CreatePicker";
+import BasicHome from "layouts/BasicHome"
+import { Box, useMediaQuery, useTheme } from "@mui/material"
+import CreatePicker from "components/pickers/CreatePicker"
 import { IPickerResponse } from "project-2-types/dist/interface"
-import PickerDrawer from "components/pickers/PickerDrawer";
-import SearchDataGrid from "components/SearchDataGrid";
-import SortDataGrid from "components/SortDataGrid";
-import UpdatePicker from "components/pickers/UpdatePicker";
-import { getPickers } from "api/pickers";
-import paths from "shared/paths";
-import { useParams } from "react-router-dom";
-import { useQuery } from "react-query";
-import useQueryCache from "hooks/useQueryCache";
-import { useUser } from "context/UserProvider";
+import PickerDrawer from "components/pickers/PickerDrawer"
+import SearchDataGrid from "components/SearchDataGrid"
+import SortDataGrid from "components/SortDataGrid"
+import UpdatePicker from "components/pickers/UpdatePicker"
+import { getPickers } from "api/pickers"
+import paths from "shared/paths"
+import { useParams } from "react-router-dom"
+import { useQuery } from "react-query"
+import useQueryCache from "hooks/useQueryCache"
+import { useUser } from "context/UserProvider"
+import DataTable from "ui/DataTable"
+import { useAlert } from "context/AlertProvider";
 
 const columns: GridColDef[] = [
   {
@@ -29,7 +30,8 @@ const columns: GridColDef[] = [
     renderHeader: () => (
       <FormattedMessage id="pickers.table.column.name" defaultMessage="Name" />
     ),
-    width: 150,
+    flex: 1,
+    minWidth: 150,
     editable: true,
   },
   {
@@ -40,6 +42,7 @@ const columns: GridColDef[] = [
         defaultMessage="Phone Number"
       />
     ),
+    sortable: false,
     width: 150,
   },
   {
@@ -59,6 +62,7 @@ const columns: GridColDef[] = [
     headerName: "",
     width: 150,
     flex: 1,
+    sortable: false,
     valueGetter: (params: GridValueGetterParams<IPickerResponse>) =>
       params.row.emergencyContact.phone,
   },
@@ -90,15 +94,18 @@ const columns: GridColDef[] = [
 ]
 
 const Pickers = () => {
-  const params = useParams<{ id: string }>();
-  const intl = useIntl();
-  const { user } = useUser();
-  const apiRef = useRef<any>(null);
+  const params = useParams<{ id: string }>()
+  const intl = useIntl()
+  const { user } = useUser()
+  const { showAlert } = useAlert();
+
+  const theme = useTheme();
+  const desktop = useMediaQuery(theme.breakpoints.up("md"));
 
   const { GET_QUERY_KEY } = useQueryCache("pickers");
 
   const [open, setOpen] = useState<boolean>(false);
-  const [pickers, setPickers] = useState<Array<IPickerResponse>>([])
+  const [pickers, setPickers] = useState<Array<IPickerResponse>>([]);
 
   const [search, setSearch] = useState<string>();
   const [sortModel, setSortModel] = useState([
@@ -106,7 +113,7 @@ const Pickers = () => {
       field: "createdAt",
       sort: "desc",
     },
-  ])
+  ]);
 
   const showDrawer = () => setOpen(true);
 
@@ -123,14 +130,21 @@ const Pickers = () => {
     },
     onError: (error) => {
       console.log(error);
+      showAlert(
+        intl.formatMessage({
+          id: "pickers.get.pickers.error",
+          defaultMessage: "No pickers found",
+        }),
+        "error"
+      );
     },
   });
 
   useEffect(() => {
     if (params.id) {
-      showDrawer();
+      showDrawer()
     }
-  }, [params.id]);
+  }, [params.id])
 
   return (
     <BasicHome
@@ -157,8 +171,8 @@ const Pickers = () => {
           options={[
             { field: "name", sort: "asc", label: "A to Z" },
             { field: "name", sort: "desc", label: "Z to A" },
-            { field: "createdAt", sort: "asc", label: "Recently added first" },
-            { field: "createdAt", sort: "desc", label: "Recently added last" },
+            { field: "createdAt", sort: "desc", label: "Recently added" },
+            { field: "createdAt", sort: "asc", label: "Long-standing" },
           ]}
         />
 
@@ -166,15 +180,17 @@ const Pickers = () => {
       </Box>
 
       <Box display="flex" flexGrow={1} pb={3}>
-        <DataGrid
-          apiRef={apiRef}
+        <DataTable
           rows={pickers}
           columns={columns}
           loading={isLoading}
           initialState={{
-            pagination: {
-              paginationModel: {
-                pageSize: 12,
+            columns: {
+              columnVisibilityModel: {
+                phone: !!desktop,
+                contactName: !!desktop,
+                contactPhone: !!desktop,
+                createdAt: !!desktop,
               },
             },
           }}
@@ -186,8 +202,6 @@ const Pickers = () => {
           onSortModelChange={(model) => {
             setSortModel(model as any)
           }}
-          getRowId={(data) => data?._id}
-          pageSizeOptions={[10, 20, 50, 100]}
           disableRowSelectionOnClick
         />
       </Box>
@@ -198,6 +212,6 @@ const Pickers = () => {
       )}
     </BasicHome>
   )
-};
+}
 
-export default Pickers;
+export default Pickers

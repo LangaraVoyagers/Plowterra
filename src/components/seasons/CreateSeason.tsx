@@ -2,14 +2,16 @@ import { Button } from "@mui/material";
 import { useState } from "react";
 import SeasonDrawer from "./SeasonDrawer";
 import { FormattedMessage } from "react-intl";
-import { Plant } from "@phosphor-icons/react";
+import { Plant } from "@phosphor-icons/react"
 
 const CreateSeason = () => {
-  const [open, setOpen] = useState<boolean>(false);
+  const [open, setOpen] = useState<boolean>(false)
 
-  const showDrawer = () => setOpen(true);
+  const showDrawer = () => setOpen(true)
 
-  const hideDrawer = () => setOpen(false);
+  const hideDrawer = () => {
+    setOpen(false)
+  }
 
   return (
     <div>
@@ -19,10 +21,9 @@ const CreateSeason = () => {
           defaultMessage="Add New Season"
         />
       </Button>
-
       <SeasonDrawer open={open} dismiss={hideDrawer} />
     </div>
-  );
-};
+  )
+}
 
 export default CreateSeason;
