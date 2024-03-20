@@ -20,16 +20,17 @@ import {
 import { Controller, useForm } from "react-hook-form";
 import { deletePicker, getPickerById, upsertPicker } from "api/pickers";
 import { useMutation, useQuery } from "react-query";
-
-import PickerSchema from "project-2-types/dist/ajv/picker.ajv";
-import { useAlert } from "context/AlertProvider";
-import { useIntl } from "react-intl";
-import useQueryCache from "hooks/useQueryCache";
-import { useState } from "react";
-import { validateResolver } from "shared/ajv";
-import { BodyText, Display, Label } from "ui/Typography";
-import { useNavigate } from "react-router-dom";
-import paths from "shared/paths";
+import PickerImage from "../../../assets/icons/picker.svg"
+import PickerSchema from "project-2-types/dist/ajv/picker.ajv"
+import { useAlert } from "context/AlertProvider"
+import { useIntl } from "react-intl"
+import useQueryCache from "hooks/useQueryCache"
+import { useState } from "react"
+import { validateResolver } from "shared/ajv"
+import { BodyText, Display, Label } from "ui/Typography"
+import { useNavigate } from "react-router-dom"
+import paths from "shared/paths"
+import ConfirmationDrawer from "ui/ConfirmationDrawer"
 
 interface IPickerForm extends Omit<IPickerResponse, "id"> {}
 
@@ -43,7 +44,7 @@ const bloodTypeList = (
 
 type PickerDrawerProps = DrawerProps & {
   pickerId?: string
-  dismiss: (success: boolean, button: 'confirm' | 'cancel', data: any) => void;
+  dismiss: () => void
 }
 const PickerDrawer = ({ dismiss, pickerId, ...props }: PickerDrawerProps) => {
   const intl = useIntl()
@@ -60,6 +61,7 @@ const PickerDrawer = ({ dismiss, pickerId, ...props }: PickerDrawerProps) => {
   } = useQueryCache("pickers", pickerId)
 
   const [showEditForm, setShowEditForm] = useState<boolean>(!pickerId)
+  const [showSuccess, setShowSuccess] = useState<boolean>(false)
 
   const {
     control,
@@ -122,20 +124,39 @@ const PickerDrawer = ({ dismiss, pickerId, ...props }: PickerDrawerProps) => {
     },
   })
 
+  const { mutate: deletePickerMutation, isLoading: isDeleting } = useMutation({
+    mutationKey: ["pickers", "delete", pickerId],
+    mutationFn: deletePicker,
+    onSuccess: (result) => {
+      deleteCache(result)
+      showAlert(
+        intl.formatMessage({
+          id: "pickers.delete.picker.response.success",
+          defaultMessage: "The picker was deleted successfully.",
+        }),
+        "success"
+      )
+      dismiss()
+    },
+    onError: () => {
+      showAlert(
+        intl.formatMessage({
+          id: "pickers.delete.picker.response.error",
+          defaultMessage: "Oops! The picker couldn't be deleted.",
+        }),
+        "error"
+      )
+    },
+  })
+
   const onCreatePickerClose = () => {
     reset()
-    dismiss(false, 'cancel', null);
+    dismiss()
   }
 
   const handleCreateSuccess = (created: IPickerResponse) => {
     createCache(created)
-    showAlert(
-      intl.formatMessage({
-        id: "pickers.create.picker.response.success",
-        defaultMessage: "The picker was created successfully",
-      }),
-      "success"
-    )
+    setShowSuccess(true)
     onCreatePickerClose()
   }
 
@@ -151,34 +172,8 @@ const PickerDrawer = ({ dismiss, pickerId, ...props }: PickerDrawerProps) => {
     hideEdit()
   }
 
-  const { mutate: deletePickerMutation, isLoading: isDeleting } = useMutation({
-    mutationKey: ["pickers", "delete", pickerId],
-    mutationFn: deletePicker,
-    onSuccess: (result) => {
-      deleteCache(result)
-      showAlert(
-        intl.formatMessage({
-          id: "pickers.delete.picker.response.success",
-          defaultMessage: "The picker was deleted successfully.",
-        }),
-        "success"
-      )
-      dismiss(true, 'confirm', null);
-    },
-    onError: () => {
-      showAlert(
-        intl.formatMessage({
-          id: "pickers.delete.picker.response.error",
-          defaultMessage: "Oops! The picker couldn't be deleted.",
-        }),
-        "error"
-      )
-    },
-  })
-
   const onSubmit = (data: IPickerForm) => {
     savePickerMutation({ ...data, pickerId })
-    dismiss(true, 'confirm', data);
   }
 
   const onDelete = () => {
@@ -188,13 +183,16 @@ const PickerDrawer = ({ dismiss, pickerId, ...props }: PickerDrawerProps) => {
   const showEdit = () => setShowEditForm(true)
   const hideEdit = () => setShowEditForm(false)
 
-  const handleClose = (_event: React.MouseEvent, reason: 'backdropClick' | 'escapeKeyDown') => {
+  const handleClose = (
+    _event: React.MouseEvent,
+    reason: "backdropClick" | "escapeKeyDown"
+  ) => {
     if (!showEditForm) {
-      if (reason === 'backdropClick' || reason === 'escapeKeyDown') {
-        dismiss(false, 'cancel', null);
+      if (reason === "backdropClick" || reason === "escapeKeyDown") {
+        dismiss()
       }
     }
-  };
+  }
 
   const pickerForm = (
     <Box
@@ -621,13 +619,47 @@ const PickerDrawer = ({ dismiss, pickerId, ...props }: PickerDrawerProps) => {
   )
 
   return (
-    <Drawer
-      anchor="right"
-      {...props}
-      onClose={handleClose}
-    >
-      {!isLoadingDetail && <>{showEditForm ? pickerForm : pickerDetail}</>}
-    </Drawer>
+    <>
+      <Drawer anchor="right" {...props} onClose={handleClose}>
+        {!isLoadingDetail && <>{showEditForm ? pickerForm : pickerDetail}</>}
+      </Drawer>
+      {!!showSuccess && (
+        <ConfirmationDrawer
+          open
+          image={PickerImage}
+          title={intl.formatMessage({
+            id: "pickers.create.picker.success.drawer.title",
+            defaultMessage: "New Picker Added!",
+          })}
+          message={intl.formatMessage(
+            {
+              id: "pickers.create.picker.success.drawer.message",
+              defaultMessage: `You have successfully added 
+                   {pickerName} to your picker list.`,
+            },
+            {
+              pickerName: (
+                <BodyText
+                  component="span"
+                  fontWeight="Bold"
+                  color="secondary-700"
+                >
+                  {pickerData.name}
+                </BodyText>
+              ),
+            }
+          )}
+          backButtonTitle={intl.formatMessage({
+            id: "pickers.create.picker.success.drawer.back.button",
+            defaultMessage: "Back to Picker List",
+          })}
+          onClose={() => {
+            setShowSuccess(false)
+            dismiss()
+          }}
+        />
+      )}
+    </>
   )
 }
 

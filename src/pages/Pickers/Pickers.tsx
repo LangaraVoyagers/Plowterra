@@ -41,6 +41,7 @@ const columns: GridColDef[] = [
         defaultMessage="Phone Number"
       />
     ),
+    sortable: false,
     width: 150,
   },
   {
@@ -60,6 +61,7 @@ const columns: GridColDef[] = [
     headerName: "",
     width: 150,
     flex: 1,
+    sortable: false,
     valueGetter: (params: GridValueGetterParams<IPickerResponse>) =>
       params.row.emergencyContact.phone,
   },
