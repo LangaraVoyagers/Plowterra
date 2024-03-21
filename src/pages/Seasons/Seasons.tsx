@@ -14,6 +14,7 @@ import { ISeasonResponse, StatusEnum } from "project-2-types";
 import FilterDataGrid from "components/FilterDataGrid";
 import DataTable from "ui/DataTable";
 import { BodyText } from "ui/Typography";
+import { useAlert } from "context/AlertProvider";
 
 const columns: GridColDef[] = [
   {
@@ -139,6 +140,7 @@ const columns: GridColDef[] = [
 const Seasons = () => {
   const { user } = useUser();
   const intl = useIntl();
+  const { showAlert } = useAlert();
 
   const theme = useTheme();
   const desktop = useMediaQuery(theme.breakpoints.up("md"));
@@ -163,6 +165,13 @@ const Seasons = () => {
     },
     onError: (error) => {
       console.log(error);
+      showAlert(
+        intl.formatMessage({
+          id: "seasons.get.seasons.error",
+          defaultMessage: "No seasons found",
+        }),
+        "error"
+      );
     },
   });
 

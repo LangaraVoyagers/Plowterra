@@ -24,10 +24,10 @@ const DataTable = <T extends GridValidRowModel>(props: DataTableProps<T>) => {
           getRowId={(data) => data?._id ?? data?.id}
           {...props}
           pageSizeOptions={[10, 20, 50, 100]}
-          autoPageSize
           slots={{
             pagination: !desktop ? Pagination : undefined,
           }}
+          autoPageSize
         />
       </StyledContainer>
     </>
