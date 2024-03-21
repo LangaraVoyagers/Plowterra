@@ -20,28 +20,35 @@ import {
   TableRow,
   TextField,
 } from "@mui/material"
-import { DatePicker } from "@mui/x-date-pickers"
-import { getCurrencies } from "api/currencies"
-import { getProducts } from "api/products"
+import { Controller, FormProvider, useForm } from "react-hook-form"
+import { Display, Label } from "ui/Typography"
+import {
+  PayrollTimeframeEnum,
+  StatusEnum
+} from "project-2-types/dist/interface"
 import {
   closeSeason,
   deleteSeason,
   getSeasonById,
   upsertSeason,
 } from "api/seasons"
+import dayjs, { Dayjs } from "dayjs"
+import { useMutation, useQuery } from "react-query"
+
+import { DatePicker } from "@mui/x-date-pickers"
+import React from "react"
+import SeasonDeductions from "./SeasonDeductions"
+import { getCurrencies } from "api/currencies"
+import { getProducts } from "api/products"
 import { getUnits } from "api/units"
 import { useAlert } from "context/AlertProvider"
-import { useUser } from "context/UserProvider"
-import dayjs, { Dayjs } from "dayjs"
-import useQueryCache from "hooks/useQueryCache"
-import { PayrollTimeframeEnum, StatusEnum } from "project-2-types/dist"
-import React from "react"
-import { useState } from "react"
-import { Controller, FormProvider, useForm } from "react-hook-form"
 import { useIntl } from "react-intl"
-import { useMutation, useQuery } from "react-query"
-import { Display, Label } from "ui/Typography"
-import SeasonDeductions from "./SeasonDeductions"
+import useQueryCache from "hooks/useQueryCache"
+import { useState } from "react"
+import { useUser } from "context/UserProvider"
+
+// import SeasonSchema from "project-2-types/dist/ajv/season.ajv"
+// import { validateResolver } from "shared/ajv";
 
 function formatDate(date: number): string {
   const formattedDate = new Date(date).toLocaleDateString("en-US", {
@@ -145,7 +152,8 @@ const SeasonDrawer = ({ dismiss, seasonId, ...props }: SeasonDrawerProps) => {
         },
       ],
     },
-    // resolver: validateResolver(SeasonSchema), TODO: Validate schema
+    // !ERROR: Issue with `deductionID`
+    // resolver: validateResolver(SeasonSchema)
   })
   const {
     control,
