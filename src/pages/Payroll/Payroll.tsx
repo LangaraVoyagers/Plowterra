@@ -20,6 +20,7 @@ import { useNavigate } from "react-router-dom"
 import DataTable from "ui/DataTable";
 import { Display } from "ui/Typography";
 import ViewMoreButton from "ui/ViewMoreButton";
+import EmptyPayroll from "../../assets/icons/EmptyPayroll.svg";
 
 const columns = (currency: string): GridColDef[] => [
   {
@@ -219,6 +220,13 @@ const Payroll = () => {
           rows={payrollData}
           columns={columns(selectedSeason?.currency.name ?? "")}
           loading={isLoading}
+          emptyState={{
+            image: EmptyPayroll,
+            title: intl.formatMessage({
+              id: "payroll.empty.state.subtitle",
+              defaultMessage: `It seems  you don’t have any payroll history yet.`,
+            }),
+          }}
           initialState={{
             columns: {
               columnVisibilityModel: {

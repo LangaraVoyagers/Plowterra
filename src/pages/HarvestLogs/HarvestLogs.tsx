@@ -32,6 +32,7 @@ import { useSearchParams } from "react-router-dom";
 import paths from "shared/paths";
 import DataTable from "ui/DataTable";
 import { BodyText } from "ui/Typography";
+import EmptyHarvestLog from "../../assets/icons/EmptyHarvestLog.svg";
 
 const columns = (currency: string): GridColDef[] => [
   // {
@@ -316,6 +317,17 @@ const HarvestLogs = () => {
           filterModel={{
             items: [],
             quickFilterValues: searchTable ? searchTable?.split(" ") : [],
+          }}
+          emptyState={{
+            image: EmptyHarvestLog,
+            title: intl.formatMessage({
+              id: "harvest.log.empty.state.title",
+              defaultMessage: `It seems  you haven't added any harvest entry yet.`,
+            }),
+            subtitle: intl.formatMessage({
+              id: "harvest.log.empty.state.subtitle",
+              defaultMessage: ` Let's add your first harvest entry!`,
+            }),
           }}
           initialState={{
             columns: {
