@@ -9,7 +9,8 @@ import {
   useGridSelector,
 } from "@mui/x-data-grid";
 import { CaretLeft, CaretRight } from "@phosphor-icons/react";
-import { BodyText, Display } from "./Typography";
+import { BodyText } from "./Typography";
+import EmptyState, { EmptyStateProps } from "./EmptyState";
 
 type DataTableProps<T extends GridValidRowModel> = DataGridProps<T> & {
   emptyState: EmptyStateProps;
@@ -94,52 +95,9 @@ const Pagination = () => {
   );
 };
 
-type EmptyStateProps = {
-  image: string;
-  title: string;
-  subtitle?: string;
-};
 
-const EmptyState = ({ title, subtitle, image }: EmptyStateProps) => {
-  return (
-    <StyledEmptyState
-      padding="6rem"
-      display="flex"
-      flexDirection="column"
-      justifyContent="center"
-      alignItems="center"
-      gap="1.25rem"
-      marginBottom="3rem"
-    >
-      <Box width="4rem" height="4rem" position="relative">
-        <img src={image} width="100%" height="100%" />
-      </Box>
 
-      <Box
-        display="flex"
-        flexDirection="column"
-        justifyContent="center"
-        alignItems="center"
-        textAlign="center"
-        gap="1rem"
-      >
-        <Display size="xs" fontWeight="SemiBold" color="grey-500">
-          {title}
-        </Display>
 
-        <BodyText size="md" fontWeight="Medium" color="grey-500">
-          {subtitle}
-        </BodyText>
-      </Box>
-    </StyledEmptyState>
-  );
-};
-
-const StyledEmptyState = styled(Box)`
-  width: 100%;
-  background: ${({ theme }) => theme.palette.grey[50]};
-  border-radius: 0.5rem;
-`;
 
 const StyledContainer = styled(Box)`
   width: 100%;
