@@ -17,7 +17,7 @@ import SortDataGrid from "components/SortDataGrid";
 import UpdatePicker from "components/pickers/UpdatePicker";
 import { getPickers } from "api/pickers";
 import paths from "shared/paths";
-import { useParams } from "react-router-dom";
+import { useParams, useSearchParams } from "react-router-dom";
 import { useQuery } from "react-query";
 import useQueryCache from "hooks/useQueryCache";
 import { useUser } from "context/UserProvider";
@@ -123,6 +123,9 @@ const columns: GridColDef[] = [
 
 const Pickers = () => {
   const params = useParams<{ id: string }>();
+  const [searchParams] = useSearchParams();
+  const openNew = searchParams.get("new");
+
   const intl = useIntl();
   const { user } = useUser();
   const { showAlert } = useAlert();
@@ -173,6 +176,12 @@ const Pickers = () => {
       showDrawer();
     }
   }, [params.id]);
+
+  useEffect(() => {
+    if (openNew === "true") {
+      showDrawer();
+    }
+  }, [openNew]);
 
   return (
     <BasicHome
