@@ -1,5 +1,5 @@
 import { Box, Button, useTheme } from "@mui/material";
-import { DataGrid, GridColDef } from "@mui/x-data-grid"
+import { GridColDef } from "@mui/x-data-grid";
 import { ArrowLeft, CaretRight, SealCheck } from "@phosphor-icons/react";
 import endpoints from "api/endpoints"
 import { PayrollPayload, createPayroll, getPayrollPreview } from "api/payroll"
@@ -24,6 +24,7 @@ import { useAlert } from "context/AlertProvider";
 import { styled, useMediaQuery } from "@mui/system";
 import SeasonFilterDataGrid from "components/SeasonFilterDataGrid";
 import PayrollConfirmationModal from "components/payroll/PayrollConfirmationModal";
+import DataTable from "ui/DataTable";
 
 const columns = (currency: string, unit: string): GridColDef[] => [
   {
@@ -417,7 +418,7 @@ const Preview: React.FC = () => {
       />
 
       <Box display="flex" flexGrow={1} pb={3}>
-        <DataGrid
+        <DataTable
           initialState={{
             columns: {
               columnVisibilityModel: {

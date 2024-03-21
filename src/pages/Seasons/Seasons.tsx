@@ -1,11 +1,5 @@
-import { Box } from "@mui/material";
-import {
-  DataGrid,
-  GridColDef,
-  GridRenderCellParams,
-  GridValueGetterParams,
-} from "@mui/x-data-grid";
-
+import { Box, useMediaQuery, useTheme } from "@mui/material";
+import { GridColDef, GridRenderCellParams } from "@mui/x-data-grid";
 import BasicHome from "layouts/BasicHome";
 import { getSeasons } from "api/seasons";
 import { useQuery } from "react-query";
@@ -16,8 +10,11 @@ import CreateSeason from "components/seasons/CreateSeason";
 import UpdateSeason from "components/seasons/UpdateSeason";
 import SearchDataGrid from "components/SearchDataGrid";
 import { FormattedDate, FormattedMessage, useIntl } from "react-intl";
-import { ISeasonResponse } from "project-2-types";
+import { ISeasonResponse, StatusEnum } from "project-2-types";
 import FilterDataGrid from "components/FilterDataGrid";
+import DataTable from "ui/DataTable";
+import { BodyText } from "ui/Typography";
+import { useAlert } from "context/AlertProvider";
 
 const columns: GridColDef[] = [
   {
@@ -26,7 +23,39 @@ const columns: GridColDef[] = [
       <FormattedMessage id="seasons.table.column.name" defaultMessage="Name" />
     ),
     width: 250,
+    flex: 1,
     minWidth: 250,
+  },
+  {
+    field: "pickerList",
+    renderHeader: () => (
+      <FormattedMessage
+        id="seasons.table.column.picker_list"
+        defaultMessage="Picker List"
+      />
+    ),
+    width: 250,
+    flex: 1,
+    minWidth: 250,
+    renderCell: (params) => {
+      return (
+        <Box>
+          <BodyText size="md" fontWeight="Medium">
+            {params.row.name}
+          </BodyText>
+          <BodyText size="xs" color="grey-500">
+            {<FormattedDate value={params.row.startDate} dateStyle="medium" />}{" "}
+            -{" "}
+            {params.row.endDate ? (
+              <FormattedDate value={params.row.endDate} dateStyle="medium" />
+            ) : (
+              "Present"
+            )}{" "}
+            | {params.row.product?.name}
+          </BodyText>
+        </Box>
+      );
+    },
   },
   {
     field: "status",
@@ -37,6 +66,8 @@ const columns: GridColDef[] = [
       />
     ),
     width: 200,
+    valueGetter: (params) =>
+      StatusEnum[params.row.status as keyof typeof StatusEnum],
   },
   {
     field: "product",
@@ -58,8 +89,6 @@ const columns: GridColDef[] = [
       />
     ),
     width: 150,
-    valueGetter: (params: GridValueGetterParams<ISeasonResponse>) =>
-      params.row.startDate,
     renderCell: (params: GridRenderCellParams<ISeasonResponse>) => {
       return (
         <FormattedDate
@@ -80,8 +109,6 @@ const columns: GridColDef[] = [
       />
     ),
     width: 150,
-    valueGetter: (params: GridValueGetterParams<ISeasonResponse>) =>
-      params.row.endDate,
     renderCell: (params: GridRenderCellParams<ISeasonResponse>) => {
       if (params.row.endDate) {
         return (
@@ -96,9 +123,13 @@ const columns: GridColDef[] = [
     },
   },
   {
-    field: "action",
-    headerName: "",
+    field: "actions",
+    renderHeader: () => (
+      <FormattedMessage id="table.column.actions" defaultMessage="Actions" />
+    ),
     width: 150,
+    align: "center",
+    headerAlign: "center",
     sortable: false,
     renderCell: (data: GridRenderCellParams<{ _id: string }>) => {
       return <UpdateSeason seasonId={data.row._id} />;
@@ -109,6 +140,10 @@ const columns: GridColDef[] = [
 const Seasons = () => {
   const { user } = useUser();
   const intl = useIntl();
+  const { showAlert } = useAlert();
+
+  const theme = useTheme();
+  const desktop = useMediaQuery(theme.breakpoints.up("md"));
 
   const { GET_QUERY_KEY } = useQueryCache("seasons");
   const [seasons, setSeasons] = useState<Array<ISeasonResponse>>([]);
@@ -130,6 +165,13 @@ const Seasons = () => {
     },
     onError: (error) => {
       console.log(error);
+      showAlert(
+        intl.formatMessage({
+          id: "seasons.get.seasons.error",
+          defaultMessage: "No seasons found",
+        }),
+        "error"
+      );
     },
   });
 
@@ -155,7 +197,7 @@ const Seasons = () => {
           href: "",
         },
       ]}
-      actions={<CreateSeason />}
+      actions={!!desktop && <CreateSeason />}
     >
       <Box display="flex" justifyContent="space-between">
         <FilterDataGrid
@@ -182,19 +224,27 @@ const Seasons = () => {
             },
           ]}
         />
-
-        <SearchDataGrid applySearch={setSearch} />
+        {desktop ? (
+          <SearchDataGrid applySearch={setSearch} />
+        ) : (
+          <CreateSeason />
+        )}
       </Box>
 
       <Box display="flex" flexGrow={1} pb={3}>
-        <DataGrid
+        <DataTable
           rows={seasons}
           columns={columns}
           loading={isLoading}
           initialState={{
-            pagination: {
-              paginationModel: {
-                pageSize: 12,
+            columns: {
+              columnVisibilityModel: {
+                name: !!desktop,
+                status: !!desktop,
+                product: !!desktop,
+                startDate: !!desktop,
+                endDate: !!desktop,
+                pickerList: !desktop,
               },
             },
           }}
@@ -206,7 +256,6 @@ const Seasons = () => {
             setFilterModel(model.items as any);
           }}
           getRowId={(data) => data?._id}
-          pageSizeOptions={[10, 20, 50, 100]}
           disableRowSelectionOnClick
         />
       </Box>

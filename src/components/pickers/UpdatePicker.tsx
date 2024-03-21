@@ -1,14 +1,12 @@
-import { Button } from "@mui/material";
 import { useState } from "react";
 import PickerDrawer from "./PickerDrawer";
-import { useIntl } from "react-intl";
+import ViewMoreButton from "ui/ViewMoreButton";
 
 type UpdatePickerProps = {
   pickerId: string;
 };
 const UpdatePicker = (props: UpdatePickerProps) => {
   const { pickerId } = props;
-  const intl = useIntl();
 
   const [open, setOpen] = useState<boolean>(false);
 
@@ -18,12 +16,7 @@ const UpdatePicker = (props: UpdatePickerProps) => {
 
   return (
     <div>
-      <Button onClick={showDrawer}>
-        {intl.formatMessage({
-          id: "pickers.table.button.view_more",
-          defaultMessage: "View More",
-        })}
-      </Button>
+      <ViewMoreButton onClick={showDrawer} />
 
       {!!open && <PickerDrawer dismiss={hideDrawer} pickerId={pickerId} open />}
     </div>

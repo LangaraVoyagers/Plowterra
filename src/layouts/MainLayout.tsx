@@ -349,12 +349,12 @@ export default function MainLayout() {
             </IconButton>
           </Header>
         )}
-        <Box height="100%" p={3}>
+        <Box height="100%" p={3} pb={mobile ? 0 : 3}>
           <Outlet />
         </Box>
       </Box>
     </Box>
-  )
+  );
 }
 
 const Header = styled(Box)`

@@ -144,13 +144,14 @@ export const Label = <C extends React.ElementType>({
       variant="overline"
       color={getColor(color)}
       sx={{
+        cursor: props.onClick ? "pointer" : "auto",
         typography: {
           sm: labelStyles[mobile],
           md: labelStyles[size],
         },
       }}
     />
-  )
+  );
 }
 
 

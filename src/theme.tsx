@@ -89,69 +89,69 @@ const themeOptions: ThemeOptions = {
         {
           props: { variant: "h1" },
           style: ({ theme }) => {
-            const { fontSize, lineHeight, letterSpacing } = theme.typography.h3
+            const { fontSize, lineHeight, letterSpacing } = theme.typography.h3;
             return {
               [theme.breakpoints.down("sm")]: {
                 fontSize,
                 lineHeight,
                 letterSpacing,
               },
-            }
+            };
           },
         },
         {
           props: { variant: "h2" },
           style: ({ theme }) => {
-            const { fontSize, lineHeight, letterSpacing } = theme.typography.h4
+            const { fontSize, lineHeight, letterSpacing } = theme.typography.h4;
             return {
               [theme.breakpoints.down("sm")]: {
                 fontSize,
                 lineHeight,
                 letterSpacing,
               },
-            }
+            };
           },
         },
         {
           props: { variant: "h3" },
           style: ({ theme }) => {
             const { fontSize, lineHeight, letterSpacing } =
-              theme.typography.body1
+              theme.typography.body1;
             return {
               [theme.breakpoints.down("sm")]: {
                 fontSize,
                 lineHeight,
                 letterSpacing,
               },
-            }
+            };
           },
         },
         {
           props: { variant: "h4" },
           style: ({ theme }) => {
             const { fontSize, lineHeight, letterSpacing } =
-              theme.typography.body1
+              theme.typography.body1;
             return {
               [theme.breakpoints.down("sm")]: {
                 fontSize,
                 lineHeight,
                 letterSpacing,
               },
-            }
+            };
           },
         },
         {
           props: { variant: "body1" },
           style: ({ theme }) => {
             const { fontSize, lineHeight, letterSpacing } =
-              theme.typography.body2
+              theme.typography.body2;
             return {
               [theme.breakpoints.down("sm")]: {
                 fontSize,
                 lineHeight,
                 letterSpacing,
               },
-            }
+            };
           },
         },
         //overline or label handled in the Label component
@@ -174,7 +174,7 @@ const themeOptions: ThemeOptions = {
             return {
               padding: "0.75rem 1rem",
               lineHeight: "1.25rem",
-            }
+            };
           },
         },
         {
@@ -187,16 +187,17 @@ const themeOptions: ThemeOptions = {
                 padding: "0.75rem 1rem",
                 lineHeight: "1.25rem",
               },
-            }
+            };
           },
         },
         {
           props: { variant: "outlined" },
           style: ({ ownerState }: any) => {
             if (!Object.keys(colors).includes(ownerState.color)) {
-              return {}
+              return {};
             }
-            const color = (ownerState.color ?? "primary") as keyof typeof colors
+            const color = (ownerState.color ??
+              "primary") as keyof typeof colors;
 
             return {
               backgroundColor: white,
@@ -221,16 +222,17 @@ const themeOptions: ThemeOptions = {
                 borderColor: colors[color][100],
                 color: colors[color][200],
               },
-            }
+            };
           },
         },
         {
           props: { variant: "text" },
           style: ({ ownerState }: any) => {
             if (!Object.keys(colors).includes(ownerState.color)) {
-              return {}
+              return {};
             }
-            const color = (ownerState.color ?? "primary") as keyof typeof colors
+            const color = (ownerState.color ??
+              "primary") as keyof typeof colors;
 
             return {
               color: colors[color][500],
@@ -249,16 +251,17 @@ const themeOptions: ThemeOptions = {
               ":disabled": {
                 color: colors[color][200],
               },
-            }
+            };
           },
         },
         {
           props: { variant: "contained" },
           style: ({ ownerState }: any) => {
             if (!Object.keys(colors).includes(ownerState.color)) {
-              return {}
+              return {};
             }
-            const color = (ownerState.color ?? "primary") as keyof typeof colors
+            const color = (ownerState.color ??
+              "primary") as keyof typeof colors;
 
             return {
               backgroundColor: colors[color][500],
@@ -276,7 +279,7 @@ const themeOptions: ThemeOptions = {
                 backgroundColor: colors[color][200],
                 color: white,
               },
-            }
+            };
           },
         },
       ],
@@ -312,7 +315,7 @@ const themeOptions: ThemeOptions = {
       },
     },
   },
-}
+};
 
 const theme = createTheme(themeOptions)
 
