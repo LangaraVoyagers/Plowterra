@@ -179,15 +179,17 @@ const themeOptions = (mode: PaletteMode): ThemeOptions => {
             props: {
               selected: true,
             },
-            style: {
-              background: `${colors.grey[600]} !important`,
-              borderRadius: "0.5rem",
-              ".MuiTypography-root": {
-                color: `${white} !important`,
-              },
-              ".MuiListItemIcon-root svg": {
-                color: `${white} !important`,
-              },
+            style: () => {
+              return {
+                background: `${colors.grey[600]} !important`,
+                borderRadius: "0.5rem",
+                ".MuiTypography-root": {
+                  color: `${white} !important`,
+                },
+                ".MuiListItemIcon-root svg": {
+                  color: `${white} !important`,
+                },
+              };
             },
           },
           {

@@ -1,24 +1,40 @@
-import { Box, Divider, ListItem, styled } from "@mui/material";
+import {
+  Box,
+  Divider,
+  ListItem,
+  styled,
+  useMediaQuery,
+  useTheme,
+} from "@mui/material";
 import { ColorPartial } from "@mui/material/styles/createPalette";
 import {
   CaretDown,
   CaretUp,
   GearSix,
+  Globe,
   Moon,
   SignOut,
   Sun,
   User,
 } from "@phosphor-icons/react";
+import { useLocale } from "context/LocaleProvider";
 import { useThemMode } from "context/ThemeProvider";
 import { useUser } from "context/UserProvider";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FormattedMessage } from "react-intl";
 import { BodyText } from "ui/Typography";
 
-const UserMenu = () => {
+type UserMenuProps = {
+  expanded: boolean;
+  onExpand: () => void;
+};
+const UserMenu = ({ expanded, onExpand }: UserMenuProps) => {
   const { user } = useUser();
   const [open, setOpen] = useState(false);
+  const theme = useTheme();
+  const desktop = useMediaQuery(theme.breakpoints.up("sm"));
 
+  const { locale, selectLanguage } = useLocale();
   const { mode, selectMode } = useThemMode();
 
   const handleClick = () => {
@@ -29,12 +45,21 @@ const UserMenu = () => {
 
   const setDarkMode = () => selectMode("dark");
 
+  useEffect(() => {
+    if (!!open && !expanded) {
+      setOpen(false);
+    }
+  }, [expanded]);
+
   return (
-    <Box position="relative">
+    <Box position={!desktop ? "relative" : "initial"}>
       <StyledMenu
+        id="user-menu"
         position="absolute"
-        top="-11.4rem"
-        width="100%"
+        bottom={desktop ? (expanded ? "8rem" : "5.5rem") : undefined}
+        top={!desktop ? "-12.8rem" : undefined}
+        minWidth={desktop ? 239 : "100%"}
+        zIndex={10}
         p="0.5rem"
         display={open ? "flex" : "none"}
         gap="0.5rem"
@@ -96,6 +121,27 @@ const UserMenu = () => {
           </Box>
         </ListItem>
 
+        {/* Language */}
+        <ListItem
+          disablePadding
+          sx={{ px: "0.5rem", py: "0.25rem", cursor: "pointer" }}
+          onClick={() => {
+            if (locale === "en") {
+              selectLanguage("es");
+            } else {
+              selectLanguage("en");
+            }
+            handleClick();
+          }}
+        >
+          <Box display="flex" gap="0.5rem" alignItems="center">
+            <Globe weight="bold" />
+
+            <BodyText fontWeight="Medium">
+              {locale === "en" ? "Español" : "English"}
+            </BodyText>
+          </Box>
+        </ListItem>
         <Divider />
 
         <ListItem
@@ -115,40 +161,62 @@ const UserMenu = () => {
         </ListItem>
       </StyledMenu>
 
-      <StyledContainer
-        aria-controls={open ? "user-menu-container" : undefined}
-        aria-haspopup="true"
-        aria-expanded={open ? "true" : undefined}
-        display="flex"
-        gap="0.75rem"
-        onClick={handleClick}
-      >
-        <Avatar alignSelf="center">
-          <BodyText size="xs" fontWeight="SemiBold">
-            {user.name
-              .split(" ")
-              .map((word) => word[0])
-              .join("")}
-          </BodyText>
-        </Avatar>
-        <Box display="flex" flexDirection="column">
-          <BodyText
-            component="span"
-            size="md"
-            fontWeight="Medium"
-            color="grey-700"
-          >
-            {user.name}
-          </BodyText>
-          <BodyText size="xs" color="grey-500">
-            {user.farm.name}
-          </BodyText>
+      {expanded ? (
+        <StyledContainer
+          aria-controls={open ? "user-menu-container" : undefined}
+          aria-haspopup="true"
+          aria-expanded={open ? "true" : undefined}
+          display="flex"
+          gap="0.75rem"
+          onClick={handleClick}
+        >
+          <Avatar alignSelf="center">
+            <BodyText size="xs" fontWeight="SemiBold">
+              {user.name
+                .split(" ")
+                .map((word) => word[0])
+                .join("")}
+            </BodyText>
+          </Avatar>
+          <Box display="flex" flexDirection="column" flex={1}>
+            <BodyText
+              component="span"
+              size="md"
+              fontWeight="Medium"
+              color="grey-700"
+            >
+              {user.name}
+            </BodyText>
+            <BodyText size="xs" color="grey-500">
+              {user.farm.name}
+            </BodyText>
+          </Box>
+          <Box display="flex" flexDirection="column">
+            <CaretUp weight="bold" size="0.5rem" />
+            <CaretDown weight="bold" size="0.5rem" />
+          </Box>
+        </StyledContainer>
+      ) : (
+        <Box
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+          sx={{ cursor: "pointer" }}
+          onClick={() => {
+            handleClick();
+            onExpand();
+          }}
+        >
+          <Avatar alignSelf="center">
+            <BodyText size="xs" fontWeight="SemiBold">
+              {user.name
+                .split(" ")
+                .map((word) => word[0])
+                .join("")}
+            </BodyText>
+          </Avatar>
         </Box>
-        <Box display="flex" flexDirection="column" flex={1}>
-          <CaretUp weight="bold" size="0.5rem" />
-          <CaretDown weight="bold" size="0.5rem" />
-        </Box>
-      </StyledContainer>
+      )}
     </Box>
   );
 };

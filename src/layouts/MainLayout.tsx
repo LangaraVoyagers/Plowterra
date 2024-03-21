@@ -8,35 +8,24 @@ import {
   Users,
   List as ListIcon,
 } from "@phosphor-icons/react"
-import {
-  Box,
-  CssBaseline,
-  FormControl,
-  IconButton,
-  InputLabel,
-  List,
-  MenuItem,
-  Select,
-  useMediaQuery,
-} from "@mui/material";
-import { CSSObject, Theme, styled, useTheme } from "@mui/material/styles"
-import { LANGUAGES, useLocale } from "context/LocaleProvider"
+import { Box, IconButton, List, useMediaQuery } from "@mui/material";
+import { CSSObject, Theme, styled, useTheme } from "@mui/material/styles";
 
-import { FormattedMessage } from "react-intl"
-import ListItem from "@mui/material/ListItem"
-import ListItemButton from "@mui/material/ListItemButton"
-import ListItemIcon from "@mui/material/ListItemIcon"
-import ListItemText from "@mui/material/ListItemText"
-import MuiDrawer from "@mui/material/Drawer"
-import { Outlet } from "react-router-dom"
-import paths from "shared/paths"
-import { useState } from "react"
-import { useUser } from "context/UserProvider"
+import { FormattedMessage } from "react-intl";
+import ListItem from "@mui/material/ListItem";
+import ListItemButton from "@mui/material/ListItemButton";
+import ListItemIcon from "@mui/material/ListItemIcon";
+import ListItemText from "@mui/material/ListItemText";
+import MuiDrawer from "@mui/material/Drawer";
+import { Outlet } from "react-router-dom";
+import paths from "shared/paths";
+import { useState } from "react";
 import { BodyText, Label } from "ui/Typography";
 import SidebarIcon from "../assets/icons/SidebarIcon.svg";
 import Logo from "../assets/images/Logo.svg";
 import LogoSquare from "../assets/images/LogoSquare.svg";
 import UserMenu from "components/UserMenu";
+import { usePersistedState } from "hooks/usePersistedState";
 
 const DRAWER_WIDTH = 288;
 
@@ -44,7 +33,7 @@ const openedMixin = (theme: Theme): CSSObject => ({
   width: DRAWER_WIDTH,
   transition: theme.transitions.create("width", {
     easing: theme.transitions.easing.sharp,
-    duration: theme.transitions.duration.enteringScreen,
+    duration: "500ms",
   }),
   overflowX: "hidden",
 });
@@ -52,13 +41,10 @@ const openedMixin = (theme: Theme): CSSObject => ({
 const closedMixin = (theme: Theme): CSSObject => ({
   transition: theme.transitions.create("width", {
     easing: theme.transitions.easing.sharp,
-    duration: theme.transitions.duration.leavingScreen,
+    duration: "500ms",
   }),
   overflowX: "hidden",
-  width: `calc(${theme.spacing(7)} + 1px)`,
-  [theme.breakpoints.up("sm")]: {
-    width: `calc(${theme.spacing(8)} + 1px)`,
-  },
+  width: `calc(${theme.spacing(11)} + 1px)`,
 });
 
 const DrawerHeader = styled("div")(({ theme }) => ({
@@ -154,17 +140,22 @@ export default function MainLayout() {
   const theme = useTheme();
   const mobile = useMediaQuery(theme.breakpoints.down("md"));
 
-  const [open, setOpen] = useState(true);
-  const [mobileOpen, setMobileOpen] = useState(false);
-  const { user } = useUser();
+  const [expanded, setOpen] = usePersistedState("sidebar-expanded", true);
+  const open = mobile || expanded;
 
-  const { locale, selectLanguage } = useLocale();
+  const [mobileOpen, setMobileOpen] = useState(false);
 
   const handleDrawerClose = () => {
     if (mobile) {
       setMobileOpen(!mobileOpen);
     } else {
       setOpen(!open);
+    }
+  };
+
+  const openDrawer = () => {
+    if (!mobile) {
+      setOpen(true);
     }
   };
 
@@ -178,7 +169,7 @@ export default function MainLayout() {
             justifyContent="space-between"
             alignItems="center"
             sx={{
-              transform: "translateX(8px)",
+              transform: "translateX(13.5px)",
               transition: "all 300ms",
             }}
             paddingRight={2}
@@ -254,38 +245,14 @@ export default function MainLayout() {
         </List>
       </Box>
 
-      <Box px="1.5rem">
-        <UserMenu />
-      </Box>
-
-      <Box display="flex" flexDirection="column" gap={2} p={2}>
-        <BodyText>{user.name}</BodyText>
-        <FormControl fullWidth>
-          <InputLabel id="language-label">Language</InputLabel>
-
-          <Select
-            labelId="language-label"
-            id="language-select"
-            value={locale}
-            size="small"
-            onChange={async (event) => {
-              await selectLanguage(
-                event.target.value as keyof typeof LANGUAGES
-              );
-            }}
-            label="Language"
-          >
-            <MenuItem value={LANGUAGES.en}>English</MenuItem>
-            <MenuItem value={LANGUAGES.es}>Spanish</MenuItem>
-          </Select>
-        </FormControl>
+      <Box px="1.5rem" pb="2.81rem">
+        <UserMenu expanded={open} onExpand={openDrawer} />
       </Box>
     </>
   );
 
   return (
-    <Box height="100%" display="flex">
-      <CssBaseline />
+    <Box height="100%" display="flex" position="relative">
       {/* Sidebar */}
       {/* Mobile */}
       <MuiDrawer
@@ -366,8 +333,12 @@ export const SidebarMenuItem = ({
     <ListItem disablePadding sx={{ display: "block", px: "1.5rem" }}>
       <ListItemButton
         sx={{
-          minHeight: 48,
           justifyContent: open ? "initial" : "center",
+          borderRadius: !open ? "50%" : undefined,
+          height: "2.5rem",
+          width: !open ? "2.5rem" : undefined,
+          transition: "all 300ms",
+          transitionTimingFunction: "ease-in-out",
         }}
         href={href}
         selected={window.location.pathname.includes(href)}
