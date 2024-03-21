@@ -159,8 +159,18 @@ const themeOptions: ThemeOptions = {
     },
     MuiBreadcrumbs: {
       defaultProps: {
-        separator: <CaretRight size={16} />,
+        separator: (
+          <CaretRight size={16} weight="bold" color={colors.grey[600]} />
+        ),
       },
+      variants: [
+        {
+          props: {},
+          style: {
+            color: colors.grey[500],
+          },
+        },
+      ],
     },
     MuiButton: {
       defaultProps: {
