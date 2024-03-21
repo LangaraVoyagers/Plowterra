@@ -37,12 +37,12 @@ export default function BasicHome({
                   <BodyText
                     key={index}
                     color="grey-800"
-                    fontWeight="Medium"
+                    fontWeight="SemiBold"
                     tabIndex={0}
                   >
                     {item.title}
                   </BodyText>
-                )
+                );
               }
 
               return (
