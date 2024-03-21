@@ -455,7 +455,7 @@ const Preview: React.FC = () => {
 };
 
 const Card = styled(Box)`
-  background-color: white;
+  background-color: ${({ theme }) => theme.palette.grey[50]};
   padding: ${({ theme }) => theme.spacing(3)};
   display: flex;
   flex-direction: column;
