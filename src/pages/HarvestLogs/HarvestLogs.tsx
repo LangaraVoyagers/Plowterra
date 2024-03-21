@@ -322,11 +322,11 @@ const HarvestLogs = () => {
             image: EmptyHarvestLog,
             title: intl.formatMessage({
               id: "harvest.log.empty.state.title",
-              defaultMessage: `It seems  you haven't added any harvest entry yet.`,
+              defaultMessage: `It seems you haven't added any harvest entry yet.`,
             }),
             subtitle: intl.formatMessage({
               id: "harvest.log.empty.state.subtitle",
-              defaultMessage: ` Let's add your first harvest entry!`,
+              defaultMessage: `Let's add your first harvest entry!`,
             }),
           }}
           initialState={{

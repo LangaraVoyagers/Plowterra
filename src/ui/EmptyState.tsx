@@ -1,5 +1,4 @@
-import { Box } from "@mui/material";
-import styled from "styled-components";
+import { Box, styled } from "@mui/material";
 import { Display, BodyText } from "./Typography";
 
 export type EmptyStateProps = {
