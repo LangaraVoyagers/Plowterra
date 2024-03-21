@@ -18,12 +18,12 @@ const CreateSeason = () => {
       <Button variant="contained" onClick={showDrawer} endIcon={<Plant />}>
         <FormattedMessage
           id="seasons.create.button.text"
-          defaultMessage="Add New Season"
+          defaultMessage="Add Season"
         />
       </Button>
       <SeasonDrawer open={open} dismiss={hideDrawer} />
     </div>
-  )
+  );
 }
 
 export default CreateSeason;

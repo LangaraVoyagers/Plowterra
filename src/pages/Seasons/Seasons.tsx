@@ -1,6 +1,5 @@
 import { Box, useMediaQuery, useTheme } from "@mui/material";
 import { GridColDef, GridRenderCellParams } from "@mui/x-data-grid";
-
 import BasicHome from "layouts/BasicHome";
 import { getSeasons } from "api/seasons";
 import { useQuery } from "react-query";
@@ -189,7 +188,7 @@ const Seasons = () => {
           href: "",
         },
       ]}
-      actions={<CreateSeason />}
+      actions={!!desktop && <CreateSeason />}
     >
       <Box display="flex" justifyContent="space-between">
         <FilterDataGrid
@@ -216,8 +215,11 @@ const Seasons = () => {
             },
           ]}
         />
-
-        <SearchDataGrid applySearch={setSearch} />
+        {desktop ? (
+          <SearchDataGrid applySearch={setSearch} />
+        ) : (
+          <CreateSeason />
+        )}
       </Box>
 
       <Box display="flex" flexGrow={1} pb={3}>

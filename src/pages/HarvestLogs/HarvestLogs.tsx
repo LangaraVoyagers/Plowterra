@@ -9,6 +9,7 @@ import { getHarvestLogs } from "api/harvestLogs"
 import { getPickerById } from "api/pickers"
 import SeasonFilterDataGrid from "components/SeasonFilterDataGrid";
 import CreateHarvestLog from "components/harvestLogs/CreateHarvestLog";
+import FiltersDrawer from "components/harvestLogs/FiltersDrawer";
 import UpdateHarvestLog from "components/harvestLogs/UpdateHarvestLog";
 import { useAlert } from "context/AlertProvider";
 import { useUser } from "context/UserProvider";
@@ -184,12 +185,12 @@ const HarvestLogs = () => {
 
   const [startDate, setStartDate] = useState<Dayjs | null>(null);
   const [endDate, setEndDate] = useState<Dayjs | null>(null);
+  const [searchTable, setSearchTable] = useState<string>();
 
   const [harvestLogs, setHarvestLogs] = useState<Array<IHarvestLogResponse>>(
     []
   );
   const [selectedSeason, setSelectedSeason] = useState<ISeasonResponse>();
-  const [isSeasonsFetch, setSeasonsFetch] = useState<boolean>(false);
   const [picker, setPicker] = useState<IHarvestLogResponse["picker"]>();
 
   const { GET_QUERY_KEY } = useQueryCache("harvestLogs");
@@ -205,14 +206,13 @@ const HarvestLogs = () => {
     queryFn: () =>
       getHarvestLogs({
         pickerId,
-        startDate,
-        endDate,
+        startDate: startDate ? startDate?.toDate().getTime() : undefined,
+        endDate: endDate ? endDate?.toDate().getTime() : undefined,
         seasonId: selectedSeason?._id,
       }),
     onSuccess: (results) => {
       setHarvestLogs(results);
     },
-    enabled: !!isSeasonsFetch,
     onError: (error) => {
       console.log(error);
       showAlert(
@@ -255,7 +255,7 @@ const HarvestLogs = () => {
         { title: "Harvest Log", href: paths.harvestLogs },
         ...(picker ? [{ title: picker?.name, href: "#" }] : []),
       ]}
-      actions={<CreateHarvestLog />}
+      actions={!!desktop && <CreateHarvestLog />}
     >
       {!!desktop && (
         <Box display="flex" justifyContent="space-between">
@@ -286,17 +286,37 @@ const HarvestLogs = () => {
             </Box>
           </FormControl>
 
-          <SeasonFilterDataGrid
-            onChange={setSelectedSeason}
-            onFetch={() => setSeasonsFetch(true)}
-          />
+          <SeasonFilterDataGrid onChange={setSelectedSeason} />
         </Box>
       )}
+
+      {!desktop && (
+        <Box display="flex" justifyContent="space-between">
+          <FiltersDrawer
+            startDate={startDate}
+            endDate={endDate}
+            selectedSeason={selectedSeason}
+            applyFilter={(data) => {
+              setSelectedSeason(data.season);
+              setStartDate(data.startDate);
+              setEndDate(data.endDate);
+              setSearchTable(data.search);
+            }}
+          />
+
+          <CreateHarvestLog />
+        </Box>
+      )}
+
       <Box display="flex" flexGrow={1}>
         <DataTable
           rows={harvestLogs ?? []}
           columns={columns(selectedSeason?.currency.name ?? "")}
           loading={isLoading || isPickerLoading}
+          filterModel={{
+            items: [],
+            quickFilterValues: searchTable ? searchTable?.split(" ") : [],
+          }}
           initialState={{
             columns: {
               columnVisibilityModel: {

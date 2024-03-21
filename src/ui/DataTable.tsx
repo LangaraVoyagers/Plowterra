@@ -53,23 +53,27 @@ const Pagination = () => {
     >
       <PageStepper
         onClick={() => {
-          apiRef.current.setPage(page - 1);
+          if (page > 0) {
+            apiRef.current.setPage(page - 1);
+          }
         }}
       >
         <CaretLeft size="1.5rem" />
       </PageStepper>
 
-      <Box display="flex" gap="0.25rem">
-        <BodyText size="md" fontWeight="Medium">
-          {page + 1}
-        </BodyText>
-        <BodyText size="md" fontWeight="Medium" color="grey-400">
-          /
-        </BodyText>
-        <BodyText size="md" fontWeight="Medium" color="grey-400">
-          {pageCount}
-        </BodyText>
-      </Box>
+      {pageCount > 0 && (
+        <Box display="flex" gap="0.25rem">
+          <BodyText size="md" fontWeight="Medium">
+            {page + 1}
+          </BodyText>
+          <BodyText size="md" fontWeight="Medium" color="grey-400">
+            /
+          </BodyText>
+          <BodyText size="md" fontWeight="Medium" color="grey-400">
+            {pageCount}
+          </BodyText>
+        </Box>
+      )}
       <PageStepper
         onClick={() => {
           apiRef.current.setPage(page + 1);
@@ -87,31 +91,57 @@ const StyledContainer = styled(Box)`
   .MuiDataGrid-root {
     border-radius: 0.75rem 0.75rem 0 0;
     border: 0;
-    box-shadow: 0px 2px 4px 0px rgba(29, 33, 45, 0.08),
-      0px 0px 2px 0px rgba(29, 33, 45, 0.08),
-      0px 0px 1px 0px rgba(29, 33, 45, 0.2);
-
-    background: ${({ theme }) => theme.palette.background.paper};
+    background: ${({ theme }) => theme.palette.background.default};
   }
+
   .MuiDataGrid-columnHeaders {
     border-radius: 0.75rem 0.75rem 0 0;
     background: ${({ theme }) => theme.palette.grey[200]};
     border-bottom: 1px solid ${({ theme }) => theme.palette.grey[300]};
-    text-transform: uppercase;
-    color: ${({ theme }) => theme.palette.grey[700]};
+
     /* Capital Label 2/Medium */
     font-size: 0.75rem;
     font-weight: 500 !important;
     line-height: 1.125rem !important;
     letter-spacing: 0.03rem;
+    text-transform: uppercase;
+    color: ${({ theme }) => theme.palette.grey[700]};
   }
 
   .MuiDataGrid-virtualScroller {
     color: ${({ theme }) => theme.palette.grey[800]};
   }
 
+  .MuiDataGrid-virtualScrollerContent > div {
+    background: ${({ theme }) => theme.palette.background.paper};
+  }
+
+  .MuiDataGrid-virtualScrollerRenderZone > div:nth-last-child(1) {
+    border-radius: 0 0 0.75rem 0.75rem;
+    border: 0;
+
+    .MuiDataGrid-cell {
+      border-bottom: 0;
+    }
+  }
+
+  .MuiDataGrid-virtualScrollerRenderZone {
+    box-shadow: 0px 2px 4px 0px rgba(29, 33, 45, 0.08),
+      0px 0px 2px 0px rgba(29, 33, 45, 0.08),
+      0px 0px 1px 0px rgba(29, 33, 45, 0.2);
+  }
+
+  .MuiDataGrid-virtualScrollerContent > div:nth-last-child(1) {
+    border-radius: 0 0 0.75rem 0.75rem;
+  }
+
+  .MuiDataGrid-overlay {
+    background: ${({ theme }) => theme.palette.background.paper};
+  }
+
   .MuiDataGrid-footerContainer {
     min-height: 0;
+    border-top: 0;
   }
 `;
 

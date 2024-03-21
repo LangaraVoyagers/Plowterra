@@ -19,26 +19,34 @@ type SeasonFilterDataGridProps = {
   status?: keyof typeof StatusEnum;
   sx?: SxProps<Theme>;
   defaultFirst?: boolean;
+  defaultSeasonId?: string;
 };
 
 const SeasonFilterDataGrid = (props: SeasonFilterDataGridProps) => {
   const intl = useIntl();
   const { showAlert } = useAlert();
-  const { onChange, onFetch, status, defaultFirst = true, sx = {} } = props;
+  const {
+    onChange,
+    onFetch,
+    status,
+    defaultSeasonId,
+    defaultFirst = true,
+    sx = {},
+  } = props;
   const { GET_QUERY_KEY: SEASONS_QUERY_KEY } = useQueryCache("seasons");
 
   const [seasonsData, setSeasonsData] = useState<Array<ISeasonResponse>>();
   const [selectedSeason, setSelectedSeason] = useState<ISeasonResponse>();
 
   // Get seasons
-  useQuery({
+  const { isLoading } = useQuery({
     queryKey: [...SEASONS_QUERY_KEY, status],
     queryFn: () => getSeasons({ status }),
     onSuccess: (results) => {
       setSeasonsData(results);
       if (defaultFirst) {
-        setSelectedSeason(results?.[0]);
-        onChange(results?.[0]);
+        results?.[0] && setSelectedSeason(results?.[0]);
+        results?.[0] && onChange(results?.[0]);
       }
 
       onFetch?.();
@@ -55,16 +63,21 @@ const SeasonFilterDataGrid = (props: SeasonFilterDataGridProps) => {
       onFetch?.();
     },
   });
+
   const onSeasonChange = (event: SelectChangeEvent<any>) => {
     const season = seasonsData?.find((s) => s._id === event.target.value);
     setSelectedSeason(season);
     onChange(season);
   };
 
+  if (!seasonsData?.length || isLoading) {
+    return null;
+  }
+
   return (
     <Select
-      defaultValue={selectedSeason?._id}
-      value={selectedSeason?._id}
+      defaultValue={selectedSeason?._id || defaultSeasonId}
+      value={selectedSeason?._id || defaultSeasonId}
       size="small"
       sx={{ minWidth: 250, ...sx }}
       onChange={onSeasonChange}

@@ -19,6 +19,7 @@ import { useQuery } from "react-query"
 import { useNavigate } from "react-router-dom"
 import DataTable from "ui/DataTable";
 import { Display } from "ui/Typography";
+import ViewMoreButton from "ui/ViewMoreButton";
 
 const columns = (currency: string): GridColDef[] => [
   {
@@ -55,12 +56,12 @@ const columns = (currency: string): GridColDef[] => [
       <FormattedMessage
         id="payroll.history.columns.net_pay.header"
         defaultMessage="Total net pay {currency}"
-        values={{ currency }}
+        values={{ currency: currency ? `(${currency})` : "" }}
       />
     ),
     headerAlign: "right",
     align: "right",
-    width: 150,
+    width: 100,
     renderCell: (params) => (
       <FormattedNumber value={params.row.totals.netAmount} />
     ),
@@ -131,9 +132,13 @@ const columns = (currency: string): GridColDef[] => [
   },
   {
     field: "actions",
-    headerName: "",
+    renderHeader: () => (
+      <FormattedMessage id="table.column.actions" defaultMessage="Actions" />
+    ),
     width: 150,
-    renderCell: () => <Button variant="text">View More</Button>,
+    headerAlign: "center",
+    align: "center",
+    renderCell: () => <ViewMoreButton />,
   },
 ];
 
@@ -145,7 +150,6 @@ const Payroll = () => {
 
   const theme = useTheme();
   const desktop = useMediaQuery(theme.breakpoints.up("md"));
-  const tablet = useMediaQuery(theme.breakpoints.up("sm"));
 
   const { GET_QUERY_KEY } = useQueryCache("payrolls");
 
@@ -210,7 +214,6 @@ const Payroll = () => {
           onFetch={() => setSeasonsFetch(true)}
         />
       </Box>
-
       <Box display="flex" flexGrow={1} pb={3}>
         <DataTable
           rows={payrollData}
@@ -223,7 +226,6 @@ const Payroll = () => {
                 collectedAmount: !!desktop,
                 deductions: !!desktop,
                 pickersCount: !!desktop,
-                netAmount: !!tablet,
               },
             },
           }}

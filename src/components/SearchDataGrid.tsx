@@ -4,11 +4,12 @@ import { useIntl } from "react-intl";
 
 type SearchDataGridProps = {
   applySearch: (text: string) => void;
+  searchValue?: string;
 };
 
 const SearchDataGrid = (props: SearchDataGridProps) => {
   const intl = useIntl();
-  const { applySearch } = props;
+  const { applySearch, searchValue } = props;
 
   return (
     <OutlinedInput
@@ -16,9 +17,10 @@ const SearchDataGrid = (props: SearchDataGridProps) => {
         id: "search",
         defaultMessage: "Search",
       })}
+      defaultValue={searchValue}
       size="small"
       onChange={debounce((event) => {
-        applySearch(event.target.value)
+        applySearch(event.target.value);
       }, 500)}
       startAdornment={
         <InputAdornment position="start">
@@ -26,7 +28,7 @@ const SearchDataGrid = (props: SearchDataGridProps) => {
         </InputAdornment>
       }
     />
-  )
+  );
 };
 
 export default SearchDataGrid;
