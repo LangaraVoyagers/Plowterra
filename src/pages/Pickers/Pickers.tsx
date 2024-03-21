@@ -5,8 +5,7 @@ import {
   GridValueGetterParams,
 } from "@mui/x-data-grid"
 import { FormattedDate, FormattedMessage, useIntl } from "react-intl"
-import { useEffect, useState } from "react"
-import EmptyPicker from "../../assets/icons/EmptyPicker.svg";
+import { useEffect, useState } from "react";
 import BasicHome from "layouts/BasicHome";
 import { Box, useMediaQuery, useTheme } from "@mui/material";
 import CreatePicker from "components/pickers/CreatePicker";
@@ -24,6 +23,7 @@ import { useUser } from "context/UserProvider";
 import DataTable from "ui/DataTable";
 import { useAlert } from "context/AlertProvider";
 import { BodyText } from "ui/Typography";
+import { Users } from "@phosphor-icons/react";
 
 const columns: GridColDef[] = [
   {
@@ -237,7 +237,7 @@ const Pickers = () => {
             },
           }}
           emptyState={{
-            image: EmptyPicker,
+            icon: <Users width="100%" height="100%" />,
             title: intl.formatMessage({
               id: "pickers.empty.state.title",
               defaultMessage: `It seems  you haven't added any pickers yet.`,

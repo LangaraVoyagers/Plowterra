@@ -15,7 +15,7 @@ import FilterDataGrid from "components/FilterDataGrid";
 import DataTable from "ui/DataTable";
 import { BodyText } from "ui/Typography";
 import { useAlert } from "context/AlertProvider";
-import EmptySeason from "../../assets/icons/EmptySeason.svg";
+import { Plant } from "@phosphor-icons/react";
 
 const columns: GridColDef[] = [
   {
@@ -238,7 +238,7 @@ const Seasons = () => {
           columns={columns}
           loading={isLoading}
           emptyState={{
-            image: EmptySeason,
+            icon: <Plant width="100%" height="100%" />,
             title: intl.formatMessage({
               id: "seasons.empty.state.title",
               defaultMessage: `It seems  you haven't added any seasons yet.`,

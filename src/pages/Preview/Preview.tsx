@@ -1,17 +1,22 @@
 import { Box, Button, useTheme } from "@mui/material";
 import { GridColDef } from "@mui/x-data-grid";
-import { ArrowLeft, CaretRight, SealCheck } from "@phosphor-icons/react";
-import endpoints from "api/endpoints"
-import { PayrollPayload, createPayroll, getPayrollPreview } from "api/payroll"
-import dayjs, { Dayjs } from "dayjs"
-import BasicHome from "layouts/BasicHome"
-import React, { useEffect, useState } from "react"
+import {
+  ArrowLeft,
+  CaretRight,
+  HandCoins,
+  SealCheck,
+} from "@phosphor-icons/react";
+import endpoints from "api/endpoints";
+import { PayrollPayload, createPayroll, getPayrollPreview } from "api/payroll";
+import dayjs, { Dayjs } from "dayjs";
+import BasicHome from "layouts/BasicHome";
+import React, { useEffect, useState } from "react";
 import {
   FormattedDate,
   FormattedMessage,
   FormattedNumber,
   useIntl,
-} from "react-intl"
+} from "react-intl";
 import { useMutation } from "react-query";
 import { DatePicker } from "@mui/x-date-pickers";
 import { useUser } from "context/UserProvider";
@@ -25,7 +30,6 @@ import { styled, useMediaQuery } from "@mui/system";
 import SeasonFilterDataGrid from "components/SeasonFilterDataGrid";
 import PayrollConfirmationModal from "components/payroll/PayrollConfirmationModal";
 import DataTable from "ui/DataTable";
-import EmptyPayroll from "../../assets/icons/EmptyPayroll.svg";
 
 const columns = (currency: string, unit: string): GridColDef[] => [
   {
@@ -431,7 +435,7 @@ const Preview: React.FC = () => {
             },
           }}
           emptyState={{
-            image: EmptyPayroll,
+            icon: <HandCoins width="100%" height="100%" />,
             title: intl.formatMessage({
               id: "payroll.preview.empty.state.title",
               defaultMessage: `It seems you don't have harvest entries to settle.`,
