@@ -1,35 +1,61 @@
 import {
-  DataGrid,
   GridColDef,
   GridRenderCellParams,
   GridSortItem,
   GridValueGetterParams,
-} from "@mui/x-data-grid";
-import { FormattedDate, FormattedMessage, useIntl } from "react-intl";
-import { useEffect, useRef, useState } from "react";
-
+} from "@mui/x-data-grid"
+import { FormattedDate, FormattedMessage, useIntl } from "react-intl"
+import { useEffect, useState } from "react";
 import BasicHome from "layouts/BasicHome";
-import { Box } from "@mui/material";
+import { Box, useMediaQuery, useTheme } from "@mui/material";
 import CreatePicker from "components/pickers/CreatePicker";
-import { IPickerResponse } from "project-2-types/dist/interface"
+import { IPickerResponse } from "project-2-types/dist/interface";
 import PickerDrawer from "components/pickers/PickerDrawer";
 import SearchDataGrid from "components/SearchDataGrid";
 import SortDataGrid from "components/SortDataGrid";
 import UpdatePicker from "components/pickers/UpdatePicker";
 import { getPickers } from "api/pickers";
 import paths from "shared/paths";
-import { useParams } from "react-router-dom";
+import { useParams, useSearchParams } from "react-router-dom";
 import { useQuery } from "react-query";
 import useQueryCache from "hooks/useQueryCache";
 import { useUser } from "context/UserProvider";
+import DataTable from "ui/DataTable";
+import { useAlert } from "context/AlertProvider";
+import { BodyText } from "ui/Typography";
+import { Users } from "@phosphor-icons/react";
 
 const columns: GridColDef[] = [
+  {
+    field: "pickerList",
+    renderHeader: () => (
+      <FormattedMessage
+        id="pickers.table.column.picker_list"
+        defaultMessage="Picker List"
+      />
+    ),
+    minWidth: 150,
+    flex: 1,
+    renderCell: (params) => {
+      return (
+        <Box>
+          <BodyText size="md" fontWeight="Medium">
+            {params.row.name}
+          </BodyText>
+          <BodyText size="xs" color="grey-500">
+            {params.row.phone}
+          </BodyText>
+        </Box>
+      );
+    },
+  },
   {
     field: "name",
     renderHeader: () => (
       <FormattedMessage id="pickers.table.column.name" defaultMessage="Name" />
     ),
-    width: 150,
+    flex: 1,
+    minWidth: 150,
     editable: true,
   },
   {
@@ -40,6 +66,7 @@ const columns: GridColDef[] = [
         defaultMessage="Phone Number"
       />
     ),
+    sortable: false,
     width: 150,
   },
   {
@@ -59,6 +86,7 @@ const columns: GridColDef[] = [
     headerName: "",
     width: 150,
     flex: 1,
+    sortable: false,
     valueGetter: (params: GridValueGetterParams<IPickerResponse>) =>
       params.row.emergencyContact.phone,
   },
@@ -76,29 +104,39 @@ const columns: GridColDef[] = [
           month="long"
           day="numeric"
         />
-      )
+      );
     },
   },
   {
-    field: "action",
-    headerName: "",
+    field: "actions",
+    renderHeader: () => (
+      <FormattedMessage id="table.column.actions" defaultMessage="Actions" />
+    ),
     width: 150,
+    align: "center",
+    headerAlign: "center",
     renderCell: (data: GridRenderCellParams<IPickerResponse>) => {
-      return <UpdatePicker pickerId={data.row._id} />
+      return <UpdatePicker pickerId={data.row._id} />;
     },
   },
-]
+];
 
 const Pickers = () => {
   const params = useParams<{ id: string }>();
+  const [searchParams] = useSearchParams();
+  const openNew = searchParams.get("new");
+
   const intl = useIntl();
   const { user } = useUser();
-  const apiRef = useRef<any>(null);
+  const { showAlert } = useAlert();
+
+  const theme = useTheme();
+  const desktop = useMediaQuery(theme.breakpoints.up("md"));
 
   const { GET_QUERY_KEY } = useQueryCache("pickers");
 
   const [open, setOpen] = useState<boolean>(false);
-  const [pickers, setPickers] = useState<Array<IPickerResponse>>([])
+  const [pickers, setPickers] = useState<Array<IPickerResponse>>([]);
 
   const [search, setSearch] = useState<string>();
   const [sortModel, setSortModel] = useState([
@@ -106,7 +144,7 @@ const Pickers = () => {
       field: "createdAt",
       sort: "desc",
     },
-  ])
+  ]);
 
   const showDrawer = () => setOpen(true);
 
@@ -123,6 +161,13 @@ const Pickers = () => {
     },
     onError: (error) => {
       console.log(error);
+      showAlert(
+        intl.formatMessage({
+          id: "pickers.get.pickers.error",
+          defaultMessage: "No pickers found",
+        }),
+        "error"
+      );
     },
   });
 
@@ -131,6 +176,12 @@ const Pickers = () => {
       showDrawer();
     }
   }, [params.id]);
+
+  useEffect(() => {
+    if (openNew === "true") {
+      showDrawer();
+    }
+  }, [openNew]);
 
   return (
     <BasicHome
@@ -148,7 +199,7 @@ const Pickers = () => {
           href: "",
         },
       ]}
-      actions={<CreatePicker />}
+      actions={!!desktop && <CreatePicker />}
     >
       <Box display="flex" justifyContent="space-between">
         <SortDataGrid
@@ -157,26 +208,44 @@ const Pickers = () => {
           options={[
             { field: "name", sort: "asc", label: "A to Z" },
             { field: "name", sort: "desc", label: "Z to A" },
-            { field: "createdAt", sort: "asc", label: "Recently added first" },
-            { field: "createdAt", sort: "desc", label: "Recently added last" },
+            { field: "createdAt", sort: "desc", label: "Recently added" },
+            { field: "createdAt", sort: "asc", label: "Long-standing" },
           ]}
         />
-
-        <SearchDataGrid applySearch={setSearch} />
+        {desktop ? (
+          <SearchDataGrid applySearch={setSearch} />
+        ) : (
+          <CreatePicker />
+        )}
       </Box>
 
-      <Box display="flex" flexGrow={1} pb={3}>
-        <DataGrid
-          apiRef={apiRef}
+      <Box display="flex" flexGrow={1}>
+        <DataTable
           rows={pickers}
           columns={columns}
           loading={isLoading}
           initialState={{
-            pagination: {
-              paginationModel: {
-                pageSize: 12,
+            columns: {
+              columnVisibilityModel: {
+                name: !!desktop,
+                phone: !!desktop,
+                pickerList: !desktop,
+                contactName: !!desktop,
+                contactPhone: !!desktop,
+                createdAt: !!desktop,
               },
             },
+          }}
+          emptyState={{
+            icon: <Users width="100%" height="100%" />,
+            title: intl.formatMessage({
+              id: "pickers.empty.state.title",
+              defaultMessage: `It seems  you haven't added any pickers yet.`,
+            }),
+            subtitle: intl.formatMessage({
+              id: "pickers.empty.state.subtitle",
+              defaultMessage: ` Let's add your first picker!`,
+            }),
           }}
           filterModel={{
             items: [],
@@ -184,10 +253,8 @@ const Pickers = () => {
           }}
           sortModel={sortModel as Array<GridSortItem>}
           onSortModelChange={(model) => {
-            setSortModel(model as any)
+            setSortModel(model as any);
           }}
-          getRowId={(data) => data?._id}
-          pageSizeOptions={[10, 20, 50, 100]}
           disableRowSelectionOnClick
         />
       </Box>
@@ -197,7 +264,7 @@ const Pickers = () => {
         // Replace with Picker detail
       )}
     </BasicHome>
-  )
+  );
 };
 
-export default Pickers;
+export default Pickers

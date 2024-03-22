@@ -1,29 +1,27 @@
-import { Button } from "@mui/material"
-import { useState } from "react"
-import SeasonDrawer from "./SeasonDrawer"
+import { useState } from "react";
+import SeasonDrawer from "./SeasonDrawer";
+import ViewMoreButton from "ui/ViewMoreButton";
 
 type UpdateSeasonProps = {
-  seasonId: string
-}
+  seasonId: string;
+};
 
 const UpdateSeason = (props: UpdateSeasonProps) => {
-  const { seasonId } = props
-  // const intl = useIntl();
+  const { seasonId } = props;
 
-  const [open, setOpen] = useState<boolean>(false)
+  const [open, setOpen] = useState<boolean>(false);
 
-  const showDrawer = () => setOpen(true)
+  const showDrawer = () => setOpen(true);
 
-  const hideDrawer = () => setOpen(false)
+  const hideDrawer = () => setOpen(false);
 
-  //TODO: add translation
   return (
     <div>
-      <Button onClick={showDrawer}>View More</Button>
+      <ViewMoreButton onClick={showDrawer} />
 
       {!!open && <SeasonDrawer dismiss={hideDrawer} seasonId={seasonId} open />}
     </div>
-  )
-}
+  );
+};
 
-export default UpdateSeason
+export default UpdateSeason;

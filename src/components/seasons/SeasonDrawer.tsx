@@ -40,17 +40,10 @@ import { useState } from "react"
 import { Controller, FormProvider, useForm } from "react-hook-form"
 import { useIntl } from "react-intl"
 import { useMutation, useQuery } from "react-query"
-import { Display, Label } from "ui/Typography"
+import { BodyText, Display, Label } from "ui/Typography"
 import SeasonDeductions from "./SeasonDeductions"
-
-function formatDate(date: number): string {
-  const formattedDate = new Date(date).toLocaleDateString("en-US", {
-    day: "numeric",
-    month: "short",
-    year: "numeric",
-  })
-  return formattedDate
-}
+import ConfirmationDrawer from "ui/ConfirmationDrawer"
+import SeasonImage from "../../assets/images/SeasonSuccess.svg"
 
 const payrollTimeframeList = (
   Object.keys(PayrollTimeframeEnum) as Array<keyof typeof PayrollTimeframeEnum>
@@ -122,6 +115,7 @@ const SeasonDrawer = ({ dismiss, seasonId, ...props }: SeasonDrawerProps) => {
   const { GET_DETAIL_QUERY_KEY: GET_CURRENCY_KEY } = useQueryCache("currencies")
 
   const [showEditForm, setShowEditForm] = useState<boolean>(!seasonId)
+  const [showSuccess, setShowSuccess] = useState<boolean>(false)
 
   const [startDate, setStartDate] = useState<Dayjs | null>(dayjs())
   const [products, setProducts] = useState<Array<IProduct>>([])
@@ -130,7 +124,9 @@ const SeasonDrawer = ({ dismiss, seasonId, ...props }: SeasonDrawerProps) => {
   const [season, setSeason] = useState<ISeasonResponse>()
 
   const showEdit = () => setShowEditForm(true)
-  const hideEdit = () => setShowEditForm(false)
+  const hideEdit = () => {
+    setShowEditForm(false)
+  }
 
   const formMethods = useForm<ISeasonRequest>({
     mode: "all",
@@ -291,14 +287,8 @@ const SeasonDrawer = ({ dismiss, seasonId, ...props }: SeasonDrawerProps) => {
 
   const handleCreateSuccess = (created: ISeasonResponse & { _id: string }) => {
     createCache(created)
-    showAlert(
-      intl.formatMessage({
-        id: "seasons.create.season.response.success",
-        defaultMessage: "The season was created successfully",
-      }),
-      "success"
-    )
-    onCreateSeasonClose()
+    setShowSuccess(true)
+    dismiss()
   }
 
   const handleUpdateSuccess = (updated: ISeasonResponse & { _id: string }) => {
@@ -329,6 +319,17 @@ const SeasonDrawer = ({ dismiss, seasonId, ...props }: SeasonDrawerProps) => {
 
   const onClose = () => {
     closeSeasonMutation(seasonId)
+  }
+
+  const handleClose = (
+    _event: React.MouseEvent,
+    reason: "backdropClick" | "escapeKeyDown"
+  ) => {
+    if (!showEditForm) {
+      if (reason === "backdropClick" || reason === "escapeKeyDown") {
+        dismiss()
+      }
+    }
   }
 
   const seasonForm = (
@@ -585,12 +586,9 @@ const SeasonDrawer = ({ dismiss, seasonId, ...props }: SeasonDrawerProps) => {
                   ref={ref}
                   value={value}
                   onChange={({ target }) => {
-                    if (target.value) {
-                      onChange(+target.value)
-                    } else {
-                      onChange(undefined)
-                    }
+                    onChange(target.value)
                   }}
+                  type="number"
                   id="season-price-input"
                   variant="outlined"
                   size="small"
@@ -677,8 +675,22 @@ const SeasonDrawer = ({ dismiss, seasonId, ...props }: SeasonDrawerProps) => {
 
   const createSeasonDataList = React.useCallback(() => {
     return [
-      ["Start Date", formatDate(season?.startDate || 0)],
-      ["End Date", formatDate(season?.endDate || 0)],
+      [
+        "Start Date",
+        intl.formatDate(season?.startDate, {
+          year: "numeric",
+          month: "long",
+          day: "2-digit",
+        }),
+      ],
+      [
+        "End Date",
+        intl.formatDate(season?.endDate, {
+          year: "numeric",
+          month: "long",
+          day: "2-digit",
+        }),
+      ],
       [
         "Payroll Timeframe",
         (season?.payrollTimeframe &&
@@ -776,7 +788,7 @@ const SeasonDrawer = ({ dismiss, seasonId, ...props }: SeasonDrawerProps) => {
         </Button>
       </Box>
       {/* TODO: add confirmation modal later, we probably will standardize the way we handle the delete after design has defined that */}
-      {!!seasonId && (
+      {!!seasonId && season?.status.toUpperCase() !== "CLOSED" && (
         <Box display="flex" flexDirection="column" gap={2} paddingBottom="3rem">
           <Display size="sm" component="h2">
             {intl.formatMessage(
@@ -820,13 +832,46 @@ const SeasonDrawer = ({ dismiss, seasonId, ...props }: SeasonDrawerProps) => {
   )
 
   return (
-    <Drawer
-      anchor="right"
-      {...props}
-      onClose={!showEditForm ? dismiss : undefined}
-    >
-      {!isLoadingDetail && <>{showEditForm ? seasonForm : seasonDetail}</>}
-    </Drawer>
+    <>
+      <Drawer anchor="right" {...props} onClose={handleClose}>
+        {!isLoadingDetail && <>{showEditForm ? seasonForm : seasonDetail}</>}
+      </Drawer>
+      {!!showSuccess && (
+        <ConfirmationDrawer
+          open
+          image={SeasonImage}
+          title={intl.formatMessage({
+            id: "seasons.create.season.success.drawer.title",
+            defaultMessage: "New Season Created!",
+          })}
+          message={intl.formatMessage(
+            {
+              id: "seasons.create.season.success.drawer.message",
+              defaultMessage: `Harvest season {seasonName} has been created.`,
+            },
+            {
+              seasonName: (
+                <BodyText
+                  component="span"
+                  fontWeight="Bold"
+                  color="secondary-700"
+                >
+                  {formMethods.getValues("name")}
+                </BodyText>
+              ),
+            }
+          )}
+          backButtonTitle={intl.formatMessage({
+            id: "seasons.create.season.success.drawer.back.button",
+            defaultMessage: "Back to Harvest Season",
+          })}
+          onClose={() => {
+            setShowSuccess(false)
+            onCreateSeasonClose()
+          }}
+        />
+      )}
+    </>
   )
 }
 

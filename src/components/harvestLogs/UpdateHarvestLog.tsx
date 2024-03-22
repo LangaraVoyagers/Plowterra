@@ -1,14 +1,12 @@
-import { Button } from "@mui/material";
 import { useState } from "react";
 import HarvestLogDrawer from "./HarvestLogDrawer";
-// import { useIntl } from "react-intl";
+import ViewMoreButton from "ui/ViewMoreButton";
 
 type UpdateHarvestLogProps = {
   harvestLogId: string;
 };
 const UpdateHarvestLog = (props: UpdateHarvestLogProps) => {
   const { harvestLogId } = props;
-  // const intl = useIntl();
 
   const [open, setOpen] = useState<boolean>(false);
 
@@ -16,11 +14,9 @@ const UpdateHarvestLog = (props: UpdateHarvestLogProps) => {
 
   const hideDrawer = () => setOpen(false);
 
-  //TODO: add translation
   return (
     <div>
-      <Button onClick={showDrawer}>View More</Button>
-
+      <ViewMoreButton onClick={showDrawer} />
       {!!open && (
         <HarvestLogDrawer
           dismiss={hideDrawer}

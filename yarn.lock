@@ -1803,6 +1803,14 @@ form-data@^4.0.0:
     combined-stream "^1.0.8"
     mime-types "^2.1.12"
 
+format-phone@^0.0.5:
+  version "0.0.5"
+  resolved "https://registry.npmjs.org/format-phone/-/format-phone-0.0.5.tgz"
+  integrity sha512-+JCUd46w1d+uT8biYAyl0Z5L6JY5Zkr8uPOoIkYILRTvTqa+ZE5JGbUHIpVj70VNFEJWO9FjKsAoOhCNvhsrIA==
+  dependencies:
+    google-libphonenumber "^1.0.15"
+    lodash "^4.6.1"
+
 fs.realpath@^1.0.0:
   version "1.0.0"
   resolved "https://registry.npmjs.org/fs.realpath/-/fs.realpath-1.0.0.tgz"
@@ -1914,6 +1922,11 @@ globrex@^0.1.2:
   version "0.1.2"
   resolved "https://registry.npmjs.org/globrex/-/globrex-0.1.2.tgz"
   integrity sha512-uHJgbwAMwNFf5mLst7IWLNg14x1CkeqglJb/K3doi4dw6q2IvAAmM/Y81kevy83wP+Sst+nutFTYOGg3d1lsxg==
+
+google-libphonenumber@^1.0.15:
+  version "1.1.2"
+  resolved "https://registry.npmjs.org/google-libphonenumber/-/google-libphonenumber-1.1.2.tgz"
+  integrity sha512-SsyhpaomqkbY+n2CT723+XM7b6BYViIOtAvFLd/4d4WaP02Z6zfysyj+eOCzgkM5Tm+2cgf1fMfhbe3w5JLmmw==
 
 gopd@^1.0.1:
   version "1.0.1"
@@ -2338,6 +2351,11 @@ lodash.merge@^4.6.2:
   resolved "https://registry.npmjs.org/lodash.merge/-/lodash.merge-4.6.2.tgz"
   integrity sha512-0KpjqXRVvrYyCsX1swR/XTK0va6VQkQM6MNo7PqW77ByjAhoARA8EfrP1N4+KlKj8YS0ZUCtRT/YUuhyYDujIQ==
 
+lodash@^4.6.1:
+  version "4.17.21"
+  resolved "https://registry.npmjs.org/lodash/-/lodash-4.17.21.tgz"
+  integrity sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg==
+
 loose-envify@^1.1.0, loose-envify@^1.4.0:
   version "1.4.0"
   resolved "https://registry.npmjs.org/loose-envify/-/loose-envify-1.4.0.tgz"
@@ -2694,10 +2712,10 @@ prelude-ls@^1.2.1:
   resolved "https://registry.npmjs.org/prelude-ls/-/prelude-ls-1.2.1.tgz"
   integrity sha512-vkcDPrRZo1QZLbn5RLGPpg/WmIQ65qoWWhcGKf/b5eplkkarX0m9z8ppCat4mlOqUsWpyNuYgO3VRyrYHSzX5g==
 
-project-2-types@^2.0.1:
-  version "2.0.1"
-  resolved "https://registry.npmjs.org/project-2-types/-/project-2-types-2.0.1.tgz"
-  integrity sha512-yd6PCXN0P99Er2XirigCZIaSjEkd/Gu6Xfvj50sr7xtr4qRlyw2Qivc3wsl61gE1A+y9Qaxsfop8daAgLue1ow==
+project-2-types@^2.0.6:
+  version "2.0.6"
+  resolved "https://registry.npmjs.org/project-2-types/-/project-2-types-2.0.6.tgz"
+  integrity sha512-YjdIKEmdfh4FO9+MkKsSwjPZPCumBgVqlZXBNJ5R9COzO6h9jdsaH9mIvYFcSz0ZtRsVdOgSN46BQGSZiLbMPA==
   dependencies:
     ajv "^8.12.0"
     mongoose "^8.2.0"

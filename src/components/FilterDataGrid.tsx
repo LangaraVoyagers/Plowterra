@@ -29,17 +29,17 @@ const filterDataGrid = (props: FilterDataGridProps) => {
       size="small"
       onChange={({ target: { value } }) => {
         try {
-          const data = value?.split("--") ?? [];
+          const data = value?.split("--") ?? []
           if (data.length) {
-            const [field, operator, value] = data;
+            const [field, operator, value] = data
 
-            setFilterModel([{ field, operator, value }]);
+            setFilterModel([{ field, operator, value }])
           }
         } catch (error) {
           intl.formatMessage({
             id: "seasons.filtering.error",
             defaultMessage: "Fail to apply filtering.",
-          });
+          })
         }
       }}
       sx={{ minWidth: 150 }}
@@ -50,7 +50,7 @@ const filterDataGrid = (props: FilterDataGridProps) => {
         </MenuItem>
       ))}
     </Select>
-  );
+  )
 };
 
 export default filterDataGrid;
