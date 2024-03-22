@@ -277,8 +277,12 @@ const HarvestLogDrawer = ({
   };
 
   const onCreateHarvestLogClose = () => {
-    setSeason(undefined);
-    dismiss();
+    if (openCorrectionEntry) {
+      setOpenCorrectionEntry(false);
+    } else {
+      setSeason(undefined);
+      dismiss();
+    }
   };
 
   const handleCreateSuccess = (
@@ -868,17 +872,27 @@ const HarvestLogDrawer = ({
 
       <Box display="flex" justifyContent="space-between">
         <Button variant="text" onClick={onCreateHarvestLogClose}>
-          {intl.formatMessage({
-            id: "harvest-log.view.detail.back.button.label",
-            defaultMessage: "Back",
-          })}
+          {openCorrectionEntry
+            ? intl.formatMessage({
+                id: "harvest-log.view.detail.cancel.button.label",
+                defaultMessage: "Cancel",
+              })
+            : intl.formatMessage({
+                id: "harvest-log.view.detail.back.button.label",
+                defaultMessage: "Back",
+              })}
         </Button>
-        {/* TODO: link correction note button to correct feature */}
+
         <Button variant="contained" onClick={onAddCorrectionEntry}>
-          {intl.formatMessage({
-            id: "harvest-log.view.detail.add-correction-entry.button.label",
-            defaultMessage: "Add Correction Entry",
-          })}
+          {openCorrectionEntry
+            ? intl.formatMessage({
+                id: "harvest-log.view.detail.save-correction-entry.button.label",
+                defaultMessage: "Save Correction Entry",
+              })
+            : intl.formatMessage({
+                id: "harvest-log.view.detail.add-correction-entry.button.label",
+                defaultMessage: "Add Correction Entry",
+              })}
         </Button>
       </Box>
     </Box>
