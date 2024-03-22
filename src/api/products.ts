@@ -28,3 +28,19 @@ export const getProductById = async (id?: string) => {
     throw error
   }
 }
+
+export const createProduct = async (name: string) => {
+  try {
+    const {
+      data: { data },
+    } = await axios.post(endpoints.products, { name })
+
+    if (typeof data === "object") {
+      return data
+    }
+    return null
+  } catch (error) {
+    console.log({ error })
+    throw error
+  }
+}
