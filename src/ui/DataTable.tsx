@@ -10,12 +10,22 @@ import {
 } from "@mui/x-data-grid";
 import { CaretLeft, CaretRight } from "@phosphor-icons/react";
 import { BodyText } from "./Typography";
+import EmptyState, { EmptyStateProps } from "./EmptyState";
 
-type DataTableProps<T extends GridValidRowModel> = DataGridProps<T>;
+type DataTableProps<T extends GridValidRowModel> = DataGridProps<T> & {
+  emptyState: EmptyStateProps;
+};
 
-const DataTable = <T extends GridValidRowModel>(props: DataTableProps<T>) => {
+const DataTable = <T extends GridValidRowModel>({
+  emptyState,
+  ...props
+}: DataTableProps<T>) => {
   const theme = useTheme();
   const desktop = useMediaQuery(theme.breakpoints.up("md"));
+
+  if (!props.rows.length && !props.loading) {
+    return <EmptyState {...emptyState} />;
+  }
 
   return (
     <>
@@ -84,6 +94,10 @@ const Pagination = () => {
     </StyledFooter>
   );
 };
+
+
+
+
 
 const StyledContainer = styled(Box)`
   width: 100%;

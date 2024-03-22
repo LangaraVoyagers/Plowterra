@@ -25,6 +25,7 @@ import { styled, useMediaQuery } from "@mui/system";
 import SeasonFilterDataGrid from "components/SeasonFilterDataGrid";
 import PayrollConfirmationModal from "components/payroll/PayrollConfirmationModal";
 import DataTable from "ui/DataTable";
+import EmptyPayroll from "../../assets/icons/EmptyPayroll.svg";
 
 const columns = (currency: string, unit: string): GridColDef[] => [
   {
@@ -428,6 +429,17 @@ const Preview: React.FC = () => {
                 deductions: !!desktop,
               },
             },
+          }}
+          emptyState={{
+            image: EmptyPayroll,
+            title: intl.formatMessage({
+              id: "payroll.preview.empty.state.title",
+              defaultMessage: `It seems you don't have harvest entries to settle.`,
+            }),
+            subtitle: intl.formatMessage({
+              id: "payroll.preview.empty.state.subtitle",
+              defaultMessage: `Make sure the filters set are correct.`,
+            }),
           }}
           rows={payrollData?.details ?? []}
           columns={columns(

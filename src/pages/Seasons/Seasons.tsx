@@ -15,6 +15,7 @@ import FilterDataGrid from "components/FilterDataGrid";
 import DataTable from "ui/DataTable";
 import { BodyText } from "ui/Typography";
 import { useAlert } from "context/AlertProvider";
+import EmptySeason from "../../assets/icons/EmptySeason.svg";
 
 const columns: GridColDef[] = [
   {
@@ -236,6 +237,17 @@ const Seasons = () => {
           rows={seasons}
           columns={columns}
           loading={isLoading}
+          emptyState={{
+            image: EmptySeason,
+            title: intl.formatMessage({
+              id: "seasons.empty.state.title",
+              defaultMessage: `It seems  you haven't added any seasons yet.`,
+            }),
+            subtitle: intl.formatMessage({
+              id: "seasons.empty.state.subtitle",
+              defaultMessage: ` Let's add your first harvest season!`,
+            }),
+          }}
           initialState={{
             columns: {
               columnVisibilityModel: {
