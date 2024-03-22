@@ -8,59 +8,44 @@ import {
   Users,
   List as ListIcon,
 } from "@phosphor-icons/react"
-import {
-  Box,
-  CssBaseline,
-  Divider,
-  FormControl,
-  IconButton,
-  InputLabel,
-  List,
-  MenuItem,
-  Select,
-  useMediaQuery,
-} from "@mui/material"
-import { CSSObject, Theme, styled, useTheme } from "@mui/material/styles"
-import { LANGUAGES, useLocale } from "context/LocaleProvider"
+import { Box, IconButton, List, useMediaQuery } from "@mui/material";
+import { CSSObject, Theme, styled, useTheme } from "@mui/material/styles";
 
-import { FormattedMessage } from "react-intl"
-import ListItem from "@mui/material/ListItem"
-import ListItemButton from "@mui/material/ListItemButton"
-import ListItemIcon from "@mui/material/ListItemIcon"
-import ListItemText from "@mui/material/ListItemText"
-import MuiDrawer from "@mui/material/Drawer"
-import { Outlet } from "react-router-dom"
-import paths from "shared/paths"
-import { useState } from "react"
-import { useUser } from "context/UserProvider"
-import { BodyText } from "ui/Typography"
-import SidebarIcon from "../assets/icons/SidebarIcon.svg"
-import Logo from "../assets/images/Logo.svg"
-import LogoSquare from "../assets/images/LogoSquare.svg"
+import { FormattedMessage } from "react-intl";
+import ListItem from "@mui/material/ListItem";
+import ListItemButton from "@mui/material/ListItemButton";
+import ListItemIcon from "@mui/material/ListItemIcon";
+import ListItemText from "@mui/material/ListItemText";
+import MuiDrawer from "@mui/material/Drawer";
+import { Outlet } from "react-router-dom";
+import paths from "shared/paths";
+import { useState } from "react";
+import { BodyText, Label } from "ui/Typography";
+import SidebarIcon from "../assets/icons/SidebarIcon.svg";
+import Logo from "../assets/images/Logo.svg";
+import LogoSquare from "../assets/images/LogoSquare.svg";
+import UserMenu from "components/UserMenu";
+import { usePersistedState } from "hooks/usePersistedState";
 
-const DRAWER_WIDTH = 240
-
+const DRAWER_WIDTH = 288;
 
 const openedMixin = (theme: Theme): CSSObject => ({
   width: DRAWER_WIDTH,
   transition: theme.transitions.create("width", {
     easing: theme.transitions.easing.sharp,
-    duration: theme.transitions.duration.enteringScreen,
+    duration: "500ms",
   }),
   overflowX: "hidden",
-})
+});
 
 const closedMixin = (theme: Theme): CSSObject => ({
   transition: theme.transitions.create("width", {
     easing: theme.transitions.easing.sharp,
-    duration: theme.transitions.duration.leavingScreen,
+    duration: "500ms",
   }),
   overflowX: "hidden",
-  width: `calc(${theme.spacing(7)} + 1px)`,
-  [theme.breakpoints.up("sm")]: {
-    width: `calc(${theme.spacing(8)} + 1px)`,
-  },
-})
+  width: `calc(${theme.spacing(11)} + 1px)`,
+});
 
 const DrawerHeader = styled("div")(({ theme }) => ({
   display: "flex",
@@ -69,7 +54,7 @@ const DrawerHeader = styled("div")(({ theme }) => ({
   padding: theme.spacing(0, 1),
   // necessary for content to be below app bar
   ...theme.mixins.toolbar,
-}))
+}));
 
 const Drawer = styled(MuiDrawer, {
   shouldForwardProp: (prop) => prop !== "open",
@@ -86,29 +71,33 @@ const Drawer = styled(MuiDrawer, {
     ...closedMixin(theme),
     "& .MuiDrawer-paper": closedMixin(theme),
   }),
-}))
+}));
+
+const iconSettings = {
+  size: "1.5rem",
+};
 
 const sidebarItems = [
   {
     title: <FormattedMessage id="sidebar.home" defaultMessage="Home" />,
-    icon: <House />,
-    href: "",
+    icon: <House {...iconSettings} />,
+    href: paths.home,
   },
   {
     title: (
       <FormattedMessage id="sidebar.harvest_log" defaultMessage="Harvest Log" />
     ),
-    icon: <FileText />,
+    icon: <FileText {...iconSettings} />,
     href: paths.harvestLogs,
   },
   {
     title: <FormattedMessage id="sidebar.pickers" defaultMessage="Pickers" />,
-    icon: <Users />,
+    icon: <Users {...iconSettings} />,
     href: paths.pickers,
   },
   {
     title: <FormattedMessage id="sidebar.payroll" defaultMessage="Payroll" />,
-    icon: <HandCoins />,
+    icon: <HandCoins {...iconSettings} />,
     href: paths.payroll,
   },
   {
@@ -118,10 +107,10 @@ const sidebarItems = [
         defaultMessage="Harvest Season"
       />
     ),
-    icon: <Plant />,
+    icon: <Plant {...iconSettings} />,
     href: paths.seasons,
   },
-]
+];
 
 const quickActions = [
   {
@@ -131,7 +120,7 @@ const quickActions = [
         defaultMessage="Add Picker"
       />
     ),
-    icon: <UserPlus />,
+    icon: <UserPlus {...iconSettings} />,
     href: `${paths.pickers}?new=true`,
   },
   {
@@ -141,29 +130,34 @@ const quickActions = [
         defaultMessage="Add Harvest Entry"
       />
     ),
-    icon: <FilePlus />,
-    href: "#",
+    icon: <FilePlus {...iconSettings} />,
+    href: `${paths.harvestLogs}?new=true`,
   },
-]
-const container = window !== undefined ? () => window.document.body : undefined
+];
+const container = window !== undefined ? () => window.document.body : undefined;
 
 export default function MainLayout() {
-  const theme = useTheme()
-  const mobile = useMediaQuery(theme.breakpoints.down("md"))
+  const theme = useTheme();
+  const mobile = useMediaQuery(theme.breakpoints.down("md"));
 
-  const [open, setOpen] = useState(true)
-  const [mobileOpen, setMobileOpen] = useState(false)
-  const { user } = useUser()
+  const [expanded, setOpen] = usePersistedState("sidebar-expanded", true);
+  const open = mobile || expanded;
 
-  const { locale, selectLanguage } = useLocale()
+  const [mobileOpen, setMobileOpen] = useState(false);
 
   const handleDrawerClose = () => {
     if (mobile) {
-      setMobileOpen(!mobileOpen)
+      setMobileOpen(!mobileOpen);
     } else {
-      setOpen(!open)
+      setOpen(!open);
     }
-  }
+  };
+
+  const openDrawer = () => {
+    if (!mobile) {
+      setOpen(true);
+    }
+  };
 
   const drawer = (
     <>
@@ -175,10 +169,11 @@ export default function MainLayout() {
             justifyContent="space-between"
             alignItems="center"
             sx={{
-              transform: "translateX(8px)",
+              transform: "translateX(13.5px)",
               transition: "all 300ms",
             }}
             paddingRight={2}
+            paddingLeft={1}
             width="100%"
           >
             {!!open || !!mobileOpen ? (
@@ -208,96 +203,56 @@ export default function MainLayout() {
             )}
           </Box>
         </DrawerHeader>
-        <Divider />
+        <Box paddingLeft="1.5rem" sx={{ opacity: open ? 1 : 0 }}>
+          <Label color="grey-500" size="xs" fontWeight="SemiBold">
+            <FormattedMessage
+              id="sidebar.main.sections"
+              defaultMessage="Main Sections"
+            />
+          </Label>
+        </Box>
         <List>
           {sidebarItems.map(({ title, icon, href }, index) => (
-            <ListItem key={index} disablePadding sx={{ display: "block" }}>
-              <ListItemButton
-                sx={{
-                  minHeight: 48,
-                  justifyContent: open ? "initial" : "center",
-                  px: 2.5,
-                }}
-                href={href}
-              >
-                <ListItemIcon
-                  sx={{
-                    minWidth: 0,
-                    mr: open ? 3 : "auto",
-                    justifyContent: "center",
-                  }}
-                >
-                  {icon}
-                </ListItemIcon>
-
-                <ListItemText primary={title} sx={{ opacity: open ? 1 : 0 }} />
-              </ListItemButton>
-            </ListItem>
+            <SidebarMenuItem
+              key={index}
+              open={open}
+              title={title}
+              icon={icon}
+              href={href}
+            />
           ))}
         </List>
-        <Divider />
-        <ListItem sx={{ opacity: open ? 1 : 0 }}>
-          <FormattedMessage
-            id="sidebar.quick_actions"
-            defaultMessage="Quick Actions"
-          />
-        </ListItem>
+        {/* <Divider /> */}
+
+        <Box paddingLeft="1.5rem" mt="3.25rem" sx={{ opacity: open ? 1 : 0 }}>
+          <Label color="grey-500" size="xs" fontWeight="SemiBold">
+            <FormattedMessage
+              id="sidebar.quick_actions"
+              defaultMessage="Quick Actions"
+            />
+          </Label>
+        </Box>
         <List>
           {quickActions.map((data, index) => (
-            <ListItem key={index} disablePadding sx={{ display: "block" }}>
-              <ListItemButton
-                sx={{
-                  minHeight: 48,
-                  justifyContent: open ? "initial" : "center",
-                  px: 2.5,
-                }}
-                href={data.href}
-              >
-                <ListItemIcon
-                  sx={{
-                    minWidth: 0,
-                    mr: open ? 3 : "auto",
-                    justifyContent: "center",
-                  }}
-                >
-                  {data.icon}
-                </ListItemIcon>
-                <ListItemText
-                  primary={data.title}
-                  sx={{ opacity: open ? 1 : 0 }}
-                />
-              </ListItemButton>
-            </ListItem>
+            <SidebarMenuItem
+              key={index}
+              open={open}
+              title={data.title}
+              icon={data.icon}
+              href={data.href}
+            />
           ))}
         </List>
       </Box>
 
-      <Box display="flex" flexDirection="column" gap={2} p={2}>
-        <BodyText>{user.name}</BodyText>
-        <FormControl fullWidth>
-          <InputLabel id="language-label">Language</InputLabel>
-
-          <Select
-            labelId="language-label"
-            id="language-select"
-            value={locale}
-            size="small"
-            onChange={async (event) => {
-              await selectLanguage(event.target.value as keyof typeof LANGUAGES)
-            }}
-            label="Language"
-          >
-            <MenuItem value={LANGUAGES.en}>English</MenuItem>
-            <MenuItem value={LANGUAGES.es}>Spanish</MenuItem>
-          </Select>
-        </FormControl>
+      <Box px="1.5rem" pb="2.81rem">
+        <UserMenu expanded={open} onExpand={openDrawer} />
       </Box>
     </>
-  )
+  );
 
   return (
-    <Box height="100%" display="flex">
-      <CssBaseline />
+    <Box height="100%" display="flex" position="relative">
       {/* Sidebar */}
       {/* Mobile */}
       <MuiDrawer
@@ -360,4 +315,49 @@ export default function MainLayout() {
 const Header = styled(Box)`
   background: ${({ theme }) => theme.palette.background.paper};
   padding: 1.0625rem 1rem 1.0625rem 1rem;
-`
+`;
+
+type SidebarMenuItemProps = {
+  open: boolean;
+  title: JSX.Element;
+  icon: JSX.Element;
+  href: string;
+};
+export const SidebarMenuItem = ({
+  open,
+  title,
+  icon,
+  href,
+}: SidebarMenuItemProps) => {
+  return (
+    <ListItem disablePadding sx={{ display: "block", px: "1.5rem" }}>
+      <ListItemButton
+        sx={{
+          justifyContent: open ? "initial" : "center",
+          borderRadius: !open ? "50%" : undefined,
+          height: "2.5rem",
+          width: !open ? "2.5rem" : undefined,
+          transition: "all 300ms",
+          transitionTimingFunction: "ease-in-out",
+        }}
+        href={href}
+        selected={window.location.pathname.includes(href)}
+      >
+        <ListItemIcon
+          sx={{
+            minWidth: 0,
+            mr: open ? 3 : "auto",
+            justifyContent: "center",
+          }}
+        >
+          {icon}
+        </ListItemIcon>
+
+        <ListItemText
+          primary={<BodyText fontWeight="Medium">{title}</BodyText>}
+          sx={{ opacity: open ? 1 : 0 }}
+        />
+      </ListItemButton>
+    </ListItem>
+  );
+};

@@ -1,4 +1,5 @@
 const paths = {
+  home: "/home",
   pickers: "/pickers",
   login: "/login",
   seasons: "/seasons",

@@ -32,7 +32,7 @@ import { useSearchParams } from "react-router-dom";
 import paths from "shared/paths";
 import DataTable from "ui/DataTable";
 import { BodyText } from "ui/Typography";
-import EmptyHarvestLog from "../../assets/icons/EmptyHarvestLog.svg";
+import { FileText } from "@phosphor-icons/react";
 
 const columns = (currency: string): GridColDef[] => [
   // {
@@ -319,7 +319,7 @@ const HarvestLogs = () => {
             quickFilterValues: searchTable ? searchTable?.split(" ") : [],
           }}
           emptyState={{
-            image: EmptyHarvestLog,
+            icon: <FileText width="100%" height="100%" />,
             title: intl.formatMessage({
               id: "harvest.log.empty.state.title",
               defaultMessage: `It seems you haven't added any harvest entry yet.`,

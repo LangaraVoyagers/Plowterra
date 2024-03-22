@@ -1,8 +1,8 @@
-export const white = "#FFFFFF"
+export const white = "#FFFFFF";
 // const black = "#000000";
-export const background = "#F1EFEE"
+export const background = "#F1EFEE";
 
-export const colors = {
+const colors = {
   primary: {
     50: "#E6EFEC",
     100: "#B2CDC4",
@@ -17,16 +17,16 @@ export const colors = {
     contrastText: white,
   },
   secondary: {
-    50: "#FCF4E6",
-    100: "#F5DDB0",
-    200: "#F0CC8A",
-    300: "#EAB554",
-    400: "#E5A633",
-    500: "#DF9000",
-    600: "#CB8300",
-    700: "#9E6600",
-    800: "#7B4F00",
-    900: "#5E3C00",
+    50: "#E6E0D8",
+    100: "#C8B89E",
+    200: "#AFA173",
+    300: "#9D8E4D",
+    400: "#8A751F",
+    500: "#735E00",
+    600: "#665300",
+    700: "#503F00",
+    800: "#3E2F00",
+    900: "#322200",
   },
   error: {
     50: "#FBE9E9",
@@ -76,4 +76,6 @@ export const colors = {
     800: "#292524",
     900: "#1C1917",
   },
-}
+};
+
+export default colors;

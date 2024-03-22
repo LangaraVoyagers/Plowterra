@@ -1,14 +1,23 @@
 import { Button } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import HarvestLogDrawer from "./HarvestLogDrawer";
 import { FilePlus } from "@phosphor-icons/react";
+import { useSearchParams } from "react-router-dom";
 
 const CreateHarvestLog = () => {
   const [open, setOpen] = useState<boolean>(false);
+  const [searchParams] = useSearchParams();
+  const openNew = searchParams.get("new");
 
   const showDrawer = () => setOpen(true);
 
   const hideDrawer = () => setOpen(false);
+
+  useEffect(() => {
+    if (openNew === "true") {
+      showDrawer();
+    }
+  }, [openNew]);
 
   return (
     <div>
