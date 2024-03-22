@@ -145,6 +145,7 @@ export default function MainLayout() {
   const mobile = useMediaQuery(theme.breakpoints.down("md"));
   const { mode } = useThemMode();
   const [expanded, setOpen] = usePersistedState("sidebar-expanded", true);
+
   const open = mobile || expanded;
 
   const Logo = mode === "light" ? LogoLight : LogoDark;
