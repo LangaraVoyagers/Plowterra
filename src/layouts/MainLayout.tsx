@@ -21,11 +21,15 @@ import { Outlet } from "react-router-dom";
 import paths from "shared/paths";
 import { useState } from "react";
 import { BodyText, Label } from "ui/Typography";
-import SidebarIcon from "../assets/icons/SidebarIcon.svg";
-import Logo from "../assets/images/Logo.svg";
-import LogoSquare from "../assets/images/LogoSquare.svg";
+import SidebarIconLight from "../assets/icons/SidebarIcon.svg";
+import SidebarIconDark from "../assets/icons/SidebarIconDark.svg";
+import LogoLight from "../assets/images/Logo.svg";
+import LogoSquareLight from "../assets/images/LogoSquare.svg";
+import LogoDark from "../assets/images/LogoDark.svg";
+import LogoSquareDark from "../assets/images/LogoSquareDark.svg";
 import UserMenu from "components/UserMenu";
 import { usePersistedState } from "hooks/usePersistedState";
+import { useThemMode } from "context/ThemeProvider";
 
 const DRAWER_WIDTH = 288;
 
@@ -139,9 +143,12 @@ const container = window !== undefined ? () => window.document.body : undefined;
 export default function MainLayout() {
   const theme = useTheme();
   const mobile = useMediaQuery(theme.breakpoints.down("md"));
-
+  const { mode } = useThemMode();
   const [expanded, setOpen] = usePersistedState("sidebar-expanded", true);
   const open = mobile || expanded;
+
+  const Logo = mode === "light" ? LogoLight : LogoDark;
+  const LogoSquare = mode === "light" ? LogoSquareLight : LogoSquareDark;
 
   const [mobileOpen, setMobileOpen] = useState(false);
 
@@ -193,7 +200,7 @@ export default function MainLayout() {
                 aria-label="Close sidebar"
               >
                 <img
-                  src={SidebarIcon}
+                  src={mode === "light" ? SidebarIconLight : SidebarIconDark}
                   alt="sidebaricon"
                   width={18}
                   height={18}

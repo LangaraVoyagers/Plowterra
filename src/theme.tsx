@@ -378,6 +378,13 @@ const themeOptions = (mode: PaletteMode): ThemeOptions => {
           },
         },
       },
+      MuiDrawer: {
+        styleOverrides: {
+          paper: {
+            backgroundImage: "none",
+          },
+        },
+      },
     },
   };
 };
