@@ -398,6 +398,7 @@ const Preview: React.FC = () => {
             color="primary"
             sx={{ width: "min-content" }}
             onClick={handleClickOpen}
+            disabled={!payrollData?.details?.length}
             className="run-payroll-button"
           >
             Run Payroll
