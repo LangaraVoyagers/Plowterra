@@ -1,6 +1,6 @@
 import { Box, Button, useMediaQuery, useTheme } from "@mui/material";
 import { GridColDef, GridRenderCellParams } from "@mui/x-data-grid";
-import { CaretRight, User } from "@phosphor-icons/react"
+import { CaretRight, HandCoins, User } from "@phosphor-icons/react";
 import { getPayrollHistory } from "api/payroll";
 import SeasonFilterDataGrid from "components/SeasonFilterDataGrid";
 import { useAlert } from "context/AlertProvider";
@@ -219,6 +219,13 @@ const Payroll = () => {
           rows={payrollData}
           columns={columns(selectedSeason?.currency.name ?? "")}
           loading={isLoading}
+          emptyState={{
+            icon: <HandCoins width="100%" height="100%" />,
+            title: intl.formatMessage({
+              id: "payroll.empty.state.subtitle",
+              defaultMessage: `It seems  you don’t have any payroll history yet.`,
+            }),
+          }}
           initialState={{
             columns: {
               columnVisibilityModel: {

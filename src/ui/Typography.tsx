@@ -1,7 +1,6 @@
-import { SxProps, Theme } from "@mui/material"
-import MUITypography, { TypographyProps } from "@mui/material/Typography"
-import { colors } from "shared/colors"
-
+import { SxProps, Theme, useTheme } from "@mui/material";
+import MUITypography, { TypographyProps } from "@mui/material/Typography";
+// import { colors } from "shared/palette/colors";
 
 type ColorsType =
   | "primary"
@@ -9,7 +8,7 @@ type ColorsType =
   | "error"
   | "warning"
   | "success"
-  | "grey"
+  | "grey";
 
 type ColorsLevel =
   | "50"
@@ -21,7 +20,7 @@ type ColorsLevel =
   | "600"
   | "700"
   | "800"
-  | "900"
+  | "900";
 
 enum WEIGHT_ENUM {
   Regular = 400,
@@ -38,9 +37,9 @@ enum DISPLAY_SIZE_ENUM {
 }
 
 interface DisplayProps {
-  fontWeight?: keyof typeof WEIGHT_ENUM
-  size?: keyof typeof DISPLAY_SIZE_ENUM
-  color?: `${ColorsType}-${ColorsLevel}`
+  fontWeight?: keyof typeof WEIGHT_ENUM;
+  size?: keyof typeof DISPLAY_SIZE_ENUM;
+  color?: `${ColorsType}-${ColorsLevel}`;
 }
 
 export const Display = <C extends React.ElementType>({
@@ -61,8 +60,8 @@ export const Display = <C extends React.ElementType>({
       fontWeight={WEIGHT_ENUM[fontWeight]}
       variant={DISPLAY_SIZE_ENUM[size]}
     />
-  )
-}
+  );
+};
 
 enum TEXT_SIZE_ENUM {
   md = "body1",
@@ -70,9 +69,9 @@ enum TEXT_SIZE_ENUM {
   xs = "overline",
 }
 interface TextBodyProps {
-  fontWeight?: keyof typeof WEIGHT_ENUM
-  size?: keyof typeof TEXT_SIZE_ENUM
-  color?: `${ColorsType}-${ColorsLevel}`
+  fontWeight?: keyof typeof WEIGHT_ENUM;
+  size?: keyof typeof TEXT_SIZE_ENUM;
+  color?: `${ColorsType}-${ColorsLevel}`;
 }
 
 export const BodyText = <C extends React.ElementType>({
@@ -97,8 +96,8 @@ export const BodyText = <C extends React.ElementType>({
         textTransform: "unset",
       }}
     />
-  )
-}
+  );
+};
 
 enum LABEL_SIZE_ENUM {
   sm,
@@ -116,13 +115,13 @@ const labelStyles: Record<keyof typeof LABEL_SIZE_ENUM, SxProps<Theme>> = {
     lineHeight: "1.125rem",
     letterSpacing: "0.03rem",
   },
-}
+};
 
 interface LabelProps {
-  fontWeight?: keyof typeof WEIGHT_ENUM
-  size?: keyof typeof LABEL_SIZE_ENUM
-  mobile?: keyof typeof LABEL_SIZE_ENUM
-  color?: `${ColorsType}-${ColorsLevel}`
+  fontWeight?: keyof typeof WEIGHT_ENUM;
+  size?: keyof typeof LABEL_SIZE_ENUM;
+  mobile?: keyof typeof LABEL_SIZE_ENUM;
+  color?: `${ColorsType}-${ColorsLevel}`;
 }
 
 export const Label = <C extends React.ElementType>({
@@ -152,11 +151,12 @@ export const Label = <C extends React.ElementType>({
       }}
     />
   );
-}
-
+};
 
 const getColor = (colorKey: `${ColorsType}-${ColorsLevel}`) => {
-  const [name, level] = colorKey.split("-")
+  const [name, level] = colorKey.split("-");
+  const theme = useTheme();
 
-  return colors?.[name as ColorsType]?.[level as ColorsLevel]
-}
+  const colors = theme.palette as any;
+  return colors?.[name as ColorsType]?.[level as ColorsLevel];
+};

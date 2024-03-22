@@ -5,25 +5,25 @@ import {
   GridValueGetterParams,
 } from "@mui/x-data-grid"
 import { FormattedDate, FormattedMessage, useIntl } from "react-intl"
-import { useEffect, useState } from "react"
-
-import BasicHome from "layouts/BasicHome"
-import { Box, useMediaQuery, useTheme } from "@mui/material"
-import CreatePicker from "components/pickers/CreatePicker"
-import { IPickerResponse } from "project-2-types/dist/interface"
-import PickerDrawer from "components/pickers/PickerDrawer"
-import SearchDataGrid from "components/SearchDataGrid"
-import SortDataGrid from "components/SortDataGrid"
-import UpdatePicker from "components/pickers/UpdatePicker"
-import { getPickers } from "api/pickers"
-import paths from "shared/paths"
-import { useParams } from "react-router-dom"
-import { useQuery } from "react-query"
-import useQueryCache from "hooks/useQueryCache"
-import { useUser } from "context/UserProvider"
-import DataTable from "ui/DataTable"
+import { useEffect, useState } from "react";
+import BasicHome from "layouts/BasicHome";
+import { Box, useMediaQuery, useTheme } from "@mui/material";
+import CreatePicker from "components/pickers/CreatePicker";
+import { IPickerResponse } from "project-2-types/dist/interface";
+import PickerDrawer from "components/pickers/PickerDrawer";
+import SearchDataGrid from "components/SearchDataGrid";
+import SortDataGrid from "components/SortDataGrid";
+import UpdatePicker from "components/pickers/UpdatePicker";
+import { getPickers } from "api/pickers";
+import paths from "shared/paths";
+import { useParams, useSearchParams } from "react-router-dom";
+import { useQuery } from "react-query";
+import useQueryCache from "hooks/useQueryCache";
+import { useUser } from "context/UserProvider";
+import DataTable from "ui/DataTable";
 import { useAlert } from "context/AlertProvider";
 import { BodyText } from "ui/Typography";
+import { Users } from "@phosphor-icons/react";
 
 const columns: GridColDef[] = [
   {
@@ -123,6 +123,9 @@ const columns: GridColDef[] = [
 
 const Pickers = () => {
   const params = useParams<{ id: string }>();
+  const [searchParams] = useSearchParams();
+  const openNew = searchParams.get("new");
+
   const intl = useIntl();
   const { user } = useUser();
   const { showAlert } = useAlert();
@@ -173,6 +176,12 @@ const Pickers = () => {
       showDrawer();
     }
   }, [params.id]);
+
+  useEffect(() => {
+    if (openNew === "true") {
+      showDrawer();
+    }
+  }, [openNew]);
 
   return (
     <BasicHome
@@ -226,6 +235,17 @@ const Pickers = () => {
                 createdAt: !!desktop,
               },
             },
+          }}
+          emptyState={{
+            icon: <Users width="100%" height="100%" />,
+            title: intl.formatMessage({
+              id: "pickers.empty.state.title",
+              defaultMessage: `It seems  you haven't added any pickers yet.`,
+            }),
+            subtitle: intl.formatMessage({
+              id: "pickers.empty.state.subtitle",
+              defaultMessage: ` Let's add your first picker!`,
+            }),
           }}
           filterModel={{
             items: [],

@@ -598,7 +598,7 @@ const HarvestLogDrawer = ({
         </Box>
       </Box>
       <Box display="flex" justifyContent="space-between">
-        <Button variant="contained" onClick={onCreateHarvestLogClose}>
+        <Button variant="text" onClick={onCreateHarvestLogClose}>
           Back
         </Button>
         {/* TODO: link correction note button to correct feature */}
