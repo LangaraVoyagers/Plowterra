@@ -44,61 +44,62 @@ import { BodyText, Display, Label } from "ui/Typography"
 import SeasonDeductions from "./SeasonDeductions"
 import ConfirmationDrawer from "ui/ConfirmationDrawer"
 import SeasonImage from "../../assets/images/SeasonSuccess.svg"
+import SelectFreeSolo from "./SelectFreeSolo";
 
 const payrollTimeframeList = (
   Object.keys(PayrollTimeframeEnum) as Array<keyof typeof PayrollTimeframeEnum>
-).map((key) => ({ value: key, label: PayrollTimeframeEnum[key] }))
+).map((key) => ({ value: key, label: PayrollTimeframeEnum[key] }));
 
 type SeasonDrawerProps = DrawerProps & {
-  seasonId?: string
-  dismiss: () => void
-}
+  seasonId?: string;
+  dismiss: () => void;
+};
 
 interface IProduct {
-  _id: string
-  name: string
+  _id: string;
+  name: string;
 }
 
 interface IUnit {
-  _id: string
-  name: string
+  _id: string;
+  name: string;
 }
 
 interface ICurrency {
-  _id: string
-  name: string
+  _id: string;
+  name: string;
 }
 
 interface ISeasonResponse {
-  name: string
-  startDate: number
-  endDate: number
-  payrollTimeframe: keyof typeof PayrollTimeframeEnum
-  price: number
-  status: keyof typeof StatusEnum
-  product: IProduct
-  currency: ICurrency
-  unit: IUnit
-  hasHarvestLog: boolean
-  deductions: Array<{ deductionID: string; price: string }>
+  name: string;
+  startDate: number;
+  endDate: number;
+  payrollTimeframe: keyof typeof PayrollTimeframeEnum;
+  price: number;
+  status: keyof typeof StatusEnum;
+  product: IProduct;
+  currency: ICurrency;
+  unit: IUnit;
+  hasHarvestLog: boolean;
+  deductions: Array<{ deductionID: string; price: string }>;
 }
 
 export interface ISeasonRequest {
-  name: string
-  startDate: number
-  payrollTimeframe: keyof typeof PayrollTimeframeEnum
-  price: number
-  farmId: string
-  productId: string
-  unitId: string
-  currencyId: string
-  deductions: Array<{ deductionID: string; price: string }>
+  name: string;
+  startDate: number;
+  payrollTimeframe: keyof typeof PayrollTimeframeEnum;
+  price: number;
+  farmId: string;
+  productId: string;
+  unitId: string;
+  currencyId: string;
+  deductions: Array<{ deductionID: string; price: string }>;
 }
 
 const SeasonDrawer = ({ dismiss, seasonId, ...props }: SeasonDrawerProps) => {
-  const intl = useIntl()
-  const { showAlert } = useAlert()
-  const { user } = useUser()
+  const intl = useIntl();
+  const { showAlert } = useAlert();
+  const { user } = useUser();
   const {
     GET_DETAIL_QUERY_KEY,
     UPDATE_MUTATION_KEY,
@@ -106,27 +107,28 @@ const SeasonDrawer = ({ dismiss, seasonId, ...props }: SeasonDrawerProps) => {
     createCache,
     updateCache,
     deleteCache,
-  } = useQueryCache("seasons", seasonId)
+  } = useQueryCache("seasons", seasonId);
 
-  const { GET_DETAIL_QUERY_KEY: GET_PRODUCTS_KEY } = useQueryCache("products")
+  const { GET_DETAIL_QUERY_KEY: GET_PRODUCTS_KEY } = useQueryCache("products");
 
-  const { GET_DETAIL_QUERY_KEY: GET_UNITS_KEY } = useQueryCache("units")
+  const { GET_DETAIL_QUERY_KEY: GET_UNITS_KEY } = useQueryCache("units");
 
-  const { GET_DETAIL_QUERY_KEY: GET_CURRENCY_KEY } = useQueryCache("currencies")
+  const { GET_DETAIL_QUERY_KEY: GET_CURRENCY_KEY } =
+    useQueryCache("currencies");
 
-  const [showEditForm, setShowEditForm] = useState<boolean>(!seasonId)
-  const [showSuccess, setShowSuccess] = useState<boolean>(false)
+  const [showEditForm, setShowEditForm] = useState<boolean>(!seasonId);
+  const [showSuccess, setShowSuccess] = useState<boolean>(false);
 
-  const [startDate, setStartDate] = useState<Dayjs | null>(dayjs())
-  const [products, setProducts] = useState<Array<IProduct>>([])
-  const [currencies, setCurrencies] = useState<Array<ICurrency>>([])
-  const [units, setUnits] = useState<Array<IUnit>>([])
-  const [season, setSeason] = useState<ISeasonResponse>()
+  const [startDate, setStartDate] = useState<Dayjs | null>(dayjs());
+  const [products, setProducts] = useState<Array<IProduct>>([]);
+  const [currencies, setCurrencies] = useState<Array<ICurrency>>([]);
+  const [units, setUnits] = useState<Array<IUnit>>([]);
+  const [season, setSeason] = useState<ISeasonResponse>();
 
-  const showEdit = () => setShowEditForm(true)
+  const showEdit = () => setShowEditForm(true);
   const hideEdit = () => {
-    setShowEditForm(false)
-  }
+    setShowEditForm(false);
+  };
 
   const formMethods = useForm<ISeasonRequest>({
     mode: "all",
@@ -142,18 +144,18 @@ const SeasonDrawer = ({ dismiss, seasonId, ...props }: SeasonDrawerProps) => {
       ],
     },
     // resolver: validateResolver(SeasonSchema), TODO: Validate schema
-  })
+  });
   const {
     control,
     handleSubmit,
     reset,
     formState: { isDirty, errors },
-  } = formMethods
+  } = formMethods;
 
   const onCreateSeasonClose = () => {
-    reset()
-    dismiss()
-  }
+    reset();
+    dismiss();
+  };
 
   // Get season by id
   const { isLoading: isLoadingDetail } = useQuery({
@@ -161,7 +163,7 @@ const SeasonDrawer = ({ dismiss, seasonId, ...props }: SeasonDrawerProps) => {
     queryFn: () => getSeasonById(seasonId),
     enabled: !!seasonId,
     onSuccess: (result) => {
-      setSeason(result)
+      setSeason(result);
     },
     onError: () => {
       showAlert(
@@ -170,45 +172,45 @@ const SeasonDrawer = ({ dismiss, seasonId, ...props }: SeasonDrawerProps) => {
           defaultMessage: "Oops! Information couldn't be displayed.",
         }),
         "error"
-      )
+      );
     },
-  })
+  });
 
   // Get all products
   const { isLoading: isLoadingProducts } = useQuery({
     queryKey: GET_PRODUCTS_KEY,
     queryFn: getProducts,
     onSuccess: (result) => {
-      setProducts(result)
+      setProducts(result);
     },
     onError: (error) => {
-      console.log(error)
+      console.log(error);
     },
-  })
+  });
 
   // Get all units
   const { isLoading: isLoadingUnits } = useQuery({
     queryKey: GET_UNITS_KEY,
     queryFn: getUnits,
     onSuccess: (result) => {
-      setUnits(result)
+      setUnits(result);
     },
     onError: (error) => {
-      console.log(error)
+      console.log(error);
     },
-  })
+  });
 
   // Get all currencies
   const { isLoading: isLoadingCurrency } = useQuery({
     queryKey: GET_CURRENCY_KEY,
     queryFn: getCurrencies,
     onSuccess: (result) => {
-      setCurrencies(result)
+      setCurrencies(result);
     },
     onError: (error) => {
-      console.log(error)
+      console.log(error);
     },
-  })
+  });
 
   // Create or update season
   const { mutate: saveSeasonMutation, isLoading } = useMutation({
@@ -216,11 +218,11 @@ const SeasonDrawer = ({ dismiss, seasonId, ...props }: SeasonDrawerProps) => {
     mutationFn: upsertSeason,
     onSuccess: (result) => {
       if (seasonId) {
-        handleUpdateSuccess(result)
+        handleUpdateSuccess(result);
       } else {
-        handleCreateSuccess(result)
+        handleCreateSuccess(result);
       }
-      setSeason(result)
+      setSeason(result);
     },
     onError: () => {
       showAlert(
@@ -229,24 +231,24 @@ const SeasonDrawer = ({ dismiss, seasonId, ...props }: SeasonDrawerProps) => {
           defaultMessage: "Oops! The season couldn't be saved.",
         }),
         "error"
-      )
+      );
     },
-  })
+  });
 
   // Delete season
   const { mutate: deleteSeasonMutation, isLoading: isDeleting } = useMutation({
     mutationKey: ["season", "delete", seasonId],
     mutationFn: deleteSeason,
     onSuccess: (result) => {
-      deleteCache(result)
+      deleteCache(result);
       showAlert(
         intl.formatMessage({
           id: "seasons.delete.season.response.success",
           defaultMessage: "The season was deleted successfully.",
         }),
         "success"
-      )
-      dismiss()
+      );
+      dismiss();
     },
     onError: () => {
       showAlert(
@@ -255,24 +257,24 @@ const SeasonDrawer = ({ dismiss, seasonId, ...props }: SeasonDrawerProps) => {
           defaultMessage: "Oops! The season couldn't be deleted.",
         }),
         "error"
-      )
+      );
     },
-  })
+  });
 
   // Close season
   const { mutate: closeSeasonMutation, isLoading: isClosing } = useMutation({
     mutationKey: ["season", "close", seasonId],
     mutationFn: closeSeason,
     onSuccess: (result) => {
-      updateCache(result)
+      updateCache(result);
       showAlert(
         intl.formatMessage({
           id: "seasons.close.season.response.success",
           defaultMessage: "The season was close successfully.",
         }),
         "success"
-      )
-      dismiss()
+      );
+      dismiss();
     },
     onError: () => {
       showAlert(
@@ -281,27 +283,27 @@ const SeasonDrawer = ({ dismiss, seasonId, ...props }: SeasonDrawerProps) => {
           defaultMessage: "Oops! The season couldn't be closed.",
         }),
         "error"
-      )
+      );
     },
-  })
+  });
 
   const handleCreateSuccess = (created: ISeasonResponse & { _id: string }) => {
-    createCache(created)
-    setShowSuccess(true)
-    dismiss()
-  }
+    createCache(created);
+    setShowSuccess(true);
+    dismiss();
+  };
 
   const handleUpdateSuccess = (updated: ISeasonResponse & { _id: string }) => {
-    updateCache(updated)
+    updateCache(updated);
     showAlert(
       intl.formatMessage({
         id: "seasons.update.season.response.success",
         defaultMessage: "The season was updated successfully",
       }),
       "success"
-    )
-    hideEdit()
-  }
+    );
+    hideEdit();
+  };
   const onSubmit = (data: ISeasonRequest) => {
     saveSeasonMutation({
       ...data,
@@ -310,16 +312,16 @@ const SeasonDrawer = ({ dismiss, seasonId, ...props }: SeasonDrawerProps) => {
         deductionID,
         price: +price || 0,
       })),
-    })
-  }
+    });
+  };
 
   const onDelete = () => {
-    deleteSeasonMutation(seasonId)
-  }
+    deleteSeasonMutation(seasonId);
+  };
 
   const onClose = () => {
-    closeSeasonMutation(seasonId)
-  }
+    closeSeasonMutation(seasonId);
+  };
 
   const handleClose = (
     _event: React.MouseEvent,
@@ -327,10 +329,10 @@ const SeasonDrawer = ({ dismiss, seasonId, ...props }: SeasonDrawerProps) => {
   ) => {
     if (!showEditForm) {
       if (reason === "backdropClick" || reason === "escapeKeyDown") {
-        dismiss()
+        dismiss();
       }
     }
-  }
+  };
 
   const seasonForm = (
     <FormProvider {...formMethods}>
@@ -373,7 +375,7 @@ const SeasonDrawer = ({ dismiss, seasonId, ...props }: SeasonDrawerProps) => {
                   helperText={errors.name?.message}
                 />
               </Box>
-            )
+            );
           }}
         />
 
@@ -395,11 +397,11 @@ const SeasonDrawer = ({ dismiss, seasonId, ...props }: SeasonDrawerProps) => {
                   value={startDate}
                   slotProps={{ textField: { size: "small" } }}
                   onChange={(newValue) => {
-                    setStartDate(newValue)
+                    setStartDate(newValue);
                   }}
                 />
               </Box>
-            )
+            );
           }}
         />
         <Controller
@@ -427,7 +429,7 @@ const SeasonDrawer = ({ dismiss, seasonId, ...props }: SeasonDrawerProps) => {
                         <MenuItem key={value} value={value}>
                           {label}
                         </MenuItem>
-                      )
+                      );
                     })}
                   </Select>
                   <FormHelperText error>
@@ -435,7 +437,49 @@ const SeasonDrawer = ({ dismiss, seasonId, ...props }: SeasonDrawerProps) => {
                   </FormHelperText>
                 </FormControl>
               </Box>
-            )
+            );
+          }}
+        />
+
+        <Controller
+          control={control}
+          name="productId"
+          render={({ field: { onChange, value: productId } }) => {
+            return (
+              <>
+                Producto
+                <SelectFreeSolo
+                  options={products.map((p) => ({
+                    id: p._id,
+                    label: p.name,
+                  }))}
+                  defaultValue={{
+                    id: productId,
+                    label:
+                      products.find((d) => d._id === productId)?.name ?? "",
+                  }}
+                  onCreate={async (value) => {
+                    // try {
+                    //   const data = await createDeductionMutation(value)
+                    //   setValue(`deductions.${index}.deductionID`, data?._id)
+                    //   createCache(data)
+
+                    //   return data?._id
+                    // } catch (error) {
+                    //   return ""
+                    // }
+                    console.log("create", value);
+                    return "new_id";
+                  }}
+                  onChange={({ id }) => {
+                    if (id) {
+                      onChange(id);
+                    }
+                  }}
+                  id="select-product-input"
+                />
+              </>
+            );
           }}
         />
 
@@ -462,7 +506,7 @@ const SeasonDrawer = ({ dismiss, seasonId, ...props }: SeasonDrawerProps) => {
                       : undefined
                   }
                   onChange={(_, newValue) => {
-                    onChange(newValue?.id)
+                    onChange(newValue?.id);
                   }}
                   renderInput={(params) => (
                     <div>
@@ -478,9 +522,10 @@ const SeasonDrawer = ({ dismiss, seasonId, ...props }: SeasonDrawerProps) => {
                   )}
                 />
               </Box>
-            )
+            );
           }}
         />
+
         <Controller
           control={control}
           name="unitId"
@@ -504,7 +549,7 @@ const SeasonDrawer = ({ dismiss, seasonId, ...props }: SeasonDrawerProps) => {
                       : undefined
                   }
                   onChange={(_, newValue) => {
-                    onChange(newValue?.id)
+                    onChange(newValue?.id);
                   }}
                   renderInput={(params) => (
                     <div>
@@ -520,7 +565,7 @@ const SeasonDrawer = ({ dismiss, seasonId, ...props }: SeasonDrawerProps) => {
                   )}
                 />
               </Box>
-            )
+            );
           }}
         />
 
@@ -546,7 +591,7 @@ const SeasonDrawer = ({ dismiss, seasonId, ...props }: SeasonDrawerProps) => {
                       : undefined
                   }
                   onChange={(_, newValue) => {
-                    onChange(newValue?.id)
+                    onChange(newValue?.id);
                   }}
                   loading={isLoadingCurrency}
                   renderInput={(params) => (
@@ -565,7 +610,7 @@ const SeasonDrawer = ({ dismiss, seasonId, ...props }: SeasonDrawerProps) => {
                   )}
                 />
               </Box>
-            )
+            );
           }}
         />
 
@@ -586,7 +631,7 @@ const SeasonDrawer = ({ dismiss, seasonId, ...props }: SeasonDrawerProps) => {
                   ref={ref}
                   value={value}
                   onChange={({ target }) => {
-                    onChange(target.value)
+                    onChange(target.value);
                   }}
                   type="number"
                   id="season-price-input"
@@ -596,7 +641,7 @@ const SeasonDrawer = ({ dismiss, seasonId, ...props }: SeasonDrawerProps) => {
                   helperText={errors.name?.message}
                 />
               </Box>
-            )
+            );
           }}
         />
 
@@ -671,7 +716,7 @@ const SeasonDrawer = ({ dismiss, seasonId, ...props }: SeasonDrawerProps) => {
         )}
       </Box>
     </FormProvider>
-  )
+  );
 
   const createSeasonDataList = React.useCallback(() => {
     return [
@@ -705,7 +750,7 @@ const SeasonDrawer = ({ dismiss, seasonId, ...props }: SeasonDrawerProps) => {
         "Deductions",
         <Stack direction="row" spacing={1} key="season-deductions">
           {season?.deductions.map(({ price }, index) => {
-            return <Chip key={index} label={price} size="small" />
+            return <Chip key={index} label={price} size="small" />;
           })}
         </Stack>,
       ],
@@ -714,8 +759,8 @@ const SeasonDrawer = ({ dismiss, seasonId, ...props }: SeasonDrawerProps) => {
       ["Gross Total", 0],
       ["Deductions Total", 0],
       ["Net Payment", 0],
-    ]
-  }, [season])
+    ];
+  }, [season]);
 
   const seasonDetail = (
     <Box
@@ -780,8 +825,8 @@ const SeasonDrawer = ({ dismiss, seasonId, ...props }: SeasonDrawerProps) => {
               payrollTimeframe: season?.payrollTimeframe,
               price: season?.price,
               deductions: season?.deductions ?? [],
-            })
-            showEdit()
+            });
+            showEdit();
           }}
         >
           Edit
@@ -829,7 +874,7 @@ const SeasonDrawer = ({ dismiss, seasonId, ...props }: SeasonDrawerProps) => {
         </Box>
       )}
     </Box>
-  )
+  );
 
   return (
     <>
@@ -866,13 +911,13 @@ const SeasonDrawer = ({ dismiss, seasonId, ...props }: SeasonDrawerProps) => {
             defaultMessage: "Back to Harvest Season",
           })}
           onClose={() => {
-            setShowSuccess(false)
-            onCreateSeasonClose()
+            setShowSuccess(false);
+            onCreateSeasonClose();
           }}
         />
       )}
     </>
-  )
-}
+  );
+};
 
 export default SeasonDrawer
