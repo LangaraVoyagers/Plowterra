@@ -1,14 +1,4 @@
 import {
-  FilePlus,
-  FileText,
-  HandCoins,
-  House,
-  Plant,
-  UserPlus,
-  Users,
-  List as ListIcon,
-} from "@phosphor-icons/react"
-import {
   Box,
   CssBaseline,
   Divider,
@@ -21,22 +11,32 @@ import {
   useMediaQuery,
 } from "@mui/material"
 import { CSSObject, Theme, styled, useTheme } from "@mui/material/styles"
+import {
+  FilePlus,
+  FileText,
+  HandCoins,
+  House,
+  List as ListIcon,
+  Plant,
+  UserPlus,
+  Users,
+} from "@phosphor-icons/react"
 import { LANGUAGES, useLocale } from "context/LocaleProvider"
 
+import { BodyText } from "ui/Typography"
 import { FormattedMessage } from "react-intl"
 import ListItem from "@mui/material/ListItem"
 import ListItemButton from "@mui/material/ListItemButton"
 import ListItemIcon from "@mui/material/ListItemIcon"
 import ListItemText from "@mui/material/ListItemText"
+import Logo from "../assets/images/Logo.svg"
+import LogoSquare from "../assets/images/LogoSquare.svg"
 import MuiDrawer from "@mui/material/Drawer"
 import { Outlet } from "react-router-dom"
+import SidebarIcon from "../assets/icons/SidebarIcon.svg"
 import paths from "shared/paths"
 import { useState } from "react"
 import { useUser } from "context/UserProvider"
-import { BodyText } from "ui/Typography"
-import SidebarIcon from "../assets/icons/SidebarIcon.svg"
-import Logo from "../assets/images/Logo.svg"
-import LogoSquare from "../assets/images/LogoSquare.svg"
 
 const DRAWER_WIDTH = 240
 
@@ -92,7 +92,7 @@ const sidebarItems = [
   {
     title: <FormattedMessage id="sidebar.home" defaultMessage="Home" />,
     icon: <House />,
-    href: "",
+    href: paths.home,
   },
   {
     title: (

@@ -1,20 +1,20 @@
 import { QueryClient, QueryClientProvider } from "react-query";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { AlertProvider } from "context/AlertProvider";
 import HarvestLogs from "pages/HarvestLogs"
+import Home from "pages/Home";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import Login from "pages/Login";
 import MainLayout from "layouts/MainLayout";
+import Payroll from "pages/Payroll";
 import Pickers from "pages/Pickers";
+import Preview from "pages/Preview";
 import { ReactQueryDevtools } from "react-query/devtools";
 import Seasons from "pages/Seasons";
-import paths from "shared/paths";
-import Payroll from "pages/Payroll";
 import { UserProvider } from "context/UserProvider";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import Preview from "pages/Preview";
-
+import paths from "shared/paths";
 
 const router = createBrowserRouter([
   {
@@ -23,8 +23,12 @@ const router = createBrowserRouter([
   },
   {
     path: "/",
-    element: <MainLayout />,
+    element: <MainLayout/>,
     children: [
+      {
+        path: paths.home,
+        element: <Home />
+      },
       {
         path: paths.pickers,
         element: <Pickers />,

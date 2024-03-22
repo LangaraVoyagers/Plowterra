@@ -1,3 +1,4 @@
+import { BodyText, Display } from "ui/Typography"
 import {
   Box,
   Breadcrumbs,
@@ -6,7 +7,6 @@ import {
   useMediaQuery,
   useTheme,
 } from "@mui/material"
-import { BodyText, Display } from "ui/Typography"
 
 interface BasicHomeProps {
   breadcrumb: Array<{ title: React.ReactNode; href: string }>
@@ -31,7 +31,7 @@ export default function BasicHome({
       <Box component="header" display="flex" flexDirection="column" gap={4}>
         {!mobile && (
           <Breadcrumbs maxItems={3} aria-label="breadcrumb">
-            {breadcrumb.map((item, index) => {
+            {breadcrumb?.map((item, index) => {
               if (index === breadcrumb.length - 1) {
                 return (
                   <BodyText
