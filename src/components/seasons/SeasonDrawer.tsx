@@ -109,7 +109,10 @@ const SeasonDrawer = ({ dismiss, seasonId, ...props }: SeasonDrawerProps) => {
     deleteCache,
   } = useQueryCache("seasons", seasonId);
 
-  const { GET_DETAIL_QUERY_KEY: GET_PRODUCTS_KEY } = useQueryCache("products");
+  const {
+    GET_DETAIL_QUERY_KEY: GET_PRODUCTS_KEY,
+    createCache: createProductCache,
+  } = useQueryCache("products");
 
   const { GET_DETAIL_QUERY_KEY: GET_UNITS_KEY } = useQueryCache("units");
 
@@ -308,10 +311,12 @@ const SeasonDrawer = ({ dismiss, seasonId, ...props }: SeasonDrawerProps) => {
     saveSeasonMutation({
       ...data,
       seasonId: seasonId,
-      deductions: data.deductions.map(({ deductionID, price }) => ({
-        deductionID,
-        price: +price || 0,
-      })),
+      deductions: data.deductions
+        .map(({ deductionID, price }) => ({
+          deductionID,
+          price: +price || 0,
+        }))
+        .filter((d) => !!d.deductionID),
     });
   };
 
@@ -469,8 +474,8 @@ const SeasonDrawer = ({ dismiss, seasonId, ...props }: SeasonDrawerProps) => {
                     try {
                       const data = await createProduct(value);
                       
-                      createCache(data);
-                  
+                      createProductCache(data);
+                      onChange(data?._id);
                       return data?._id;
                     } catch (error) {
                       return "";
