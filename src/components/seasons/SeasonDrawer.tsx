@@ -460,7 +460,7 @@ const SeasonDrawer = ({ dismiss, seasonId, ...props }: SeasonDrawerProps) => {
                     defaultMessage: "Product*",
                   })}
                 </InputLabel>
-                <SelectFreeSolo
+                <SelectFreeSolo sx={{ width: "100%"}}
                   options={products.map((p) => ({
                     id: p._id,
                     label: p.name,
