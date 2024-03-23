@@ -112,7 +112,7 @@ const columns: GridColDef[] = [
     renderHeader: () => (
       <FormattedMessage id="table.column.actions" defaultMessage="Actions" />
     ),
-    width: 150,
+    width: 100,
     align: "center",
     headerAlign: "center",
     renderCell: (data: GridRenderCellParams<IPickerResponse>) => {
@@ -208,7 +208,7 @@ const Pickers = () => {
           options={[
             { field: "name", sort: "asc", label: "A to Z" },
             { field: "name", sort: "desc", label: "Z to A" },
-            { field: "createdAt", sort: "desc", label: "Recently added" },
+            { field: "createdAt", sort: "desc", label: "Recent" },
             { field: "createdAt", sort: "asc", label: "Long-standing" },
           ]}
         />

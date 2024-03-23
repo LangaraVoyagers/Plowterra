@@ -56,7 +56,7 @@ const columns = (currency: string): GridColDef[] => [
         defaultMessage="Picker"
       />
     ),
-    minWidth: 200,
+    minWidth: 150,
     flex: 1,
     valueGetter: (params: GridValueGetterParams<IHarvestLogResponse>) =>
       params.row.picker?.name,
@@ -69,20 +69,15 @@ const columns = (currency: string): GridColDef[] => [
         defaultMessage="Picker List"
       />
     ),
-    minWidth: 150,
+    minWidth: 120,
     flex: 1,
     renderCell: (params) => {
       return (
         <Box>
           <BodyText size="md">{params.row.picker?.name}</BodyText>
           <BodyText size="xs" color="grey-500">
-            <FormattedDate
-              value={params.row.createdAt}
-              day="numeric"
-              month="long"
-              year="numeric"
-            />
-            - {params.row.season?.product?.name}
+            <FormattedDate value={params.row.createdAt} dateStyle="short" />-{" "}
+            {params.row.season?.product?.name}
           </BodyText>
         </Box>
       );
@@ -165,7 +160,7 @@ const columns = (currency: string): GridColDef[] => [
     ),
     headerAlign: "center",
     align: "center",
-    width: 200,
+    width: 110,
     renderCell: (data: GridRenderCellParams<{ _id: string }>) => {
       return <UpdateHarvestLog harvestLogId={data.row._id} />;
     },

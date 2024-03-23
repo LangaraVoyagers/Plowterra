@@ -29,15 +29,25 @@ const DataTable = <T extends GridValidRowModel>({
 
   return (
     <>
-      <StyledContainer pb={!desktop ? "6rem" : undefined}>
+      <StyledContainer pb={!desktop ? "4rem" : undefined}>
         <DataGrid
           getRowId={(data) => data?._id ?? data?.id}
           {...props}
+          initialState={{
+            ...props.initialState,
+            pagination: {
+              ...props.initialState?.pagination,
+              paginationModel: {
+                ...props.initialState?.pagination?.paginationModel,
+                pageSize: !desktop ? 20 : undefined,
+              },
+            },
+          }}
           pageSizeOptions={[10, 20, 50, 100]}
           slots={{
             pagination: !desktop ? Pagination : undefined,
           }}
-          autoPageSize
+          autoPageSize={!!desktop}
         />
       </StyledContainer>
     </>
@@ -51,7 +61,6 @@ const Pagination = () => {
 
   return (
     <StyledFooter
-      height="6rem"
       position="fixed"
       bottom={0}
       left={0}
@@ -59,6 +68,8 @@ const Pagination = () => {
       justifyContent="space-between"
       paddingLeft="2rem"
       paddingRight="2rem"
+      paddingTop="1rem"
+      paddingBottom="1rem"
       alignItems="center"
     >
       <PageStepper
@@ -95,10 +106,6 @@ const Pagination = () => {
   );
 };
 
-
-
-
-
 const StyledContainer = styled(Box)`
   width: 100%;
 
@@ -123,6 +130,7 @@ const StyledContainer = styled(Box)`
   }
 
   .MuiDataGrid-virtualScroller {
+    border-radius: 0 0 0.75rem 0.75rem;
     color: ${({ theme }) => theme.palette.grey[800]};
   }
 

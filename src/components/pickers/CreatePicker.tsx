@@ -19,6 +19,7 @@ const CreatePicker = () => {
         variant="contained"
         onClick={showDrawer}
         endIcon={<UserPlus size={20} />}
+        sx={{ textWrap: "nowrap" }}
       >
         <FormattedMessage
           id="pickers.create.button.text"

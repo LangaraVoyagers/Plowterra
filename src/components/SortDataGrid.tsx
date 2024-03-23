@@ -36,7 +36,7 @@ const SortDataGrid = (props: SortDataGridProps) => {
           });
         }
       }}
-      sx={{ minWidth: 150 }}
+      sx={{ minWidth: 150, height: 44 }}
     >
       {options.map(({ field, sort, label }, index) => (
         <MenuItem key={index} value={`${field}--${sort}`}>

@@ -35,9 +35,8 @@ const columns: GridColDef[] = [
         defaultMessage="Picker List"
       />
     ),
-    width: 250,
     flex: 1,
-    minWidth: 250,
+    minWidth: 150,
     renderCell: (params) => {
       return (
         <Box>
@@ -128,7 +127,7 @@ const columns: GridColDef[] = [
     renderHeader: () => (
       <FormattedMessage id="table.column.actions" defaultMessage="Actions" />
     ),
-    width: 150,
+    width: 100,
     align: "center",
     headerAlign: "center",
     sortable: false,

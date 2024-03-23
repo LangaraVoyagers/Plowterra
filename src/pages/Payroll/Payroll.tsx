@@ -135,7 +135,7 @@ const columns = (currency: string): GridColDef[] => [
     renderHeader: () => (
       <FormattedMessage id="table.column.actions" defaultMessage="Actions" />
     ),
-    width: 150,
+    width: 100,
     headerAlign: "center",
     align: "center",
     renderCell: () => <ViewMoreButton />,
@@ -199,13 +199,20 @@ const Payroll = () => {
           onClick={() =>
             navigate(`/payroll/preview?seasonId=${selectedSeason?._id}`)
           }
+          size="medium"
           endIcon={<CaretRight size={25} />}
         >
-          Start a payroll
+          Start payroll
         </Button>
       }
     >
-      <Box display="flex" justifyContent="space-between" alignItems="center">
+      <Box
+        display="flex"
+        justifyContent="space-between"
+        alignItems="center"
+        flexWrap="wrap"
+        gap="1rem"
+      >
         <Display component="h2" size="xs" fontWeight="SemiBold">
           Payroll History
         </Display>
