@@ -23,13 +23,20 @@ import { useUser } from "context/UserProvider";
 import { useEffect, useState } from "react";
 import { FormattedMessage } from "react-intl";
 import { BodyText } from "ui/Typography";
+import { Cookies } from "react-cookie";
+import { useNavigate } from "react-router-dom";
+import paths from "shared/paths";
+
+const cookies = new Cookies();
 
 type UserMenuProps = {
   expanded: boolean;
   onExpand: () => void;
 };
 const UserMenu = ({ expanded, onExpand }: UserMenuProps) => {
-  const { user } = useUser();
+  const navigate = useNavigate();
+
+  const { user, clearUser } = useUser();
   const [open, setOpen] = useState(false);
   const theme = useTheme();
   const desktop = useMediaQuery(theme.breakpoints.up("sm"));
@@ -44,6 +51,13 @@ const UserMenu = ({ expanded, onExpand }: UserMenuProps) => {
   const setLightMode = () => selectMode("light");
 
   const setDarkMode = () => selectMode("dark");
+
+  const logOut = () => {
+    clearUser();
+    cookies.remove("_t");
+    //TODO: endpoint to logout
+    navigate(paths.login);
+  };
 
   useEffect(() => {
     if (!!open && !expanded) {
@@ -147,6 +161,7 @@ const UserMenu = ({ expanded, onExpand }: UserMenuProps) => {
         <ListItem
           disablePadding
           sx={{ px: "0.5rem", py: "0.25rem", cursor: "pointer" }}
+          onClick={logOut}
         >
           <Box display="flex" gap="0.5rem" alignItems="center">
             <SignOut weight="bold" />

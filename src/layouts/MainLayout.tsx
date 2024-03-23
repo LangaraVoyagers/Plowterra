@@ -1,35 +1,40 @@
+import { BodyText, Label } from "ui/Typography";
+import { Box, IconButton, List, useMediaQuery } from "@mui/material";
+import { CSSObject, Theme, styled, useTheme } from "@mui/material/styles";
 import {
   FilePlus,
   FileText,
   HandCoins,
   House,
+  List as ListIcon,
   Plant,
   UserPlus,
   Users,
-  List as ListIcon,
 } from "@phosphor-icons/react"
-import { Box, IconButton, List, useMediaQuery } from "@mui/material";
-import { CSSObject, Theme, styled, useTheme } from "@mui/material/styles";
 
 import { FormattedMessage } from "react-intl";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import MuiDrawer from "@mui/material/Drawer";
-import { Outlet } from "react-router-dom";
-import paths from "shared/paths";
-import { useState } from "react";
-import { BodyText, Label } from "ui/Typography";
-import SidebarIconLight from "../assets/icons/SidebarIcon.svg";
-import SidebarIconDark from "../assets/icons/SidebarIconDark.svg";
-import LogoLight from "../assets/images/Logo.svg";
-import LogoSquareLight from "../assets/images/LogoSquare.svg";
 import LogoDark from "../assets/images/LogoDark.svg";
+import LogoLight from "../assets/images/Logo.svg";
 import LogoSquareDark from "../assets/images/LogoSquareDark.svg";
+import LogoSquareLight from "../assets/images/LogoSquare.svg";
+import MuiDrawer from "@mui/material/Drawer";
+import { Navigate, Outlet } from "react-router-dom";
+import SidebarIconDark from "../assets/icons/SidebarIconDark.svg";
+import SidebarIconLight from "../assets/icons/SidebarIcon.svg";
 import UserMenu from "components/UserMenu";
+import paths from "shared/paths";
 import { usePersistedState } from "hooks/usePersistedState";
+import { useMemo, useState } from "react";
 import { useThemMode } from "context/ThemeProvider";
+
+import { Cookies } from "react-cookie";
+import { useUser } from "context/UserProvider";
+
+const cookies = new Cookies();
 
 const DRAWER_WIDTH = 288;
 
@@ -141,16 +146,27 @@ const quickActions = [
 const container = window !== undefined ? () => window.document.body : undefined;
 
 export default function MainLayout() {
+  const {
+    user: { exp },
+  } = useUser();
+
+  const token = cookies.get("_t");
+
   const theme = useTheme();
   const mobile = useMediaQuery(theme.breakpoints.down("md"));
   const { mode } = useThemMode();
+
   const [expanded, setOpen] = usePersistedState("sidebar-expanded", true);
+  const [mobileOpen, setMobileOpen] = useState(false);
+
   const open = mobile || expanded;
 
   const Logo = mode === "light" ? LogoLight : LogoDark;
   const LogoSquare = mode === "light" ? LogoSquareLight : LogoSquareDark;
 
-  const [mobileOpen, setMobileOpen] = useState(false);
+  const expiration = useMemo(() => {
+    return exp * 1000;
+  }, [exp]);
 
   const handleDrawerClose = () => {
     if (mobile) {
@@ -258,6 +274,10 @@ export default function MainLayout() {
     </>
   );
 
+  if (!token || Date.now() >= expiration || !expiration) {
+    return <Navigate to={paths.login} />;
+  }
+
   return (
     <Box height="100%" display="flex" position="relative">
       {/* Sidebar */}
@@ -348,7 +368,11 @@ export const SidebarMenuItem = ({
           transitionTimingFunction: "ease-in-out",
         }}
         href={href}
-        selected={window.location.pathname.includes(href)}
+        selected={
+          href === paths.home
+            ? href === window.location.pathname
+            : window.location.pathname.includes(href)
+        }
       >
         <ListItemIcon
           sx={{

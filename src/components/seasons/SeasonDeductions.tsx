@@ -1,51 +1,51 @@
-import { Box, Button, Grid, IconButton, TextField } from "@mui/material"
-import { Minus, Plus } from "@phosphor-icons/react"
-import { createDeduction, getDeductions } from "api/deductions"
-import useQueryCache from "hooks/useQueryCache"
+import { Box, Button, Grid, IconButton, TextField } from "@mui/material";
+import { Minus, Plus } from "@phosphor-icons/react";
+import { createDeduction, getDeductions } from "api/deductions";
+import useQueryCache from "hooks/useQueryCache";
 
-import { useState } from "react"
-import { Controller, useFieldArray, useFormContext } from "react-hook-form"
-import { useMutation, useQuery } from "react-query"
-import { ISeasonRequest } from "./SeasonDrawer"
-import SelectFreeSolo from "./SelectFreeSolo"
+import { useState } from "react";
+import { Controller, useFieldArray, useFormContext } from "react-hook-form";
+import { useMutation, useQuery } from "react-query";
+import { ISeasonRequest } from "./SeasonDrawer";
+import SelectFreeSolo from "./SelectFreeSolo";
 
 const SeasonDeductions = () => {
-  const { control, setValue } = useFormContext<ISeasonRequest>()
+  const { control, setValue } = useFormContext<ISeasonRequest>();
   const { fields, remove, append } = useFieldArray({
     control,
     name: "deductions",
-  })
+  });
 
   const {
     GET_DETAIL_QUERY_KEY: GET_DEDUCTIONS_KEY,
     CREATE_MUTATION_KEY: CREATE_DEDUCTION_KEY,
     createCache,
-  } = useQueryCache("deductions")
+  } = useQueryCache("deductions");
 
   const [deductions, setDeductions] = useState<
     Array<{ _id: string; name: string }>
-  >([])
+  >([]);
 
-  const [isLoading, setIsLoading] = useState<boolean>(true)
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   // Get all deductions
   useQuery({
     queryKey: GET_DEDUCTIONS_KEY,
     queryFn: getDeductions,
     onSuccess: (result) => {
-      setDeductions(result)
-      setIsLoading(false)
+      setDeductions(result);
+      setIsLoading(false);
     },
     onError: (error) => {
-      console.log(error)
-      setIsLoading(false)
+      console.log(error);
+      setIsLoading(false);
     },
-  })
+  });
 
   const { mutateAsync: createDeductionMutation } = useMutation({
     mutationKey: CREATE_DEDUCTION_KEY,
     mutationFn: createDeduction,
-  })
+  });
 
   return (
     <Box display="flex" flexDirection="column" width="100%" gap={2}>
@@ -67,17 +67,17 @@ const SeasonDeductions = () => {
                   }}
                   onCreate={async (value) => {
                     try {
-                      const data = await createDeductionMutation(value)
-                      setValue(`deductions.${index}.deductionID`, data?._id)
-                      createCache(data)
+                      const data = await createDeductionMutation(value);
+                      setValue(`deductions.${index}.deductionID`, data?._id);
+                      createCache(data);
 
-                      return data?._id
+                      return data?._id;
                     } catch (error) {
-                      return ""
+                      return "";
                     }
                   }}
                   onChange={({ id }) => {
-                    id && setValue(`deductions.${index}.deductionID`, id)
+                    id && setValue(`deductions.${index}.deductionID`, id);
                   }}
                   id="select-deduction-input"
                 />
@@ -94,7 +94,7 @@ const SeasonDeductions = () => {
                         variant="outlined"
                         size="small"
                       />
-                    )
+                    );
                   }}
                 />
 
@@ -103,7 +103,7 @@ const SeasonDeductions = () => {
                 </IconButton>
               </Grid>
             </Grid>
-          )
+          );
         })}
       <Box display="flex" justifyContent="end">
         <Button
@@ -111,14 +111,14 @@ const SeasonDeductions = () => {
           size="small"
           endIcon={<Plus />}
           onClick={() => {
-            append({ deductionID: "", price: "" })
+            append({ deductionID: "", price: "" });
           }}
         >
           Add Deduction
         </Button>
       </Box>
     </Box>
-  )
-}
+  );
+};
 
-export default SeasonDeductions
+export default SeasonDeductions;
