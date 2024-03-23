@@ -6,5 +6,6 @@ const paths = {
   harvestLogs: "/harvest-logs",
   payroll: "/payroll",
   preview: "/payroll/preview",
+  logout: "/logout",
 };
 export default paths;

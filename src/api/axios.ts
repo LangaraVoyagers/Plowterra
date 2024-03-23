@@ -1,6 +1,7 @@
 import axios, { AxiosRequestConfig } from "axios";
 import endpoints from "./endpoints";
 import { Cookies } from "react-cookie";
+import paths from "shared/paths";
 
 const cookies = new Cookies();
 
@@ -38,20 +39,23 @@ instance.interceptors.response.use(
     if (code === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
 
-      const {
-        data: { data },
-      } = await instance.get("/auth/refresh", {
-        headers: {
-          Authorization: cookies.get("_t"),
-        },
-      });
+      window.location.replace(paths.logout);
 
-      if (data?.token) {
-        cookies.set("_t", data?.token);
-        originalRequest.headers["Authorization"] = data?.token;
-        return axios.request(originalRequest);
-      }
+      // const {
+      //   data: { data },
+      // } = await instance.get("/auth/refresh", {
+      //   headers: {
+      //     Authorization: cookies.get("_t"),
+      //   },
+      // });
+
+      // if (data?.token) {
+      //   cookies.set("_t", data?.token);
+      //   originalRequest.headers["Authorization"] = data?.token;
+      //   return axios.request(originalRequest);
+      // }
     }
+
     // TODO: handle refresh token
     return Promise.reject(error);
   }

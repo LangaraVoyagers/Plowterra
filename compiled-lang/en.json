@@ -1,4 +1,16 @@
 {
+  "Start Payroll": [
+    {
+      "type": 0,
+      "value": "Start Payroll"
+    }
+  ],
+  "breadcrumb.run_payroll": [
+    {
+      "type": 0,
+      "value": "Run Payroll"
+    }
+  ],
   "button.cancel": [
     {
       "type": 0,
@@ -11,10 +23,242 @@
       "value": "Edit"
     }
   ],
+  "button.view_more": [
+    {
+      "type": 0,
+      "value": "View More"
+    }
+  ],
+  "close.season.zone.label": [
+    {
+      "offset": 0,
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Loading..."
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Close season"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "isClosing"
+    }
+  ],
   "danger.zone.label": [
     {
       "type": 0,
       "value": "Danger Zone"
+    }
+  ],
+  "dashboard.greeting": [
+    {
+      "type": 0,
+      "value": "Today is"
+    }
+  ],
+  "dashboard.greetingAfternoon": [
+    {
+      "type": 0,
+      "value": "Good Afternoon"
+    }
+  ],
+  "dashboard.greetingEvening": [
+    {
+      "type": 0,
+      "value": "Good Evening"
+    }
+  ],
+  "dashboard.greetingMorning": [
+    {
+      "type": 0,
+      "value": "Good morning"
+    }
+  ],
+  "dashboard.greetingNoon": [
+    {
+      "type": 0,
+      "value": "Good Noon"
+    }
+  ],
+  "datagrid.column.actions": [
+    {
+      "type": 0,
+      "value": "Actions"
+    }
+  ],
+  "harvest.log.drawer.get.harvest.log.detail.error": [
+    {
+      "type": 0,
+      "value": "No harvest log found"
+    }
+  ],
+  "harvest.log.drawer.get.pickers.error": [
+    {
+      "type": 0,
+      "value": "No pickers found"
+    }
+  ],
+  "harvest.log.drawer.get.seasons.error": [
+    {
+      "type": 0,
+      "value": "No seasons found"
+    }
+  ],
+  "harvest.log.drawer.save.harvest.log.error": [
+    {
+      "type": 0,
+      "value": "Oops! The harvest log couldn't be saved."
+    }
+  ],
+  "harvest.log.empty.state.subtitle": [
+    {
+      "type": 0,
+      "value": "Let's add your first harvest entry!"
+    }
+  ],
+  "harvest.log.empty.state.title": [
+    {
+      "type": 0,
+      "value": "It seems you haven't added any harvest entry yet."
+    }
+  ],
+  "harvest.log.filters.drawer.apply.button": [
+    {
+      "type": 0,
+      "value": "Apply Filters"
+    }
+  ],
+  "harvest.log.filters.drawer.end_date.label": [
+    {
+      "type": 0,
+      "value": "End Date"
+    }
+  ],
+  "harvest.log.filters.drawer.harvest_season.label": [
+    {
+      "type": 0,
+      "value": "Harvest Season"
+    }
+  ],
+  "harvest.log.filters.drawer.picker.label": [
+    {
+      "type": 0,
+      "value": "Picker"
+    }
+  ],
+  "harvest.log.filters.drawer.reset.button": [
+    {
+      "type": 0,
+      "value": "Reset Filters"
+    }
+  ],
+  "harvest.log.filters.drawer.start_date.label": [
+    {
+      "type": 0,
+      "value": "Start Date"
+    }
+  ],
+  "harvest.logs.drawer.create.form.titme": [
+    {
+      "type": 0,
+      "value": "Add Harvest Log"
+    }
+  ],
+  "harvest.logs.get.harvest.logs.error": [
+    {
+      "type": 0,
+      "value": "No harvest logs found"
+    }
+  ],
+  "harvest.logs.get.pickers.error": [
+    {
+      "type": 0,
+      "value": "No picker found"
+    }
+  ],
+  "harvest.logs.new.entry.success.drawer.back.button": [
+    {
+      "type": 0,
+      "value": "Back to Harvest Log"
+    }
+  ],
+  "harvest.logs.new.entry.success.drawer.message": [
+    {
+      "type": 1,
+      "value": "pickerName"
+    },
+    {
+      "type": 0,
+      "value": " will receive an SMS with the summary."
+    }
+  ],
+  "harvest.logs.new.entry.success.drawer.title": [
+    {
+      "type": 0,
+      "value": "Harvest Entry Completed!"
+    }
+  ],
+  "harvest.logs.table.column.amount": [
+    {
+      "type": 0,
+      "value": "Amount"
+    }
+  ],
+  "harvest.logs.table.column.created_at": [
+    {
+      "type": 0,
+      "value": "Date"
+    }
+  ],
+  "harvest.logs.table.column.deductions": [
+    {
+      "type": 0,
+      "value": "Deduct "
+    },
+    {
+      "type": 1,
+      "value": "currency"
+    }
+  ],
+  "harvest.logs.table.column.picker": [
+    {
+      "type": 0,
+      "value": "Picker"
+    }
+  ],
+  "harvest.logs.table.column.picker_list": [
+    {
+      "type": 0,
+      "value": "Picker List"
+    }
+  ],
+  "harvest.logs.table.column.product": [
+    {
+      "type": 0,
+      "value": "Product"
+    }
+  ],
+  "harvestSeason": [
+    {
+      "type": 0,
+      "value": "Harvest Season"
+    }
+  ],
+  "harvestSeason.subtitle": [
+    {
+      "type": 0,
+      "value": "Create and close your harvest season here."
     }
   ],
   "login.button.submit": [
@@ -65,6 +309,134 @@
     {
       "type": 0,
       "value": "Welcome back!"
+    }
+  ],
+  "payroll.empty.state.subtitle": [
+    {
+      "type": 0,
+      "value": "It seems you don’t have any payroll history yet."
+    }
+  ],
+  "payroll.get.payroll.history.error": [
+    {
+      "type": 0,
+      "value": "No payroll history found"
+    }
+  ],
+  "payroll.history.columns.deductions.header": [
+    {
+      "type": 0,
+      "value": "Deductions "
+    },
+    {
+      "type": 1,
+      "value": "currency"
+    }
+  ],
+  "payroll.history.columns.harvest_amount.header": [
+    {
+      "type": 0,
+      "value": "Harvest Amount"
+    }
+  ],
+  "payroll.history.columns.net_pay.header": [
+    {
+      "type": 0,
+      "value": "Total net pay "
+    },
+    {
+      "type": 1,
+      "value": "currency"
+    }
+  ],
+  "payroll.history.columns.pay_date.header": [
+    {
+      "type": 0,
+      "value": "Pay Date"
+    }
+  ],
+  "payroll.history.columns.pay_period.header": [
+    {
+      "type": 0,
+      "value": "Pay Period"
+    }
+  ],
+  "payroll.history.columns.pickers.header": [
+    {
+      "type": 0,
+      "value": "Pickers"
+    }
+  ],
+  "payroll.preview.columns.deductions.header": [
+    {
+      "type": 0,
+      "value": "Deductions "
+    },
+    {
+      "type": 1,
+      "value": "currency"
+    }
+  ],
+  "payroll.preview.columns.gross_pay.header": [
+    {
+      "type": 0,
+      "value": "Gross Pay "
+    },
+    {
+      "type": 1,
+      "value": "currency"
+    }
+  ],
+  "payroll.preview.columns.harvest_amount.header": [
+    {
+      "type": 0,
+      "value": "Harvest Amount"
+    }
+  ],
+  "payroll.preview.columns.net_pay.header": [
+    {
+      "type": 0,
+      "value": "Net Pay "
+    },
+    {
+      "type": 1,
+      "value": "currency"
+    }
+  ],
+  "payroll.preview.columns.no.header": [
+    {
+      "type": 0,
+      "value": "No."
+    }
+  ],
+  "payroll.preview.columns.picker.header": [
+    {
+      "type": 0,
+      "value": "Picker"
+    }
+  ],
+  "payroll.preview.empty.state.subtitle": [
+    {
+      "type": 0,
+      "value": "Make sure the filters set are correct."
+    }
+  ],
+  "payroll.preview.empty.state.title": [
+    {
+      "type": 0,
+      "value": "It seems you don't have harvest entries to settle."
+    }
+  ],
+  "payroll.preview.get.error": [
+    {
+      "type": 0,
+      "value": "Oops! Preview is not available."
+    }
+  ],
+  "payroll.preview.run.error": [
+    {
+      "type": 0,
+      "value": "Oops! Payroll could not be saved."
     }
   ],
   "payrolls": [
@@ -127,7 +499,7 @@
           "value": [
             {
               "type": 0,
-              "value": "Confirm"
+              "value": "Save"
             }
           ]
         }
@@ -140,7 +512,7 @@
   "pickers.create.button.text": [
     {
       "type": 0,
-      "value": "Add New Picker"
+      "value": "Add Picker"
     }
   ],
   "pickers.create.form.address.label": [
@@ -197,10 +569,30 @@
       "value": "Oops! The picker couldn't be saved."
     }
   ],
-  "pickers.create.picker.response.success": [
+  "pickers.create.picker.success.drawer.back.button": [
     {
       "type": 0,
-      "value": "The picker was created successfully"
+      "value": "Back to Picker List"
+    }
+  ],
+  "pickers.create.picker.success.drawer.message": [
+    {
+      "type": 0,
+      "value": "You have successfully added "
+    },
+    {
+      "type": 1,
+      "value": "pickerName"
+    },
+    {
+      "type": 0,
+      "value": " to your picker list."
+    }
+  ],
+  "pickers.create.picker.success.drawer.title": [
+    {
+      "type": 0,
+      "value": "New Picker Added!"
     }
   ],
   "pickers.delete.label": [
@@ -283,6 +675,24 @@
       "value": "isEdit"
     }
   ],
+  "pickers.empty.state.subtitle": [
+    {
+      "type": 0,
+      "value": "Let's add your first picker!"
+    }
+  ],
+  "pickers.empty.state.title": [
+    {
+      "type": 0,
+      "value": "It seems you haven't added any pickers yet."
+    }
+  ],
+  "pickers.get.pickers.error": [
+    {
+      "type": 0,
+      "value": "No pickers found"
+    }
+  ],
   "pickers.sorting.error": [
     {
       "type": 0,
@@ -293,12 +703,6 @@
     {
       "type": 0,
       "value": "Add and view picker’s profile and information here."
-    }
-  ],
-  "pickers.table.button.view_more": [
-    {
-      "type": 0,
-      "value": "View More"
     }
   ],
   "pickers.table.column.emergency_contact": [
@@ -319,6 +723,12 @@
       "value": "Phone Number"
     }
   ],
+  "pickers.table.column.picker_list": [
+    {
+      "type": 0,
+      "value": "Picker List"
+    }
+  ],
   "pickers.update.picker.response.success": [
     {
       "type": 0,
@@ -329,6 +739,258 @@
     {
       "type": 0,
       "value": "Search"
+    }
+  ],
+  "season.button.close": [
+    {
+      "type": 0,
+      "value": "Close Season"
+    }
+  ],
+  "season.close.description": [
+    {
+      "type": 0,
+      "value": "After closing this season, this cannot be updated, and you will not be able to add more harvest logs."
+    }
+  ],
+  "season.detail.error": [
+    {
+      "type": 0,
+      "value": "Oops! Information couldn't be displayed."
+    }
+  ],
+  "season.filter.data.grid.get.seasons.error": [
+    {
+      "type": 0,
+      "value": "No seasons found"
+    }
+  ],
+  "seasons.button.delete": [
+    {
+      "offset": 0,
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Deleting..."
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Delete"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "isDeleting"
+    }
+  ],
+  "seasons.close.season.response.error": [
+    {
+      "type": 0,
+      "value": "Oops! The season couldn't be closed."
+    }
+  ],
+  "seasons.close.season.response.success": [
+    {
+      "type": 0,
+      "value": "The season was close successfully."
+    }
+  ],
+  "seasons.create.button.text": [
+    {
+      "type": 0,
+      "value": "Add Season"
+    }
+  ],
+  "seasons.create.form.deductions.label": [
+    {
+      "type": 0,
+      "value": "Deductions"
+    }
+  ],
+  "seasons.create.form.name.label": [
+    {
+      "type": 0,
+      "value": "Harvest Season Name"
+    }
+  ],
+  "seasons.create.form.payroll_timeframe.label": [
+    {
+      "type": 0,
+      "value": "Payroll Timeframe"
+    }
+  ],
+  "seasons.create.form.price.label": [
+    {
+      "type": 0,
+      "value": "Price per Unit"
+    }
+  ],
+  "seasons.create.form.product.label": [
+    {
+      "type": 0,
+      "value": "Product*"
+    }
+  ],
+  "seasons.create.form.start_date.label": [
+    {
+      "type": 0,
+      "value": "Start Date"
+    }
+  ],
+  "seasons.create.season.response.error": [
+    {
+      "type": 0,
+      "value": "Oops! The season couldn't be saved."
+    }
+  ],
+  "seasons.create.season.success.drawer.back.button": [
+    {
+      "type": 0,
+      "value": "Back to Harvest Season"
+    }
+  ],
+  "seasons.create.season.success.drawer.message": [
+    {
+      "type": 0,
+      "value": "Harvest season "
+    },
+    {
+      "type": 1,
+      "value": "seasonName"
+    },
+    {
+      "type": 0,
+      "value": " has been created."
+    }
+  ],
+  "seasons.create.season.success.drawer.title": [
+    {
+      "type": 0,
+      "value": "New Season Created!"
+    }
+  ],
+  "seasons.delete.label": [
+    {
+      "type": 0,
+      "value": "Delete harvest season data"
+    }
+  ],
+  "seasons.delete.season.response.error": [
+    {
+      "type": 0,
+      "value": "Oops! The season couldn't be deleted."
+    }
+  ],
+  "seasons.delete.season.response.success": [
+    {
+      "type": 0,
+      "value": "The season was deleted successfully."
+    }
+  ],
+  "seasons.detail.title": [
+    {
+      "offset": 0,
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Edit Season"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Add New Season"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "isEdit"
+    }
+  ],
+  "seasons.empty.state.subtitle": [
+    {
+      "type": 0,
+      "value": "Let's add your first harvest season!"
+    }
+  ],
+  "seasons.empty.state.title": [
+    {
+      "type": 0,
+      "value": "It seems you haven't added any seasons yet."
+    }
+  ],
+  "seasons.filtering.error": [
+    {
+      "type": 0,
+      "value": "Fail to apply filtering."
+    }
+  ],
+  "seasons.get.seasons.error": [
+    {
+      "type": 0,
+      "value": "No seasons found"
+    }
+  ],
+  "seasons.table.column.end_date": [
+    {
+      "type": 0,
+      "value": "End Date"
+    }
+  ],
+  "seasons.table.column.name": [
+    {
+      "type": 0,
+      "value": "Name"
+    }
+  ],
+  "seasons.table.column.picker_list": [
+    {
+      "type": 0,
+      "value": "Picker List"
+    }
+  ],
+  "seasons.table.column.product": [
+    {
+      "type": 0,
+      "value": "Product"
+    }
+  ],
+  "seasons.table.column.start_date": [
+    {
+      "type": 0,
+      "value": "Start Date"
+    }
+  ],
+  "seasons.table.column.status": [
+    {
+      "type": 0,
+      "value": "Status"
+    }
+  ],
+  "seasons.update.season.response.success": [
+    {
+      "type": 0,
+      "value": "The season was updated successfully"
+    }
+  ],
+  "sidebar.harvestSeason": [
+    {
+      "type": 0,
+      "value": "Harvest Season"
     }
   ],
   "sidebar.harvest_log": [
@@ -349,16 +1011,16 @@
       "value": "Home"
     }
   ],
+  "sidebar.main.sections": [
+    {
+      "type": 0,
+      "value": "Main Sections"
+    }
+  ],
   "sidebar.payroll": [
     {
       "type": 0,
       "value": "Payroll"
-    }
-  ],
-  "sidebar.payrolls": [
-    {
-      "type": 0,
-      "value": "Payrolls"
     }
   ],
   "sidebar.pickers": [
@@ -383,6 +1045,36 @@
     {
       "type": 0,
       "value": "Add Picker"
+    }
+  ],
+  "table.column.actions": [
+    {
+      "type": 0,
+      "value": "Actions"
+    }
+  ],
+  "user.menu.log_out": [
+    {
+      "type": 0,
+      "value": "Log out"
+    }
+  ],
+  "user.menu.profile": [
+    {
+      "type": 0,
+      "value": "Profile"
+    }
+  ],
+  "user.menu.settings": [
+    {
+      "type": 0,
+      "value": "Settings"
+    }
+  ],
+  "user.menu.theme": [
+    {
+      "type": 0,
+      "value": "Theme"
     }
   ]
 }

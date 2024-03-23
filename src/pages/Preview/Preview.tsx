@@ -234,7 +234,7 @@ const Preview: React.FC = () => {
     <BasicHome
       title={intl.formatMessage({
         id: "Start Payroll",
-        defaultMessage: "Start a Payroll",
+        defaultMessage: "Start Payroll",
       })}
       breadcrumb={[
         { title: "Farm Name", href: "/" },
@@ -248,7 +248,7 @@ const Preview: React.FC = () => {
           title: (
             <FormattedMessage
               id="breadcrumb.run_payroll"
-              defaultMessage="Run a Payroll"
+              defaultMessage="Run Payroll"
             />
           ),
           href: "",

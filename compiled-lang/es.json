@@ -1,4 +1,16 @@
 {
+  "Start Payroll": [
+    {
+      "type": 0,
+      "value": "Iniciar Planilla"
+    }
+  ],
+  "breadcrumb.run_payroll": [
+    {
+      "type": 0,
+      "value": "Ejecutar Planilla"
+    }
+  ],
   "button.cancel": [
     {
       "type": 0,
@@ -11,10 +23,432 @@
       "value": "Editar"
     }
   ],
+  "button.view_more": [
+    {
+      "type": 0,
+      "value": "Ver Más"
+    }
+  ],
+  "close.season.zone.label": [
+    {
+      "offset": 0,
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Cargando..."
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Cerrar temporada"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "isClosing"
+    }
+  ],
   "danger.zone.label": [
     {
       "type": 0,
       "value": "Zona de Peligro"
+    }
+  ],
+  "dashboard.greeting": [
+    {
+      "type": 0,
+      "value": "Hoy es"
+    }
+  ],
+  "dashboard.greetingAfternoon": [
+    {
+      "type": 0,
+      "value": "Buenas Tardes"
+    }
+  ],
+  "dashboard.greetingEvening": [
+    {
+      "type": 0,
+      "value": "Buenas Noches"
+    }
+  ],
+  "dashboard.greetingMorning": [
+    {
+      "type": 0,
+      "value": "Buenos días"
+    }
+  ],
+  "dashboard.greetingNoon": [
+    {
+      "type": 0,
+      "value": "Buenas tardes"
+    }
+  ],
+  "datagrid.column.actions": [
+    {
+      "type": 0,
+      "value": "Acciones"
+    }
+  ],
+  "harvest.log.drawer.get.harvest.log.detail.error": [
+    {
+      "type": 0,
+      "value": "No se encontró registro de cosecha"
+    }
+  ],
+  "harvest.log.drawer.get.pickers.error": [
+    {
+      "type": 0,
+      "value": "No se encontraron recolectores"
+    }
+  ],
+  "harvest.log.drawer.get.seasons.error": [
+    {
+      "type": 0,
+      "value": "No se encontraron temporadas"
+    }
+  ],
+  "harvest.log.drawer.save.harvest.log.error": [
+    {
+      "type": 0,
+      "value": "¡Vaya! No se pudo guardar el registro de cosecha."
+    }
+  ],
+  "harvest.log.empty.state.subtitle": [
+    {
+      "type": 0,
+      "value": "¡Agreguemos tu primer registro de cosecha!"
+    }
+  ],
+  "harvest.log.empty.state.title": [
+    {
+      "type": 0,
+      "value": "Parece que aún no has agregado ningún registro de cosecha."
+    }
+  ],
+  "harvest.log.filters.drawer.apply.button": [
+    {
+      "type": 0,
+      "value": "Aplicar Filtros"
+    }
+  ],
+  "harvest.log.filters.drawer.end_date.label": [
+    {
+      "type": 0,
+      "value": "Fecha de Fin"
+    }
+  ],
+  "harvest.log.filters.drawer.harvest_season.label": [
+    {
+      "type": 0,
+      "value": "Temporada de Cosecha"
+    }
+  ],
+  "harvest.log.filters.drawer.picker.label": [
+    {
+      "type": 0,
+      "value": "Recolector"
+    }
+  ],
+  "harvest.log.filters.drawer.reset.button": [
+    {
+      "type": 0,
+      "value": "Restablecer Filtros"
+    }
+  ],
+  "harvest.log.filters.drawer.start_date.label": [
+    {
+      "type": 0,
+      "value": "Fecha de Inicio"
+    }
+  ],
+  "harvest.logs.drawer.create.form.titme": [
+    {
+      "type": 0,
+      "value": "Agregar Registro de Cosecha"
+    }
+  ],
+  "harvest.logs.get.harvest.logs.error": [
+    {
+      "type": 0,
+      "value": "No se encontraron registros de cosecha"
+    }
+  ],
+  "harvest.logs.get.pickers.error": [
+    {
+      "type": 0,
+      "value": "No se encontró recolector"
+    }
+  ],
+  "harvest.logs.new.entry.success.drawer.back.button": [
+    {
+      "type": 0,
+      "value": "Volver al Registro de Cosecha"
+    }
+  ],
+  "harvest.logs.new.entry.success.drawer.message": [
+    {
+      "type": 1,
+      "value": "pickerName"
+    },
+    {
+      "type": 0,
+      "value": " recibirá un mensaje de texto con el resumen."
+    }
+  ],
+  "harvest.logs.new.entry.success.drawer.title": [
+    {
+      "type": 0,
+      "value": "¡Registro de Cosecha Completado!"
+    }
+  ],
+  "harvest.logs.table.column.amount": [
+    {
+      "type": 0,
+      "value": "Cantidad"
+    }
+  ],
+  "harvest.logs.table.column.created_at": [
+    {
+      "type": 0,
+      "value": "Fecha"
+    }
+  ],
+  "harvest.logs.table.column.deductions": [
+    {
+      "type": 0,
+      "value": "Deducir "
+    },
+    {
+      "type": 1,
+      "value": "currency"
+    }
+  ],
+  "harvest.logs.table.column.picker": [
+    {
+      "type": 0,
+      "value": "Recolector"
+    }
+  ],
+  "harvest.logs.table.column.picker_list": [
+    {
+      "type": 0,
+      "value": "Lista de Recolectores"
+    }
+  ],
+  "harvest.logs.table.column.product": [
+    {
+      "type": 0,
+      "value": "Producto"
+    }
+  ],
+  "harvestSeason": [
+    {
+      "type": 0,
+      "value": "Temporada de Cosecha"
+    }
+  ],
+  "harvestSeason.subtitle": [
+    {
+      "type": 0,
+      "value": "Crea y cierra tu temporada de cosecha aquí."
+    }
+  ],
+  "login.button.submit": [
+    {
+      "offset": 0,
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Cargando..."
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Iniciar Sesión"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "isLoading"
+    }
+  ],
+  "login.email.label": [
+    {
+      "type": 0,
+      "value": "Correo Electrónico"
+    }
+  ],
+  "login.password.label": [
+    {
+      "type": 0,
+      "value": "Contraseña"
+    }
+  ],
+  "login.signin.error": [
+    {
+      "type": 0,
+      "value": "¡Vaya! Parece que tienes problemas para iniciar sesión, por favor contacta al soporte."
+    }
+  ],
+  "login.singin.error": [
+    {
+      "type": 0,
+      "value": "¡Bienvenido de nuevo!"
+    }
+  ],
+  "payroll.empty.state.subtitle": [
+    {
+      "type": 0,
+      "value": "Parece que aún no tienes ningún historial de planilla."
+    }
+  ],
+  "payroll.get.payroll.history.error": [
+    {
+      "type": 0,
+      "value": "No se encontró historial de planilla"
+    }
+  ],
+  "payroll.history.columns.deductions.header": [
+    {
+      "type": 0,
+      "value": "Deducciones "
+    },
+    {
+      "type": 1,
+      "value": "currency"
+    }
+  ],
+  "payroll.history.columns.harvest_amount.header": [
+    {
+      "type": 0,
+      "value": "Cantidad de cosecha"
+    }
+  ],
+  "payroll.history.columns.net_pay.header": [
+    {
+      "type": 0,
+      "value": "Pago neto total "
+    },
+    {
+      "type": 1,
+      "value": "currency"
+    }
+  ],
+  "payroll.history.columns.pay_date.header": [
+    {
+      "type": 0,
+      "value": "Fecha de pago"
+    }
+  ],
+  "payroll.history.columns.pay_period.header": [
+    {
+      "type": 0,
+      "value": "Período de pago"
+    }
+  ],
+  "payroll.history.columns.pickers.header": [
+    {
+      "type": 0,
+      "value": "Recolectores"
+    }
+  ],
+  "payroll.preview.columns.deductions.header": [
+    {
+      "type": 0,
+      "value": "Deducciones "
+    },
+    {
+      "type": 1,
+      "value": "currency"
+    }
+  ],
+  "payroll.preview.columns.gross_pay.header": [
+    {
+      "type": 0,
+      "value": "Pago bruto "
+    },
+    {
+      "type": 1,
+      "value": "currency"
+    }
+  ],
+  "payroll.preview.columns.harvest_amount.header": [
+    {
+      "type": 0,
+      "value": "Cantidad de cosecha"
+    }
+  ],
+  "payroll.preview.columns.net_pay.header": [
+    {
+      "type": 0,
+      "value": "Pago neto "
+    },
+    {
+      "type": 1,
+      "value": "currency"
+    }
+  ],
+  "payroll.preview.columns.no.header": [
+    {
+      "type": 0,
+      "value": "No."
+    }
+  ],
+  "payroll.preview.columns.picker.header": [
+    {
+      "type": 0,
+      "value": "Recolector"
+    }
+  ],
+  "payroll.preview.empty.state.subtitle": [
+    {
+      "type": 0,
+      "value": "Asegúrate de que los filtros establecidos sean correctos."
+    }
+  ],
+  "payroll.preview.empty.state.title": [
+    {
+      "type": 0,
+      "value": "Parece que no tienes entradas de cosecha para liquidar."
+    }
+  ],
+  "payroll.preview.get.error": [
+    {
+      "type": 0,
+      "value": "¡Ups! La vista previa no está disponible."
+    }
+  ],
+  "payroll.preview.run.error": [
+    {
+      "type": 0,
+      "value": "¡Ups! No se pudo guardar la planilla."
+    }
+  ],
+  "payrolls": [
+    {
+      "type": 0,
+      "value": "Planilla"
+    }
+  ],
+  "payrolls.subtitle": [
+    {
+      "type": 0,
+      "value": "Crea las planillas y consulta registros de planillas anteriores."
     }
   ],
   "pickers": [
@@ -78,7 +512,7 @@
   "pickers.create.button.text": [
     {
       "type": 0,
-      "value": "Agregar Nuevo Recolector"
+      "value": "Agregar Recolector"
     }
   ],
   "pickers.create.form.address.label": [
@@ -96,13 +530,13 @@
   "pickers.create.form.emergency_contact_name.label": [
     {
       "type": 0,
-      "value": "Nombre de Contacto de Emergencia"
+      "value": "Nombre del Contacto de Emergencia"
     }
   ],
   "pickers.create.form.emergency_contact_number.label": [
     {
       "type": 0,
-      "value": "Número de Contacto de Emergencia"
+      "value": "Número del Contacto de Emergencia"
     }
   ],
   "pickers.create.form.identification_number.label": [
@@ -135,10 +569,30 @@
       "value": "¡Ups! No se pudo guardar el recolector."
     }
   ],
-  "pickers.create.picker.response.success": [
+  "pickers.create.picker.success.drawer.back.button": [
     {
       "type": 0,
-      "value": "El recolector se creó correctamente"
+      "value": "Volver a la Lista de Recolectores"
+    }
+  ],
+  "pickers.create.picker.success.drawer.message": [
+    {
+      "type": 0,
+      "value": "Has agregado exitosamente a "
+    },
+    {
+      "type": 1,
+      "value": "pickerName"
+    },
+    {
+      "type": 0,
+      "value": " a tu lista de recolectores."
+    }
+  ],
+  "pickers.create.picker.success.drawer.title": [
+    {
+      "type": 0,
+      "value": "¡Nuevo Recolector Agregado!"
     }
   ],
   "pickers.delete.label": [
@@ -156,7 +610,7 @@
   "pickers.delete.picker.response.success": [
     {
       "type": 0,
-      "value": "El recolector se eliminó correctamente."
+      "value": "El recolector se eliminó exitosamente."
     }
   ],
   "pickers.detail.address.label": [
@@ -174,13 +628,19 @@
   "pickers.detail.button.view_harvest_log": [
     {
       "type": 0,
-      "value": "Ver Registro de Temporada"
+      "value": "Ver Registro de Cosecha"
     }
   ],
   "pickers.detail.emergency_contact_person.label": [
     {
       "type": 0,
       "value": "Persona de Contacto de Emergencia"
+    }
+  ],
+  "pickers.detail.error": [
+    {
+      "type": 0,
+      "value": "¡Ups! No se pudo mostrar la información."
     }
   ],
   "pickers.detail.identification_number.label": [
@@ -215,16 +675,34 @@
       "value": "isEdit"
     }
   ],
+  "pickers.empty.state.subtitle": [
+    {
+      "type": 0,
+      "value": "¡Agreguemos tu primer recolector!"
+    }
+  ],
+  "pickers.empty.state.title": [
+    {
+      "type": 0,
+      "value": "Parece que aún no has agregado ningún recolector."
+    }
+  ],
+  "pickers.get.pickers.error": [
+    {
+      "type": 0,
+      "value": "No se encontraron recolectores"
+    }
+  ],
+  "pickers.sorting.error": [
+    {
+      "type": 0,
+      "value": "Error al aplicar la ordenación."
+    }
+  ],
   "pickers.subtitle": [
     {
       "type": 0,
       "value": "Agrega y visualiza el perfil e información del recolector aquí."
-    }
-  ],
-  "pickers.table.button.view_more": [
-    {
-      "type": 0,
-      "value": "Ver Más"
     }
   ],
   "pickers.table.column.emergency_contact": [
@@ -245,6 +723,12 @@
       "value": "Número de Teléfono"
     }
   ],
+  "pickers.table.column.picker_list": [
+    {
+      "type": 0,
+      "value": "Lista de Recolectores"
+    }
+  ],
   "pickers.update.picker.response.success": [
     {
       "type": 0,
@@ -257,10 +741,262 @@
       "value": "Buscar"
     }
   ],
+  "season.button.close": [
+    {
+      "type": 0,
+      "value": "Cerrar Temporada"
+    }
+  ],
+  "season.close.description": [
+    {
+      "type": 0,
+      "value": "Después de cerrar esta temporada, no se podrá actualizar y no podrá agregar más registros de cosecha."
+    }
+  ],
+  "season.detail.error": [
+    {
+      "type": 0,
+      "value": "¡Ups! No se pudo mostrar la información."
+    }
+  ],
+  "season.filter.data.grid.get.seasons.error": [
+    {
+      "type": 0,
+      "value": "No se encontraron temporadas"
+    }
+  ],
+  "seasons.button.delete": [
+    {
+      "offset": 0,
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Eliminando..."
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Eliminar"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "isDeleting"
+    }
+  ],
+  "seasons.close.season.response.error": [
+    {
+      "type": 0,
+      "value": "¡Ups! No se pudo cerrar la temporada."
+    }
+  ],
+  "seasons.close.season.response.success": [
+    {
+      "type": 0,
+      "value": "La temporada se cerró exitosamente."
+    }
+  ],
+  "seasons.create.button.text": [
+    {
+      "type": 0,
+      "value": "Agregar Temporada"
+    }
+  ],
+  "seasons.create.form.deductions.label": [
+    {
+      "type": 0,
+      "value": "Deducciones"
+    }
+  ],
+  "seasons.create.form.name.label": [
+    {
+      "type": 0,
+      "value": "Nombre de la Temporada de Cosecha"
+    }
+  ],
+  "seasons.create.form.payroll_timeframe.label": [
+    {
+      "type": 0,
+      "value": "Marco de Tiempo de la Planilla"
+    }
+  ],
+  "seasons.create.form.price.label": [
+    {
+      "type": 0,
+      "value": "Precio por Unidad"
+    }
+  ],
+  "seasons.create.form.product.label": [
+    {
+      "type": 0,
+      "value": "Producto*"
+    }
+  ],
+  "seasons.create.form.start_date.label": [
+    {
+      "type": 0,
+      "value": "Fecha de Inicio"
+    }
+  ],
+  "seasons.create.season.response.error": [
+    {
+      "type": 0,
+      "value": "¡Ups! No se pudo guardar la temporada."
+    }
+  ],
+  "seasons.create.season.success.drawer.back.button": [
+    {
+      "type": 0,
+      "value": "Volver a la Temporada de Cosecha"
+    }
+  ],
+  "seasons.create.season.success.drawer.message": [
+    {
+      "type": 0,
+      "value": "Se ha creado la temporada de cosecha "
+    },
+    {
+      "type": 1,
+      "value": "seasonName"
+    },
+    {
+      "type": 0,
+      "value": "."
+    }
+  ],
+  "seasons.create.season.success.drawer.title": [
+    {
+      "type": 0,
+      "value": "¡Nueva Temporada Creada!"
+    }
+  ],
+  "seasons.delete.label": [
+    {
+      "type": 0,
+      "value": "Eliminar datos de la temporada de cosecha"
+    }
+  ],
+  "seasons.delete.season.response.error": [
+    {
+      "type": 0,
+      "value": "¡Ups! No se pudo eliminar la temporada."
+    }
+  ],
+  "seasons.delete.season.response.success": [
+    {
+      "type": 0,
+      "value": "La temporada se eliminó correctamente."
+    }
+  ],
+  "seasons.detail.title": [
+    {
+      "offset": 0,
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Editar Temporada"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Agregar Nueva Temporada"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "isEdit"
+    }
+  ],
+  "seasons.empty.state.subtitle": [
+    {
+      "type": 0,
+      "value": "¡Agreguemos tu primera temporada de cosecha!"
+    }
+  ],
+  "seasons.empty.state.title": [
+    {
+      "type": 0,
+      "value": "Parece que aún no has agregado ninguna temporada."
+    }
+  ],
+  "seasons.filtering.error": [
+    {
+      "type": 0,
+      "value": "Error al aplicar el filtro."
+    }
+  ],
+  "seasons.get.seasons.error": [
+    {
+      "type": 0,
+      "value": "No se encontraron temporadas"
+    }
+  ],
+  "seasons.table.column.end_date": [
+    {
+      "type": 0,
+      "value": "Fecha de Fin"
+    }
+  ],
+  "seasons.table.column.name": [
+    {
+      "type": 0,
+      "value": "Nombre"
+    }
+  ],
+  "seasons.table.column.picker_list": [
+    {
+      "type": 0,
+      "value": "Lista de Recolectores"
+    }
+  ],
+  "seasons.table.column.product": [
+    {
+      "type": 0,
+      "value": "Producto"
+    }
+  ],
+  "seasons.table.column.start_date": [
+    {
+      "type": 0,
+      "value": "Fecha de Inicio"
+    }
+  ],
+  "seasons.table.column.status": [
+    {
+      "type": 0,
+      "value": "Estado"
+    }
+  ],
+  "seasons.update.season.response.success": [
+    {
+      "type": 0,
+      "value": "La temporada se actualizó correctamente"
+    }
+  ],
+  "sidebar.harvestSeason": [
+    {
+      "type": 0,
+      "value": "Temporada de Cosecha"
+    }
+  ],
   "sidebar.harvest_log": [
     {
       "type": 0,
-      "value": "Cosecha Diaria"
+      "value": "Registro de Cosecha"
     }
   ],
   "sidebar.harvest_season": [
@@ -275,10 +1011,16 @@
       "value": "Inicio"
     }
   ],
+  "sidebar.main.sections": [
+    {
+      "type": 0,
+      "value": "Secciones Principales"
+    }
+  ],
   "sidebar.payroll": [
     {
       "type": 0,
-      "value": "Nómina"
+      "value": "Planilla"
     }
   ],
   "sidebar.pickers": [
@@ -296,13 +1038,43 @@
   "sidebar.quick_actions.add_harvest_log": [
     {
       "type": 0,
-      "value": "Agregar Cosecha Diaria"
+      "value": "Agregar Entrada de Cosecha"
     }
   ],
   "sidebar.quick_actions.add_picker": [
     {
       "type": 0,
       "value": "Agregar Recolector"
+    }
+  ],
+  "table.column.actions": [
+    {
+      "type": 0,
+      "value": "Acciones"
+    }
+  ],
+  "user.menu.log_out": [
+    {
+      "type": 0,
+      "value": "Cerrar Sesión"
+    }
+  ],
+  "user.menu.profile": [
+    {
+      "type": 0,
+      "value": "Perfil"
+    }
+  ],
+  "user.menu.settings": [
+    {
+      "type": 0,
+      "value": "Configuración"
+    }
+  ],
+  "user.menu.theme": [
+    {
+      "type": 0,
+      "value": "Tema"
     }
   ]
 }

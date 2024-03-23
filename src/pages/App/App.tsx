@@ -6,7 +6,6 @@ import { AlertProvider } from "context/AlertProvider";
 import HarvestLogs from "pages/HarvestLogs"
 import Home from "pages/Home";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import Login from "pages/Login";
 import MainLayout from "layouts/MainLayout";
 import Payroll from "pages/Payroll";
 import Pickers from "pages/Pickers";
@@ -16,22 +15,21 @@ import Seasons from "pages/Seasons";
 import { UserProvider } from "context/UserProvider";
 import paths from "shared/paths";
 import PublicRoutes from "layouts/PublicRoutes";
+import LogOut from "pages/LogOut";
 
 const router = createBrowserRouter([
   {
     path: paths.login,
     element: <PublicRoutes />,
-    children: [
-      {
-        path: paths.login,
-        element: <Login />,
-      },
-    ],
   },
   {
     path: "/",
     element: <MainLayout />,
     children: [
+      {
+        path: paths.logout,
+        element: <LogOut />,
+      },
       {
         path: paths.home,
         element: <Home />,

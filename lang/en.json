@@ -1,12 +1,120 @@
 {
+  "Start Payroll": {
+    "defaultMessage": "Start Payroll"
+  },
+  "breadcrumb.run_payroll": {
+    "defaultMessage": "Run Payroll"
+  },
   "button.cancel": {
     "defaultMessage": "Cancel"
   },
   "button.edit": {
     "defaultMessage": "Edit"
   },
+  "button.view_more": {
+    "defaultMessage": "View More"
+  },
+  "close.season.zone.label": {
+    "defaultMessage": "{isClosing, plural, one {Loading...} other {Close season} }"
+  },
   "danger.zone.label": {
     "defaultMessage": "Danger Zone"
+  },
+  "dashboard.greeting": {
+    "defaultMessage": "Today is"
+  },
+  "dashboard.greetingAfternoon": {
+    "defaultMessage": "Good Afternoon"
+  },
+  "dashboard.greetingEvening": {
+    "defaultMessage": "Good Evening"
+  },
+  "dashboard.greetingMorning": {
+    "defaultMessage": "Good morning"
+  },
+  "dashboard.greetingNoon": {
+    "defaultMessage": "Good Noon"
+  },
+  "datagrid.column.actions": {
+    "defaultMessage": "Actions"
+  },
+  "harvest.log.drawer.get.harvest.log.detail.error": {
+    "defaultMessage": "No harvest log found"
+  },
+  "harvest.log.drawer.get.pickers.error": {
+    "defaultMessage": "No pickers found"
+  },
+  "harvest.log.drawer.get.seasons.error": {
+    "defaultMessage": "No seasons found"
+  },
+  "harvest.log.drawer.save.harvest.log.error": {
+    "defaultMessage": "Oops! The harvest log couldn't be saved."
+  },
+  "harvest.log.empty.state.subtitle": {
+    "defaultMessage": "Let's add your first harvest entry!"
+  },
+  "harvest.log.empty.state.title": {
+    "defaultMessage": "It seems you haven't added any harvest entry yet."
+  },
+  "harvest.log.filters.drawer.apply.button": {
+    "defaultMessage": "Apply Filters"
+  },
+  "harvest.log.filters.drawer.end_date.label": {
+    "defaultMessage": "End Date"
+  },
+  "harvest.log.filters.drawer.harvest_season.label": {
+    "defaultMessage": "Harvest Season"
+  },
+  "harvest.log.filters.drawer.picker.label": {
+    "defaultMessage": "Picker"
+  },
+  "harvest.log.filters.drawer.reset.button": {
+    "defaultMessage": "Reset Filters"
+  },
+  "harvest.log.filters.drawer.start_date.label": {
+    "defaultMessage": "Start Date"
+  },
+  "harvest.logs.drawer.create.form.titme": {
+    "defaultMessage": "Add Harvest Log"
+  },
+  "harvest.logs.get.harvest.logs.error": {
+    "defaultMessage": "No harvest logs found"
+  },
+  "harvest.logs.get.pickers.error": {
+    "defaultMessage": "No picker found"
+  },
+  "harvest.logs.new.entry.success.drawer.back.button": {
+    "defaultMessage": "Back to Harvest Log"
+  },
+  "harvest.logs.new.entry.success.drawer.message": {
+    "defaultMessage": "{pickerName} will receive an SMS with the summary."
+  },
+  "harvest.logs.new.entry.success.drawer.title": {
+    "defaultMessage": "Harvest Entry Completed!"
+  },
+  "harvest.logs.table.column.amount": {
+    "defaultMessage": "Amount"
+  },
+  "harvest.logs.table.column.created_at": {
+    "defaultMessage": "Date"
+  },
+  "harvest.logs.table.column.deductions": {
+    "defaultMessage": "Deduct {currency}"
+  },
+  "harvest.logs.table.column.picker": {
+    "defaultMessage": "Picker"
+  },
+  "harvest.logs.table.column.picker_list": {
+    "defaultMessage": "Picker List"
+  },
+  "harvest.logs.table.column.product": {
+    "defaultMessage": "Product"
+  },
+  "harvestSeason": {
+    "defaultMessage": "Harvest Season"
+  },
+  "harvestSeason.subtitle": {
+    "defaultMessage": "Create and close your harvest season here."
   },
   "login.button.submit": {
     "defaultMessage": "{isLoading, plural, one {Loading...} other {Login} }"
@@ -23,6 +131,60 @@
   "login.singin.error": {
     "defaultMessage": "Welcome back!"
   },
+  "payroll.empty.state.subtitle": {
+    "defaultMessage": "It seems you don’t have any payroll history yet."
+  },
+  "payroll.get.payroll.history.error": {
+    "defaultMessage": "No payroll history found"
+  },
+  "payroll.history.columns.deductions.header": {
+    "defaultMessage": "Deductions {currency}"
+  },
+  "payroll.history.columns.harvest_amount.header": {
+    "defaultMessage": "Harvest Amount"
+  },
+  "payroll.history.columns.net_pay.header": {
+    "defaultMessage": "Total net pay {currency}"
+  },
+  "payroll.history.columns.pay_date.header": {
+    "defaultMessage": "Pay Date"
+  },
+  "payroll.history.columns.pay_period.header": {
+    "defaultMessage": "Pay Period"
+  },
+  "payroll.history.columns.pickers.header": {
+    "defaultMessage": "Pickers"
+  },
+  "payroll.preview.columns.deductions.header": {
+    "defaultMessage": "Deductions {currency}"
+  },
+  "payroll.preview.columns.gross_pay.header": {
+    "defaultMessage": "Gross Pay {currency}"
+  },
+  "payroll.preview.columns.harvest_amount.header": {
+    "defaultMessage": "Harvest Amount"
+  },
+  "payroll.preview.columns.net_pay.header": {
+    "defaultMessage": "Net Pay {currency}"
+  },
+  "payroll.preview.columns.no.header": {
+    "defaultMessage": "No."
+  },
+  "payroll.preview.columns.picker.header": {
+    "defaultMessage": "Picker"
+  },
+  "payroll.preview.empty.state.subtitle": {
+    "defaultMessage": "Make sure the filters set are correct."
+  },
+  "payroll.preview.empty.state.title": {
+    "defaultMessage": "It seems you don't have harvest entries to settle."
+  },
+  "payroll.preview.get.error": {
+    "defaultMessage": "Oops! Preview is not available."
+  },
+  "payroll.preview.run.error": {
+    "defaultMessage": "Oops! Payroll could not be saved."
+  },
   "payrolls": {
     "defaultMessage": "Payroll"
   },
@@ -36,10 +198,10 @@
     "defaultMessage": "{isDeleting, plural, one {Deleting...} other {Delete} }"
   },
   "pickers.button.save": {
-    "defaultMessage": "{isLoading, plural, one {Loading...} other {Confirm} }"
+    "defaultMessage": "{isLoading, plural, one {Loading...} other {Save} }"
   },
   "pickers.create.button.text": {
-    "defaultMessage": "Add New Picker"
+    "defaultMessage": "Add Picker"
   },
   "pickers.create.form.address.label": {
     "defaultMessage": "Address"
@@ -68,8 +230,14 @@
   "pickers.create.picker.response.error": {
     "defaultMessage": "Oops! The picker couldn't be saved."
   },
-  "pickers.create.picker.response.success": {
-    "defaultMessage": "The picker was created successfully"
+  "pickers.create.picker.success.drawer.back.button": {
+    "defaultMessage": "Back to Picker List"
+  },
+  "pickers.create.picker.success.drawer.message": {
+    "defaultMessage": "You have successfully added {pickerName} to your picker list."
+  },
+  "pickers.create.picker.success.drawer.title": {
+    "defaultMessage": "New Picker Added!"
   },
   "pickers.delete.label": {
     "defaultMessage": "Delete picker data"
@@ -101,14 +269,20 @@
   "pickers.detail.title": {
     "defaultMessage": "{isEdit, plural, one {Edit Picker} other {Add Picker} }"
   },
+  "pickers.empty.state.subtitle": {
+    "defaultMessage": "Let's add your first picker!"
+  },
+  "pickers.empty.state.title": {
+    "defaultMessage": "It seems you haven't added any pickers yet."
+  },
+  "pickers.get.pickers.error": {
+    "defaultMessage": "No pickers found"
+  },
   "pickers.sorting.error": {
     "defaultMessage": "Fail to apply sorting."
   },
   "pickers.subtitle": {
     "defaultMessage": "Add and view picker’s profile and information here."
-  },
-  "pickers.table.button.view_more": {
-    "defaultMessage": "View More"
   },
   "pickers.table.column.emergency_contact": {
     "defaultMessage": "Emergency Contact"
@@ -119,11 +293,116 @@
   "pickers.table.column.phone_number": {
     "defaultMessage": "Phone Number"
   },
+  "pickers.table.column.picker_list": {
+    "defaultMessage": "Picker List"
+  },
   "pickers.update.picker.response.success": {
     "defaultMessage": "The picker was updated successfully"
   },
   "search": {
     "defaultMessage": "Search"
+  },
+  "season.button.close": {
+    "defaultMessage": "Close Season"
+  },
+  "season.close.description": {
+    "defaultMessage": "After closing this season, this cannot be updated, and you will not be able to add more harvest logs."
+  },
+  "season.detail.error": {
+    "defaultMessage": "Oops! Information couldn't be displayed."
+  },
+  "season.filter.data.grid.get.seasons.error": {
+    "defaultMessage": "No seasons found"
+  },
+  "seasons.button.delete": {
+    "defaultMessage": "{isDeleting, plural, one {Deleting...} other {Delete} }"
+  },
+  "seasons.close.season.response.error": {
+    "defaultMessage": "Oops! The season couldn't be closed."
+  },
+  "seasons.close.season.response.success": {
+    "defaultMessage": "The season was close successfully."
+  },
+  "seasons.create.button.text": {
+    "defaultMessage": "Add Season"
+  },
+  "seasons.create.form.deductions.label": {
+    "defaultMessage": "Deductions"
+  },
+  "seasons.create.form.name.label": {
+    "defaultMessage": "Harvest Season Name"
+  },
+  "seasons.create.form.payroll_timeframe.label": {
+    "defaultMessage": "Payroll Timeframe"
+  },
+  "seasons.create.form.price.label": {
+    "defaultMessage": "Price per Unit"
+  },
+  "seasons.create.form.product.label": {
+    "defaultMessage": "Product*"
+  },
+  "seasons.create.form.start_date.label": {
+    "defaultMessage": "Start Date"
+  },
+  "seasons.create.season.response.error": {
+    "defaultMessage": "Oops! The season couldn't be saved."
+  },
+  "seasons.create.season.success.drawer.back.button": {
+    "defaultMessage": "Back to Harvest Season"
+  },
+  "seasons.create.season.success.drawer.message": {
+    "defaultMessage": "Harvest season {seasonName} has been created."
+  },
+  "seasons.create.season.success.drawer.title": {
+    "defaultMessage": "New Season Created!"
+  },
+  "seasons.delete.label": {
+    "defaultMessage": "Delete harvest season data"
+  },
+  "seasons.delete.season.response.error": {
+    "defaultMessage": "Oops! The season couldn't be deleted."
+  },
+  "seasons.delete.season.response.success": {
+    "defaultMessage": "The season was deleted successfully."
+  },
+  "seasons.detail.title": {
+    "defaultMessage": "{isEdit, plural, one {Edit Season} other {Add New Season} }"
+  },
+  "seasons.empty.state.subtitle": {
+    "defaultMessage": "Let's add your first harvest season!"
+  },
+  "seasons.empty.state.title": {
+    "defaultMessage": "It seems you haven't added any seasons yet."
+  },
+  "seasons.filtering.error": {
+    "defaultMessage": "Fail to apply filtering."
+  },
+  "seasons.get.seasons.error": {
+    "defaultMessage": "No seasons found"
+  },
+  "seasons.table.column.end_date": {
+    "defaultMessage": "End Date"
+  },
+  "seasons.table.column.name": {
+    "defaultMessage": "Name"
+  },
+  "seasons.table.column.picker_list": {
+    "defaultMessage": "Picker List"
+  },
+  "seasons.table.column.product": {
+    "defaultMessage": "Product"
+  },
+  "seasons.table.column.start_date": {
+    "defaultMessage": "Start Date"
+  },
+  "seasons.table.column.status": {
+    "defaultMessage": "Status"
+  },
+  "seasons.update.season.response.success": {
+    "defaultMessage": "The season was updated successfully"
+  },
+  "sidebar.harvestSeason": {
+    "defaultMessage": "Harvest Season"
   },
   "sidebar.harvest_log": {
     "defaultMessage": "Harvest Log"
@@ -134,11 +413,11 @@
   "sidebar.home": {
     "defaultMessage": "Home"
   },
+  "sidebar.main.sections": {
+    "defaultMessage": "Main Sections"
+  },
   "sidebar.payroll": {
     "defaultMessage": "Payroll"
-  },
-  "sidebar.payrolls": {
-    "defaultMessage": "Payrolls"
   },
   "sidebar.pickers": {
     "defaultMessage": "Pickers"
@@ -151,5 +430,20 @@
   },
   "sidebar.quick_actions.add_picker": {
     "defaultMessage": "Add Picker"
+  },
+  "table.column.actions": {
+    "defaultMessage": "Actions"
+  },
+  "user.menu.log_out": {
+    "defaultMessage": "Log out"
+  },
+  "user.menu.profile": {
+    "defaultMessage": "Profile"
+  },
+  "user.menu.settings": {
+    "defaultMessage": "Settings"
+  },
+  "user.menu.theme": {
+    "defaultMessage": "Theme"
   }
 }
