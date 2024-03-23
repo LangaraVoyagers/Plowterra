@@ -1,34 +1,34 @@
+import { BodyText, Label } from "ui/Typography";
+import { Box, IconButton, List, useMediaQuery } from "@mui/material";
+import { CSSObject, Theme, styled, useTheme } from "@mui/material/styles";
 import {
   FilePlus,
   FileText,
   HandCoins,
   House,
+  List as ListIcon,
   Plant,
   UserPlus,
   Users,
-  List as ListIcon,
 } from "@phosphor-icons/react"
-import { Box, IconButton, List, useMediaQuery } from "@mui/material";
-import { CSSObject, Theme, styled, useTheme } from "@mui/material/styles";
 
 import { FormattedMessage } from "react-intl";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
+import LogoDark from "../assets/images/LogoDark.svg";
+import LogoLight from "../assets/images/Logo.svg";
+import LogoSquareDark from "../assets/images/LogoSquareDark.svg";
+import LogoSquareLight from "../assets/images/LogoSquare.svg";
 import MuiDrawer from "@mui/material/Drawer";
 import { Outlet } from "react-router-dom";
-import paths from "shared/paths";
-import { useState } from "react";
-import { BodyText, Label } from "ui/Typography";
-import SidebarIconLight from "../assets/icons/SidebarIcon.svg";
 import SidebarIconDark from "../assets/icons/SidebarIconDark.svg";
-import LogoLight from "../assets/images/Logo.svg";
-import LogoSquareLight from "../assets/images/LogoSquare.svg";
-import LogoDark from "../assets/images/LogoDark.svg";
-import LogoSquareDark from "../assets/images/LogoSquareDark.svg";
+import SidebarIconLight from "../assets/icons/SidebarIcon.svg";
 import UserMenu from "components/UserMenu";
+import paths from "shared/paths";
 import { usePersistedState } from "hooks/usePersistedState";
+import { useState } from "react";
 import { useThemMode } from "context/ThemeProvider";
 
 const DRAWER_WIDTH = 288;
