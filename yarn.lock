@@ -2712,10 +2712,10 @@ prelude-ls@^1.2.1:
   resolved "https://registry.npmjs.org/prelude-ls/-/prelude-ls-1.2.1.tgz"
   integrity sha512-vkcDPrRZo1QZLbn5RLGPpg/WmIQ65qoWWhcGKf/b5eplkkarX0m9z8ppCat4mlOqUsWpyNuYgO3VRyrYHSzX5g==
 
-project-2-types@^2.0.7:
-  version "2.0.7"
-  resolved "https://registry.npmjs.org/project-2-types/-/project-2-types-2.0.7.tgz"
-  integrity sha512-V1pohlAlRi2OVuPHg0Djw9MYI9naGFVSCbS1l0ZaLzqA8z+Ni1eD7K23OPwxBxgPtmVJfd+ompzVGr0GwrJoRA==
+project-2-types@^2.0.8:
+  version "2.0.8"
+  resolved "https://registry.npmjs.org/project-2-types/-/project-2-types-2.0.8.tgz"
+  integrity sha512-N3oduHgruXUrw6jrtirycrLZz94Z+vaoyBcEOi4J2JiM+Q78BvkCabr7olPbaJrAMg+HD8BbkYWcTj+jALSTww==
   dependencies:
     ajv "^8.12.0"
     mongoose "^8.2.0"

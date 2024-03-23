@@ -138,10 +138,12 @@ const HarvestLogDrawer = ({
   } = useForm<IHarvestCorrectionForm>({
     defaultValues: {
       farmId: user.farm._id,
-      parentId: harvestLogId,
       seasonDeductionIds: [],
+      pickerId: harvestLog?.picker?._id as string,
+      seasonId: harvestLog?.season?._id as string,
+      parentId: harvestLogId as string,
     },
-    resolver: ajvResolver(HarvestLogSchema),
+    // resolver: ajvResolver(HarvestLogSchema), //TODO: create a new schema for correction
   });
 
   const createHarvestLogDataList = React.useCallback(() => {
@@ -274,13 +276,22 @@ const HarvestLogDrawer = ({
   });
 
   const { mutate: saveHarvestLogMutation, isLoading } = useMutation({
-    mutationKey: harvestLogId ? UPDATE_MUTATION_KEY : CREATE_MUTATION_KEY,
+    mutationKey:
+      harvestLogId && !openCorrectionEntry
+        ? UPDATE_MUTATION_KEY
+        : CREATE_MUTATION_KEY,
     mutationFn: createHarvestLog,
     onSuccess: (result) => {
-      if (harvestLogId) {
+      if (harvestLogId && !openCorrectionEntry) {
         handleUpdateSuccess(result);
+        console.log("update:", result);
       } else {
         handleCreateSuccess(result);
+        console.log("create:", result);
+
+        if (openCorrectionEntry) {
+          setOpenCorrectionEntry(false);
+        }
       }
     },
     onError: (error) => {
@@ -338,15 +349,14 @@ const HarvestLogDrawer = ({
   };
 
   const onCorrection = (data: IHarvestCorrectionForm) => {
-    console.log("correction data yey");
     saveHarvestLogMutation({
       farmId: data.farmId,
       collectedAmount: data.collectedAmount,
-      pickerId: harvestLog?.picker?._id ?? "",
-      seasonId: harvestLog?.season?._id ?? "",
+      pickerId: harvestLog?.picker?._id as string,
+      seasonId: harvestLog?.season?._id as string,
       seasonDeductionIds: data.seasonDeductionIds,
       notes: "", // should actually be able to add a note too
-      parentId: harvestLogId,
+      parentId: harvestLogId as string,
     });
   };
 
