@@ -31,10 +31,20 @@ interface ICreateHarvestLog {
 
 export const createHarvestLog = async (payload: ICreateHarvestLog) => {
   try {
-    const {
-      data: { data },
-    } = await axios.post(endpoints.harvestLogs, payload);
-    return data;
+    if (payload.parentId) {
+      const {
+        data: { data },
+      } = await axios.post(
+        `${endpoints.harvestLogs}/${payload.parentId}`,
+        payload
+      );
+      return data;
+    } else {
+      const {
+        data: { data },
+      } = await axios.post(endpoints.harvestLogs, payload);
+      return data;
+    }
   } catch (error) {
     console.log({ error });
     throw error;

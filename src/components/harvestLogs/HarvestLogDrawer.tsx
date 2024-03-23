@@ -139,9 +139,6 @@ const HarvestLogDrawer = ({
     defaultValues: {
       farmId: user.farm._id,
       seasonDeductionIds: [],
-      pickerId: harvestLog?.picker?._id as string,
-      seasonId: harvestLog?.season?._id as string,
-      parentId: harvestLogId as string,
     },
     // resolver: ajvResolver(HarvestLogSchema), //TODO: create a new schema for correction
   });
@@ -284,11 +281,8 @@ const HarvestLogDrawer = ({
     onSuccess: (result) => {
       if (harvestLogId && !openCorrectionEntry) {
         handleUpdateSuccess(result);
-        console.log("update:", result);
       } else {
         handleCreateSuccess(result);
-        console.log("create:", result);
-
         if (openCorrectionEntry) {
           setOpenCorrectionEntry(false);
         }
@@ -356,7 +350,7 @@ const HarvestLogDrawer = ({
       seasonId: harvestLog?.season?._id as string,
       seasonDeductionIds: data.seasonDeductionIds,
       notes: "", // should actually be able to add a note too
-      parentId: harvestLogId as string,
+      parentId: harvestLog?.id as string,
     });
   };
 
