@@ -15,19 +15,26 @@ import { ReactQueryDevtools } from "react-query/devtools";
 import Seasons from "pages/Seasons";
 import { UserProvider } from "context/UserProvider";
 import paths from "shared/paths";
+import PublicRoutes from "layouts/PublicRoutes";
 
 const router = createBrowserRouter([
   {
     path: paths.login,
-    element: <Login />,
+    element: <PublicRoutes />,
+    children: [
+      {
+        path: paths.login,
+        element: <Login />,
+      },
+    ],
   },
   {
     path: "/",
-    element: <MainLayout/>,
+    element: <MainLayout />,
     children: [
       {
         path: paths.home,
-        element: <Home />
+        element: <Home />,
       },
       {
         path: paths.pickers,

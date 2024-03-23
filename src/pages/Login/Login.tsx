@@ -19,6 +19,7 @@ const Login: React.FC = () => {
   const intl = useIntl();
   const { showAlert } = useAlert();
   const { setUser } = useUser();
+  const navigate = useNavigate();
 
   const {
     control,
@@ -55,7 +56,6 @@ const Login: React.FC = () => {
     },
   });
 
-  const navigate = useNavigate();
 
   const onSubmit = (data: ISignInRequest) => {
     signin(data);

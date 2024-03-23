@@ -3,6 +3,7 @@ import React, { createContext, useContext } from "react";
 
 type IUserState = {
   name: string;
+  exp: number;
   farm: {
     isDisabled: boolean;
     _id: string;
@@ -10,8 +11,10 @@ type IUserState = {
     address: string;
   };
 };
+
 const initialState: IUserState = {
   name: "",
+  exp: 0,
   farm: {
     isDisabled: false,
     _id: "",
@@ -40,6 +43,7 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
   const setUser = (data: IUserState) => {
     updateUser({
       name: data?.name ?? "",
+      exp: data.exp,
       farm: {
         _id: data?.farm?._id ?? "",
         name: data?.farm?.name ?? "",
