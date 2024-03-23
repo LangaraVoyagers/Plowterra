@@ -1,6 +1,4 @@
-import {
-  IHarvestLogResponse,
-} from "project-2-types/dist/interface";
+import { IHarvestLogResponse } from "project-2-types/dist/interface";
 
 import axios from "./axios";
 import endpoints from "./endpoints";
@@ -28,6 +26,7 @@ interface ICreateHarvestLog {
   pickerId: string;
   seasonDeductionIds: Array<string>;
   notes?: string;
+  parentId?: string;
 }
 
 export const createHarvestLog = async (payload: ICreateHarvestLog) => {

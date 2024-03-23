@@ -296,9 +296,6 @@ const HarvestLogDrawer = ({
   });
 
   const onAddCorrectionEntry = () => {
-    // if (openCorrectionEntry) {
-    //   handleSubmit(onCorrection);
-    // }
     setOpenCorrectionEntry(true);
   };
 
@@ -340,16 +337,16 @@ const HarvestLogDrawer = ({
     });
   };
 
-  const onCorrection = (data: IHarvestLogForm) => {
-    console.log("correction data", data);
-
+  const onCorrection = (data: IHarvestCorrectionForm) => {
+    console.log("correction data yey");
     saveHarvestLogMutation({
       farmId: data.farmId,
       collectedAmount: data.collectedAmount,
-      pickerId: data.pickerId,
-      seasonId: data.seasonId,
+      pickerId: harvestLog?.picker?._id ?? "",
+      seasonId: harvestLog?.season?._id ?? "",
       seasonDeductionIds: data.seasonDeductionIds,
-      notes: data.notes,
+      notes: "", // should actually be able to add a note too
+      parentId: harvestLogId,
     });
   };
 
