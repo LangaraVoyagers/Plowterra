@@ -1,6 +1,9 @@
 import * as React from "react";
 
 import {
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
   Autocomplete,
   Box,
   Button,
@@ -40,6 +43,7 @@ import ConfirmationDrawer from "ui/ConfirmationDrawer";
 import HarvestLogSuccess from "../../assets/images/HarvestLogSuccess.svg";
 import { FormattedMessage, useIntl } from "react-intl";
 import { useUser } from "context/UserProvider";
+import { CaretDown } from "@phosphor-icons/react";
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -65,6 +69,16 @@ interface IHarvestLogForm {
   collectedAmount: number;
   seasonDeductionIds: Array<string>;
   notes?: string;
+}
+
+interface IHarvestCorrectionForm {
+  farmId: string;
+  seasonId: string;
+  pickerId: string;
+  collectedAmount: number;
+  seasonDeductionIds: Array<string>;
+  notes?: string;
+  parentId: string;
 }
 
 const HarvestLogDrawer = ({
@@ -102,11 +116,13 @@ const HarvestLogDrawer = ({
     label: string;
   } | null>(null);
 
+  const [openCorrectionEntry, setOpenCorrectionEntry] = React.useState(false);
+
   const {
-    control,
-    handleSubmit,
-    reset,
-    formState: { errors },
+    control: controlHarvestLog,
+    handleSubmit: handleSubmitHarvestLog,
+    reset: resetHarvestLog,
+    formState: { errors: errorsHarvestLog },
   } = useForm<IHarvestLogForm>({
     defaultValues: {
       farmId: user.farm._id,
@@ -115,29 +131,86 @@ const HarvestLogDrawer = ({
     resolver: ajvResolver(HarvestLogSchema),
   });
 
+  const {
+    control: controlHarvestCorrection,
+    handleSubmit: handleSubmitHarvestCorrection,
+    formState: { errors: errorsHarvestCorrection },
+  } = useForm<IHarvestCorrectionForm>({
+    defaultValues: {
+      farmId: user.farm._id,
+      seasonDeductionIds: [],
+    },
+    // resolver: ajvResolver(HarvestLogSchema), //TODO: create a new schema for correction
+  });
+
   const createHarvestLogDataList = React.useCallback(() => {
+    const DATE = intl.formatMessage({
+      id: "harvest-log.view.detail.date.label",
+      defaultMessage: "Date",
+    });
+
+    const HARVEST_SEASON = intl.formatMessage({
+      id: "harvest-log.view.detail.harvest-season.label",
+      defaultMessage: "Harvest Season",
+    });
+
+    const PRODUCT = intl.formatMessage({
+      id: "harvest-log.view.detail.product.label",
+      defaultMessage: "Product",
+    });
+
+    const PRICE_PER_UNIT = intl.formatMessage({
+      id: "harvest-log.view.detail.ppu.label",
+      defaultMessage: "Price per Unit",
+    });
+
+    const AMOUNT = intl.formatMessage({
+      id: "harvest-log.view.detail.amount.label",
+      defaultMessage: "Amount",
+    });
+
+    const DEDUCTION = intl.formatMessage({
+      id: "harvest-log.view.detail.deduction.label",
+      defaultMessage: "Deduction",
+    });
+
+    const NOTE = intl.formatMessage({
+      id: "harvest-log.view.detail.note.label",
+      defaultMessage: "Note",
+    });
+
+    const SUBTOTAL = intl.formatMessage({
+      id: "harvest-log.view.detail.subtotal.label",
+      defaultMessage: "Subtotal",
+    });
+
+    const TOTAL = intl.formatMessage({
+      id: "harvest-log.view.detail.total.label",
+      defaultMessage: "Total",
+    });
+
     return [
       [
-        "Date",
+        DATE,
         intl.formatDate(harvestLog?.createdAt, {
           month: "long",
           year: "numeric",
           day: "numeric",
         }),
       ],
-      ["Harvest Season", harvestLog?.season?.name || ""],
-      ["Product", harvestLog?.season?.product?.name || ""],
-      ["Price Per Unit", harvestLog?.season?.price || ""],
-      ["Amount", harvestLog?.collectedAmount || ""],
-      ["Deduction", harvestLog?.totalDeduction || ""],
-      ["Note", harvestLog?.notes || ""],
+      [HARVEST_SEASON, harvestLog?.season?.name || ""],
+      [PRODUCT, harvestLog?.season?.product?.name || ""],
+      [PRICE_PER_UNIT, harvestLog?.season?.price || ""],
+      [AMOUNT, harvestLog?.collectedAmount || ""],
+      [DEDUCTION, harvestLog?.totalDeduction || ""],
+      [NOTE, harvestLog?.notes || ""],
       [
-        "Subtotal",
+        SUBTOTAL,
         (harvestLog?.season?.price || 0) * (harvestLog?.collectedAmount || 0) ||
           "",
       ], //price per unit * amount
       [
-        "Total",
+        TOTAL,
         (harvestLog?.season?.price || 0) * (harvestLog?.collectedAmount || 0) -
           (harvestLog?.totalDeduction || 0),
       ], //subtotal - deduction
@@ -200,13 +273,19 @@ const HarvestLogDrawer = ({
   });
 
   const { mutate: saveHarvestLogMutation, isLoading } = useMutation({
-    mutationKey: harvestLogId ? UPDATE_MUTATION_KEY : CREATE_MUTATION_KEY,
+    mutationKey:
+      harvestLogId && !openCorrectionEntry
+        ? UPDATE_MUTATION_KEY
+        : CREATE_MUTATION_KEY,
     mutationFn: createHarvestLog,
     onSuccess: (result) => {
-      if (harvestLogId) {
+      if (harvestLogId && !openCorrectionEntry) {
         handleUpdateSuccess(result);
       } else {
         handleCreateSuccess(result);
+        if (openCorrectionEntry) {
+          setOpenCorrectionEntry(false);
+        }
       }
     },
     onError: (error) => {
@@ -221,9 +300,17 @@ const HarvestLogDrawer = ({
     },
   });
 
+  const onAddCorrectionEntry = () => {
+    setOpenCorrectionEntry(true);
+  };
+
   const onCreateHarvestLogClose = () => {
-    setSeason(undefined);
-    dismiss();
+    if (openCorrectionEntry) {
+      setOpenCorrectionEntry(false);
+    } else {
+      setSeason(undefined);
+      dismiss();
+    }
   };
 
   const handleCreateSuccess = (
@@ -255,6 +342,18 @@ const HarvestLogDrawer = ({
     });
   };
 
+  const onCorrection = (data: IHarvestCorrectionForm) => {
+    saveHarvestLogMutation({
+      farmId: data.farmId,
+      collectedAmount: data.collectedAmount,
+      pickerId: harvestLog?.picker?._id as string,
+      seasonId: harvestLog?.season?._id as string,
+      seasonDeductionIds: data.seasonDeductionIds,
+      notes: "", // should actually be able to add a note too
+      parentId: harvestLog?.id as string,
+    });
+  };
+
   const harvestLogForm = (
     <Box
       display="flex"
@@ -265,12 +364,15 @@ const HarvestLogDrawer = ({
     >
       <Display>
         <FormattedMessage
-          id="harvest.logs.drawer.create.form.titme"
-          defaultMessage="Add Harvest Log"
+          id="harvest.logs.drawer.create.form.title"
+          defaultMessage={intl.formatMessage({
+            id: "harvest-log.create.form.label",
+            defaultMessage: "Add Harvest Entry",
+          })}
         />
       </Display>
       <Controller
-        control={control}
+        control={controlHarvestLog}
         name="seasonId"
         render={({ field: { onChange, value } }) => {
           return (
@@ -296,13 +398,17 @@ const HarvestLogDrawer = ({
                 renderInput={(params) => (
                   <div>
                     <InputLabel htmlFor="harvest-log-season">
-                      Harvest Season Name*
+                      {intl.formatMessage({
+                        id: "harvest-log.create.form.season.label",
+                        defaultMessage: "Harvest Season",
+                      })}
+                      *
                     </InputLabel>
                     <TextField
                       {...params}
                       id="harvest-log-season"
-                      helperText={errors.seasonId?.message}
-                      error={!!errors.seasonId}
+                      helperText={errorsHarvestLog.seasonId?.message}
+                      error={!!errorsHarvestLog.seasonId}
                     />
                   </div>
                 )}
@@ -313,16 +419,25 @@ const HarvestLogDrawer = ({
       />
 
       <Box display="flex" flexDirection="column" gap={1}>
-        <InputLabel htmlFor="harvest-log-date">Date</InputLabel>
+        <InputLabel htmlFor="harvest-log-date">
+          {intl.formatMessage({
+            id: "harvest-log.create.form.date.label",
+            defaultMessage: "Date",
+          })}
+        </InputLabel>
         <OutlinedInput
           id="harvest-log-date"
-          value={intl.formatDate(new Date(), { dateStyle: "short" })}
+          value={intl.formatDate(new Date(), {
+            month: "long",
+            year: "numeric",
+            day: "numeric",
+          })}
           disabled
         />
       </Box>
 
       <Controller
-        control={control}
+        control={controlHarvestLog}
         name="pickerId"
         render={({ field: { onChange, value } }) => {
           return (
@@ -349,13 +464,17 @@ const HarvestLogDrawer = ({
                 renderInput={(params) => (
                   <div>
                     <InputLabel htmlFor="harvest-log-picker">
-                      Picker*
+                      {intl.formatMessage({
+                        id: "harvest-log.create.form.picker.label",
+                        defaultMessage: "Picker",
+                      })}
+                      *
                     </InputLabel>
                     <TextField
                       {...params}
                       id="harvest-log-picker"
-                      helperText={errors.pickerId?.message}
-                      error={!!errors.pickerId}
+                      helperText={errorsHarvestLog.pickerId?.message}
+                      error={!!errorsHarvestLog.pickerId}
                     />
                   </div>
                 )}
@@ -367,7 +486,12 @@ const HarvestLogDrawer = ({
       />
 
       <Box display="flex" flexDirection="column" gap={1}>
-        <InputLabel htmlFor="harvest-log-product">Product - Unit</InputLabel>
+        <InputLabel htmlFor="harvest-log-product">
+          {intl.formatMessage({
+            id: "harvest-log.create.form.product.label",
+            defaultMessage: "Product - Unit",
+          })}
+        </InputLabel>
         <OutlinedInput
           id="harvest-log-product"
           value={season?.product?.name ?? "-"}
@@ -376,12 +500,18 @@ const HarvestLogDrawer = ({
       </Box>
 
       <Controller
-        control={control}
+        control={controlHarvestLog}
         name="collectedAmount"
         render={({ field: { ref, value, onChange } }) => {
           return (
             <Box display="flex" flexDirection="column" gap={1}>
-              <InputLabel htmlFor="harvest-log-amount">Amount*</InputLabel>
+              <InputLabel htmlFor="harvest-log-amount">
+                {intl.formatMessage({
+                  id: "harvest-log.create.form.amount.label",
+                  defaultMessage: "Amount",
+                })}
+                *
+              </InputLabel>
 
               <TextField
                 id="harvest-log-amount"
@@ -396,8 +526,8 @@ const HarvestLogDrawer = ({
                 }}
                 margin="dense"
                 type="number"
-                error={!!errors.collectedAmount}
-                helperText={errors.collectedAmount?.message}
+                error={!!errorsHarvestLog.collectedAmount}
+                helperText={errorsHarvestLog.collectedAmount?.message}
                 variant="outlined"
               />
             </Box>
@@ -406,12 +536,17 @@ const HarvestLogDrawer = ({
       />
 
       <Controller
-        control={control}
+        control={controlHarvestLog}
         name="seasonDeductionIds"
         render={({ field: { value, onChange } }) => {
           return (
             <Box display="flex" flexDirection="column" gap={1}>
-              <InputLabel id="harvest-log-deductions">Deduction</InputLabel>
+              <InputLabel id="harvest-log-deductions">
+                {intl.formatMessage({
+                  id: "harvest-log.create.form.deduction.label",
+                  defaultMessage: "Deduction",
+                })}
+              </InputLabel>
               <Select
                 labelId="harvest-log-deductions"
                 value={value.map((id) => [id])}
@@ -446,8 +581,8 @@ const HarvestLogDrawer = ({
                   );
                 })}
               </Select>
-              {errors.seasonDeductionIds && (
-                <p>{errors.seasonDeductionIds.message}</p>
+              {errorsHarvestLog.seasonDeductionIds && (
+                <p>{errorsHarvestLog.seasonDeductionIds.message}</p>
               )}
             </Box>
           );
@@ -455,20 +590,25 @@ const HarvestLogDrawer = ({
       />
 
       <Controller
-        control={control}
+        control={controlHarvestLog}
         name="notes"
         render={({ field }) => {
           return (
             <Box display="flex" flexDirection="column" gap={1}>
-              <InputLabel htmlFor="harvest-log-notes">Note</InputLabel>
+              <InputLabel htmlFor="harvest-log-notes">
+                {intl.formatMessage({
+                  id: "harvest-log.create.form.note.label",
+                  defaultMessage: "Note",
+                })}
+              </InputLabel>
 
               <TextField
                 {...field}
                 id="harvest-log-notes"
                 multiline
                 rows={3}
-                error={!!errors.notes}
-                helperText={errors.notes?.message}
+                error={!!errorsHarvestLog.notes}
+                helperText={errorsHarvestLog.notes?.message}
               />
             </Box>
           );
@@ -485,7 +625,7 @@ const HarvestLogDrawer = ({
 
         <Button
           variant="contained"
-          onClick={handleSubmit(onSubmit)}
+          onClick={handleSubmitHarvestLog(onSubmit)}
           disabled={isLoading}
         >
           Save
@@ -569,7 +709,12 @@ const HarvestLogDrawer = ({
         justifyContent="flex-start"
       >
         <Box display="flex" flexDirection="column">
-          <BodyText>PICKER</BodyText>
+          <BodyText>
+            {intl.formatMessage({
+              id: "harvest-log.view.detail.picker.label",
+              defaultMessage: "PICKER",
+            })}
+          </BodyText>
           <Display>{harvestLog?.picker?.name}</Display>
         </Box>
 
@@ -578,8 +723,18 @@ const HarvestLogDrawer = ({
             <Table aria-label="Harvest log detail table">
               <TableHead>
                 <TableRow>
-                  <TableCell>CATEGORY</TableCell>
-                  <TableCell>INFO</TableCell>
+                  <TableCell>
+                    {intl.formatMessage({
+                      id: "harvest-log.view.detail.category.label",
+                      defaultMessage: "CATEGORY",
+                    })}
+                  </TableCell>
+                  <TableCell>
+                    {intl.formatMessage({
+                      id: "harvest-log.view.detail.info.label",
+                      defaultMessage: "INFO",
+                    })}
+                  </TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -594,17 +749,202 @@ const HarvestLogDrawer = ({
               </TableBody>
             </Table>
           </TableContainer>
-          {/* TODO: add correction note tables */}
         </Box>
+
+        {!!harvestLog?.correctionLogs?.length && (
+          <Box>
+            <BodyText>
+              {intl.formatMessage({
+                id: "harvest-log.view.detail.correction-entries.label",
+                defaultMessage: "Correction Entries",
+              })}
+            </BodyText>
+            {harvestLog.correctionLogs.map((correctionEntry: any) => (
+              <Accordion key={correctionEntry.id}>
+                <AccordionSummary
+                  expandIcon={<CaretDown />}
+                  aria-controls="panel1-content"
+                  id="panel1-header"
+                >
+                  {intl.formatDate(correctionEntry?.createdAt, {
+                    month: "long",
+                    year: "numeric",
+                    day: "numeric",
+                  })}
+                </AccordionSummary>
+                <AccordionDetails>
+                  <TableContainer>
+                    <Table aria-label="Correction entry details">
+                      <TableBody>
+                        <TableRow>
+                          <TableCell component="th" scope="row">
+                            {intl.formatMessage({
+                              id: "harvest-log.view.detail.correction-amount.label",
+                              defaultMessage: "Amount",
+                            })}
+                          </TableCell>
+                          <TableCell>
+                            {correctionEntry.collectedAmount}
+                          </TableCell>
+                        </TableRow>
+                        <TableRow>
+                          <TableCell component="th" scope="row">
+                            {intl.formatMessage({
+                              id: "harvest-log.view.detail.correction-deduction.label",
+                              defaultMessage: "Deduction",
+                            })}
+                          </TableCell>
+                          <TableCell>
+                            {correctionEntry.totalDeduction}
+                          </TableCell>
+                        </TableRow>
+                      </TableBody>
+                    </Table>
+                  </TableContainer>
+                </AccordionDetails>
+              </Accordion>
+            ))}
+          </Box>
+        )}
+
+        {!!openCorrectionEntry && (
+          <Box display="flex" flexDirection="column">
+            <BodyText>
+              {intl.formatMessage({
+                id: "harvest-log.add-correction-entry.label",
+                defaultMessage: "Add Correction Entry",
+              })}
+            </BodyText>
+            <Controller
+              control={controlHarvestCorrection}
+              name="collectedAmount"
+              render={({ field: { ref, value, onChange } }) => {
+                return (
+                  <Box display="flex" flexDirection="column" gap={1}>
+                    <InputLabel htmlFor="harvest-log-amount">
+                      {intl.formatMessage({
+                        id: "harvest-log.create.form.amount.label",
+                        defaultMessage: "Amount",
+                      })}
+                      *
+                    </InputLabel>
+
+                    <TextField
+                      id="harvest-log-amount"
+                      ref={ref}
+                      value={value}
+                      onChange={(event) => {
+                        if (event.target.value) {
+                          onChange(Number(event.target.value));
+                        } else {
+                          onChange(undefined);
+                        }
+                      }}
+                      margin="dense"
+                      type="number"
+                      error={!!errorsHarvestCorrection.collectedAmount}
+                      helperText={
+                        errorsHarvestCorrection.collectedAmount?.message
+                      }
+                      variant="outlined"
+                    />
+                  </Box>
+                );
+              }}
+            />
+
+            <Controller
+              control={controlHarvestCorrection}
+              name="seasonDeductionIds"
+              render={({ field: { value, onChange } }) => {
+                return (
+                  <Box display="flex" flexDirection="column" gap={1}>
+                    <InputLabel id="harvest-log-deductions">
+                      {intl.formatMessage({
+                        id: "harvest-log.create.form.deduction.label",
+                        defaultMessage: "Deduction",
+                      })}
+                    </InputLabel>
+                    <Select
+                      labelId="harvest-log-deductions"
+                      value={value.map((id) => [id])}
+                      label="Deduction"
+                      variant="outlined"
+                      input={<OutlinedInput />}
+                      renderValue={(selected) => selected.join(", ")}
+                      MenuProps={MenuProps}
+                      multiple
+                    >
+                      {season?.deductions.map((deduction, index) => {
+                        const checked = !!value.find(
+                          (selected) => selected === deduction.deductionID
+                        );
+                        return (
+                          <MenuItem
+                            key={index}
+                            value={[deduction.deductionID]}
+                            onClick={() => {
+                              if (checked) {
+                                onChange(
+                                  value.filter(
+                                    (de) => de !== deduction.deductionID
+                                  )
+                                );
+                              } else {
+                                onChange([...value, deduction.deductionID]);
+                              }
+                            }}
+                          >
+                            <Checkbox checked={checked} />
+                            <ListItemText primary={deduction.deductionID} />
+                          </MenuItem>
+                        );
+                      })}
+                    </Select>
+                    {errorsHarvestCorrection.seasonDeductionIds && (
+                      <p>
+                        {errorsHarvestCorrection.seasonDeductionIds.message}
+                      </p>
+                    )}
+                  </Box>
+                );
+              }}
+            />
+          </Box>
+        )}
       </Box>
+
       <Box display="flex" justifyContent="space-between">
         <Button variant="text" onClick={onCreateHarvestLogClose}>
-          Back
+          {openCorrectionEntry
+            ? intl.formatMessage({
+                id: "harvest-log.view.detail.cancel.button.label",
+                defaultMessage: "Cancel",
+              })
+            : intl.formatMessage({
+                id: "harvest-log.view.detail.back.button.label",
+                defaultMessage: "Back",
+              })}
         </Button>
-        {/* TODO: link correction note button to correct feature */}
-        <Button variant="contained" onClick={onCreateHarvestLogClose}>
-          Add Correction Note
-        </Button>
+
+        {openCorrectionEntry ? (
+          <Button
+            variant="contained"
+            onClick={handleSubmitHarvestCorrection(onCorrection)}
+          >
+            {intl.formatMessage({
+              id: "harvest-log.view.detail.save-correction-entry.button.label",
+              defaultMessage: "Save Correction Entry",
+            })}
+          </Button>
+        ) : (
+          <Button variant="contained" onClick={onAddCorrectionEntry}>
+            {intl.formatMessage({
+              id: "harvest-log.view.detail.add-correction-entry.button.label",
+              defaultMessage: "Add Correction Entry",
+            })}
+          </Button>
+        )}
       </Box>
     </Box>
   );
@@ -648,7 +988,7 @@ const HarvestLogDrawer = ({
           })}
           onClose={() => {
             console.log("reset");
-            reset();
+            resetHarvestLog();
             setShowSuccess(false);
             onCreateHarvestLogClose();
           }}

@@ -58,7 +58,7 @@
     "eslint-plugin-react-refresh": "^0.4.5",
     "format-phone": "^0.0.5",
     "husky": "^8.0.3",
-    "project-2-types": "^2.0.1",
+    "project-2-types": "^2.0.8",
     "typescript": "^5.2.2",
     "vite": "^5.0.8",
     "vite-tsconfig-paths": "^4.2.3"
