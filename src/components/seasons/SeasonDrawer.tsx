@@ -19,6 +19,8 @@ import {
   TableHead,
   TableRow,
   TextField,
+  useMediaQuery,
+  useTheme,
 } from "@mui/material";
 import { DatePicker } from "@mui/x-date-pickers";
 import { getCurrencies } from "api/currencies";
@@ -45,6 +47,7 @@ import SeasonDeductions from "./SeasonDeductions";
 import ConfirmationDrawer from "ui/ConfirmationDrawer";
 import SeasonImage from "../../assets/images/SeasonSuccess.svg";
 import SelectFreeSolo from "./SelectFreeSolo";
+import DrawerContainer from "ui/DrawerContainer";
 
 const payrollTimeframeList = (
   Object.keys(PayrollTimeframeEnum) as Array<keyof typeof PayrollTimeframeEnum>
@@ -100,6 +103,10 @@ const SeasonDrawer = ({ dismiss, seasonId, ...props }: SeasonDrawerProps) => {
   const intl = useIntl();
   const { showAlert } = useAlert();
   const { user } = useUser();
+
+  const theme = useTheme();
+  const desktop = useMediaQuery(theme.breakpoints.up("md"));
+
   const {
     GET_DETAIL_QUERY_KEY,
     UPDATE_MUTATION_KEY,
@@ -341,12 +348,35 @@ const SeasonDrawer = ({ dismiss, seasonId, ...props }: SeasonDrawerProps) => {
 
   const seasonForm = (
     <FormProvider {...formMethods}>
-      <Box
-        display="flex"
-        flexDirection="column"
-        padding="3rem"
-        gap={3}
-        width={600}
+      <DrawerContainer
+        footer={
+          <Box display="flex" justifyContent="space-between">
+            <Button
+              disabled={isLoading || isDeleting}
+              onClick={seasonId ? hideEdit : onCreateSeasonClose}
+            >
+              {intl.formatMessage({
+                id: "button.cancel",
+                defaultMessage: "Cancel",
+              })}
+            </Button>
+
+            <Button
+              variant="contained"
+              onClick={handleSubmit(onSubmit)}
+              disabled={isLoading || !isDirty || isDeleting}
+            >
+              {intl.formatMessage(
+                {
+                  id: "pickers.button.save",
+                  defaultMessage:
+                    "{isLoading, plural, one {Loading...} other {Save} }",
+                },
+                { isLoading: Number(isLoading) }
+              )}
+            </Button>
+          </Box>
+        }
       >
         <Display>
           {intl.formatMessage(
@@ -450,8 +480,6 @@ const SeasonDrawer = ({ dismiss, seasonId, ...props }: SeasonDrawerProps) => {
           control={control}
           name="productId"
           render={({ field: { onChange, value: productId } }) => {
-            
-
             return (
               <Box display="flex" flexDirection="column" gap={1}>
                 <InputLabel>
@@ -460,7 +488,8 @@ const SeasonDrawer = ({ dismiss, seasonId, ...props }: SeasonDrawerProps) => {
                     defaultMessage: "Product*",
                   })}
                 </InputLabel>
-                <SelectFreeSolo sx={{ width: "100%"}}
+                <SelectFreeSolo
+                  sx={{ width: "100%" }}
                   options={products.map((p) => ({
                     id: p._id,
                     label: p.name,
@@ -473,7 +502,7 @@ const SeasonDrawer = ({ dismiss, seasonId, ...props }: SeasonDrawerProps) => {
                   onCreate={async (value) => {
                     try {
                       const data = await createProduct(value);
-                      
+
                       createProductCache(data);
                       onChange(data?._id);
                       return data?._id;
@@ -621,32 +650,6 @@ const SeasonDrawer = ({ dismiss, seasonId, ...props }: SeasonDrawerProps) => {
           <SeasonDeductions />
         </Box>
 
-        <Box display="flex" justifyContent="space-between">
-          <Button
-            disabled={isLoading || isDeleting}
-            onClick={seasonId ? hideEdit : onCreateSeasonClose}
-          >
-            {intl.formatMessage({
-              id: "button.cancel",
-              defaultMessage: "Cancel",
-            })}
-          </Button>
-
-          <Button
-            variant="contained"
-            onClick={handleSubmit(onSubmit)}
-            disabled={isLoading || !isDirty || isDeleting}
-          >
-            {intl.formatMessage(
-              {
-                id: "pickers.button.save",
-                defaultMessage:
-                  "{isLoading, plural, one {Loading...} other {Save} }",
-              },
-              { isLoading: Number(isLoading) }
-            )}
-          </Button>
-        </Box>
         {/* TODO: add confirmation modal later, we probably will standardize the way we handle the delete after design has defined that */}
         {!!seasonId && (
           <Box display="flex" flexDirection="column" gap={2} marginTop={4}>
@@ -680,7 +683,7 @@ const SeasonDrawer = ({ dismiss, seasonId, ...props }: SeasonDrawerProps) => {
             </Alert>
           </Box>
         )}
-      </Box>
+      </DrawerContainer>
     </FormProvider>
   );
 
@@ -729,78 +732,72 @@ const SeasonDrawer = ({ dismiss, seasonId, ...props }: SeasonDrawerProps) => {
   }, [season]);
 
   const seasonDetail = (
-    <Box
-      display="flex"
-      flexDirection="column"
-      gap={3}
-      padding="3rem"
-      width={600}
-      height="100%"
-      flex={1}
+    <DrawerContainer
+      footer={
+        <Box display="flex" justifyContent="space-between">
+          <Button variant="outlined" onClick={onCreateSeasonClose}>
+            {intl.formatMessage({
+              id: "button.back",
+              defaultMessage: "Back",
+            })}
+          </Button>
+
+          <Button
+            variant="contained"
+            onClick={() => {
+              reset({
+                name: season?.name,
+                farmId: user.farm._id,
+                startDate: season?.startDate,
+                productId: season?.product._id,
+                currencyId: season?.currency._id,
+                unitId: season?.unit._id,
+                payrollTimeframe: season?.payrollTimeframe,
+                price: season?.price,
+                deductions: season?.deductions ?? [],
+              });
+              showEdit();
+            }}
+          >
+            {intl.formatMessage({
+              id: "button.edit",
+              defaultMessage: "Edit",
+            })}
+          </Button>
+        </Box>
+      }
     >
-      <Box
-        display="flex"
-        flexDirection="column"
-        gap={3}
-        flex={1}
-        justifyContent="flex-start"
-      >
-        <Box display="flex" flexDirection="column">
-          <Label>Season</Label>
-          <Display>{season?.name}</Display>
-        </Box>
+      <Box display="flex" flexDirection="column">
+        <Label>Season</Label>
+        <Display>{season?.name}</Display>
+      </Box>
 
-        <Box display="flex" flexDirection="column">
-          <TableContainer>
-            <Table aria-label="Harvest log detail table">
-              <TableHead>
-                <TableRow>
-                  <TableCell>CATEGORY</TableCell>
-                  <TableCell>INFO</TableCell>
+      <Box display="flex" flexDirection="column">
+        <TableContainer>
+          <Table aria-label="Harvest log detail table">
+            <TableHead>
+              <TableRow>
+                <TableCell>CATEGORY</TableCell>
+                <TableCell>INFO</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {createSeasonDataList().map((row, index) => (
+                <TableRow key={index}>
+                  <TableCell component="th" scope="row">
+                    {row[0]}
+                  </TableCell>
+                  <TableCell>{row[1]}</TableCell>
                 </TableRow>
-              </TableHead>
-              <TableBody>
-                {createSeasonDataList().map((row, index) => (
-                  <TableRow key={index}>
-                    <TableCell component="th" scope="row">
-                      {row[0]}
-                    </TableCell>
-                    <TableCell>{row[1]}</TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
-        </Box>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
       </Box>
-      <Box display="flex" justifyContent="space-between" paddingBottom="3rem">
-        <Button variant="outlined" onClick={onCreateSeasonClose}>
-          Back
-        </Button>
 
-        <Button
-          variant="contained"
-          onClick={() => {
-            reset({
-              name: season?.name,
-              farmId: user.farm._id,
-              startDate: season?.startDate,
-              productId: season?.product._id,
-              currencyId: season?.currency._id,
-              unitId: season?.unit._id,
-              payrollTimeframe: season?.payrollTimeframe,
-              price: season?.price,
-              deductions: season?.deductions ?? [],
-            });
-            showEdit();
-          }}
-        >
-          Edit
-        </Button>
-      </Box>
       {/* TODO: add confirmation modal later, we probably will standardize the way we handle the delete after design has defined that */}
       {!!seasonId && season?.status.toUpperCase() !== "CLOSED" && (
-        <Box display="flex" flexDirection="column" gap={2} paddingBottom="3rem">
+        <Box display="flex" flexDirection="column" gap={2}>
           <Display size="sm" component="h2">
             {intl.formatMessage(
               {
@@ -811,40 +808,52 @@ const SeasonDrawer = ({ dismiss, seasonId, ...props }: SeasonDrawerProps) => {
               { isClosing: Number(isClosing) }
             )}
           </Display>
-          <Alert
-            severity="info"
-            variant="outlined"
-            action={
-              <Button
-                color="info"
-                variant="text"
-                onClick={onClose}
-                sx={{ flexShrink: 0 }}
-              >
-                {intl.formatMessage({
-                  id: "season.button.close",
-                  defaultMessage: "Close Season",
-                })}
-              </Button>
-            }
-            sx={{ display: "flex", alignItems: "center" }}
+
+          <Box
+            display="flex"
+            gap="1rem"
+            justifyContent="space-between"
+            flexWrap="wrap"
+            alignItems="center"
           >
-            <Box maxWidth={300}>
+            <Box>
               {intl.formatMessage({
                 id: "season.close.description",
                 defaultMessage:
                   "After closing this season, this cannot be updated, and you will not be able to add more harvest logs.",
               })}
             </Box>
-          </Alert>
+
+            <Button
+              color="info"
+              variant="outlined"
+              onClick={onClose}
+              size="small"
+              sx={{ flexShrink: 0 }}
+            >
+              {intl.formatMessage({
+                id: "season.button.close",
+                defaultMessage: "Close Season",
+              })}
+            </Button>
+          </Box>
         </Box>
       )}
-    </Box>
+    </DrawerContainer>
   );
 
   return (
     <>
-      <Drawer anchor="right" {...props} onClose={handleClose}>
+      <Drawer
+        anchor="right"
+        PaperProps={{
+          sx: {
+            width: desktop ? 600 : "100%",
+          },
+        }}
+        {...props}
+        onClose={handleClose}
+      >
         {!isLoadingDetail && <>{showEditForm ? seasonForm : seasonDetail}</>}
       </Drawer>
       {!!showSuccess && (

@@ -11,45 +11,52 @@ import {
   MenuItem,
   Select,
   TextField,
+  useMediaQuery,
+  useTheme,
 } from "@mui/material";
 import {
   BloodType,
   IPickerResponse,
   Relationship,
-} from "project-2-types/dist/interface"
+} from "project-2-types/dist/interface";
 import { Controller, useForm } from "react-hook-form";
 import { deletePicker, getPickerById, upsertPicker } from "api/pickers";
 import { useMutation, useQuery } from "react-query";
-import PickerImage from "../../assets/images/PickerSuccess.svg"
-import PickerSchema from "project-2-types/dist/ajv/picker.ajv"
-import { useAlert } from "context/AlertProvider"
-import { useIntl } from "react-intl"
-import useQueryCache from "hooks/useQueryCache"
-import { useState } from "react"
-import { validateResolver } from "shared/ajv"
-import { BodyText, Display, Label } from "ui/Typography"
-import { useNavigate } from "react-router-dom"
-import paths from "shared/paths"
-import ConfirmationDrawer from "ui/ConfirmationDrawer"
+import PickerImage from "../../assets/images/PickerSuccess.svg";
+import PickerSchema from "project-2-types/dist/ajv/picker.ajv";
+import { useAlert } from "context/AlertProvider";
+import { useIntl } from "react-intl";
+import useQueryCache from "hooks/useQueryCache";
+import { useState } from "react";
+import { validateResolver } from "shared/ajv";
+import { BodyText, Display, Label } from "ui/Typography";
+import { useNavigate } from "react-router-dom";
+import paths from "shared/paths";
+import ConfirmationDrawer from "ui/ConfirmationDrawer";
+import DrawerContainer from "ui/DrawerContainer";
 
 interface IPickerForm extends Omit<IPickerResponse, "id"> {}
 
 const relationshipList = (
   Object.keys(Relationship) as Array<keyof typeof Relationship>
-).map((key) => ({ value: key, label: Relationship[key] }))
+).map((key) => ({ value: key, label: Relationship[key] }));
 
 const bloodTypeList = (
   Object.keys(BloodType) as Array<keyof typeof BloodType>
-).map((key) => ({ value: key, label: BloodType[key] }))
+).map((key) => ({ value: key, label: BloodType[key] }));
 
 type PickerDrawerProps = DrawerProps & {
-  pickerId?: string
-  dismiss: () => void
-}
+  pickerId?: string;
+  dismiss: () => void;
+};
+
 const PickerDrawer = ({ dismiss, pickerId, ...props }: PickerDrawerProps) => {
-  const intl = useIntl()
-  const { showAlert } = useAlert()
-  const navigate = useNavigate()
+  const intl = useIntl();
+  const { showAlert } = useAlert();
+  const navigate = useNavigate();
+
+  const theme = useTheme();
+  const desktop = useMediaQuery(theme.breakpoints.up("md"));
 
   const {
     GET_DETAIL_QUERY_KEY,
@@ -58,10 +65,10 @@ const PickerDrawer = ({ dismiss, pickerId, ...props }: PickerDrawerProps) => {
     createCache,
     updateCache,
     deleteCache,
-  } = useQueryCache("pickers", pickerId)
+  } = useQueryCache("pickers", pickerId);
 
-  const [showEditForm, setShowEditForm] = useState<boolean>(!pickerId)
-  const [showSuccess, setShowSuccess] = useState<boolean>(false)
+  const [showEditForm, setShowEditForm] = useState<boolean>(!pickerId);
+  const [showSuccess, setShowSuccess] = useState<boolean>(false);
 
   const {
     control,
@@ -81,16 +88,16 @@ const PickerDrawer = ({ dismiss, pickerId, ...props }: PickerDrawerProps) => {
       },
     },
     resolver: validateResolver(PickerSchema),
-  })
+  });
 
-  const pickerData = getValues()
+  const pickerData = getValues();
 
   const { isLoading: isLoadingDetail } = useQuery({
     queryKey: GET_DETAIL_QUERY_KEY,
     queryFn: () => getPickerById(pickerId),
     enabled: !!pickerId,
     onSuccess: (result) => {
-      reset(result)
+      reset(result);
     },
     onError: () => {
       showAlert(
@@ -99,18 +106,18 @@ const PickerDrawer = ({ dismiss, pickerId, ...props }: PickerDrawerProps) => {
           defaultMessage: "Oops! Information couldn't be displayed.",
         }),
         "error"
-      )
+      );
     },
-  })
+  });
 
   const { mutate: savePickerMutation, isLoading } = useMutation({
     mutationKey: pickerId ? UPDATE_MUTATION_KEY : CREATE_MUTATION_KEY,
     mutationFn: upsertPicker,
     onSuccess: (result) => {
       if (pickerId) {
-        handleUpdateSuccess(result)
+        handleUpdateSuccess(result);
       } else {
-        handleCreateSuccess(result)
+        handleCreateSuccess(result);
       }
     },
     onError: () => {
@@ -120,23 +127,23 @@ const PickerDrawer = ({ dismiss, pickerId, ...props }: PickerDrawerProps) => {
           defaultMessage: "Oops! The picker couldn't be saved.",
         }),
         "error"
-      )
+      );
     },
-  })
+  });
 
   const { mutate: deletePickerMutation, isLoading: isDeleting } = useMutation({
     mutationKey: ["pickers", "delete", pickerId],
     mutationFn: deletePicker,
     onSuccess: (result) => {
-      deleteCache(result)
+      deleteCache(result);
       showAlert(
         intl.formatMessage({
           id: "pickers.delete.picker.response.success",
           defaultMessage: "The picker was deleted successfully.",
         }),
         "success"
-      )
-      dismiss()
+      );
+      dismiss();
     },
     onError: () => {
       showAlert(
@@ -145,43 +152,43 @@ const PickerDrawer = ({ dismiss, pickerId, ...props }: PickerDrawerProps) => {
           defaultMessage: "Oops! The picker couldn't be deleted.",
         }),
         "error"
-      )
+      );
     },
-  })
+  });
 
   const onCreatePickerClose = () => {
-    reset()
-    dismiss()
-  }
+    reset();
+    dismiss();
+  };
 
   const handleCreateSuccess = (created: IPickerResponse) => {
-    createCache(created)
-    setShowSuccess(true)
-    onCreatePickerClose()
-  }
+    createCache(created);
+    setShowSuccess(true);
+    onCreatePickerClose();
+  };
 
   const handleUpdateSuccess = (updated: IPickerResponse) => {
-    updateCache(updated)
+    updateCache(updated);
     showAlert(
       intl.formatMessage({
         id: "pickers.update.picker.response.success",
         defaultMessage: "The picker was updated successfully",
       }),
       "success"
-    )
-    hideEdit()
-  }
+    );
+    hideEdit();
+  };
 
   const onSubmit = (data: IPickerForm) => {
-    savePickerMutation({ ...data, pickerId })
-  }
+    savePickerMutation({ ...data, pickerId });
+  };
 
   const onDelete = () => {
-    deletePickerMutation(pickerId)
-  }
+    deletePickerMutation(pickerId);
+  };
 
-  const showEdit = () => setShowEditForm(true)
-  const hideEdit = () => setShowEditForm(false)
+  const showEdit = () => setShowEditForm(true);
+  const hideEdit = () => setShowEditForm(false);
 
   const handleClose = (
     _event: React.MouseEvent,
@@ -189,18 +196,42 @@ const PickerDrawer = ({ dismiss, pickerId, ...props }: PickerDrawerProps) => {
   ) => {
     if (!showEditForm) {
       if (reason === "backdropClick" || reason === "escapeKeyDown") {
-        dismiss()
+        dismiss();
       }
     }
-  }
+  };
 
   const pickerForm = (
-    <Box
-      display="flex"
-      flexDirection="column"
-      padding="3rem"
-      gap={3}
-      width={600}
+    <DrawerContainer
+      footer={
+        <Box display="flex" justifyContent="space-between">
+          <Button
+            disabled={isLoading || isDeleting}
+            onClick={pickerId ? hideEdit : onCreatePickerClose}
+            variant="outlined"
+          >
+            {intl.formatMessage({
+              id: "button.cancel",
+              defaultMessage: "Cancel",
+            })}
+          </Button>
+
+          <Button
+            variant="contained"
+            onClick={handleSubmit(onSubmit)}
+            disabled={isLoading || isDeleting}
+          >
+            {intl.formatMessage(
+              {
+                id: "pickers.button.save",
+                defaultMessage:
+                  "{isLoading, plural, one {Loading...} other {Confirm} }",
+              },
+              { isLoading: Number(isLoading) }
+            )}
+          </Button>
+        </Box>
+      }
     >
       <Display>
         {intl.formatMessage(
@@ -234,7 +265,7 @@ const PickerDrawer = ({ dismiss, pickerId, ...props }: PickerDrawerProps) => {
                 helperText={errors.name?.message}
               />
             </Box>
-          )
+          );
         }}
       />
 
@@ -261,7 +292,7 @@ const PickerDrawer = ({ dismiss, pickerId, ...props }: PickerDrawerProps) => {
                 helperText={errors.phone?.message}
               />
             </Box>
-          )
+          );
         }}
       />
 
@@ -288,7 +319,7 @@ const PickerDrawer = ({ dismiss, pickerId, ...props }: PickerDrawerProps) => {
                 helperText={errors.emergencyContact?.name?.message}
               />
             </Box>
-          )
+          );
         }}
       />
 
@@ -317,7 +348,7 @@ const PickerDrawer = ({ dismiss, pickerId, ...props }: PickerDrawerProps) => {
                       <MenuItem key={value} value={value}>
                         {label}
                       </MenuItem>
-                    )
+                    );
                   })}
                 </Select>
                 <FormHelperText error>
@@ -325,7 +356,7 @@ const PickerDrawer = ({ dismiss, pickerId, ...props }: PickerDrawerProps) => {
                 </FormHelperText>
               </FormControl>
             </Box>
-          )
+          );
         }}
       />
 
@@ -353,7 +384,7 @@ const PickerDrawer = ({ dismiss, pickerId, ...props }: PickerDrawerProps) => {
                 helperText={errors.emergencyContact?.phone?.message}
               />
             </Box>
-          )
+          );
         }}
       />
 
@@ -382,7 +413,7 @@ const PickerDrawer = ({ dismiss, pickerId, ...props }: PickerDrawerProps) => {
                       <MenuItem key={value} value={value}>
                         {label}
                       </MenuItem>
-                    )
+                    );
                   })}
                 </Select>
                 <FormHelperText error>
@@ -390,7 +421,7 @@ const PickerDrawer = ({ dismiss, pickerId, ...props }: PickerDrawerProps) => {
                 </FormHelperText>
               </FormControl>
             </Box>
-          )
+          );
         }}
       />
 
@@ -416,7 +447,7 @@ const PickerDrawer = ({ dismiss, pickerId, ...props }: PickerDrawerProps) => {
                 helperText={errors.govId?.message}
               />
             </Box>
-          )
+          );
         }}
       />
 
@@ -443,37 +474,9 @@ const PickerDrawer = ({ dismiss, pickerId, ...props }: PickerDrawerProps) => {
                 helperText={errors.address?.message}
               />
             </Box>
-          )
+          );
         }}
       />
-
-      <Box display="flex" justifyContent="space-between">
-        <Button
-          disabled={isLoading || isDeleting}
-          onClick={pickerId ? hideEdit : onCreatePickerClose}
-          variant="outlined"
-        >
-          {intl.formatMessage({
-            id: "button.cancel",
-            defaultMessage: "Cancel",
-          })}
-        </Button>
-
-        <Button
-          variant="contained"
-          onClick={handleSubmit(onSubmit)}
-          disabled={isLoading || isDeleting}
-        >
-          {intl.formatMessage(
-            {
-              id: "pickers.button.save",
-              defaultMessage:
-                "{isLoading, plural, one {Loading...} other {Confirm} }",
-            },
-            { isLoading: Number(isLoading) }
-          )}
-        </Button>
-      </Box>
 
       {/* TODO: add confirmation modal later, we probably will standardize the way we handle the delete after design has defined that */}
       {!!pickerId && (
@@ -513,17 +516,27 @@ const PickerDrawer = ({ dismiss, pickerId, ...props }: PickerDrawerProps) => {
           </Alert>
         </Box>
       )}
-    </Box>
-  )
+    </DrawerContainer>
+  );
 
   const pickerDetail = (
-    <Box
-      display="flex"
-      flexDirection="column"
-      padding="3rem"
-      gap={3}
-      width={600}
-      height="100%"
+    <DrawerContainer
+      footer={
+        <Box display="flex" justifyContent="space-between">
+          <Button variant="text" onClick={dismiss}>
+            {intl.formatMessage({
+              id: "button.back",
+              defaultMessage: "Back",
+            })}
+          </Button>
+          <Button variant="contained" onClick={showEdit}>
+            {intl.formatMessage({
+              id: "button.edit",
+              defaultMessage: "Edit",
+            })}
+          </Button>
+        </Box>
+      }
     >
       <Box
         display="flex"
@@ -597,7 +610,7 @@ const PickerDrawer = ({ dismiss, pickerId, ...props }: PickerDrawerProps) => {
 
         <Button
           onClick={() => {
-            navigate(`${paths.harvestLogs}?pickerId=${pickerId}`)
+            navigate(`${paths.harvestLogs}?pickerId=${pickerId}`);
           }}
         >
           {intl.formatMessage({
@@ -606,21 +619,21 @@ const PickerDrawer = ({ dismiss, pickerId, ...props }: PickerDrawerProps) => {
           })}
         </Button>
       </Box>
-
-      <Box display="flex" flexDirection="column" alignItems="flex-end">
-        <Button variant="contained" onClick={showEdit}>
-          {intl.formatMessage({
-            id: "button.edit",
-            defaultMessage: "Edit",
-          })}
-        </Button>
-      </Box>
-    </Box>
-  )
+    </DrawerContainer>
+  );
 
   return (
     <>
-      <Drawer anchor="right" {...props} onClose={handleClose}>
+      <Drawer
+        anchor="right"
+        {...props}
+        PaperProps={{
+          sx: {
+            width: desktop ? 600 : "100%",
+          },
+        }}
+        onClose={handleClose}
+      >
         {!isLoadingDetail && <>{showEditForm ? pickerForm : pickerDetail}</>}
       </Drawer>
       {!!showSuccess && (
@@ -654,13 +667,13 @@ const PickerDrawer = ({ dismiss, pickerId, ...props }: PickerDrawerProps) => {
             defaultMessage: "Back to Picker List",
           })}
           onClose={() => {
-            setShowSuccess(false)
-            dismiss()
+            setShowSuccess(false);
+            dismiss();
           }}
         />
       )}
     </>
-  )
-}
+  );
+};
 
 export default PickerDrawer;

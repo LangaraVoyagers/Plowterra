@@ -54,7 +54,7 @@ export default function BasicHome({
                 >
                   {item.title}
                 </Link>
-              )
+              );
             })}
           </Breadcrumbs>
         )}
@@ -85,7 +85,7 @@ export default function BasicHome({
         {children}
       </Box>
     </Container>
-  )
+  );
 }
 
 const Container = styled(Box)`
