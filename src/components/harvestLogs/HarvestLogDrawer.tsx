@@ -919,7 +919,7 @@ const HarvestLogDrawer = ({
               defaultMessage: `{pickerName} will receive an SMS with the summary.`,
             },
             {
-              pickerName: selectedPicker?.label,
+              pickerName: selectedPicker?.label ?? harvestLog?.picker?.name,
             }
           )}
           backButtonTitle={intl.formatMessage({

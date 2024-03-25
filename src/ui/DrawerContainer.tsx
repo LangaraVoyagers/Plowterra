@@ -31,14 +31,16 @@ const DrawerContainer = ({
         {children}
       </Box>
 
-      <Footer
-        position="sticky"
-        bottom={0}
-        paddingY="1rem"
-        paddingX={tablet ? "3rem" : "1rem"}
-      >
-        {footer}
-      </Footer>
+      {!!footer && (
+        <Footer
+          position="sticky"
+          bottom={0}
+          paddingY="1rem"
+          paddingX={tablet ? "3rem" : "1rem"}
+        >
+          {footer}
+        </Footer>
+      )}
     </Box>
   );
 };
