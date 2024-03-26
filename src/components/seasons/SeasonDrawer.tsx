@@ -354,6 +354,7 @@ const SeasonDrawer = ({ dismiss, seasonId, ...props }: SeasonDrawerProps) => {
             <Button
               disabled={isLoading || isDeleting}
               onClick={seasonId ? hideEdit : onCreateSeasonClose}
+              variant="outlined"
             >
               {intl.formatMessage({
                 id: "button.cancel",
@@ -735,7 +736,7 @@ const SeasonDrawer = ({ dismiss, seasonId, ...props }: SeasonDrawerProps) => {
     <DrawerContainer
       footer={
         <Box display="flex" justifyContent="space-between">
-          <Button variant="outlined" onClick={onCreateSeasonClose}>
+          <Button onClick={onCreateSeasonClose}>
             {intl.formatMessage({
               id: "button.back",
               defaultMessage: "Back",

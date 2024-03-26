@@ -367,6 +367,7 @@ const HarvestLogDrawer = ({
           <Button
             disabled={isLoading}
             onClick={harvestLogId ? hideEdit : onCreateHarvestLogClose}
+            variant="outlined"
           >
             {intl.formatMessage({
               id: "button.cancel",
