@@ -1,5 +1,5 @@
 import { BodyText, Label } from "ui/Typography";
-import { Box, IconButton, List, useMediaQuery } from "@mui/material";
+import { Box, Divider, IconButton, List, useMediaQuery } from "@mui/material";
 import { CSSObject, Theme, styled, useTheme } from "@mui/material/styles";
 import {
   FilePlus,
@@ -10,7 +10,7 @@ import {
   Plant,
   UserPlus,
   Users,
-} from "@phosphor-icons/react"
+} from "@phosphor-icons/react";
 
 import { FormattedMessage } from "react-intl";
 import ListItem from "@mui/material/ListItem";
@@ -30,7 +30,6 @@ import paths from "shared/paths";
 import { usePersistedState } from "hooks/usePersistedState";
 import { useState } from "react";
 import { useThemMode } from "context/ThemeProvider";
-
 
 const DRAWER_WIDTH = 288;
 
@@ -220,7 +219,13 @@ export default function MainLayout() {
             />
           </Label>
         </Box>
-        <List>
+        <List
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            gap: "0.5rem",
+          }}
+        >
           {sidebarItems.map(({ title, icon, href }, index) => (
             <SidebarMenuItem
               key={index}
@@ -233,15 +238,33 @@ export default function MainLayout() {
         </List>
         {/* <Divider /> */}
 
-        <Box paddingLeft="1.5rem" mt="3.25rem" sx={{ opacity: open ? 1 : 0 }}>
-          <Label color="grey-500" size="xs" fontWeight="SemiBold">
-            <FormattedMessage
-              id="sidebar.quick_actions"
-              defaultMessage="Quick Actions"
-            />
-          </Label>
-        </Box>
-        <List>
+        {open ? (
+          <Box paddingLeft="1.5rem" mt="3rem">
+            <Label color="grey-500" size="xs" fontWeight="SemiBold">
+              <FormattedMessage
+                id="sidebar.quick_actions"
+                defaultMessage="Quick Actions"
+              />
+            </Label>
+          </Box>
+        ) : (
+          <Divider
+            sx={{
+              marginX: "1.5rem",
+              marginTop: "2.25rem",
+              marginBottom: "0.75rem",
+              height: "1.5rem",
+            }}
+          />
+        )}
+
+        <List
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            gap: "0.5rem",
+          }}
+        >
           {quickActions.map((data, index) => (
             <SidebarMenuItem
               key={index}

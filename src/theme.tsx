@@ -98,6 +98,37 @@ const themeOptions = (mode: PaletteMode): ThemeOptions => {
         }
         `,
       },
+      MuiInputBase: {
+        styleOverrides: {
+          root: {
+            styles: `
+              :focus-within {
+                outline: 3px solid ${colors.primary[100]} !important;
+              }
+
+             :active{
+              outline: 3px solid ${colors.primary[100]} !important;
+             }
+
+             ::selection {
+              outline: 3px solid ${colors.primary[100]} !important;
+            }
+          `,
+          },
+        },
+        variants: [
+          {
+            props: {},
+            style: ({ theme }) => {
+              return {
+                background: theme.palette.background.paper,
+                borderRadius: "0.5rem !important",
+                border: theme.palette.grey[50],
+              };
+            },
+          },
+        ],
+      },
       MuiTypography: {
         variants: [
           {

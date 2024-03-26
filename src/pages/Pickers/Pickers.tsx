@@ -84,7 +84,7 @@ const columns: GridColDef[] = [
   {
     field: "contactPhone",
     headerName: "",
-    width: 150,
+    minWidth: 150,
     flex: 1,
     sortable: false,
     valueGetter: (params: GridValueGetterParams<IPickerResponse>) =>
