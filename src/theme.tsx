@@ -278,7 +278,7 @@ const themeOptions = (mode: PaletteMode): ThemeOptions => {
               return {
                 padding: "1rem",
                 lineHeight: "1.5rem",
-                [theme.breakpoints.down("sm")]: {
+                [theme.breakpoints.down("md")]: {
                   padding: "0.75rem 1rem",
                   lineHeight: "1.25rem",
                 },

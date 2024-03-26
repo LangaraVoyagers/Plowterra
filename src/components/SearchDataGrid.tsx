@@ -19,6 +19,7 @@ const SearchDataGrid = (props: SearchDataGridProps) => {
       })}
       defaultValue={searchValue}
       size="small"
+      sx={{ width: "24rem" }}
       onChange={debounce((event) => {
         applySearch(event.target.value);
       }, 500)}
