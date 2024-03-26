@@ -295,11 +295,10 @@ const themeOptions = (mode: PaletteMode): ThemeOptions => {
                 "primary") as keyof typeof colors;
 
               return {
-                backgroundColor: white,
+                backgroundColor: "transparent",
                 color: colors[color][500],
                 border: `solid 1px ${colors[color][500]}`,
                 ":hover": {
-                  backgroundColor: white,
                   borderColor: colors[color][700],
                   color: colors[color][700],
                 },
