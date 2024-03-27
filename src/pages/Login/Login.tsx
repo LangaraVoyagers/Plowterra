@@ -1,4 +1,13 @@
-import { Box, Button, TextField } from "@mui/material";
+import {
+  Box,
+  Button,
+  IconButton,
+  InputAdornment,
+  InputLabel,
+  TextField,
+  useMediaQuery,
+  useTheme,
+} from "@mui/material";
 import { Controller, useForm } from "react-hook-form";
 
 import { ISignInRequest } from "project-2-types/dist/interface";
@@ -13,6 +22,8 @@ import { useUser } from "context/UserProvider.tsx";
 import { validateResolver } from "shared/ajv.ts";
 import Logo from "assets/images/Logo.svg";
 import Background from "assets/images/login.jpg";
+import { useState } from "react";
+import { Eye, EyeSlash } from "@phosphor-icons/react";
 
 interface LoginForm extends ISignInRequest {}
 
@@ -21,6 +32,9 @@ const Login: React.FC = () => {
   const { showAlert } = useAlert();
   const { setUser } = useUser();
   const navigate = useNavigate();
+
+  const theme = useTheme();
+  const desktop = useMediaQuery(theme.breakpoints.up("md"));
 
   const {
     control,
@@ -57,6 +71,16 @@ const Login: React.FC = () => {
     },
   });
 
+  const [showPassword, setShowPassword] = useState(false);
+
+  const handleClickShowPassword = () => setShowPassword((show) => !show);
+
+  const handleMouseDownPassword = (
+    event: React.MouseEvent<HTMLButtonElement>
+  ) => {
+    event.preventDefault();
+  };
+
   const onSubmit = (data: ISignInRequest) => {
     signin(data);
   };
@@ -67,18 +91,34 @@ const Login: React.FC = () => {
       justifyContent="center"
       alignItems="center"
       height="100%"
-      sx={{
-        background: `url(${Background}) lightgray 50% / cover no-repeat`,
-      }}
+      width="100%"
+      sx={
+        desktop
+          ? {
+              background: `url(${Background}) lightgray 50% / cover no-repeat`,
+            }
+          : {
+              background: `url(${Background}) lightgray 50% / cover no-repeat`,
+              backgroundPosition: "32%",
+            }
+      }
     >
-      <Box width="500px" margin="auto">
+      <Box
+        display="flex"
+        flexDirection={desktop ? "row" : "column"}
+        justifyContent={desktop ? "flex-start" : "flex-end"}
+        height={desktop ? "auto" : "100vh"}
+        width="100vw"
+      >
         <Box
           component="form"
           onSubmit={handleSubmit(onSubmit)}
           display="flex"
           flexDirection="column"
-          gap={8}
+          gap="4rem"
           width="100%"
+          maxWidth="564px"
+          margin={desktop ? "0 0 0 50vw" : "1rem"}
           sx={{
             background: "#FFF",
             padding: "3.5rem",
@@ -86,27 +126,34 @@ const Login: React.FC = () => {
           }}
         >
           <Box display="flex" justifyContent="center">
-            {<img src={Logo} />}
+            {<img src={Logo} height="50.96px" />}
           </Box>
 
-          <Box display="flex" flexDirection="column" gap={4} width="100%">
+          <Box display="flex" flexDirection="column" gap="2.5rem" width="100%">
             <Controller
               control={control}
               name="email"
               render={({ field }) => {
                 return (
-                  <TextField
-                    {...field}
-                    type="email"
-                    variant="outlined"
-                    label={intl.formatMessage({
-                      id: "login.email.label",
-                      defaultMessage: "Email",
-                    })}
-                    error={!!errors.email}
-                    helperText={errors.email?.message}
-                    fullWidth
-                  />
+                  <Box display="flex" flexDirection="column" gap={1}>
+                    <InputLabel htmlFor="login-email">
+                      {intl.formatMessage({
+                        id: "login.email.label",
+                        defaultMessage: "Email",
+                      })}
+                    </InputLabel>
+
+                    <TextField
+                      {...field}
+                      id="login-email"
+                      type="email"
+                      variant="outlined"
+                      size="small"
+                      error={!!errors.email}
+                      helperText={errors.email?.message}
+                      fullWidth
+                    />
+                  </Box>
                 );
               }}
             />
@@ -116,32 +163,52 @@ const Login: React.FC = () => {
               name="password"
               render={({ field }) => {
                 return (
-                  <TextField
-                    {...field}
-                    type="password"
-                    variant="outlined"
-                    label={intl.formatMessage({
-                      id: "login.password.label",
-                      defaultMessage: "Password",
-                    })}
-                    error={!!errors.password}
-                    helperText={errors.password?.message}
-                    fullWidth
-                  />
+                  <Box display="flex" flexDirection="column" gap={1}>
+                    <InputLabel htmlFor="login-password">
+                      {intl.formatMessage({
+                        id: "login.password.label",
+                        defaultMessage: "Password",
+                      })}
+                    </InputLabel>
+                    <TextField
+                      {...field}
+                      id="login-password"
+                      type={showPassword ? "text" : "password"}
+                      variant="outlined"
+                      size="small"
+                      error={!!errors.password}
+                      helperText={errors.password?.message}
+                      fullWidth
+                      InputProps={{
+                        endAdornment: (
+                          <InputAdornment position="end">
+                            <IconButton
+                              aria-label="toggle password visibility"
+                              onClick={handleClickShowPassword}
+                              onMouseDown={handleMouseDownPassword}
+                              edge="end"
+                            >
+                              {showPassword ? <EyeSlash /> : <Eye />}
+                            </IconButton>
+                          </InputAdornment>
+                        ),
+                      }}
+                    />
+                  </Box>
                 );
               }}
             />
+            <Button type="submit" variant="contained" fullWidth size="small">
+              {intl.formatMessage(
+                {
+                  id: "login.button.submit",
+                  defaultMessage:
+                    "{isLoading, plural, one {Loading...} other {Login} }",
+                },
+                { isLoading: Number(!!isLoading) }
+              )}
+            </Button>
           </Box>
-          <Button type="submit" variant="contained" fullWidth>
-            {intl.formatMessage(
-              {
-                id: "login.button.submit",
-                defaultMessage:
-                  "{isLoading, plural, one {Loading...} other {Login} }",
-              },
-              { isLoading: Number(!!isLoading) }
-            )}
-          </Button>
         </Box>
       </Box>
     </Box>
