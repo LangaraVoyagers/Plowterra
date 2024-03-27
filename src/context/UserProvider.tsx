@@ -30,7 +30,7 @@ export const UserContext = createContext<{
 
   defaultSeason: string;
   updateDefaultSeason: (values: string) => void;
-  clearDefaultSeason: (values: string) => void;
+  clearDefaultSeason: () => void;
 } | null>(null);
 
 type UserProviderProps = {
@@ -59,6 +59,7 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
   };
 
   const clearDefaultSeason = () => updateDefaultSeason("");
+
   return (
     <UserContext.Provider
       value={{
