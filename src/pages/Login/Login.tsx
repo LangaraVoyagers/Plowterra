@@ -123,9 +123,9 @@ const Login: React.FC = () => {
           width={desktop ? "100%" : "auto"}
           maxWidth="564px"
           margin={desktop ? "0 0 0 50vw" : "1rem"}
+          padding={desktop ? "3.5rem" : "2rem"}
           sx={{
             background: theme.palette.background.paper,
-            padding: "3.5rem",
             borderRadius: "var(--radius-xl, 0.75rem)",
           }}
         >
