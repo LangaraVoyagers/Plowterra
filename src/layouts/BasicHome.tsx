@@ -81,7 +81,7 @@ export default function BasicHome({
             </BodyText>
           </Box>
 
-          {actions}
+          {actions && <Box>{actions}</Box>}
         </Header>
       </Box>
 

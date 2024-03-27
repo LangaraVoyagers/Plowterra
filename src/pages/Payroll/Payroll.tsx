@@ -30,8 +30,8 @@ const columns = (currency: string): GridColDef[] => [
         defaultMessage="Pay Period"
       />
     ),
+    flex: 0.5,
     minWidth: 100,
-    flex: 1,
     renderCell: (params: GridRenderCellParams) => {
       return (
         <span>
@@ -61,7 +61,6 @@ const columns = (currency: string): GridColDef[] => [
     ),
     headerAlign: "right",
     align: "right",
-    width: 100,
     renderCell: (params) => (
       <FormattedNumber value={params.row.totals.netAmount} />
     ),
@@ -74,7 +73,6 @@ const columns = (currency: string): GridColDef[] => [
         defaultMessage="Harvest Amount"
       />
     ),
-    width: 150,
     headerAlign: "right",
     align: "right",
     renderCell: (params) => (
@@ -95,7 +93,6 @@ const columns = (currency: string): GridColDef[] => [
     ),
     headerAlign: "right",
     align: "right",
-    width: 150,
     renderCell: (params) => (
       <FormattedNumber value={params.row.totals.deductions} />
     ),
@@ -109,7 +106,6 @@ const columns = (currency: string): GridColDef[] => [
         defaultMessage="Pickers"
       />
     ),
-    width: 150,
     renderCell: (params) => (
       <Box display="flex" gap={0.88} paddingLeft="3rem">
         <User size="1.25rem" />
@@ -125,7 +121,6 @@ const columns = (currency: string): GridColDef[] => [
         defaultMessage="Pay Date"
       />
     ),
-    width: 150,
     renderCell: (params) => (
       <FormattedDate value={params.value} month="short" day="2-digit" />
     ),
@@ -135,7 +130,6 @@ const columns = (currency: string): GridColDef[] => [
     renderHeader: () => (
       <FormattedMessage id="table.column.actions" defaultMessage="Actions" />
     ),
-    width: 100,
     headerAlign: "center",
     align: "center",
     renderCell: () => <ViewMoreButton />,
@@ -149,7 +143,7 @@ const Payroll = () => {
   const { showAlert } = useAlert();
 
   const theme = useTheme();
-  const desktop = useMediaQuery(theme.breakpoints.up("md"));
+  const tablet = useMediaQuery(theme.breakpoints.up("sm"));
 
   const { GET_QUERY_KEY } = useQueryCache("payrolls");
 
@@ -202,7 +196,10 @@ const Payroll = () => {
           size="medium"
           endIcon={<CaretRight size={25} />}
         >
-          Start payroll
+          <FormattedMessage
+            id="paryroll.start.payroll.button"
+            defaultMessage="Start payroll"
+          />
         </Button>
       }
     >
@@ -214,11 +211,15 @@ const Payroll = () => {
         gap="1rem"
       >
         <Display component="h2" size="xs" fontWeight="SemiBold">
-          Payroll History
+          <FormattedMessage
+            id="payroll.payroll.history.title"
+            defaultMessage="Payroll History"
+          />
         </Display>
         <SeasonFilterDataGrid
           onChange={setSelectedSeason}
           onFetch={() => setSeasonsFetch(true)}
+          defaultFirst={false}
         />
       </Box>
       <Box display="flex" flexGrow={1} pb={3}>
@@ -236,10 +237,10 @@ const Payroll = () => {
           initialState={{
             columns: {
               columnVisibilityModel: {
-                createdAt: !!desktop,
-                collectedAmount: !!desktop,
-                deductions: !!desktop,
-                pickersCount: !!desktop,
+                createdAt: !!tablet,
+                collectedAmount: !!tablet,
+                deductions: !!tablet,
+                pickersCount: !!tablet,
               },
             },
           }}

@@ -7,6 +7,7 @@ import {
 } from "@mui/material";
 import { getSeasons } from "api/seasons";
 import { useAlert } from "context/AlertProvider";
+import { useUser } from "context/UserProvider";
 import useQueryCache from "hooks/useQueryCache";
 import { ISeasonResponse, StatusEnum } from "project-2-types";
 import { useState } from "react";
@@ -34,7 +35,7 @@ const SeasonFilterDataGrid = (props: SeasonFilterDataGridProps) => {
     sx = {},
   } = props;
   const { GET_QUERY_KEY: SEASONS_QUERY_KEY } = useQueryCache("seasons");
-
+  const { defaultSeason: defaultSeasonSaved } = useUser();
   const [seasonsData, setSeasonsData] = useState<Array<ISeasonResponse>>();
   const [selectedSeason, setSelectedSeason] = useState<ISeasonResponse>();
 
@@ -76,8 +77,10 @@ const SeasonFilterDataGrid = (props: SeasonFilterDataGridProps) => {
 
   return (
     <Select
-      defaultValue={selectedSeason?._id || defaultSeasonId}
-      value={selectedSeason?._id || defaultSeasonId}
+      defaultValue={
+        selectedSeason?._id || defaultSeasonId || defaultSeasonSaved
+      }
+      value={selectedSeason?._id || defaultSeasonId || defaultSeasonSaved}
       size="small"
       sx={{ minWidth: 250, ...sx }}
       onChange={onSeasonChange}

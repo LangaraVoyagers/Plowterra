@@ -15,17 +15,62 @@ import FilterDataGrid from "components/FilterDataGrid";
 import DataTable from "ui/DataTable";
 import { BodyText } from "ui/Typography";
 import { useAlert } from "context/AlertProvider";
-import { Plant } from "@phosphor-icons/react";
+import { Plant, Star } from "@phosphor-icons/react";
+import { ColorPartial } from "@mui/material/styles/createPalette";
 
-const columns: GridColDef[] = [
+type StarIconProps = {
+  id: string;
+  checked: boolean;
+  onChange: (id: string, checked: boolean) => void;
+};
+
+const StarIcon = ({ id, checked, onChange }: StarIconProps) => {
+  const theme = useTheme();
+  return (
+    <Star
+      size={18}
+      onClick={() => {
+        onChange(id, !checked);
+      }}
+      color={(theme.palette.warning as ColorPartial)[300]}
+      weight={checked ? "fill" : "regular"}
+    />
+  );
+};
+const columns = (
+  defaultSeasonId: string,
+  onDefaultSeasonChange: (id: string, checked: boolean) => void
+): GridColDef[] => [
+  {
+    field: "default",
+
+    width: 50,
+    renderCell: (params) => {
+      return (
+        <Box
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
+          height="100%"
+          width="100%"
+          sx={{ cursor: "pointer" }}
+        >
+          <StarIcon
+            id={params.row._id}
+            checked={defaultSeasonId === params.row._id}
+            onChange={onDefaultSeasonChange}
+          />
+        </Box>
+      );
+    },
+  },
   {
     field: "name",
     renderHeader: () => (
       <FormattedMessage id="seasons.table.column.name" defaultMessage="Name" />
     ),
-    width: 250,
-    flex: 1,
-    minWidth: 250,
+    flex: 0.5,
+    minWidth: 100,
   },
   {
     field: "pickerList",
@@ -35,8 +80,8 @@ const columns: GridColDef[] = [
         defaultMessage="Picker List"
       />
     ),
-    flex: 1,
-    minWidth: 150,
+    flex: 0.5,
+    minWidth: 100,
     renderCell: (params) => {
       return (
         <Box>
@@ -65,7 +110,6 @@ const columns: GridColDef[] = [
         defaultMessage="Status"
       />
     ),
-    width: 200,
     valueGetter: (params) =>
       StatusEnum[params.row.status as keyof typeof StatusEnum],
   },
@@ -77,7 +121,6 @@ const columns: GridColDef[] = [
         defaultMessage="Product"
       />
     ),
-    width: 200,
     valueGetter: (params) => params.row.product?.name,
   },
   {
@@ -88,7 +131,6 @@ const columns: GridColDef[] = [
         defaultMessage="Start Date"
       />
     ),
-    width: 150,
     renderCell: (params: GridRenderCellParams<ISeasonResponse>) => {
       return (
         <FormattedDate
@@ -99,6 +141,7 @@ const columns: GridColDef[] = [
         />
       );
     },
+    flex: 0.25,
   },
   {
     field: "endDate",
@@ -108,7 +151,7 @@ const columns: GridColDef[] = [
         defaultMessage="End Date"
       />
     ),
-    width: 150,
+    flex: 0.25,
     renderCell: (params: GridRenderCellParams<ISeasonResponse>) => {
       if (params.row.endDate) {
         return (
@@ -127,7 +170,6 @@ const columns: GridColDef[] = [
     renderHeader: () => (
       <FormattedMessage id="table.column.actions" defaultMessage="Actions" />
     ),
-    width: 100,
     align: "center",
     headerAlign: "center",
     sortable: false,
@@ -138,12 +180,13 @@ const columns: GridColDef[] = [
 ];
 
 const Seasons = () => {
-  const { user } = useUser();
+  const { user, defaultSeason, updateDefaultSeason } = useUser();
   const intl = useIntl();
   const { showAlert } = useAlert();
 
   const theme = useTheme();
   const desktop = useMediaQuery(theme.breakpoints.up("md"));
+  const tablet = useMediaQuery(theme.breakpoints.up("sm"));
 
   const { GET_QUERY_KEY } = useQueryCache("seasons");
   const [seasons, setSeasons] = useState<Array<ISeasonResponse>>([]);
@@ -234,7 +277,13 @@ const Seasons = () => {
       <Box display="flex" flexGrow={1} pb={3}>
         <DataTable
           rows={seasons}
-          columns={columns}
+          columns={columns(defaultSeason, (id) => {
+            if (id === defaultSeason) {
+              updateDefaultSeason("");
+            } else {
+              updateDefaultSeason(id);
+            }
+          })}
           loading={isLoading}
           emptyState={{
             icon: <Plant width="100%" height="100%" />,
@@ -250,12 +299,12 @@ const Seasons = () => {
           initialState={{
             columns: {
               columnVisibilityModel: {
-                name: !!desktop,
-                status: !!desktop,
-                product: !!desktop,
-                startDate: !!desktop,
-                endDate: !!desktop,
-                pickerList: !desktop,
+                name: !!tablet,
+                status: !!tablet,
+                product: !!tablet,
+                startDate: !!tablet,
+                endDate: !!tablet,
+                pickerList: !tablet,
               },
             },
           }}
