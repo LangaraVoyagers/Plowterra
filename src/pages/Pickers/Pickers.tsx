@@ -35,7 +35,7 @@ const columns: GridColDef[] = [
       />
     ),
     minWidth: 150,
-    flex: 1,
+    flex: 0.5,
     renderCell: (params) => {
       return (
         <Box>
@@ -54,8 +54,8 @@ const columns: GridColDef[] = [
     renderHeader: () => (
       <FormattedMessage id="pickers.table.column.name" defaultMessage="Name" />
     ),
-    flex: 1,
     minWidth: 150,
+    flex: 0.5,
     editable: true,
   },
   {
@@ -66,8 +66,8 @@ const columns: GridColDef[] = [
         defaultMessage="Phone Number"
       />
     ),
+    flex: 0.25,
     sortable: false,
-    width: 150,
   },
   {
     field: "contactName",
@@ -77,23 +77,25 @@ const columns: GridColDef[] = [
         defaultMessage="Emergency Contact"
       />
     ),
-    width: 200,
+    flex: 0.25,
+
     valueGetter: (params: GridValueGetterParams<IPickerResponse>) =>
       params.row.emergencyContact.name,
   },
   {
     field: "contactPhone",
     headerName: "",
-    minWidth: 150,
-    flex: 1,
     sortable: false,
+    flex: 0.25,
+
     valueGetter: (params: GridValueGetterParams<IPickerResponse>) =>
       params.row.emergencyContact.phone,
   },
   {
     field: "createdAt",
     headerName: "Created at",
-    width: 200,
+    flex: 0.25,
+
     valueGetter: (params: GridValueGetterParams<IPickerResponse>) =>
       params.row.createdAt,
     renderCell: (params: GridRenderCellParams<IPickerResponse>) => {
@@ -132,6 +134,7 @@ const Pickers = () => {
 
   const theme = useTheme();
   const desktop = useMediaQuery(theme.breakpoints.up("md"));
+  const tablet = useMediaQuery(theme.breakpoints.up("sm"));
 
   const { GET_QUERY_KEY } = useQueryCache("pickers");
 
@@ -227,12 +230,12 @@ const Pickers = () => {
           initialState={{
             columns: {
               columnVisibilityModel: {
-                name: !!desktop,
-                phone: !!desktop,
-                pickerList: !desktop,
+                name: !!tablet,
+                phone: !!tablet,
+                pickerList: !tablet,
                 contactName: !!desktop,
                 contactPhone: !!desktop,
-                createdAt: !!desktop,
+                createdAt: !!tablet,
               },
             },
           }}

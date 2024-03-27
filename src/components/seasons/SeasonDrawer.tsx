@@ -102,7 +102,7 @@ export interface ISeasonRequest {
 const SeasonDrawer = ({ dismiss, seasonId, ...props }: SeasonDrawerProps) => {
   const intl = useIntl();
   const { showAlert } = useAlert();
-  const { user } = useUser();
+  const { user, defaultSeason, clearDefaultSeason } = useUser();
 
   const theme = useTheme();
   const desktop = useMediaQuery(theme.breakpoints.up("md"));
@@ -280,10 +280,22 @@ const SeasonDrawer = ({ dismiss, seasonId, ...props }: SeasonDrawerProps) => {
       showAlert(
         intl.formatMessage({
           id: "seasons.close.season.response.success",
-          defaultMessage: "The season was close successfully.",
+          defaultMessage: "The season was closed successfully.",
         }),
         "success"
       );
+      if (result._id === defaultSeason) {
+        clearDefaultSeason();
+        showAlert(
+          intl.formatMessage({
+            id: "seasons.close.season.clear.default.season",
+            defaultMessage:
+              "The default season was closed, you can select a new default season on the Seasons page",
+          }),
+          "info"
+        );
+      }
+
       dismiss();
     },
     onError: () => {
@@ -314,6 +326,7 @@ const SeasonDrawer = ({ dismiss, seasonId, ...props }: SeasonDrawerProps) => {
     );
     hideEdit();
   };
+
   const onSubmit = (data: ISeasonRequest) => {
     saveSeasonMutation({
       ...data,

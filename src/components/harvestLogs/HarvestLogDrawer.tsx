@@ -89,7 +89,7 @@ const HarvestLogDrawer = ({
   harvestLogId,
   ...props
 }: HarvestLogDrawerProps) => {
-  const { user } = useUser();
+  const { user, defaultSeason } = useUser();
   const { showAlert } = useAlert();
   const intl = useIntl();
 
@@ -132,6 +132,7 @@ const HarvestLogDrawer = ({
   } = useForm<IHarvestLogForm>({
     defaultValues: {
       farmId: user.farm._id,
+      seasonId: defaultSeason,
       seasonDeductionIds: [],
     },
     resolver: ajvResolver(HarvestLogSchema),
@@ -140,6 +141,7 @@ const HarvestLogDrawer = ({
   const {
     control: controlHarvestCorrection,
     handleSubmit: handleSubmitHarvestCorrection,
+    reset: resetHarvestLogCorrection,
     formState: { errors: errorsHarvestCorrection },
   } = useForm<IHarvestCorrectionForm>({
     defaultValues: {
@@ -313,7 +315,9 @@ const HarvestLogDrawer = ({
   const onCreateHarvestLogClose = () => {
     if (openCorrectionEntry) {
       setOpenCorrectionEntry(false);
+      resetHarvestLogCorrection();
     } else {
+      resetHarvestLog();
       setSeason(undefined);
       dismiss();
     }
@@ -411,7 +415,16 @@ const HarvestLogDrawer = ({
                     label: season?.name,
                   })
                 )}
-                value={value ? { id: value, label: value } : undefined}
+                value={
+                  value
+                    ? {
+                        id: value,
+                        label:
+                          seasons.find((season) => season._id === value)
+                            ?.name ?? "",
+                      }
+                    : undefined
+                }
                 onChange={(_, newValue) => {
                   onChange(newValue?.id);
                   setSeason(
@@ -885,6 +898,12 @@ const HarvestLogDrawer = ({
     </DrawerContainer>
   );
 
+  React.useEffect(() => {
+    if (defaultSeason && props.open) {
+      setSeason(seasons?.find((s: { _id: string }) => s._id === defaultSeason));
+    }
+  }, [defaultSeason, props.open]);
+
   return (
     <>
       <Drawer
@@ -895,7 +914,14 @@ const HarvestLogDrawer = ({
             width: desktop ? 600 : "100%",
           },
         }}
-        onClose={!showEditForm ? dismiss : undefined}
+        onClose={
+          !showEditForm
+            ? () => {
+                resetHarvestLog();
+                dismiss();
+              }
+            : undefined
+        }
       >
         {/* TODO: Display correct page */}
         {!isLoadingDetail && (
@@ -928,7 +954,6 @@ const HarvestLogDrawer = ({
             defaultMessage: "Back to Harvest Log",
           })}
           onClose={() => {
-            console.log("reset");
             resetHarvestLog();
             setShowSuccess(false);
             onCreateHarvestLogClose();

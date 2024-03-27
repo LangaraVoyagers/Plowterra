@@ -53,7 +53,7 @@ const columns = (currency: string, unit: string): GridColDef[] => [
         defaultMessage="Picker"
       />
     ),
-    flex: 1,
+    flex: 0.5,
     minWidth: 100,
     valueGetter: (params) => {
       return params.row.picker.name;
@@ -70,7 +70,6 @@ const columns = (currency: string, unit: string): GridColDef[] => [
     ),
     headerAlign: "right",
     align: "right",
-    width: 150,
     renderCell: (params) => {
       return <FormattedNumber value={params.row.grossAmount} />;
     },
@@ -85,7 +84,6 @@ const columns = (currency: string, unit: string): GridColDef[] => [
     ),
     headerAlign: "right",
     align: "right",
-    width: 150,
     renderCell: (params) => {
       return (
         <span>
@@ -105,7 +103,6 @@ const columns = (currency: string, unit: string): GridColDef[] => [
     ),
     headerAlign: "right",
     align: "right",
-    width: 150,
     renderCell: (params) => {
       return <FormattedNumber value={params.row.deductions} />;
     },
@@ -121,19 +118,19 @@ const columns = (currency: string, unit: string): GridColDef[] => [
     ),
     headerAlign: "right",
     align: "right",
-    width: 100,
+    flex: 0.25,
     renderCell: (params) => {
       return <FormattedNumber value={params.row.netAmount} />;
     },
   },
   {
     field: "actions",
-    width: 50,
+    width: 100,
   },
 ];
 
 const Preview: React.FC = () => {
-  const { user } = useUser();
+  const { user, defaultSeason } = useUser();
   const { showAlert } = useAlert();
 
   const intl = useIntl();
@@ -141,15 +138,16 @@ const Preview: React.FC = () => {
   const theme = useTheme();
   const desktop = useMediaQuery(theme.breakpoints.up("md"));
 
-  // const [params] = useSearchParams()
-  // const seasonId = params.get("seasonId")
-
   const [payrollData, setPayrollData] = useState<IPayrollResponse | null>(null);
 
   const [startDate, setStartDate] = useState<Dayjs>();
   const [endDate, setEndDate] = useState<Dayjs>();
 
-  const [selectedSeason, setSelectedSeason] = useState<ISeasonResponse>();
+  const [selectedSeason, setSelectedSeason] = useState<
+    ISeasonResponse | undefined
+  >({
+    _id: defaultSeason,
+  } as any);
 
   const [payrollDone, setPayrollDone] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -298,7 +296,9 @@ const Preview: React.FC = () => {
                 <BodyText size="md">From</BodyText>
                 <DatePicker
                   value={startDate}
-                  slotProps={{ textField: { size: "small" } }}
+                  slotProps={{
+                    textField: { size: "small", fullWidth: true },
+                  }}
                   onChange={(value) => {
                     if (value) {
                       setStartDate(value);
@@ -310,7 +310,9 @@ const Preview: React.FC = () => {
                 <BodyText size="md">to</BodyText>
                 <DatePicker
                   value={endDate}
-                  slotProps={{ textField: { size: "small" } }}
+                  slotProps={{
+                    textField: { size: "small", fullWidth: true },
+                  }}
                   onChange={(value) => {
                     if (value) {
                       setEndDate(value);
@@ -494,11 +496,13 @@ const PayrollFilters = styled(Box)`
     .filters {
       display: flex;
       flex-direction: row;
+      width: 100%;
       gap: ${({ theme }) => theme.spacing(2)};
 
       .date-filter {
         display: flex;
         flex-direction: column;
+        width: 100%;
         gap: ${({ theme }) => theme.spacing(0.5)};
       }
     }
@@ -515,8 +519,13 @@ const PayrollFilters = styled(Box)`
       align-items: center;
       flex-direction: row;
 
+      .filters {
+        width: fit-content;
+      }
+
       .date-filter {
         display: flex;
+        width: fit-content;
         flex-direction: row !important;
         align-items: center;
         gap: ${({ theme }) => theme.spacing(1.25)} !important;

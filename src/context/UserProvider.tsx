@@ -27,6 +27,10 @@ export const UserContext = createContext<{
   user: IUserState;
   setUser: (user: IUserState) => void;
   clearUser: () => void;
+
+  defaultSeason: string;
+  updateDefaultSeason: (values: string) => void;
+  clearDefaultSeason: () => void;
 } | null>(null);
 
 type UserProviderProps = {
@@ -35,6 +39,7 @@ type UserProviderProps = {
 
 export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
   const [user, updateUser] = usePersistedState("user", initialState);
+  const [season, updateDefaultSeason] = usePersistedState<string>("season", "");
 
   const clearUser = () => {
     setUser(initialState);
@@ -53,12 +58,18 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
     });
   };
 
+  const clearDefaultSeason = () => updateDefaultSeason("");
+
   return (
     <UserContext.Provider
       value={{
         user,
         setUser,
         clearUser,
+
+        defaultSeason: season,
+        updateDefaultSeason,
+        clearDefaultSeason,
       }}
     >
       {children}
