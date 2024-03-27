@@ -29,7 +29,7 @@ const DataTable = <T extends GridValidRowModel>({
 
   return (
     <>
-      <StyledContainer pb={!desktop ? "4rem" : undefined}>
+      <StyledContainer pb={!desktop ? "5rem" : undefined}>
         <DataGrid
           getRowId={(data) => data?._id ?? data?.id}
           {...props}

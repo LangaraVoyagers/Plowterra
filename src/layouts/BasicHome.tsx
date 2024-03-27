@@ -23,11 +23,11 @@ export default function BasicHome({
   actions,
   children,
 }: BasicHomeProps) {
-  const theme = useTheme()
-  const mobile = useMediaQuery(theme.breakpoints.down("sm"))
+  const theme = useTheme();
+  const mobile = useMediaQuery(theme.breakpoints.down("md"));
 
   return (
-    <Container display="flex" flexDirection="column" height="100%" gap={3}>
+    <Container display="flex" flexDirection="column" height="100%">
       <Box component="header" display="flex" flexDirection="column" gap={4}>
         {!mobile && (
           <Breadcrumbs maxItems={3} aria-label="breadcrumb">
@@ -59,8 +59,12 @@ export default function BasicHome({
           </Breadcrumbs>
         )}
 
-        <Header display="flex" flexDirection="column" gap={1.25}>
-          <Box display="flex" flexDirection="column" gap={1}>
+        <Header display="flex" flexDirection="column">
+          <Box
+            display="flex"
+            flexDirection="column"
+            gap={mobile ? "0.5rem" : "0.75rem"}
+          >
             <Display
               size="lg"
               tabIndex={0}
@@ -77,7 +81,7 @@ export default function BasicHome({
             </BodyText>
           </Box>
 
-          <Box>{actions}</Box>
+          {actions}
         </Header>
       </Box>
 
@@ -89,15 +93,18 @@ export default function BasicHome({
 }
 
 const Container = styled(Box)`
-  gap: ${({ theme }) => theme.spacing(3)};
+  gap: 1.25rem;
   ${(props) => props.theme.breakpoints.up("sm")} {
-    gap: ${({ theme }) => theme.spacing(8)};
+    gap: 2rem;
   }
-`
+`;
 
 const Header = styled(Box)`
+  gap: 1.75rem;
+
   ${(props) => props.theme.breakpoints.up("sm")} {
     flex-direction: row;
     justify-content: space-between;
+    gap: 2rem;
   }
-`
+`;
