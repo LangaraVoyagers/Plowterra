@@ -255,6 +255,8 @@ const HarvestLogDrawer = ({
     });
   };
 
+  const defaultSeason = JSON.parse(localStorage.getItem("season") || "{}");
+
   const harvestLogForm = (
     <Box
       display="flex"
@@ -283,7 +285,11 @@ const HarvestLogDrawer = ({
                     label: season?.name,
                   })
                 )}
-                value={value ? { id: value, label: value } : undefined}
+                value={
+                  value
+                    ? { id: value, label: value }
+                    : { id: defaultSeason.id, label: defaultSeason.name }
+                }
                 onChange={(_, newValue) => {
                   onChange(newValue?.id);
                   setSeason(
@@ -292,7 +298,7 @@ const HarvestLogDrawer = ({
                     )
                   );
                 }}
-                getOptionLabel={(option) => option.label}
+                getOptionLabel={(option) => option.label || ""}
                 renderInput={(params) => (
                   <div>
                     <InputLabel htmlFor="harvest-log-season">
