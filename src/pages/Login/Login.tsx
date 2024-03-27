@@ -20,10 +20,12 @@ import { useMutation } from "react-query";
 import { useNavigate } from "react-router-dom";
 import { useUser } from "context/UserProvider.tsx";
 import { validateResolver } from "shared/ajv.ts";
-import Logo from "assets/images/Logo.svg";
+import LogoLight from "assets/images/Logo.svg";
+import LogoDark from "assets/images/LogoDark.svg";
 import Background from "assets/images/login.jpg";
 import { useState } from "react";
 import { Eye, EyeSlash } from "@phosphor-icons/react";
+import { useThemMode } from "context/ThemeProvider.tsx";
 
 interface LoginForm extends ISignInRequest {}
 
@@ -35,6 +37,9 @@ const Login: React.FC = () => {
 
   const theme = useTheme();
   const desktop = useMediaQuery(theme.breakpoints.up("md"));
+  const {mode} = useThemMode();
+
+  const Logo = mode === "light" ? LogoLight : LogoDark;
 
   const {
     control,
@@ -119,7 +124,7 @@ const Login: React.FC = () => {
           maxWidth="564px"
           margin={desktop ? "0 0 0 50vw" : "1rem"}
           sx={{
-            background: "#FFF",
+            background: theme.palette.background.paper,
             padding: "3.5rem",
             borderRadius: "var(--radius-xl, 0.75rem)",
           }}
