@@ -37,7 +37,7 @@ const Login: React.FC = () => {
 
   const theme = useTheme();
   const desktop = useMediaQuery(theme.breakpoints.up("md"));
-  const {mode} = useThemMode();
+  const { mode } = useThemMode();
 
   const Logo = mode === "light" ? LogoLight : LogoDark;
 
@@ -120,7 +120,7 @@ const Login: React.FC = () => {
           display="flex"
           flexDirection="column"
           gap="4rem"
-          width="100%"
+          width={desktop ? "100%" : "auto"}
           maxWidth="564px"
           margin={desktop ? "0 0 0 50vw" : "1rem"}
           sx={{
