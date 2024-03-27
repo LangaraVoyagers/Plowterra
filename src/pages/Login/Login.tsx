@@ -11,7 +11,8 @@ import { useMutation } from "react-query";
 import { useNavigate } from "react-router-dom";
 import { useUser } from "context/UserProvider.tsx";
 import { validateResolver } from "shared/ajv.ts";
-import { Display } from "ui/Typography.tsx";
+import Logo from "assets/images/Logo.svg";
+import Background from "assets/images/login.jpg";
 
 interface LoginForm extends ISignInRequest {}
 
@@ -56,7 +57,6 @@ const Login: React.FC = () => {
     },
   });
 
-
   const onSubmit = (data: ISignInRequest) => {
     signin(data);
   };
@@ -67,7 +67,9 @@ const Login: React.FC = () => {
       justifyContent="center"
       alignItems="center"
       height="100%"
-      sx={{ background: "url(src/assets/images/login.jpg) lightgray 50% / cover no-repeat"}}
+      sx={{
+        background: `url(${Background}) lightgray 50% / cover no-repeat`,
+      }}
     >
       <Box width="500px" margin="auto">
         <Box
@@ -77,8 +79,15 @@ const Login: React.FC = () => {
           flexDirection="column"
           gap={8}
           width="100%"
+          sx={{
+            background: "#FFF",
+            padding: "3.5rem",
+            borderRadius: "var(--radius-xl, 0.75rem)",
+          }}
         >
-          <Display>Login</Display>
+          <Box display="flex" justifyContent="center">
+            {<img src={Logo} />}
+          </Box>
 
           <Box display="flex" flexDirection="column" gap={4} width="100%">
             <Controller
