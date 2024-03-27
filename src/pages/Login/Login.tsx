@@ -67,6 +67,7 @@ const Login: React.FC = () => {
       justifyContent="center"
       alignItems="center"
       height="100%"
+      sx={{ background: "url(src/assets/images/login.jpg) lightgray 50% / cover no-repeat"}}
     >
       <Box width="500px" margin="auto">
         <Box
