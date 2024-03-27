@@ -339,7 +339,7 @@
     "defaultMessage": "Price per Unit"
   },
   "seasons.create.form.product.label": {
-    "defaultMessage": "Product*"
+    "defaultMessage": "Product"
   },
   "seasons.create.form.start_date.label": {
     "defaultMessage": "Start Date"
