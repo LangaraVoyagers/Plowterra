@@ -44,7 +44,7 @@ const columns = (currency: string): GridColDef[] => [
       />
     ),
     minWidth: 150,
-    flex: 1,
+    flex: 0.5,
     valueGetter: (params: GridValueGetterParams<IHarvestLogResponse>) =>
       params.row.picker?.name,
   },
@@ -57,7 +57,7 @@ const columns = (currency: string): GridColDef[] => [
       />
     ),
     minWidth: 120,
-    flex: 1,
+    flex: 0.5,
     renderCell: (params) => {
       return (
         <Box>
@@ -72,13 +72,13 @@ const columns = (currency: string): GridColDef[] => [
   },
   {
     field: "product",
+    flex: 0.25,
     renderHeader: () => (
       <FormattedMessage
         id="harvest.logs.table.column.product"
         defaultMessage="Product"
       />
     ),
-    width: 200,
     valueGetter: (params: GridValueGetterParams<IHarvestLogResponse>) =>
       params.row.season?.product?.name,
   },
@@ -90,7 +90,7 @@ const columns = (currency: string): GridColDef[] => [
         defaultMessage="Amount"
       />
     ),
-    width: 100,
+    flex: 0.25,
     headerAlign: "right",
     align: "right",
     renderCell: (params) => {
@@ -110,7 +110,7 @@ const columns = (currency: string): GridColDef[] => [
         values={{ currency: currency ? `(${currency})` : "" }}
       />
     ),
-    width: 200,
+    flex: 0.25,
     headerAlign: "right",
     align: "right",
     renderCell: (params: GridRenderCellParams) => {
@@ -126,8 +126,7 @@ const columns = (currency: string): GridColDef[] => [
         defaultMessage="Date"
       />
     ),
-    minWidth: 200,
-    flex: 1,
+    flex: 0.25,
     align: "center",
     renderCell: (params: GridRenderCellParams) => {
       return (
@@ -163,6 +162,7 @@ const HarvestLogs = () => {
 
   const theme = useTheme();
   const desktop = useMediaQuery(theme.breakpoints.up("md"));
+  const tablet = useMediaQuery(theme.breakpoints.up("sm"));
 
   const pickerId = search.get("pickerId") ?? null;
 
@@ -337,9 +337,9 @@ const HarvestLogs = () => {
               columnVisibilityModel: {
                 picker: !pickerId && !!desktop,
                 pickerList: !desktop,
-                product: !!desktop,
+                product: !!tablet,
                 deductions: !!desktop,
-                createdAt: !!desktop,
+                createdAt: !!tablet,
               },
             },
           }}

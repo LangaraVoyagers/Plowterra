@@ -28,8 +28,9 @@ export const UserContext = createContext<{
   setUser: (user: IUserState) => void;
   clearUser: () => void;
 
-  defaultSeason: any | undefined;
-  updateDefaultSeason: (values: any) => void;
+  defaultSeason: string;
+  updateDefaultSeason: (values: string) => void;
+  clearDefaultSeason: (values: string) => void;
 } | null>(null);
 
 type UserProviderProps = {
@@ -38,10 +39,7 @@ type UserProviderProps = {
 
 export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
   const [user, updateUser] = usePersistedState("user", initialState);
-  const [season, updateDefaultSeason] = usePersistedState<any | undefined>(
-    "season",
-    undefined
-  );
+  const [season, updateDefaultSeason] = usePersistedState<string>("season", "");
 
   const clearUser = () => {
     setUser(initialState);
@@ -58,38 +56,9 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
         isDisabled: data?.farm?.isDisabled ?? false,
       },
     });
-    updateDefaultSeason({
-      _id: "65f4698c9b4918c4f0110a8b",
-      name: "BBBB",
-      startDate: 1710516386938,
-      status: "ACTIVE",
-      farm: {
-        _id: "65d703cf9a00b1a671609458",
-        name: "Emerald Harvest Farms",
-        address: "Emerald Harvest Farms\n1234 Rural Road\nColumbia, Colombia",
-      },
-      product: {
-        _id: "65f3d9508ee7fc06724abc0b",
-        name: "Llapingacho",
-      },
-      unit: {
-        _id: "65f3d9738ee7fc06724abc15",
-        name: "kg",
-      },
-      currency: {
-        _id: "65e2ce183ac3c95f4e8674b8",
-        name: "USD$",
-      },
-      deductions: [
-        {
-          deductionID: "65f3d9498ee7fc06724abc07",
-          price: 1,
-          _id: "65f4698c9b4918c4f0110a8c",
-        },
-      ],
-    });
   };
 
+  const clearDefaultSeason = () => updateDefaultSeason("");
   return (
     <UserContext.Provider
       value={{
@@ -99,6 +68,7 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
 
         defaultSeason: season,
         updateDefaultSeason,
+        clearDefaultSeason,
       }}
     >
       {children}
