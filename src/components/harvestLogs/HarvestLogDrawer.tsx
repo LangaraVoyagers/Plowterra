@@ -10,7 +10,6 @@ import {
   Checkbox,
   Drawer,
   DrawerProps,
-  InputLabel,
   ListItemText,
   MenuItem,
   OutlinedInput,
@@ -47,6 +46,7 @@ import { FormattedMessage, useIntl } from "react-intl";
 import { useUser } from "context/UserProvider";
 import { CaretDown } from "@phosphor-icons/react";
 import DrawerContainer from "ui/DrawerContainer";
+import InputLabel from "ui/InputLabel";
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -392,7 +392,7 @@ const HarvestLogDrawer = ({
         </Box>
       }
     >
-      <Display>
+      <Display component="h1" size="md" fontWeight="SemiBold">
         <FormattedMessage
           id="harvest.logs.drawer.create.form.title"
           defaultMessage={intl.formatMessage({
@@ -437,12 +437,11 @@ const HarvestLogDrawer = ({
                 getOptionLabel={(option) => option.label}
                 renderInput={(params) => (
                   <div>
-                    <InputLabel htmlFor="harvest-log-season">
+                    <InputLabel htmlFor="harvest-log-season" required>
                       {intl.formatMessage({
                         id: "harvest-log.create.form.season.label",
                         defaultMessage: "Harvest Season",
                       })}
-                      *
                     </InputLabel>
                     <TextField
                       {...params}
@@ -500,12 +499,11 @@ const HarvestLogDrawer = ({
                 }))}
                 renderInput={(params) => (
                   <div>
-                    <InputLabel htmlFor="harvest-log-picker">
+                    <InputLabel htmlFor="harvest-log-picker" required>
                       {intl.formatMessage({
                         id: "harvest-log.create.form.picker.label",
                         defaultMessage: "Picker",
                       })}
-                      *
                     </InputLabel>
                     <TextField
                       {...params}
@@ -544,12 +542,11 @@ const HarvestLogDrawer = ({
         render={({ field: { ref, value, onChange } }) => {
           return (
             <Box display="flex" flexDirection="column" gap={1}>
-              <InputLabel htmlFor="harvest-log-amount">
+              <InputLabel htmlFor="harvest-log-amount" required>
                 {intl.formatMessage({
                   id: "harvest-log.create.form.amount.label",
                   defaultMessage: "Amount",
                 })}
-                *
               </InputLabel>
 
               <TextField
@@ -581,7 +578,7 @@ const HarvestLogDrawer = ({
         render={({ field: { value, onChange } }) => {
           return (
             <Box display="flex" flexDirection="column" gap={1}>
-              <InputLabel id="harvest-log-deductions">
+              <InputLabel htmlFor="harvest-log-deductions">
                 {intl.formatMessage({
                   id: "harvest-log.create.form.deduction.label",
                   defaultMessage: "Deduction",
@@ -639,7 +636,7 @@ const HarvestLogDrawer = ({
               <InputLabel htmlFor="harvest-log-notes">
                 {intl.formatMessage({
                   id: "harvest-log.create.form.note.label",
-                  defaultMessage: "Note",
+                  defaultMessage: "Notes",
                 })}
               </InputLabel>
 
@@ -911,7 +908,7 @@ const HarvestLogDrawer = ({
         {...props}
         PaperProps={{
           sx: {
-            width: desktop ? 600 : "100%",
+            width: desktop ? 500 : "100%",
           },
         }}
         onClose={

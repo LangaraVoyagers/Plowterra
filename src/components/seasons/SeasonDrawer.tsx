@@ -8,7 +8,6 @@ import {
   DrawerProps,
   FormControl,
   FormHelperText,
-  InputLabel,
   MenuItem,
   Select,
   Stack,
@@ -48,6 +47,7 @@ import ConfirmationDrawer from "ui/ConfirmationDrawer";
 import SeasonImage from "../../assets/images/SeasonSuccess.svg";
 import SelectFreeSolo from "./SelectFreeSolo";
 import DrawerContainer from "ui/DrawerContainer";
+import InputLabel from "ui/InputLabel";
 
 const payrollTimeframeList = (
   Object.keys(PayrollTimeframeEnum) as Array<keyof typeof PayrollTimeframeEnum>
@@ -392,7 +392,7 @@ const SeasonDrawer = ({ dismiss, seasonId, ...props }: SeasonDrawerProps) => {
           </Box>
         }
       >
-        <Display>
+        <Display component="h1" size="md" fontWeight="SemiBold">
           {intl.formatMessage(
             {
               id: "seasons.detail.title",
@@ -408,12 +408,11 @@ const SeasonDrawer = ({ dismiss, seasonId, ...props }: SeasonDrawerProps) => {
           render={({ field }) => {
             return (
               <Box display="flex" flexDirection="column" gap={1}>
-                <InputLabel htmlFor="season-name-input">
+                <InputLabel htmlFor="season-name-input" required>
                   {intl.formatMessage({
                     id: "seasons.create.form.name.label",
                     defaultMessage: "Harvest Season Name",
                   })}
-                  *
                 </InputLabel>
                 <TextField
                   {...field}
@@ -434,12 +433,11 @@ const SeasonDrawer = ({ dismiss, seasonId, ...props }: SeasonDrawerProps) => {
           render={() => {
             return (
               <Box display="flex" flexDirection="column" gap={1}>
-                <InputLabel htmlFor="season-start-date-input">
+                <InputLabel htmlFor="season-start-date-input" required>
                   {intl.formatMessage({
                     id: "seasons.create.form.start_date.label",
                     defaultMessage: "Start Date",
                   })}
-                  *
                 </InputLabel>
                 <DatePicker
                   // label="Start Date"
@@ -459,12 +457,11 @@ const SeasonDrawer = ({ dismiss, seasonId, ...props }: SeasonDrawerProps) => {
           render={({ field }) => {
             return (
               <Box display="flex" flexDirection="column" gap={1}>
-                <InputLabel htmlFor="season-payroll-timeframe-input">
+                <InputLabel htmlFor="season-payroll-timeframe-input" required>
                   {intl.formatMessage({
                     id: "seasons.create.form.payroll_timeframe.label",
                     defaultMessage: "Payroll Timeframe",
                   })}
-                  *
                 </InputLabel>
                 <FormControl>
                   <Select
@@ -496,10 +493,10 @@ const SeasonDrawer = ({ dismiss, seasonId, ...props }: SeasonDrawerProps) => {
           render={({ field: { onChange, value: productId } }) => {
             return (
               <Box display="flex" flexDirection="column" gap={1}>
-                <InputLabel>
+                <InputLabel htmlFor="select-product-input" required>
                   {intl.formatMessage({
                     id: "seasons.create.form.product.label",
-                    defaultMessage: "Product*",
+                    defaultMessage: "Product",
                   })}
                 </InputLabel>
                 <SelectFreeSolo
@@ -562,7 +559,9 @@ const SeasonDrawer = ({ dismiss, seasonId, ...props }: SeasonDrawerProps) => {
                   }}
                   renderInput={(params) => (
                     <div>
-                      <InputLabel htmlFor="season-unit">Unit*</InputLabel>
+                      <InputLabel htmlFor="season-unit" required>
+                        Unit
+                      </InputLabel>
                       <TextField
                         {...params}
                         id="season-unit"
@@ -605,8 +604,8 @@ const SeasonDrawer = ({ dismiss, seasonId, ...props }: SeasonDrawerProps) => {
                   loading={isLoadingCurrency}
                   renderInput={(params) => (
                     <div>
-                      <InputLabel htmlFor="season-currency">
-                        Currency*
+                      <InputLabel htmlFor="season-currency" required>
+                        Currency
                       </InputLabel>
                       <TextField
                         {...params}
@@ -629,12 +628,11 @@ const SeasonDrawer = ({ dismiss, seasonId, ...props }: SeasonDrawerProps) => {
           render={({ field: { ref, value, onChange } }) => {
             return (
               <Box display="flex" flexDirection="column" gap={1}>
-                <InputLabel htmlFor="season-price-input">
+                <InputLabel htmlFor="season-price-input" required>
                   {intl.formatMessage({
                     id: "seasons.create.form.price.label",
                     defaultMessage: "Price per Unit",
                   })}
-                  *
                 </InputLabel>
                 <TextField
                   ref={ref}
@@ -655,7 +653,7 @@ const SeasonDrawer = ({ dismiss, seasonId, ...props }: SeasonDrawerProps) => {
         />
 
         <Box display="flex" flexDirection="column" gap={1}>
-          <InputLabel>
+          <InputLabel htmlFor="">
             {intl.formatMessage({
               id: "seasons.create.form.deductions.label",
               defaultMessage: "Deductions",
@@ -862,7 +860,7 @@ const SeasonDrawer = ({ dismiss, seasonId, ...props }: SeasonDrawerProps) => {
         anchor="right"
         PaperProps={{
           sx: {
-            width: desktop ? 600 : "100%",
+            width: desktop ? 500 : "100%",
           },
         }}
         {...props}

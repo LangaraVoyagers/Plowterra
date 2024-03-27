@@ -53,7 +53,7 @@ const SeasonDeductions = () => {
         fields.map((field, index) => {
           return (
             <Grid id={field.id} key={field.id} container spacing={4}>
-              <Grid key={`${index}-left`} item>
+              <Grid key={`${index}-left`} item width="45%">
                 <SelectFreeSolo
                   options={deductions.map((d) => ({
                     id: d._id,
@@ -80,9 +80,16 @@ const SeasonDeductions = () => {
                     id && setValue(`deductions.${index}.deductionID`, id);
                   }}
                   id="select-deduction-input"
+                  sx={{ width: "100%" }}
                 />
               </Grid>
-              <Grid key={`${index}-right`} item display="flex" gap={3}>
+              <Grid
+                key={`${index}-right`}
+                item
+                display="flex"
+                width="55%"
+                gap={3}
+              >
                 <Controller
                   name={`deductions.${index}.price`}
                   control={control}
@@ -93,6 +100,7 @@ const SeasonDeductions = () => {
                         type="number"
                         variant="outlined"
                         size="small"
+                        fullWidth
                       />
                     );
                   }}
