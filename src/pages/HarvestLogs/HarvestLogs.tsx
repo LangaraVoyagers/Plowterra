@@ -287,7 +287,10 @@ const HarvestLogs = () => {
             </Box>
           </FormControl>
 
-          <SeasonFilterDataGrid onChange={setSelectedSeason} />
+          <SeasonFilterDataGrid
+            defaultFirst={false}
+            onChange={setSelectedSeason}
+          />
         </Box>
       )}
 
