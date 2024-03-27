@@ -35,19 +35,6 @@ import { BodyText } from "ui/Typography";
 import { FileText } from "@phosphor-icons/react";
 
 const columns = (currency: string): GridColDef[] => [
-  // {
-  //   field: "index",
-  //   renderHeader: () => (
-  //     <FormattedMessage
-  //       id="harvest.logs.table.columns.no.header"
-  //       defaultMessage="No"
-  //     />
-  //   ),
-  //   width: 50,
-  //   valueGetter: (params) => {
-  //     return params.row.index + 1;
-  //   },
-  // },
   {
     field: "picker",
     renderHeader: () => (
@@ -244,11 +231,29 @@ const HarvestLogs = () => {
 
   return (
     <BasicHome
-      title={picker ? picker?.name : "Harvest Log"}
-      subtitle="Add and view picker’s daily collection data here."
+      title={
+        picker
+          ? picker?.name
+          : intl.formatMessage({
+              id: "harvest.log",
+              defaultMessage: "Harvest Log",
+            })
+      }
+      subtitle={intl.formatMessage({
+        id: "harvest.log.subtitle",
+        defaultMessage: "Add and view picker’s daily collection data here.",
+      })}
       breadcrumb={[
         { title: user.farm.name, href: "/" },
-        { title: "Harvest Log", href: paths.harvestLogs },
+        {
+          title: (
+            <FormattedMessage
+              id="sidebar.harvest_log"
+              defaultMessage="Harvest Log"
+            />
+          ),
+          href: paths.harvestLogs,
+        },
         ...(picker ? [{ title: picker?.name, href: "#" }] : []),
       ]}
       actions={!!desktop && <CreateHarvestLog />}

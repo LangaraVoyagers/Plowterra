@@ -38,9 +38,11 @@ const FiltersDrawer = ({
   return (
     <>
       <Button
-        variant="contained"
-        color="success"
+        variant="outlined"
         onClick={() => setOpen(true)}
+        sx={{
+          minWidth: "fit-content",
+        }}
         endIcon={<Funnel size="1rem" />}
       >
         Filters
