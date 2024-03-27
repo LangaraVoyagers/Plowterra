@@ -476,12 +476,6 @@ const PickerDrawer = ({ dismiss, pickerId, ...props }: PickerDrawerProps) => {
       {/* TODO: add confirmation modal later, we probably will standardize the way we handle the delete after design has defined that */}
       {!!pickerId && (
         <Box display="flex" flexDirection="column" mt={4}>
-          <Display size="sm" component="h2">
-            {intl.formatMessage({
-              id: "danger.zone.label",
-              defaultMessage: "Danger Zone",
-            })}
-          </Display>
           <Alert
             severity="error"
             variant="outlined"

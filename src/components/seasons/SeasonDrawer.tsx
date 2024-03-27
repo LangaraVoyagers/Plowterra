@@ -665,17 +665,16 @@ const SeasonDrawer = ({ dismiss, seasonId, ...props }: SeasonDrawerProps) => {
         {/* TODO: add confirmation modal later, we probably will standardize the way we handle the delete after design has defined that */}
         {!!seasonId && (
           <Box display="flex" flexDirection="column" gap={2} marginTop={4}>
-            <Display size="sm" component="h2">
-              {intl.formatMessage({
-                id: "danger.zone.label",
-                defaultMessage: "Danger Zone",
-              })}
-            </Display>
             <Alert
               severity="error"
               variant="outlined"
               action={
-                <Button color="error" variant="text" onClick={onDelete}>
+                <Button
+                  color="error"
+                  variant="text"
+                  onClick={onDelete}
+                  size="small"
+                >
                   {intl.formatMessage(
                     {
                       id: "seasons.button.delete",
