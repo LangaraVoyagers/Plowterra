@@ -24,7 +24,7 @@ import {
   getSeasonById,
   upsertSeason,
 } from "api/seasons";
-import { getUnits } from "api/units";
+import { createUnit, getUnits } from "api/units";
 import { useAlert } from "context/AlertProvider";
 import { useUser } from "context/UserProvider";
 import dayjs, { Dayjs } from "dayjs";
@@ -117,7 +117,8 @@ const SeasonDrawer = ({ dismiss, seasonId, ...props }: SeasonDrawerProps) => {
     createCache: createProductCache,
   } = useQueryCache("products");
 
-  const { GET_DETAIL_QUERY_KEY: GET_UNITS_KEY } = useQueryCache("units");
+  const { GET_DETAIL_QUERY_KEY: GET_UNITS_KEY, createCache: createUnitCache } =
+    useQueryCache("units");
 
   const { GET_DETAIL_QUERY_KEY: GET_CURRENCY_KEY } =
     useQueryCache("currencies");
@@ -195,7 +196,7 @@ const SeasonDrawer = ({ dismiss, seasonId, ...props }: SeasonDrawerProps) => {
   });
 
   // Get all units
-  const { isLoading: isLoadingUnits } = useQuery({
+  useQuery({
     queryKey: GET_UNITS_KEY,
     queryFn: getUnits,
     onSuccess: (result) => {
@@ -531,42 +532,39 @@ const SeasonDrawer = ({ dismiss, seasonId, ...props }: SeasonDrawerProps) => {
         <Controller
           control={control}
           name="unitId"
-          render={({ field: { onChange, value } }) => {
+          render={({ field: { onChange, value: unitId } }) => {
             return (
               <Box display="flex" flexDirection="column" gap={1}>
-                <Autocomplete
-                  id="season-unit-combo-box"
+                <InputLabel htmlFor="season-unit-combo-box" required>
+                  Unit
+                </InputLabel>
+                <SelectFreeSolo
+                  sx={{ width: "100%" }}
                   options={units.map((unit) => ({
                     id: unit._id,
                     label: unit?.name,
                   }))}
-                  loading={isLoadingUnits}
-                  // TODO: use free solo with text: https://mui.com/material-ui/react-autocomplete/#creatable
-                  value={
-                    value
-                      ? {
-                          id: value,
-                          label: units.find((u) => u._id === value)?.name,
-                        }
-                      : undefined
-                  }
-                  onChange={(_, newValue) => {
-                    onChange(newValue?.id);
+                  defaultValue={{
+                    id: unitId,
+                    label: units.find((u) => u._id === unitId)?.name ?? "",
                   }}
-                  renderInput={(params) => (
-                    <div>
-                      <InputLabel htmlFor="season-unit" required>
-                        Unit
-                      </InputLabel>
-                      <TextField
-                        {...params}
-                        id="season-unit"
-                        size="small"
-                        helperText={errors.unitId?.message}
-                        error={!!errors.unitId}
-                      />
-                    </div>
-                  )}
+                  onCreate={async (value) => {
+                    try {
+                      const data = await createUnit(value);
+
+                      createUnitCache(data);
+                      onChange(data?._id);
+                      return data?._id;
+                    } catch (error) {
+                      return "";
+                    }
+                  }}
+                  onChange={({ id }) => {
+                    if (id) {
+                      onChange(id);
+                    }
+                  }}
+                  id="season-unit-combo-box"
                 />
               </Box>
             );
