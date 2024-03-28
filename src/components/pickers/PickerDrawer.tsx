@@ -34,6 +34,7 @@ import paths from "shared/paths";
 import ConfirmationDrawer from "ui/ConfirmationDrawer";
 import DrawerContainer from "ui/DrawerContainer";
 import InputLabel from "ui/InputLabel";
+import { FileText } from "@phosphor-icons/react";
 
 interface IPickerForm extends Omit<IPickerResponse, "id"> {}
 
@@ -512,7 +513,7 @@ const PickerDrawer = ({ dismiss, pickerId, ...props }: PickerDrawerProps) => {
     <DrawerContainer
       footer={
         <Box display="flex" justifyContent="space-between">
-          <Button variant="text" onClick={dismiss}>
+          <Button variant="outlined" onClick={dismiss}>
             {intl.formatMessage({
               id: "button.back",
               defaultMessage: "Back",
@@ -530,19 +531,28 @@ const PickerDrawer = ({ dismiss, pickerId, ...props }: PickerDrawerProps) => {
       <Box
         display="flex"
         flexDirection="column"
-        gap={3}
+        gap="1.5rem"
         flex={1}
         justifyContent="flex-start"
       >
-        <Box display="flex" flexDirection="column">
-          <Display>{pickerData.name}</Display>
-          <BodyText>{pickerData.phone}</BodyText>
+        <Box display="flex" flexDirection="column" gap="0.75rem">
+          <Display size="md" fontWeight="SemiBold">
+            {pickerData.name}
+          </Display>
+          <BodyText size="md" fontWeight="Medium">
+            {pickerData.phone}
+          </BodyText>
         </Box>
 
         <Divider />
 
-        <Box display="flex" flexDirection="column">
-          <Label component="label" htmlFor="emergency-contact-name">
+        <Box display="flex" flexDirection="column" gap="0.5rem">
+          <Label
+            component="label"
+            color="grey-400"
+            htmlFor="emergency-contact-name"
+            size="xs"
+          >
             {intl.formatMessage({
               id: "pickers.detail.emergency_contact_person.label",
               defaultMessage: "Emergency Contact Person",
@@ -555,13 +565,35 @@ const PickerDrawer = ({ dismiss, pickerId, ...props }: PickerDrawerProps) => {
                 })`
               : "-"}
           </BodyText>
+        </Box>
+
+        <Divider />
+
+        <Box display="flex" flexDirection="column" gap="0.5rem">
+          <Label
+            component="label"
+            color="grey-400"
+            htmlFor="emergency-contact-number"
+            size="xs"
+          >
+            {intl.formatMessage({
+              id: "pickers.detail.emergency_contact_number.label",
+              defaultMessage: "Emergency Contact Number",
+            })}
+          </Label>
+
           <BodyText>{pickerData.emergencyContact?.phone}</BodyText>
         </Box>
 
         <Divider />
 
-        <Box display="flex" flexDirection="column">
-          <Label component="label" htmlFor="blood-type">
+        <Box display="flex" flexDirection="column" gap="0.5rem">
+          <Label
+            component="label"
+            color="grey-400"
+            htmlFor="blood-type"
+            size="xs"
+          >
             {intl.formatMessage({
               id: "pickers.detail.blood_type.label",
               defaultMessage: "Blood Type",
@@ -574,8 +606,8 @@ const PickerDrawer = ({ dismiss, pickerId, ...props }: PickerDrawerProps) => {
 
         <Divider />
 
-        <Box display="flex" flexDirection="column">
-          <Label component="label" htmlFor="gov-id">
+        <Box display="flex" flexDirection="column" gap="0.5rem">
+          <Label component="label" color="grey-400" htmlFor="gov-id" size="xs">
             {intl.formatMessage({
               id: "pickers.detail.identification_number.label",
               defaultMessage: "Identification Number",
@@ -587,8 +619,8 @@ const PickerDrawer = ({ dismiss, pickerId, ...props }: PickerDrawerProps) => {
 
         <Divider />
 
-        <Box display="flex" flexDirection="column">
-          <Label component="label" htmlFor="address">
+        <Box display="flex" flexDirection="column" gap="0.5rem">
+          <Label component="label" color="grey-400" htmlFor="address" size="xs">
             {intl.formatMessage({
               id: "pickers.detail.address.label",
               defaultMessage: "Address",
@@ -597,16 +629,21 @@ const PickerDrawer = ({ dismiss, pickerId, ...props }: PickerDrawerProps) => {
           <BodyText id="address">{pickerData.address ?? "-"}</BodyText>
         </Box>
 
-        <Button
-          onClick={() => {
-            navigate(`${paths.harvestLogs}?pickerId=${pickerId}`);
-          }}
-        >
-          {intl.formatMessage({
-            id: "pickers.detail.button.view_harvest_log",
-            defaultMessage: "View Harvest Log",
-          })}
-        </Button>
+        <Box>
+          <Button
+            variant="text"
+            size="small"
+            onClick={() => {
+              navigate(`${paths.harvestLogs}?pickerId=${pickerId}`);
+            }}
+            endIcon={<FileText size="1rem" />}
+          >
+            {intl.formatMessage({
+              id: "pickers.detail.button.view_harvest_log",
+              defaultMessage: "View Harvest Log",
+            })}
+          </Button>
+        </Box>
       </Box>
     </DrawerContainer>
   );
