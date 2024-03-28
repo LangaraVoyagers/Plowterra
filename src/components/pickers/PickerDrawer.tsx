@@ -512,7 +512,7 @@ const PickerDrawer = ({ dismiss, pickerId, ...props }: PickerDrawerProps) => {
     <DrawerContainer
       footer={
         <Box display="flex" justifyContent="space-between">
-          <Button variant="text" onClick={dismiss}>
+          <Button variant="outlined" onClick={dismiss}>
             {intl.formatMessage({
               id: "button.back",
               defaultMessage: "Back",

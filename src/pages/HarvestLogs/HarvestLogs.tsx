@@ -13,7 +13,7 @@ import FiltersDrawer from "components/harvestLogs/FiltersDrawer";
 import UpdateHarvestLog from "components/harvestLogs/UpdateHarvestLog";
 import { useAlert } from "context/AlertProvider";
 import { useUser } from "context/UserProvider";
-import { Dayjs } from "dayjs";
+import dayjs, { Dayjs } from "dayjs";
 import useQueryCache from "hooks/useQueryCache";
 import BasicHome from "layouts/BasicHome";
 import {
@@ -166,8 +166,10 @@ const HarvestLogs = () => {
 
   const pickerId = search.get("pickerId") ?? null;
 
-  const [startDate, setStartDate] = useState<Dayjs | null>(null);
-  const [endDate, setEndDate] = useState<Dayjs | null>(null);
+  const [startDate, setStartDate] = useState<Dayjs | null>(
+    dayjs().startOf("week")
+  );
+  const [endDate, setEndDate] = useState<Dayjs | null>(dayjs().endOf("week"));
   const [searchTable, setSearchTable] = useState<string>();
 
   const [harvestLogs, setHarvestLogs] = useState<Array<IHarvestLogResponse>>(

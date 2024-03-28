@@ -2,13 +2,16 @@ import { Box, BoxProps, styled, useMediaQuery, useTheme } from "@mui/material";
 import { useThemMode } from "context/ThemeProvider";
 import LogoDark from "../assets/images/LogoDark.svg";
 import LogoLight from "../assets/images/Logo.svg";
+
 type DrawerContainerProps = BoxProps & {
   footer?: React.ReactNode;
+  paddingX?: string;
 };
 
 const DrawerContainer = ({
   footer,
   children,
+  paddingX,
   ...props
 }: DrawerContainerProps) => {
   const { mode } = useThemMode();
@@ -35,7 +38,7 @@ const DrawerContainer = ({
       <Box
         display="flex"
         flexDirection="column"
-        paddingX={tablet ? "1.5rem" : "1rem"}
+        paddingX={paddingX || (tablet ? "1.5rem" : "1rem")}
         paddingY={tablet ? "2.25rem" : "1.5rem"}
         gap={3}
         flex={1}
@@ -48,7 +51,7 @@ const DrawerContainer = ({
           position="sticky"
           bottom={0}
           paddingY={tablet ? "1.625rem" : "1.25rem"}
-          paddingX={tablet ? "3rem" : "1rem"}
+          paddingX={tablet ? "1.5rem" : "1rem"}
         >
           {footer}
         </Footer>
