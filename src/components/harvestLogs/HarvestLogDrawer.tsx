@@ -18,7 +18,6 @@ import {
   TableBody,
   TableCell,
   TableContainer,
-  TableHead,
   TableRow,
   TextField,
   useMediaQuery,
@@ -39,7 +38,7 @@ import { getSeasons } from "api/seasons";
 import { useAlert } from "context/AlertProvider";
 import useQueryCache from "hooks/useQueryCache";
 import { useState } from "react";
-import { BodyText, Display, Label } from "ui/Typography";
+import { BodyText, Display } from "ui/Typography";
 import ConfirmationDrawer from "ui/ConfirmationDrawer";
 import HarvestLogSuccess from "../../assets/images/HarvestLogSuccess.svg";
 import { FormattedMessage, useIntl } from "react-intl";
@@ -47,6 +46,8 @@ import { useUser } from "context/UserProvider";
 import { CaretDown } from "@phosphor-icons/react";
 import DrawerContainer from "ui/DrawerContainer";
 import InputLabel from "ui/InputLabel";
+import Detail from "ui/Detail";
+import Tag from "ui/Tag";
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -167,34 +168,24 @@ const HarvestLogDrawer = ({
       defaultMessage: "Product",
     });
 
-    const PRICE_PER_UNIT = intl.formatMessage({
-      id: "harvest-log.view.detail.ppu.label",
-      defaultMessage: "Price per Unit",
-    });
+    const PRICE_PER_UNIT = (
+      <Box display="flex" gap={1} alignItems="center">
+        {intl.formatMessage({
+          id: "harvest-log.view.detail.ppu.label",
+          defaultMessage: "Price per Unit",
+        })}
+        <Tag>{harvestLog?.season?.currency.name}</Tag>
+      </Box>
+    );
 
     const AMOUNT = intl.formatMessage({
       id: "harvest-log.view.detail.amount.label",
       defaultMessage: "Amount",
     });
 
-    const DEDUCTION = intl.formatMessage({
-      id: "harvest-log.view.detail.deduction.label",
-      defaultMessage: "Deduction",
-    });
-
     const NOTE = intl.formatMessage({
       id: "harvest-log.view.detail.note.label",
-      defaultMessage: "Note",
-    });
-
-    const SUBTOTAL = intl.formatMessage({
-      id: "harvest-log.view.detail.subtotal.label",
-      defaultMessage: "Subtotal",
-    });
-
-    const TOTAL = intl.formatMessage({
-      id: "harvest-log.view.detail.total.label",
-      defaultMessage: "Total",
+      defaultMessage: "Notes",
     });
 
     return [
@@ -209,14 +200,56 @@ const HarvestLogDrawer = ({
       [HARVEST_SEASON, harvestLog?.season?.name || ""],
       [PRODUCT, harvestLog?.season?.product?.name || ""],
       [PRICE_PER_UNIT, harvestLog?.season?.price || ""],
-      [AMOUNT, harvestLog?.collectedAmount || ""],
-      [DEDUCTION, harvestLog?.totalDeduction || ""],
-      [NOTE, harvestLog?.notes || ""],
+      [
+        AMOUNT,
+        `${harvestLog?.collectedAmount} ${harvestLog?.season?.unit.name}` || "",
+      ],
+      [NOTE, harvestLog?.notes || "-"],
+    ];
+  }, [harvestLog]);
+
+  const createSubTotals = React.useCallback(() => {
+    const SUBTOTAL = (
+      <Box display="flex" gap={1} alignItems="center">
+        {intl.formatMessage({
+          id: "harvest-log.view.detail.subtotal.label",
+          defaultMessage: "Subtotal",
+        })}
+        <Tag>{harvestLog?.season?.currency.name}</Tag>
+      </Box>
+    );
+
+    const DEDUCTIONS_TOTAL = (
+      <Box display="flex" gap={1} alignItems="center">
+        {intl.formatMessage({
+          id: "harvest-log.view.detail.deduction.total.label",
+          defaultMessage: "Deduction Total",
+        })}
+        <Tag>{harvestLog?.season?.currency.name}</Tag>
+      </Box>
+    );
+
+    return [
       [
         SUBTOTAL,
         (harvestLog?.season?.price || 0) * (harvestLog?.collectedAmount || 0) ||
           "",
       ], //price per unit * amount
+      [DEDUCTIONS_TOTAL, harvestLog?.totalDeduction || 0],
+    ];
+  }, [harvestLog]);
+
+  const createTotal = React.useCallback(() => {
+    const TOTAL = (
+      <Box display="flex" gap={1} alignItems="center">
+        {intl.formatMessage({
+          id: "harvest-log.view.detail.total.label",
+          defaultMessage: "Total",
+        })}
+        <Tag>{harvestLog?.season?.currency.name}</Tag>
+      </Box>
+    );
+    return [
       [
         TOTAL,
         (harvestLog?.season?.price || 0) * (harvestLog?.collectedAmount || 0) -
@@ -659,7 +692,7 @@ const HarvestLogDrawer = ({
     <DrawerContainer
       footer={
         <Box display="flex" justifyContent="space-between">
-          <Button variant="text" onClick={onCreateHarvestLogClose}>
+          <Button variant="outlined" onClick={onCreateHarvestLogClose}>
             {openCorrectionEntry
               ? intl.formatMessage({
                   id: "button.cancel",
@@ -691,53 +724,27 @@ const HarvestLogDrawer = ({
           )}
         </Box>
       }
+      paddingX="0"
     >
-      <Box display="flex" flexDirection="column">
-        <BodyText>
-          {intl.formatMessage({
-            id: "harvest-log.view.detail.picker.label",
-            defaultMessage: "PICKER",
-          })}
-        </BodyText>
-        <Display>{harvestLog?.picker?.name}</Display>
-      </Box>
-
-      <Box display="flex" flexDirection="column">
-        <TableContainer>
-          <Table aria-label="Harvest log detail table">
-            <TableHead>
-              <TableRow>
-                <TableCell>
-                  {intl.formatMessage({
-                    id: "harvest-log.view.detail.category.label",
-                    defaultMessage: "CATEGORY",
-                  })}
-                </TableCell>
-                <TableCell>
-                  {intl.formatMessage({
-                    id: "harvest-log.view.detail.info.label",
-                    defaultMessage: "INFO",
-                  })}
-                </TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {createHarvestLogDataList().map((row) => (
-                <TableRow key={row[0]}>
-                  <TableCell component="th" scope="row">
-                    {row[0]}
-                  </TableCell>
-                  <TableCell>{row[1]}</TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
-      </Box>
+      <Detail
+        category={intl.formatMessage({
+          id: "harvest-log.view.detail.picker.label",
+          defaultMessage: "PICKER",
+        })}
+        title={harvestLog?.picker?.name}
+        data={createHarvestLogDataList()}
+        subfooter={createSubTotals()}
+        footer={createTotal()}
+      />
 
       {!!harvestLog?.correctionLogs?.length && (
-        <Box>
-          <BodyText>
+        <Box
+          display="flex"
+          flexDirection="column"
+          gap="1.25rem"
+          paddingX="1.5rem"
+        >
+          <BodyText size="md" component="h2" fontWeight="SemiBold">
             {intl.formatMessage({
               id: "harvest-log.view.detail.correction-entries.label",
               defaultMessage: "Correction Entries",
@@ -788,26 +795,30 @@ const HarvestLogDrawer = ({
       )}
 
       {!!openCorrectionEntry && (
-        <Box display="flex" flexDirection="column" gap={1}>
-          <Display size="sm" component="h2">
+        <Box
+          display="flex"
+          flexDirection="column"
+          gap="1.25rem"
+          paddingX="1.5rem"
+        >
+          <BodyText size="md" component="h2" fontWeight="SemiBold">
             {intl.formatMessage({
               id: "harvest-log.add-correction-entry.label",
-              defaultMessage: "Add Correction Entry",
+              defaultMessage: "Add correction entry",
             })}
-          </Display>
+          </BodyText>
           <Controller
             control={controlHarvestCorrection}
             name="collectedAmount"
             render={({ field: { ref, value, onChange } }) => {
               return (
                 <Box display="flex" flexDirection="column">
-                  <Label component="label" htmlFor="harvest-log-amount">
+                  <InputLabel htmlFor="harvest-log-amount" required>
                     {intl.formatMessage({
                       id: "harvest-log.create.form.amount.label",
                       defaultMessage: "Amount",
                     })}
-                    *
-                  </Label>
+                  </InputLabel>
 
                   <TextField
                     id="harvest-log-amount"
@@ -840,14 +851,14 @@ const HarvestLogDrawer = ({
             render={({ field: { value, onChange } }) => {
               return (
                 <Box display="flex" flexDirection="column" gap={1}>
-                  <Label component="label" id="harvest-log-deductions">
+                  <InputLabel htmlFor="harvest-log-deductions">
                     {intl.formatMessage({
                       id: "harvest-log.create.form.deduction.label",
                       defaultMessage: "Deduction",
                     })}
-                  </Label>
+                  </InputLabel>
                   <Select
-                    labelId="harvest-log-deductions"
+                    id="harvest-log-deductions"
                     value={value.map((id) => [id])}
                     label="Deduction"
                     variant="outlined"
