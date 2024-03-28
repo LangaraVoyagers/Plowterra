@@ -331,8 +331,9 @@ export default function MainLayout() {
             alignItems="center"
           >
             <img src={Logo} alt="Plowterra logo" height={30} aria-hidden />
+
             <IconButton onClick={handleDrawerClose}>
-              <ListIcon size="1.25rem" />
+              <ListIcon size="1.5rem" color={theme.palette.grey[900]} />
             </IconButton>
           </Header>
         )}

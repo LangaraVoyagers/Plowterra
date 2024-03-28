@@ -7,7 +7,6 @@ import {
   DrawerProps,
   FormControl,
   FormHelperText,
-  InputLabel,
   MenuItem,
   Select,
   TextField,
@@ -34,6 +33,7 @@ import { useNavigate } from "react-router-dom";
 import paths from "shared/paths";
 import ConfirmationDrawer from "ui/ConfirmationDrawer";
 import DrawerContainer from "ui/DrawerContainer";
+import InputLabel from "ui/InputLabel";
 
 interface IPickerForm extends Omit<IPickerResponse, "id"> {}
 
@@ -233,7 +233,7 @@ const PickerDrawer = ({ dismiss, pickerId, ...props }: PickerDrawerProps) => {
         </Box>
       }
     >
-      <Display>
+      <Display component="h1" size="md" fontWeight="SemiBold">
         {intl.formatMessage(
           {
             id: "pickers.detail.title",
@@ -249,12 +249,11 @@ const PickerDrawer = ({ dismiss, pickerId, ...props }: PickerDrawerProps) => {
         render={({ field }) => {
           return (
             <Box display="flex" flexDirection="column" gap={1}>
-              <InputLabel htmlFor="picker-name-input">
+              <InputLabel htmlFor="picker-name-input" required>
                 {intl.formatMessage({
                   id: "pickers.create.form.name.label",
                   defaultMessage: "Name",
                 })}
-                *
               </InputLabel>
               <TextField
                 {...field}
@@ -275,12 +274,11 @@ const PickerDrawer = ({ dismiss, pickerId, ...props }: PickerDrawerProps) => {
         render={({ field }) => {
           return (
             <Box display="flex" flexDirection="column" gap={1}>
-              <InputLabel htmlFor="picker-phone-input">
+              <InputLabel htmlFor="picker-phone-input" required>
                 {intl.formatMessage({
                   id: "pickers.create.form.phone_number.label",
                   defaultMessage: "Phone Number",
                 })}
-                *
               </InputLabel>
 
               <TextField
@@ -302,12 +300,11 @@ const PickerDrawer = ({ dismiss, pickerId, ...props }: PickerDrawerProps) => {
         render={({ field }) => {
           return (
             <Box display="flex" flexDirection="column" gap={1}>
-              <InputLabel htmlFor="picker-contact-name-input">
+              <InputLabel htmlFor="picker-contact-name-input" required>
                 {intl.formatMessage({
                   id: "pickers.create.form.emergency_contact_name.label",
                   defaultMessage: "Emergency Contact Name",
                 })}
-                *
               </InputLabel>
 
               <TextField
@@ -329,12 +326,11 @@ const PickerDrawer = ({ dismiss, pickerId, ...props }: PickerDrawerProps) => {
         render={({ field }) => {
           return (
             <Box display="flex" flexDirection="column" gap={1}>
-              <InputLabel htmlFor="picker-relation-input">
+              <InputLabel htmlFor="picker-relation-input" required>
                 {intl.formatMessage({
                   id: "pickers.create.form.relation_to_picker.label",
                   defaultMessage: "Relation to picker",
                 })}
-                *
               </InputLabel>
               <FormControl>
                 <Select
@@ -366,12 +362,11 @@ const PickerDrawer = ({ dismiss, pickerId, ...props }: PickerDrawerProps) => {
         render={({ field }) => {
           return (
             <Box display="flex" flexDirection="column" gap={1}>
-              <InputLabel htmlFor="picker-contact-number-input">
+              <InputLabel htmlFor="picker-contact-number-input" required>
                 {intl.formatMessage({
                   id: "pickers.create.form.emergency_contact_number.label",
                   defaultMessage: "Emergency Contact Number",
                 })}
-                *
               </InputLabel>
 
               <TextField
@@ -481,12 +476,6 @@ const PickerDrawer = ({ dismiss, pickerId, ...props }: PickerDrawerProps) => {
       {/* TODO: add confirmation modal later, we probably will standardize the way we handle the delete after design has defined that */}
       {!!pickerId && (
         <Box display="flex" flexDirection="column" mt={4}>
-          <Display size="sm" component="h2">
-            {intl.formatMessage({
-              id: "danger.zone.label",
-              defaultMessage: "Danger Zone",
-            })}
-          </Display>
           <Alert
             severity="error"
             variant="outlined"
@@ -629,7 +618,7 @@ const PickerDrawer = ({ dismiss, pickerId, ...props }: PickerDrawerProps) => {
         {...props}
         PaperProps={{
           sx: {
-            width: desktop ? 600 : "100%",
+            width: desktop ? 500 : "100%",
           },
         }}
         onClose={handleClose}

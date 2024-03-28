@@ -836,7 +836,7 @@
   "seasons.create.form.product.label": [
     {
       "type": 0,
-      "value": "Product*"
+      "value": "Product"
     }
   ],
   "seasons.create.form.start_date.label": [
