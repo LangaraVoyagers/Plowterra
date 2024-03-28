@@ -12,7 +12,7 @@ const InputLabel = ({ htmlFor, required, children }: InputLabelProps) => {
       <BodyText
         size="md"
         component="label"
-        color="secondary-800"
+        color="grey-800"
         fontWeight="Medium"
         htmlFor={htmlFor}
       >

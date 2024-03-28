@@ -11,12 +11,6 @@ import {
   MenuItem,
   Select,
   Stack,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
   TextField,
   useMediaQuery,
   useTheme,
@@ -41,13 +35,15 @@ import { useState } from "react";
 import { Controller, FormProvider, useForm } from "react-hook-form";
 import { useIntl } from "react-intl";
 import { useMutation, useQuery } from "react-query";
-import { BodyText, Display, Label } from "ui/Typography";
+import { BodyText, Display } from "ui/Typography";
 import SeasonDeductions from "./SeasonDeductions";
 import ConfirmationDrawer from "ui/ConfirmationDrawer";
 import SeasonImage from "../../assets/images/SeasonSuccess.svg";
 import SelectFreeSolo from "./SelectFreeSolo";
 import DrawerContainer from "ui/DrawerContainer";
 import InputLabel from "ui/InputLabel";
+import Detail from "ui/Detail";
+import Tag from "ui/Tag";
 
 const payrollTimeframeList = (
   Object.keys(PayrollTimeframeEnum) as Array<keyof typeof PayrollTimeframeEnum>
@@ -701,7 +697,10 @@ const SeasonDrawer = ({ dismiss, seasonId, ...props }: SeasonDrawerProps) => {
   const createSeasonDataList = React.useCallback(() => {
     return [
       [
-        "Start Date",
+        intl.formatMessage({
+          id: "season.view.detail.start_date.label",
+          defaultMessage: "Start Date",
+        }),
         intl.formatDate(season?.startDate, {
           year: "numeric",
           month: "long",
@@ -709,44 +708,130 @@ const SeasonDrawer = ({ dismiss, seasonId, ...props }: SeasonDrawerProps) => {
         }),
       ],
       [
-        "End Date",
-        intl.formatDate(season?.endDate, {
-          year: "numeric",
-          month: "long",
-          day: "2-digit",
+        intl.formatMessage({
+          id: "season.view.detail.end_date.label",
+          defaultMessage: "End Date",
         }),
+        season?.endDate
+          ? intl.formatDate(season?.endDate, {
+              year: "numeric",
+              month: "long",
+              day: "2-digit",
+            })
+          : "-",
       ],
       [
-        "Payroll Timeframe",
+        intl.formatMessage({
+          id: "season.view.detail.timeframe.label",
+          defaultMessage: "Payroll Timeframe",
+        }),
         (season?.payrollTimeframe &&
           PayrollTimeframeEnum[season?.payrollTimeframe]) ||
           "",
       ],
-      ["Product", season?.product?.name || ""],
-      ["Unit", season?.unit?.name || ""],
-      ["Price Per Unit", season?.price || ""],
+      [
+        intl.formatMessage({
+          id: "season.view.detail.product.label",
+          defaultMessage: "Product",
+        }),
+        season?.product?.name || "",
+      ],
+      [
+        intl.formatMessage({
+          id: "season.view.detail.unit.label",
+          defaultMessage: "Unit",
+        }),
+        season?.unit?.name || "",
+      ],
+      [
+        <Box key="price_per_unit" display="flex" gap={1} alignItems="center">
+          {intl.formatMessage({
+            id: "season.view.detail.price_per_unit.label",
+            defaultMessage: "Price Per Unit",
+          })}
+          <Tag>{season?.currency.name}</Tag>
+        </Box>,
+        season?.price || "",
+      ],
       // add deduction name to display
       [
-        "Deductions",
+        <Box key="deductions" display="flex" gap={1} alignItems="center">
+          {intl.formatMessage({
+            id: "season.view.detail.deductions.label",
+            defaultMessage: "Deductions",
+          })}
+          <Tag>{season?.currency.name}</Tag>
+        </Box>,
         <Stack direction="row" spacing={1} key="season-deductions">
           {season?.deductions.map(({ price }, index) => {
             return <Chip key={index} label={price} size="small" />;
           })}
         </Stack>,
       ],
-      ["Status", season?.status ? StatusEnum[season?.status] : ""],
-      ["Production Total", 0],
-      ["Gross Total", 0],
-      ["Deductions Total", 0],
-      ["Net Payment", 0],
+      [
+        intl.formatMessage({
+          id: "season.view.detail.status.label",
+          defaultMessage: "Status",
+        }),
+        season?.status ? StatusEnum[season?.status] : "",
+      ],
+      [
+        <Box key="production_total" display="flex" gap={1} alignItems="center">
+          {intl.formatMessage({
+            id: "season.view.detail.production_total.label",
+            defaultMessage: "Production Total",
+          })}
+          <Tag>{season?.currency.name}</Tag>
+        </Box>,
+        0,
+      ],
+    ];
+  }, [season]);
+  const createSubTotals = React.useCallback(() => {
+    return [
+      [
+        <Box key="gross_total" display="flex" gap={1} alignItems="center">
+          {intl.formatMessage({
+            id: "season.view.detail.gross_total.label",
+            defaultMessage: "Gross Total",
+          })}
+          <Tag>{season?.currency.name}</Tag>
+        </Box>,
+        0,
+      ],
+      [
+        <Box key="deductions_total" display="flex" gap={1} alignItems="center">
+          {intl.formatMessage({
+            id: "season.view.detail.deductions_total.label",
+            defaultMessage: "Deductions Total",
+          })}
+          <Tag>{season?.currency.name}</Tag>
+        </Box>,
+        0,
+      ],
+    ];
+  }, [season]);
+  const createTotal = React.useCallback(() => {
+    return [
+      [
+        <Box key="net_payment" display="flex" gap={1} alignItems="center">
+          {intl.formatMessage({
+            id: "season.view.detail.net_payment.label",
+            defaultMessage: "Net Payment",
+          })}
+          <Tag>{season?.currency.name}</Tag>
+        </Box>,
+        0,
+      ],
     ];
   }, [season]);
 
   const seasonDetail = (
     <DrawerContainer
+      paddingX="0"
       footer={
         <Box display="flex" justifyContent="space-between">
-          <Button onClick={onCreateSeasonClose}>
+          <Button variant="outlined" onClick={onCreateSeasonClose}>
             {intl.formatMessage({
               id: "button.back",
               defaultMessage: "Back",
@@ -778,48 +863,31 @@ const SeasonDrawer = ({ dismiss, seasonId, ...props }: SeasonDrawerProps) => {
         </Box>
       }
     >
-      <Box display="flex" flexDirection="column">
-        <Label>Season</Label>
-        <Display>{season?.name}</Display>
-      </Box>
-
-      <Box display="flex" flexDirection="column">
-        <TableContainer>
-          <Table aria-label="Harvest log detail table">
-            <TableHead>
-              <TableRow>
-                <TableCell>CATEGORY</TableCell>
-                <TableCell>INFO</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {createSeasonDataList().map((row, index) => (
-                <TableRow key={index}>
-                  <TableCell component="th" scope="row">
-                    {row[0]}
-                  </TableCell>
-                  <TableCell>{row[1]}</TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
-      </Box>
+      <Detail
+        category={intl.formatMessage({
+          id: "seasons.view.detail.season.label",
+          defaultMessage: "Season",
+        })}
+        title={season?.name}
+        data={createSeasonDataList()}
+        subfooter={createSubTotals()}
+        footer={createTotal()}
+      />
 
       {/* TODO: add confirmation modal later, we probably will standardize the way we handle the delete after design has defined that */}
       {!!seasonId && season?.status.toUpperCase() !== "CLOSED" && (
-        <Box display="flex" flexDirection="column" gap={2}>
-          <Display size="sm" component="h2">
-            {intl.formatMessage(
-              {
-                id: "close.season.zone.label",
-                defaultMessage:
-                  "{isClosing, plural, one {Loading...} other {Close season} }",
-              },
-              { isClosing: Number(isClosing) }
-            )}
-          </Display>
-
+        <Box
+          display="flex"
+          flexDirection="column"
+          gap="1.25rem"
+          paddingX="1.5rem"
+        >
+          <BodyText size="md" component="h2" fontWeight="SemiBold">
+            {intl.formatMessage({
+              id: "seasons.view.detail.close.season.label",
+              defaultMessage: "Close Season",
+            })}
+          </BodyText>
           <Box
             display="flex"
             gap="1rem"
@@ -842,10 +910,14 @@ const SeasonDrawer = ({ dismiss, seasonId, ...props }: SeasonDrawerProps) => {
               size="small"
               sx={{ flexShrink: 0 }}
             >
-              {intl.formatMessage({
-                id: "season.button.close",
-                defaultMessage: "Close Season",
-              })}
+              {intl.formatMessage(
+                {
+                  id: "season.button.close",
+                  defaultMessage:
+                    "{isClosing, plural, one {Loading...} other {Close season} }",
+                },
+                { isClosing: Number(isClosing) }
+              )}
             </Button>
           </Box>
         </Box>
