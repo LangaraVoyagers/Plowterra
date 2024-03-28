@@ -1,11 +1,6 @@
 import { Box, Button, useTheme } from "@mui/material";
 import { GridColDef } from "@mui/x-data-grid";
-import {
-  ArrowLeft,
-  CaretRight,
-  HandCoins,
-  SealCheck,
-} from "@phosphor-icons/react";
+import { CaretRight, HandCoins } from "@phosphor-icons/react";
 import endpoints from "api/endpoints";
 import { PayrollPayload, createPayroll, getPayrollPreview } from "api/payroll";
 import dayjs, { Dayjs } from "dayjs";
@@ -30,6 +25,7 @@ import { styled, useMediaQuery } from "@mui/system";
 import SeasonFilterDataGrid from "components/SeasonFilterDataGrid";
 import PayrollConfirmationModal from "components/payroll/PayrollConfirmationModal";
 import DataTable from "ui/DataTable";
+import PayrollDone from "components/payroll/PayrollDone";
 
 const columns = (currency: string, unit: string): GridColDef[] => [
   {
@@ -254,26 +250,79 @@ const Preview: React.FC = () => {
       ]}
     >
       {!!payrollDone && (
-        <Box style={{ border: "1px solid #000" }}>
-          <div style={{ display: "inline-block" }}>
-            <SealCheck size={32} />
-            <h1 style={{ display: "inline", marginLeft: "5px" }}>
-              You successfully ran the payroll!
-            </h1>
-          </div>
-          <div>
-            <span>
-              Time to sit back and relax! Your payroll run was successful. You
-              can check the latest payroll summary below.
-            </span>
-          </div>
-          <Button
-            variant="contained"
-            onClick={() => (window.location.href = "/payroll")}
-          >
-            <ArrowLeft />
-            Go back to dashboard
-          </Button>
+        <Box display="flex" flexDirection="column" gap="3rem" pb="2rem">
+          <PayrollDone />
+          <PayrollTotals className="totals-container">
+            <Card>
+              <Label
+                size="sm"
+                fontWeight="SemiBold"
+                tabIndex={0}
+                arial-label={`Pay period from ${intl.formatDate(
+                  startDate?.toDate(),
+                  {
+                    month: "long",
+                    day: "numeric",
+                    year: "numeric",
+                  }
+                )} to ${intl.formatDate(endDate?.toDate(), {
+                  month: "long",
+                  day: "numeric",
+                  year: "numeric",
+                })} `}
+              >
+                Pay Period
+              </Label>
+              <Display
+                aria-hidden
+                size="xs"
+                fontWeight="SemiBold"
+                display="flex"
+                gap={1}
+              >
+                <Box aria-hidden>
+                  <FormattedDate
+                    value={startDate?.toDate()}
+                    month="short"
+                    day="numeric"
+                  />
+                </Box>
+                <Box aria-hidden>-</Box>
+                <Box aria-hidden>
+                  <FormattedDate
+                    value={endDate?.toDate()}
+                    month="short"
+                    day="numeric"
+                  />
+                </Box>
+              </Display>
+            </Card>
+            <Card>
+              <Label size="sm" fontWeight="SemiBold">
+                Total Net Pay
+              </Label>
+              <Display size="xs" fontWeight="SemiBold">
+                {payrollData?.totals?.netAmount}
+              </Display>
+            </Card>
+            <Card>
+              <Label size="sm" fontWeight="SemiBold">
+                Total Harvest Amount
+              </Label>
+              <Display size="xs" fontWeight="SemiBold">
+                {payrollData?.totals.collectedAmount}{" "}
+                {payrollData?.season?.unit}
+              </Display>
+            </Card>
+            <Card>
+              <Label size="sm" fontWeight="SemiBold">
+                Total Deductions
+              </Label>
+              <Display size="xs" fontWeight="SemiBold">
+                {payrollData?.totals.deductions}
+              </Display>
+            </Card>
+          </PayrollTotals>
         </Box>
       )}
 
@@ -425,7 +474,19 @@ const Preview: React.FC = () => {
         onConfirm={handleConfirm}
       />
 
-      <Box display="flex" flexGrow={1} pb={3}>
+      <Box
+        display="flex"
+        flexDirection="column"
+        gap="1.5rem"
+        flexGrow={1}
+        pb={3}
+      >
+        <Display size="xs" fontWeight="SemiBold">
+          <FormattedMessage
+            id="payroll.preview.details.title"
+            defaultMessage="Payroll Details"
+          />
+        </Display>
         <DataTable
           initialState={{
             columns: {
