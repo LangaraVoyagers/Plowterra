@@ -154,7 +154,7 @@ const columns = (currency: string): GridColDef[] => [
 ];
 
 const HarvestLogs = () => {
-  const { user } = useUser();
+  const { user, defaultSeason } = useUser();
   const intl = useIntl();
   const { showAlert } = useAlert();
 
@@ -193,7 +193,7 @@ const HarvestLogs = () => {
         pickerId,
         startDate: startDate ? startDate?.toDate().getTime() : undefined,
         endDate: endDate ? endDate?.toDate().getTime() : undefined,
-        seasonId: selectedSeason?._id,
+        seasonId: selectedSeason?._id || defaultSeason,
       }),
     onSuccess: (results) => {
       setHarvestLogs(results);

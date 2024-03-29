@@ -10,7 +10,7 @@ import { useAlert } from "context/AlertProvider";
 import { useUser } from "context/UserProvider";
 import useQueryCache from "hooks/useQueryCache";
 import { ISeasonResponse, StatusEnum } from "project-2-types";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useIntl } from "react-intl";
 import { useQuery } from "react-query";
 
@@ -70,6 +70,15 @@ const SeasonFilterDataGrid = (props: SeasonFilterDataGridProps) => {
     setSelectedSeason(season);
     onChange(season);
   };
+
+  useEffect(() => {
+    if (defaultSeasonSaved && !selectedSeason?._id && seasonsData?.length) {
+      const season = seasonsData.find(
+        (season) => season._id === defaultSeasonSaved
+      );
+      setSelectedSeason(season);
+    }
+  }, [defaultSeasonSaved]);
 
   if (!seasonsData?.length || isLoading) {
     return null;
