@@ -478,8 +478,9 @@ const Preview: React.FC = () => {
         display="flex"
         flexDirection="column"
         gap="1.5rem"
-        flexGrow={1}
+        flex={1}
         pb={3}
+        height="100%"
       >
         <Display size="xs" fontWeight="SemiBold">
           <FormattedMessage
