@@ -1100,5 +1100,11 @@
       "type": 0,
       "value": "Registro de Cosecha"
     }
+  ],
+  "harvest.log.button": [
+    {
+      "type": 0,
+      "value": "Registrar"
+    }
   ]
 }
