@@ -8,6 +8,8 @@ import { Controller, useFieldArray, useFormContext } from "react-hook-form";
 import { useMutation, useQuery } from "react-query";
 import { ISeasonRequest } from "./SeasonDrawer";
 import SelectFreeSolo from "./SelectFreeSolo";
+import { useIntl } from 'react-intl';
+
 
 const SeasonDeductions = () => {
   const { control, setValue } = useFormContext<ISeasonRequest>();
@@ -46,6 +48,8 @@ const SeasonDeductions = () => {
     mutationKey: CREATE_DEDUCTION_KEY,
     mutationFn: createDeduction,
   });
+
+  const intl = useIntl();
 
   return (
     <Box display="flex" flexDirection="column" width="100%" gap={2}>
@@ -122,7 +126,8 @@ const SeasonDeductions = () => {
             append({ deductionID: "", price: "" });
           }}
         >
-          Add Deduction
+          {/* Add Deduction */}
+          {intl.formatMessage({ id: "seasonDeduction.add", defaultMessage: "Add Deduction" })}
         </Button>
       </Box>
     </Box>

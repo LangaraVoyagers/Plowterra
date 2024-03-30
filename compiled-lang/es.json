@@ -1142,5 +1142,11 @@
       "type": 0,
       "value": "Z-A"
     }
+  ],
+  "seasonDeduction.add": [
+    {
+      "type": 0,
+      "value": "Agregar Deducción"
+    }
   ]
 }
