@@ -561,7 +561,7 @@ const HarvestLogDrawer = ({
         </InputLabel>
         <OutlinedInput
           id="harvest-log-product"
-          value={season?.product?.name ?? "-"}
+          value={`${season?.product?.name ?? ""} - ${season?.unit?.name ?? ""}`}
           size="small"
           disabled
         />
