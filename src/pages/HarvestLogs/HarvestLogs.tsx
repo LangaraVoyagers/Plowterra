@@ -265,7 +265,6 @@ const HarvestLogs = () => {
           <FormControl>
             <Box display="flex" gap={3}>
               <DatePicker
-                // label="Start Date"
                 label={intl.formatMessage({
                   id: "harvest.logs.start.date",
                   defaultMessage: "Start Date",
@@ -280,7 +279,10 @@ const HarvestLogs = () => {
                 }}
               />
               <DatePicker
-                label="End Date"
+                label={intl.formatMessage({
+                  id: "harvest.logs.end.date",
+                  defaultMessage: "End Date",
+                })}
                 value={endDate}
                 slotProps={{
                   field: { clearable: true, onClear: () => setEndDate(null) },

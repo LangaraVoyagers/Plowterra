@@ -1112,5 +1112,11 @@
       "type": 0,
       "value": "Fecha Inicial"
     }
+  ],
+  "harvest.logs.end.date": [
+    {
+      "type": 0,
+      "value": "Fecha Final"
+    }
   ]
 }
