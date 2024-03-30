@@ -302,7 +302,7 @@ const PayrollInfo = () => {
       <Grid item xs={12} lg={9}>
         <Box {...cardProps}>
           <Typography fontSize="1rem" fontWeight={500}>
-            Recent Payrolls
+            {intl.formatMessage({ id: "dashboard.recentPayrolls", defaultMessage: "Recent Payrolls" })}
           </Typography>
           <Grid container rowSpacing={gridGap} columnSpacing={gridGap}>
             <Grid item xs={12} md={6} lg={4}>
