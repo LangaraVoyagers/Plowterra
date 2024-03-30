@@ -1220,5 +1220,11 @@
       "type": 0,
       "value": "Temporada"
     }
+  ],
+  "payroll.preview.from": [
+    {
+      "type": 0,
+      "value": "Desde"
+    }
   ]
 }

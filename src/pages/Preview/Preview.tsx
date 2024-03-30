@@ -345,7 +345,12 @@ const Preview: React.FC = () => {
             </div>
             <div className="filters">
               <div className="date-filter">
-                <BodyText size="md">From</BodyText>
+                <BodyText size="md">
+                  {intl.formatMessage({
+              id: "payroll.preview.from",
+              defaultMessage: "From",
+            })}
+                  </BodyText>
                 <DatePicker
                   value={startDate}
                   slotProps={{
