@@ -1310,5 +1310,17 @@
       "type": 0,
       "value": "PRECIO POR UNIDAD"
     }
+  ],
+  "dashboard.harvestDays": [
+    {
+      "type": 0,
+      "value": "DÍAS DE COSECHA"
+    }
+  ],
+  "dashboard.totalHarvestAmount": [
+    {
+      "type": 0,
+      "value": "PRODUCION TOTAL"
+    }
   ]
 }
