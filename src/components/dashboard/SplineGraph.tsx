@@ -21,7 +21,7 @@ const SplineGraph = (props: IApexChartProps) => {
             fontSize="1.125rem"
             fontWeight={600}
             variant="h2">
-            {intl.formatMessage({ id: 'dashboard.harvest_collection', defaultMessage: 'Harvest Collection'})}
+            {intl.formatMessage({ id: 'dashboard.harvest_collection.title', defaultMessage: 'Harvest Collection'})}
           </Typography>
           <Typography
             fontSize="0.875"

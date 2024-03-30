@@ -1358,5 +1358,11 @@
       "type": 0,
       "value": "Mantén un registro de la recolección de cosecha a lo largo del tiempo"
     }
+  ],
+  "dashboard.harvest_collection.title": [
+    {
+      "type": 0,
+      "value": "Recolección de cosecha"
+    }
   ]
 }
