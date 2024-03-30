@@ -1124,5 +1124,11 @@
       "type": 0,
       "value": "Más Reciente"
     }
+  ],
+  "pickers.sort.long": [
+    {
+      "type": 0,
+      "value": "Más Antiguo"
+    }
   ]
 }
