@@ -1130,5 +1130,11 @@
       "type": 0,
       "value": "Más Antiguo"
     }
+  ],
+  "pickers.sort.az": [
+    {
+      "type": 0,
+      "value": "A-Z"
+    }
   ]
 }
