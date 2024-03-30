@@ -282,7 +282,7 @@ const PayrollInfo = () => {
                 fontSize="0.75rem"
                 fontWeight={500}>
                 <Box mr="8px" display="inline-block" width="0.5rem" height="0.5rem" borderRadius="100%" bgcolor="#17B26A" />
-                3 days left
+                {intl.formatMessage({ id: "dashboard.daysLeft", defaultMessage: "3 days left" })}
               </Typography>
             </Box>
           </Box>

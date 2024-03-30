@@ -1334,5 +1334,11 @@
       "type": 0,
       "value": "Iniciando"
     }
+  ],
+  "dashboard.daysLeft": [
+    {
+      "type": 0,
+      "value": "3 días más"
+    }
   ]
 }
