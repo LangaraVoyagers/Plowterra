@@ -1238,5 +1238,11 @@
       "type": 0,
       "value": "Período de Pago"
     }
+  ],
+  "payroll.preview.total_net_pay": [
+    {
+      "type": 0,
+      "value": "Pago Neto Total"
+    }
   ]
 }

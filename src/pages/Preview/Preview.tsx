@@ -435,7 +435,11 @@ const Preview: React.FC = () => {
             </Card>
             <Card>
               <Label size="sm" fontWeight="SemiBold">
-                Total Net Pay
+                {intl.formatMessage({
+              id: "payroll.preview.total_net_pay",
+              defaultMessage: "Total Net Pay",
+            })
+                }
               </Label>
               <Display size="xs" fontWeight="SemiBold">
                 {payrollData?.totals?.netAmount}
