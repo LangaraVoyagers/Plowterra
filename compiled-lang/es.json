@@ -2,13 +2,13 @@
   "Start Payroll": [
     {
       "type": 0,
-      "value": "Iniciar Planilla"
+      "value": "Iniciar Nomina"
     }
   ],
   "breadcrumb.run_payroll": [
     {
       "type": 0,
-      "value": "Ejecutar Planilla"
+      "value": "Ejecutar Nomina"
     }
   ],
   "button.cancel": [
@@ -314,13 +314,13 @@
   "payroll.empty.state.subtitle": [
     {
       "type": 0,
-      "value": "Parece que aún no tienes ningún historial de planilla."
+      "value": "Parece que aún no tienes ningún historial de nomina."
     }
   ],
   "payroll.get.payroll.history.error": [
     {
       "type": 0,
-      "value": "No se encontró historial de planilla"
+      "value": "No se encontró historial de nomina"
     }
   ],
   "payroll.history.columns.deductions.header": [
@@ -436,19 +436,19 @@
   "payroll.preview.run.error": [
     {
       "type": 0,
-      "value": "¡Ups! No se pudo guardar la planilla."
+      "value": "¡Ups! No se pudo guardar la nomina."
     }
   ],
   "payrolls": [
     {
       "type": 0,
-      "value": "Planilla"
+      "value": "Nomina"
     }
   ],
   "payrolls.subtitle": [
     {
       "type": 0,
-      "value": "Crea las planillas y consulta registros de planillas anteriores."
+      "value": "Crea las nominas y consulta registros de nominas anteriores."
     }
   ],
   "pickers": [
@@ -824,7 +824,7 @@
   "seasons.create.form.payroll_timeframe.label": [
     {
       "type": 0,
-      "value": "Marco de Tiempo de la Planilla"
+      "value": "Marco de Tiempo de la Nomina"
     }
   ],
   "seasons.create.form.price.label": [
@@ -1002,7 +1002,7 @@
   "sidebar.harvest_season": [
     {
       "type": 0,
-      "value": "Temporada de Cosecha"
+      "value": "Temporada"
     }
   ],
   "sidebar.home": [
@@ -1020,7 +1020,7 @@
   "sidebar.payroll": [
     {
       "type": 0,
-      "value": "Planilla"
+      "value": "Nomina"
     }
   ],
   "sidebar.pickers": [
@@ -1038,7 +1038,7 @@
   "sidebar.quick_actions.add_harvest_log": [
     {
       "type": 0,
-      "value": "Agregar Entrada de Cosecha"
+      "value": "Agregar Registro"
     }
   ],
   "sidebar.quick_actions.add_picker": [
