@@ -1268,5 +1268,11 @@
       "type": 0,
       "value": "Detalles de la Nomina"
     }
+  ],
+  "C": [
+    {
+      "type": 0,
+      "value": "¿Deseas ejecutar la nomina?"
+    }
   ]
 }

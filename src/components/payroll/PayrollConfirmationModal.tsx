@@ -10,6 +10,7 @@ import { FormattedDate, FormattedNumber } from "react-intl";
 import { Display } from "ui/Typography";
 import IconModalPayroll from "../../assets/images/PayrollSuccess.svg";
 import StyledSpan from "ui/StyledSpan";
+import { useIntl } from "react-intl";
 
 interface PayrollConfirmationModalProps extends DialogProps {
   onCancel: () => void;
@@ -31,6 +32,7 @@ const PayrollConfirmationModal = ({
   isLoading,
   ...props
 }: PayrollConfirmationModalProps) => {
+  const intl = useIntl();
   return (
     <Dialog
       {...props}
@@ -54,7 +56,10 @@ const PayrollConfirmationModal = ({
         />
 
         <Display color="grey-900" size="sm" fontWeight="SemiBold">
-          Ready to run the payroll?
+          {intl.formatMessage({
+            id: "payroll.confirmation.modal.title",
+            defaultMessage: "Ready to run the payroll?",
+          })}
         </Display>
 
         <Box display="flex" gap="1.5rem" flexShrink={0} width="100%">
