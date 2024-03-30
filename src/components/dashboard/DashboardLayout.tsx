@@ -179,7 +179,7 @@ const HarvestInfo = (props: any) => {
 
         <Grid item xs={12} md={6} lg={3} xl={2.25}>
           <CardLayout 
-            label="TOTAL HARVEST AMOUNT" 
+              label= {intl.formatMessage({ id: "dashboard.totalHarvestAmount", defaultMessage: "TOTAL HARVEST AMOUNT" })}
             content="1,463 kg" />
         </Grid>
       </Grid>
