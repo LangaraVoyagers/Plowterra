@@ -1214,5 +1214,11 @@
       "type": 0,
       "value": "Moneda"
     }
+  ],
+  "preview.active.season": [
+    {
+      "type": 0,
+      "value": "Temporada"
+    }
   ]
 }

@@ -331,7 +331,10 @@ const Preview: React.FC = () => {
           <div className="filter-container">
             <div className="date-filter">
               <BodyText size="md" sx={{ flexShrink: 0 }}>
-                Active Season
+                {intl.formatMessage({
+              id: "preview.active.season",
+              defaultMessage: "Active Season",
+            })}
               </BodyText>
               <SeasonFilterDataGrid
                 onChange={setSelectedSeason}
