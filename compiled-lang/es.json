@@ -1172,5 +1172,11 @@
       "type": 0,
       "value": "Recolector"
     }
+  ],
+  "harvest-log.create.form.product.label": [
+    {
+      "type": 0,
+      "value": "Producto - Unidad"
+    }
   ]
 }
