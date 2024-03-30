@@ -1298,5 +1298,11 @@
       "type": 0,
       "value": "PRODUCTO"
     }
+  ],
+  "dashboard.startDate": [
+    {
+      "type": 0,
+      "value": "FECHA DE INICIO"
+    }
   ]
 }

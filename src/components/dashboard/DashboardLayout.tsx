@@ -152,7 +152,8 @@ const HarvestInfo = (props: any) => {
 
         <Grid item xs={12} md={6} lg={3} xl={2.25}>
           <CardLayout 
-            label="START DATE" 
+            // label="START DATE" 
+            label= {intl.formatMessage({ id: "dashboard.startDate", defaultMessage: "START DATE" })}
             content="01 Jan, 2024" 
             boxProps={{
               borderRight: seperator
