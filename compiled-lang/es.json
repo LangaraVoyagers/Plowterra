@@ -1178,5 +1178,11 @@
       "type": 0,
       "value": "Producto - Unidad"
     }
+  ],
+  "harvest-log.create.form.amount.label": [
+    {
+      "type": 0,
+      "value": "Cantidad"
+    }
   ]
 }
