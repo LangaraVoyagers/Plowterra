@@ -1226,5 +1226,11 @@
       "type": 0,
       "value": "Desde"
     }
+  ],
+  "payroll.preview.to": [
+    {
+      "type": 0,
+      "value": "Hasta"
+    }
   ]
 }
