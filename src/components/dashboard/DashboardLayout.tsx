@@ -188,6 +188,7 @@ const HarvestInfo = (props: any) => {
 }
 
 const MidSectionInfo = (props: IApexChartProps) => {
+  const intl = useIntl();
   return (    
     <Grid container pt={gridGap} columnSpacing={gridGap} rowSpacing={{md: gridGap}} alignItems="stretch">
       <Grid item xs={12} md={12} xl={9}>
@@ -199,7 +200,7 @@ const MidSectionInfo = (props: IApexChartProps) => {
           <Grid container height="100%" spacing={gridGap} alignItems="stretch">
             <Grid item xs={12} md={6} lg={6} xl={12}>
               <CardLayout 
-                label="TOTAL HARVEST AMOUNT"
+              label= {intl.formatMessage({ id: "dashboard.totalHarvestAmount", defaultMessage: "TOTAL HARVEST AMOUNT" })}
                 content={
                   <Fragment>
                     <span>$ 16,382</span>
@@ -215,7 +216,7 @@ const MidSectionInfo = (props: IApexChartProps) => {
             </Grid>
             <Grid item xs={12} md={6} lg={6} xl={12}>
               <CardLayout 
-                label="TOTAL HARVEST AMOUNT" 
+              label= {intl.formatMessage({ id: "dashboard.totalHarvestAmount", defaultMessage: "TOTAL HARVEST AMOUNT" })}
                 content={
                   <Fragment>
                     <span>$ 16,382</span>
@@ -243,7 +244,9 @@ const PayrollInfo = () => {
           <Typography
             color="#79716B"
             fontSize="1.14rem"
-            fontWeight={600}>PAYROLL TO THIS DAY</Typography>
+            fontWeight={600}>
+              PAYROLL TO THIS DAY
+              </Typography>
           <Box
             p="0.5rem"
             mt="1.3rem"
