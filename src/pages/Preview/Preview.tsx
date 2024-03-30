@@ -480,7 +480,11 @@ const Preview: React.FC = () => {
             disabled={!payrollData?.details?.length}
             className="run-payroll-button"
           >
-            Run Payroll
+            {intl.formatMessage({
+              id: "payroll.preview.run_payroll",
+              defaultMessage: "Run Payroll",
+            })
+            }
             <CaretRight size={25} />
           </Button>
         </PayrollFilters>

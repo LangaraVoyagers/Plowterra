@@ -1256,5 +1256,11 @@
       "type": 0,
       "value": "Deducciones Totales"
     }
+  ],
+  "payroll.preview.run_payroll": [
+    {
+      "type": 0,
+      "value": "Ejecutar Nomina"
+    }
   ]
 }
