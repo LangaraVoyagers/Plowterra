@@ -1322,5 +1322,11 @@
       "type": 0,
       "value": "PRODUCION TOTAL"
     }
+  ],
+  "dashboard.payrollToThisDay": [
+    {
+      "type": 0,
+      "value": "NOMINA PENDIENTE"
+    }
   ]
 }

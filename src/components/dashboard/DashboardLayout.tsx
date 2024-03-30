@@ -237,6 +237,7 @@ const MidSectionInfo = (props: IApexChartProps) => {
 }
 
 const PayrollInfo = () => {
+  const intl = useIntl();
   return (
     <Grid container mt="2.25rem" spacing={gridGap}>
       <Grid item xs={12} lg={3}>
@@ -245,7 +246,7 @@ const PayrollInfo = () => {
             color="#79716B"
             fontSize="1.14rem"
             fontWeight={600}>
-              PAYROLL TO THIS DAY
+              {intl.formatMessage({ id: "dashboard.payrollToThisDay", defaultMessage: "PAYROLL TO THIS DAY" })}
               </Typography>
           <Box
             p="0.5rem"
