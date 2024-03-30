@@ -1370,5 +1370,11 @@
       "type": 0,
       "value": "Todo el tiempo"
     }
+  ],
+  "dashboard.30_days": [
+    {
+      "type": 0,
+      "value": "Últimos 30 días"
+    }
   ]
 }

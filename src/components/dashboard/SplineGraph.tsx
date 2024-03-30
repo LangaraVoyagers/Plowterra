@@ -33,10 +33,11 @@ const SplineGraph = (props: IApexChartProps) => {
         <Grid item>
           <ButtonGroup variant="outlined" aria-label="Graph Filter">
             <Button>
-              {/* All time */}
               {intl.formatMessage({ id: 'dashboard.all_time', defaultMessage: 'All time'})}
               </Button>
-            <Button>30 days</Button>
+            <Button>
+              {intl.formatMessage({ id: 'dashboard.30_days', defaultMessage: '30 days'})}
+              </Button>
             <Button>7 days</Button>
           </ButtonGroup>
         </Grid>
