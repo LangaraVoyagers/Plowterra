@@ -152,7 +152,6 @@ const HarvestInfo = (props: any) => {
 
         <Grid item xs={12} md={6} lg={3} xl={2.25}>
           <CardLayout 
-            // label="START DATE" 
             label= {intl.formatMessage({ id: "dashboard.startDate", defaultMessage: "START DATE" })}
             content="01 Jan, 2024" 
             boxProps={{
@@ -162,7 +161,7 @@ const HarvestInfo = (props: any) => {
 
         <Grid item xs={12} md={6} lg={3} xl={2.25}>
           <CardLayout 
-            label="PRICE PER UNIT" 
+            label= {intl.formatMessage({ id: "dashboard.pricePerUnit", defaultMessage: "PRICE PER UNIT" })}
             content="$ 3" 
             boxProps={{
               borderRight: seperator

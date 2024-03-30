@@ -1304,5 +1304,11 @@
       "type": 0,
       "value": "FECHA DE INICIO"
     }
+  ],
+  "dashboard.pricePerUnit": [
+    {
+      "type": 0,
+      "value": "PRECIO POR UNIDAD"
+    }
   ]
 }
