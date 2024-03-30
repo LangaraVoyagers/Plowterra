@@ -1274,5 +1274,11 @@
       "type": 0,
       "value": "¿Deseas ejecutar la nomina?"
     }
+  ],
+  "payroll.confirmation.modal.cancel": [
+    {
+      "type": 0,
+      "value": "Cancelar"
+    }
   ]
 }

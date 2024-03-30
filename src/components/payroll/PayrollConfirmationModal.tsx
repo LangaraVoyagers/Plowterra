@@ -84,7 +84,11 @@ const PayrollConfirmationModal = ({
             disabled={isLoading}
             fullWidth
           >
-            Cancel
+            {intl.formatMessage({
+              id: "payroll.confirmation.modal.cancel",
+              defaultMessage: "Cancel",
+            })
+            }
           </Button>
           <Button
             onClick={onConfirm}
