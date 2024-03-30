@@ -1148,5 +1148,11 @@
       "type": 0,
       "value": "Agregar Deducción"
     }
+  ],
+  "harvest-log.create.form.label": [
+    {
+      "type": 0,
+      "value": "Nuevo Registro de Cosecha"
+    }
   ]
 }

@@ -126,7 +126,6 @@ const SeasonDeductions = () => {
             append({ deductionID: "", price: "" });
           }}
         >
-          {/* Add Deduction */}
           {intl.formatMessage({ id: "seasonDeduction.add", defaultMessage: "Add Deduction" })}
         </Button>
       </Box>
