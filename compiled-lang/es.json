@@ -1076,5 +1076,11 @@
       "type": 0,
       "value": "Tema"
     }
+  ],
+  "payroll.payroll.history.title": [
+    {
+      "type": 0,
+      "value": "Historial de Nomina"
+    }
   ]
 }
