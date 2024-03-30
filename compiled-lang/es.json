@@ -1106,5 +1106,11 @@
       "type": 0,
       "value": "Registrar"
     }
+  ],
+  "harvest.logs.start.date": [
+    {
+      "type": 0,
+      "value": "Fecha Inicial"
+    }
   ]
 }
