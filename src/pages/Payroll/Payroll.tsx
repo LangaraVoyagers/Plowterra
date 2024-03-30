@@ -196,10 +196,7 @@ const Payroll = () => {
           size="medium"
           endIcon={<CaretRight size={25} />}
         >
-          <FormattedMessage
-            id="paryroll.start.payroll.button"
-            defaultMessage="Start payroll"
-          />
+          {intl.formatMessage({ id: "paryroll.start.payroll.button", defaultMessage: "Start payroll" })}
         </Button>
       }
     >

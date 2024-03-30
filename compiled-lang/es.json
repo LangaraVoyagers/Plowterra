@@ -1082,5 +1082,11 @@
       "type": 0,
       "value": "Historial de Nomina"
     }
+  ],
+  "paryroll.start.payroll.button": [
+    {
+      "type": 0,
+      "value": "Iniciar Nomina"
+    }
   ]
 }
