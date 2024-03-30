@@ -208,7 +208,8 @@ const MidSectionInfo = (props: IApexChartProps) => {
                       <Typography color="#15A260" fontSize="0.875rem" fontWeight={600} variant="caption">
                         <ArrowUp /> 15%
                       </Typography>
-                      &nbsp; average
+                      &nbsp; 
+                      {intl.formatMessage({ id: "dashboard.average", defaultMessage: "average" })}
                     </Typography>
                   </Fragment>
                 } 
@@ -224,7 +225,8 @@ const MidSectionInfo = (props: IApexChartProps) => {
                       <Typography color="#15A260" fontSize="0.875rem" fontWeight={600} variant="caption">
                         <ArrowUp /> 15%
                       </Typography>
-                      &nbsp; average
+                      &nbsp;
+                      {intl.formatMessage({ id: "dashboard.average", defaultMessage: "average" })}
                     </Typography>
                   </Fragment>
                 } 

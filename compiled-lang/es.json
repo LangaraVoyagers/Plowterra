@@ -1382,5 +1382,11 @@
       "type": 0,
       "value": "Últimos 7 días"
     }
+  ],
+  "dashboard.average": [
+    {
+      "type": 0,
+      "value": "Promedio"
+    }
   ]
 }
