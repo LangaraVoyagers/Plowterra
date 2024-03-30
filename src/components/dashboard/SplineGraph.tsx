@@ -21,13 +21,12 @@ const SplineGraph = (props: IApexChartProps) => {
             fontSize="1.125rem"
             fontWeight={600}
             variant="h2">
-            Harvest Collection
+            {intl.formatMessage({ id: 'dashboard.harvest_collection', defaultMessage: 'Harvest Collection'})}
           </Typography>
           <Typography
             fontSize="0.875"
             fontWeight={500}
             color="#57534E">
-            {/* Keep track of harvest collection over time */}
             {intl.formatMessage({ id: 'dashboard.harvest_collection', defaultMessage: 'Keep track of harvest collection over time'})}
           </Typography>
         </Grid>
