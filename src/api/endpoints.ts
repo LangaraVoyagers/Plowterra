@@ -8,7 +8,8 @@ const endpoints = {
   units: "/units",
   currencies: "/currencies",
   deductions: "/deductions",
-  dashboardIndicators: "/dashboard/indicators"
+  dashboardIndicators: "/dashboard/indicators",
+  dashboardGraph: "/dashboard/harvest-graph",
 }
 
 export default endpoints;

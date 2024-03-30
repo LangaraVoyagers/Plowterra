@@ -11,6 +11,8 @@ import {
   UserPlus,
   Users,
 } from "@phosphor-icons/react";
+import { Link, Outlet } from "react-router-dom";
+import { useEffect, useState } from "react";
 
 import { FormattedMessage } from "react-intl";
 import ListItem from "@mui/material/ListItem";
@@ -22,13 +24,12 @@ import LogoLight from "../assets/images/Logo.svg";
 import LogoSquareDark from "../assets/images/LogoSquareDark.svg";
 import LogoSquareLight from "../assets/images/LogoSquare.svg";
 import MuiDrawer from "@mui/material/Drawer";
-import { Outlet } from "react-router-dom";
 import SidebarIconDark from "../assets/icons/SidebarIconDark.svg";
 import SidebarIconLight from "../assets/icons/SidebarIcon.svg";
 import UserMenu from "components/UserMenu";
 import paths from "shared/paths";
+import { useLocation } from 'react-router-dom';
 import { usePersistedState } from "hooks/usePersistedState";
-import { useState } from "react";
 import { useThemMode } from "context/ThemeProvider";
 
 const DRAWER_WIDTH = 288;
@@ -141,9 +142,11 @@ const quickActions = [
 const container = window !== undefined ? () => window.document.body : undefined;
 
 export default function MainLayout() {
+  const location = useLocation();
   const theme = useTheme();
   const mobile = useMediaQuery(theme.breakpoints.down("md"));
   const { mode } = useThemMode();
+  const [currPath, setCurrPath] = useState<string|undefined>();
 
   const [expanded, setOpen] = usePersistedState("sidebar-expanded", true);
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -153,6 +156,10 @@ export default function MainLayout() {
   const Logo = mode === "light" ? LogoLight : LogoDark;
   const LogoSquare = mode === "light" ? LogoSquareLight : LogoSquareDark;
 
+  useEffect(() => {
+    setCurrPath(location.pathname);
+  }, [location.pathname]);
+  
   const handleDrawerClose = () => {
     if (mobile) {
       setMobileOpen(!mobileOpen);
@@ -233,6 +240,8 @@ export default function MainLayout() {
               title={title}
               icon={icon}
               href={href}
+              currPath={currPath}
+              setCurrPath={setCurrPath}
             />
           ))}
         </List>
@@ -272,6 +281,8 @@ export default function MainLayout() {
               title={data.title}
               icon={data.icon}
               href={data.href}
+              currPath={currPath}
+              setCurrPath={setCurrPath}
             />
           ))}
         </List>
@@ -354,46 +365,48 @@ type SidebarMenuItemProps = {
   title: JSX.Element;
   icon: JSX.Element;
   href: string;
+  currPath: string | undefined;
+  setCurrPath: (href: string) => unknown;
 };
 export const SidebarMenuItem = ({
   open,
   title,
   icon,
   href,
+  currPath,
+  setCurrPath
 }: SidebarMenuItemProps) => {
   return (
     <ListItem disablePadding sx={{ display: "block", px: "1.5rem" }}>
-      <ListItemButton
-        sx={{
-          justifyContent: open ? "initial" : "center",
-          borderRadius: !open ? "50%" : undefined,
-          height: "2.5rem",
-          width: !open ? "2.5rem" : undefined,
-          transition: "all 300ms",
-          transitionTimingFunction: "ease-in-out",
-        }}
-        href={href}
-        selected={
-          href === paths.home
-            ? href === window.location.pathname
-            : window.location.pathname.includes(href)
-        }
-      >
-        <ListItemIcon
+      <Link 
+        to={href} 
+        onClick={() => setCurrPath(href.split("?")[0])}
+        style={{textDecoration: "none", color: "transparent"}}>
+        <ListItemButton
           sx={{
-            minWidth: 0,
-            mr: open ? 3 : "auto",
-            justifyContent: "center",
+            justifyContent: open ? "initial" : "center",
+            borderRadius: !open ? "50%" : undefined,
+            height: "2.5rem",
+            width: !open ? "2.5rem" : undefined,
+            transition: "all 300ms",
+            transitionTimingFunction: "ease-in-out",
           }}
-        >
-          {icon}
-        </ListItemIcon>
-
-        <ListItemText
-          primary={<BodyText fontWeight="Medium">{title}</BodyText>}
-          sx={{ opacity: open ? 1 : 0 }}
-        />
-      </ListItemButton>
+          selected={currPath === href ? true : (currPath?.includes("payroll") && href === "/payroll")}>
+          <ListItemIcon
+            sx={{
+              minWidth: 0,
+              mr: open ? 3 : "auto",
+              justifyContent: "center",
+            }}>
+            {icon}
+          </ListItemIcon>
+        
+          <ListItemText
+            primary={<BodyText fontWeight="Medium">{title}</BodyText>}
+            sx={{opacity: open ? 1 : 0}}
+          />
+        </ListItemButton>
+      </Link>
     </ListItem>
   );
 };

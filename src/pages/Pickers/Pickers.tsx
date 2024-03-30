@@ -1,29 +1,30 @@
+import { Box, useMediaQuery, useTheme } from "@mui/material";
+import { FormattedDate, FormattedMessage, useIntl } from "react-intl"
 import {
   GridColDef,
   GridRenderCellParams,
   GridSortItem,
   GridValueGetterParams,
 } from "@mui/x-data-grid"
-import { FormattedDate, FormattedMessage, useIntl } from "react-intl"
 import { useEffect, useState } from "react";
+import { useNavigate, useParams, useSearchParams } from "react-router-dom";
+
 import BasicHome from "layouts/BasicHome";
-import { Box, useMediaQuery, useTheme } from "@mui/material";
+import { BodyText } from "ui/Typography";
 import CreatePicker from "components/pickers/CreatePicker";
+import DataTable from "ui/DataTable";
 import { IPickerResponse } from "project-2-types/dist/interface";
 import PickerDrawer from "components/pickers/PickerDrawer";
 import SearchDataGrid from "components/SearchDataGrid";
 import SortDataGrid from "components/SortDataGrid";
 import UpdatePicker from "components/pickers/UpdatePicker";
+import { Users } from "@phosphor-icons/react";
 import { getPickers } from "api/pickers";
 import paths from "shared/paths";
-import { useParams, useSearchParams } from "react-router-dom";
+import { useAlert } from "context/AlertProvider";
 import { useQuery } from "react-query";
 import useQueryCache from "hooks/useQueryCache";
 import { useUser } from "context/UserProvider";
-import DataTable from "ui/DataTable";
-import { useAlert } from "context/AlertProvider";
-import { BodyText } from "ui/Typography";
-import { Users } from "@phosphor-icons/react";
 
 const columns: GridColDef[] = [
   {
@@ -133,6 +134,7 @@ const Pickers = () => {
   const { showAlert } = useAlert();
 
   const theme = useTheme();
+  const navigate = useNavigate();
   const desktop = useMediaQuery(theme.breakpoints.up("md"));
   const tablet = useMediaQuery(theme.breakpoints.up("sm"));
 
@@ -153,7 +155,7 @@ const Pickers = () => {
 
   const hideDrawer = () => {
     setOpen(false);
-    window.location.replace(paths.pickers);
+    navigate(paths.pickers);
   };
 
   const { isLoading } = useQuery({

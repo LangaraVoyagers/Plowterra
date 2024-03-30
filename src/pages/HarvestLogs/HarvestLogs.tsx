@@ -1,38 +1,39 @@
 import { Box, FormControl, useMediaQuery, useTheme } from "@mui/material"
 import {
-  GridColDef,
-  GridRenderCellParams,
-  GridValueGetterParams,
-} from "@mui/x-data-grid";
-import { DatePicker } from "@mui/x-date-pickers/DatePicker"
-import { getHarvestLogs } from "api/harvestLogs"
-import { getPickerById } from "api/pickers"
-import SeasonFilterDataGrid from "components/SeasonFilterDataGrid";
-import CreateHarvestLog from "components/harvestLogs/CreateHarvestLog";
-import FiltersDrawer from "components/harvestLogs/FiltersDrawer";
-import UpdateHarvestLog from "components/harvestLogs/UpdateHarvestLog";
-import { useAlert } from "context/AlertProvider";
-import { useUser } from "context/UserProvider";
-import { Dayjs } from "dayjs";
-import useQueryCache from "hooks/useQueryCache";
-import BasicHome from "layouts/BasicHome";
-import {
-  IHarvestLogResponse,
-  ISeasonResponse,
-} from "project-2-types/dist/interface";
-import { useState } from "react";
-import {
   FormattedDate,
   FormattedMessage,
   FormattedNumber,
   useIntl,
 } from "react-intl";
-import { useQuery } from "react-query";
-import { useSearchParams } from "react-router-dom";
-import paths from "shared/paths";
-import DataTable from "ui/DataTable";
+import {
+  GridColDef,
+  GridRenderCellParams,
+  GridValueGetterParams,
+} from "@mui/x-data-grid";
+import {
+  IHarvestLogResponse,
+  ISeasonResponse,
+} from "project-2-types/dist/interface";
+
+import BasicHome from "layouts/BasicHome";
 import { BodyText } from "ui/Typography";
+import CreateHarvestLog from "components/harvestLogs/CreateHarvestLog";
+import DataTable from "ui/DataTable";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker"
+import { Dayjs } from "dayjs";
 import { FileText } from "@phosphor-icons/react";
+import FiltersDrawer from "components/harvestLogs/FiltersDrawer";
+import SeasonFilterDataGrid from "components/SeasonFilterDataGrid";
+import UpdateHarvestLog from "components/harvestLogs/UpdateHarvestLog";
+import { getHarvestLogs } from "api/harvestLogs"
+import { getPickerById } from "api/pickers"
+import paths from "shared/paths";
+import { useAlert } from "context/AlertProvider";
+import { useQuery } from "react-query";
+import useQueryCache from "hooks/useQueryCache";
+import { useSearchParams } from "react-router-dom";
+import { useState } from "react";
+import { useUser } from "context/UserProvider";
 
 const columns = (currency: string): GridColDef[] => [
   {
@@ -241,7 +242,7 @@ const HarvestLogs = () => {
       }
       subtitle={intl.formatMessage({
         id: "harvest.log.subtitle",
-        defaultMessage: "Add and view picker’s daily collection data here.",
+        defaultMessage: "Add and view picker's daily collection data here.",
       })}
       breadcrumb={[
         { title: user.farm.name, href: "/" },

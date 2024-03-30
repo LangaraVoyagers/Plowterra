@@ -1,26 +1,32 @@
 import {
   ArrowRight,
   ArrowUp,
-  FilePlus
+  FilePlus,
+  HandCoins,
+  Plant,
 } from "@phosphor-icons/react";
 import {
   Box,
   BoxProps,
   Button,
+  Divider,
   Grid,
+  LinearProgress,
   Typography,
   useTheme,
 } from "@mui/material";
 import { FormattedDate, FormattedMessage } from "react-intl";
 import { Fragment, ReactNode, useEffect, useState } from "react";
-import Select, { StylesConfig } from "react-select";
-import { getDate, getGreeting } from "shared/date-helpers";
+import { getDate, getEpochForDeltaDays, getGreeting } from "shared/date-helpers";
+import { getGraphValues, getIndicators } from "api/dashbaoard";
 
 import { ApexOptions } from "apexcharts";
+import SeasonFilterDataGrid from "components/SeasonFilterDataGrid";
 import SplineGraph from "./SplineGraph";
-import { getIndicators } from "api/dashbaoard";
+import cardStruc from "./cardStruc";
 import { useAlert } from "context/AlertProvider";
 import { useIntl } from "react-intl";
+import { useNavigate } from "react-router-dom";
 import { useQuery } from "react-query";
 import { useThemMode } from "context/ThemeProvider";
 import { useUser } from "context/UserProvider";
@@ -32,106 +38,39 @@ const seperator = { xl: "2px solid #D7D3D0" };
 const cardProps = {
   backgroundColor: "background.paper",
   borderRadius,
-  padding: "1.5rem"
+  padding: "1.5rem",
+  width: "100%",
+  height: "100%"
 }
 
-const reactSelectStyles: StylesConfig = {
-  control: base => ({
-    ...base,
-    height: 54,
-    width: 240,
-    borderRadius
-  }),
-  option: base => ({
-    ...base,
-  }),
-  menu: base => ({
-    ...base,
-    width: 240
-  }),
-  indicatorSeparator: () => ({display:'none'})
-};
-
-const DashBoardLayout = (props: any) => {
+const DashBoardLayout = () => {
   const { mode } = useThemMode();
   const { user } = useUser();
+  const theme = useTheme();
   const intl = useIntl();
+  const navigate = useNavigate();
   const USER_GREETING = getGreeting();
   const FORMATTED_DATE = getDate(new Date().getTime());
   const { showAlert } = useAlert();
-  const [cardInfo, setCardInfo] = useState<any>([]);
+  const [cardInfo, setCardInfo] = useState<any>(cardStruc(true));
   const [seasonSelected, setSeasonSelected] = useState<any>();
+  const [graphSeries, setGraphSeries] = useState<any>([]);
+  const [daysDelta, setDaysDelta] = useState<any>("all");
+  const [fromDate, setFromDate] = useState<any>(`0000000000000`);
 
-  const { isSeasonsOptionsLoading, seasonsOptions, graphSeries, graphOptions } = props;
-
-  useEffect(() => {
-    if (seasonsOptions.length)
-      setSeasonSelected(seasonsOptions.at(-1));
-  }, [seasonsOptions]);
-
-  // TODO: Loading state
-  useQuery({
-    queryKey: seasonSelected?.value,
-    queryFn: () => getIndicators(seasonSelected?.value),
-    enabled: !!seasonSelected?.value,
+  const {isLoading: isCardInfoLoading} = useQuery({
+    queryKey: seasonSelected?._id,
+    queryFn: () => getIndicators(seasonSelected?._id),
+    enabled: !!seasonSelected?._id,
     onSuccess: (results) => {
-      console.log(results);
-      const { season, totals, averages, payrollToTodayData } = results
-      const { product } = season;
-      const currencyName = season?.currency?.name;
-      const unitName = season?.unit.name;
-      
-      setCardInfo({
-        harvestInfo : [
-          {
-            label: <FormattedMessage defaultMessage="PRODUCT" id="dashboard.labels.product" />,
-            content: product?.name
-          },
-          {
-            label: <FormattedMessage defaultMessage="START DATE" id="dashboard.labels.startDate" />,
-            content: <FormattedDate 
-              value={new Date(season?.startDate)} 
-              year="numeric"
-              month="short"
-              day="2-digit" />
-          },
-          {
-            label: <FormattedMessage defaultMessage="PRICE PER UNIT" id="dashboard.labels.pricePerUnit" />,
-            content: `${ currencyName } ${ Number(season?.price).toFixed(2) }`
-          },
-          {
-            label: <FormattedMessage defaultMessage="HARVEST DAYS" id="dashboard.labels.harvestDays" />,
-            content: totals?.harvestDays
-          },
-          {
-            label: <FormattedMessage defaultMessage="TOTAL HARVEST AMOUNT" id="dashboard.labels.totalHarvestAmount" />,
-            content: `${ Number(totals?.totalHarvest).toFixed(2) } ${ unitName }`
-          }
-        ],
-      midSectionInfo: [
-        {
-          label: <FormattedMessage defaultMessage="SEASON'S TOTAL PAYROLL" id="dashboard.labels.seasonsTotalPayroll" />,
-          content: `${ currencyName } ${ Number(totals?.totalPayroll).toFixed(2) }`,
-          perIncrease: `${ averages?.avePayrollChange ?? 0 } %`
-        },
-        {
-          label: <FormattedMessage defaultMessage="TODAY'S COLLECTION" id="dashboard.labels.todaysCollection" />,
-          content: `${ Number(totals?.todaysHarvest).toFixed(2) } ${ unitName }`,
-          perIncrease: `${ averages?.aveHarvestChange ?? 0 } %`
-        }
-      ],
-      payrollInfo: {
-        payrollToToday: {
-          label: "PAYROLL TO THIS DAY",
-          content: `${ currencyName } ${ Number(payrollToTodayData?.grossAmount).toFixed(2) }`,
-          startDate: <FormattedDate 
-            value={new Date(payrollToTodayData?.startDate)} 
-            month="short" 
-            day="2-digit" />,
-          daysLeft: payrollToTodayData?.daysRemaining
-        }
-      }
-    })
+      const {
+        season,
+        payrollToTodayData, 
+        totals,
+        lastPayrolls
+      } = results;
+
+      setCardInfo(cardStruc(false, season, payrollToTodayData, totals, lastPayrolls));
     },
     onError: (error) => {
       console.log(error);
@@ -144,6 +83,40 @@ const DashBoardLayout = (props: any) => {
       );
     },
   });
+
+  const {isLoading: isGraphLoading} = useQuery({
+    queryKey: [intl.locale, seasonSelected?._id, fromDate],
+    queryFn: () => getGraphValues(seasonSelected?._id, fromDate, new Date().getTime()),
+    enabled: !!seasonSelected?._id,
+    onSuccess: (results) => {
+      const name = intl.formatMessage({defaultMessage: "Harvest Amount", id: "dashboard.tooltip.yaxis"});
+      const data: any = [];
+      results?.map((item: any)=> {
+        const date = new Date(item?.date).getTime();
+        const formatOptions = {
+          year: "numeric",
+          month: "short",
+          day: "2-digit"
+        } as const;
+        data.push({x: intl.formatDate(date, formatOptions), y: item?.collectedAmount})
+      })
+      setGraphSeries([{name, data}])
+    },
+    onError: (error) => {
+      console.log(error);
+      showAlert(
+        intl.formatMessage({
+          id: "dashboard.get.graph.error",
+          defaultMessage: "Some error occurred, Please try again later",
+        }),
+        "error"
+      );
+    },
+  })
+
+  useEffect(() => {
+    setFromDate(getEpochForDeltaDays(daysDelta));
+  }, [daysDelta])
   
   return (
     <Box padding={{md: "2rem"}}>
@@ -155,7 +128,7 @@ const DashBoardLayout = (props: any) => {
             variant="h1">
             { USER_GREETING }, { user.name }
           </Typography>
-          <Typography>
+          <Box>
             <FormattedMessage id="dashboard.greeting" defaultMessage="Today is" />
             &ensp;
             <Typography
@@ -166,26 +139,41 @@ const DashBoardLayout = (props: any) => {
               borderRadius="4px">
               { FORMATTED_DATE }
             </Typography>
-          </Typography>
+          </Box>
         </Grid>
         <Grid item>
-          <Button variant="contained" endIcon={<FilePlus />}>
-            Add Harvest Entry
+          <Button onClick={() => navigate("/harvest-logs?new=true")} variant="contained" endIcon={<FilePlus />}>
+              Add Harvest Entry
           </Button>
         </Grid>
       </Grid>
       <HarvestInfo
+        theme={theme}
         mode={mode}
         cardInfo={cardInfo?.harvestInfo}
         seasonSelected={seasonSelected}
-        setSeasonSelected={setSeasonSelected}
-        seasonsOptions={seasonsOptions}  
-        isLoading={isSeasonsOptionsLoading}  />
+        setSeasonSelected={setSeasonSelected} />
       <MidSectionInfo
+        theme={theme}
+        mode={mode}
+        isGraphLoading={isGraphLoading}
         cardInfo={cardInfo?.midSectionInfo} 
-        series={graphSeries} 
-        options={graphOptions} />
-      <PayrollInfo cardInfo={cardInfo?.payrollInfo} />
+        daysDelta={daysDelta}
+        setDaysDelta={setDaysDelta}
+        unitName={cardInfo?.unitName}
+        series={graphSeries} />
+      <Divider
+        style={{ 
+          marginTop: "2.5rem",
+          background: theme.palette.grey[300] 
+        }} 
+        variant="fullWidth" />
+      <PayrollInfo 
+        theme={theme}
+        navigate={navigate}
+        setSeasonSelected={setSeasonSelected}
+        isCardInfoLoading={isCardInfoLoading}
+        cardInfo={cardInfo?.payrollInfo} />
     </Box>
   )
 }
@@ -199,6 +187,7 @@ interface ICardLayout {
   label: string;
   content: string | ReactNode | undefined;
   boxProps?: BoxProps;
+  labelColor?: string;
 }
 
 export interface IApexChartProps {
@@ -210,7 +199,7 @@ const CardLayout = (props: ICardLayout) => {
   return (
     <Box {...props?.boxProps}>
       <Typography
-        color="#79716B"
+        color={props?.labelColor || "black"}
         fontSize="1.14rem"
         fontWeight={600}>{ props.label }</Typography>
       <Typography 
@@ -225,34 +214,30 @@ const CardLayout = (props: ICardLayout) => {
 
 const HarvestInfo = (props: any) => {
   const { 
-    mode,
+    theme,
     cardInfo,
-    seasonSelected,
-    setSeasonSelected,
-    seasonsOptions, 
-    isSeasonsOptionsLoading } = props;
+    setSeasonSelected } = props;
 
   return (
-    <Grid {...cardProps} xs={12}>
+    <Grid item {...cardProps} xs={12}>
       <Box mb="1.5rem">
-        <Select
-          placeholder={<FormattedMessage id="dashboard.seasonMenuPlaceHolder" defaultMessage="Select Season" />}
-          options={seasonsOptions} 
-          isLoading={isSeasonsOptionsLoading}
-          styles={reactSelectStyles}
-          value={seasonSelected}
-          onChange={(e) => setSeasonSelected(e)}
-          theme={(theme) => ({
-            ...theme,
-            colors: {
-            ...theme.colors,
-              text: "white",
-              neutral0: mode === "light" ? "white" : "black",
-              primary50: "#15A260",
-              primary25: "#C5E8D7",
-              primary: "#055E40",
+        <SeasonFilterDataGrid
+          status="ACTIVE"
+          defaultFirst={false}
+          getDefaultSeasonId={(seasonId) => setSeasonSelected({_id: seasonId})}
+          onChange={setSeasonSelected}
+          sx={{
+            control: {
+              fontSize: "1.25rem",
+              fontWeight: 600,
+              width: "16.375rem",
+              height: "3.375rem"
             },
-          })} />
+            menu: {
+              width: "16.375rem"
+            }
+          }}
+        />
       </Box>
       <Grid container rowSpacing={{ xs: "2rem" }} columnSpacing={{ lg: "2rem" }}>
         {
@@ -262,6 +247,7 @@ const HarvestInfo = (props: any) => {
                 <CardLayout 
                   label={item.label} 
                   content={item.content} 
+                  labelColor={theme.palette.grey[500]}
                   boxProps={idx === (cardInfo.length - 1) ? {} : {
                     borderRight: seperator
                   }} />
@@ -275,55 +261,70 @@ const HarvestInfo = (props: any) => {
 }
 
 const MidSectionInfo = (props: any) => {
+  const {
+    theme, 
+    mode, 
+    series, 
+    unitName, 
+    daysDelta, 
+    setDaysDelta, 
+    isGraphLoading } = props;
+  
   return (    
-    <Grid container pt={gridGap} columnSpacing={gridGap} rowSpacing={{md: gridGap}} alignItems="stretch">
-      <Grid item xs={12} md={12} xl={9}>
-        <Box {...cardProps}>
-          <SplineGraph series={props.series} options={props.options} />
+    <Grid container pt={gridGap} columnSpacing={gridGap} alignItems="stretch">
+      <Grid item xs={12} lg={8} xl={9}>
+        <Box {...cardProps} pb="0">
+          <SplineGraph
+            isLoading={isGraphLoading}
+            mode={mode}
+            daysDelta={daysDelta}
+            setDaysDelta={setDaysDelta}
+            unitName={unitName}
+            series={series} />
         </Box>
       </Grid>
-      <Grid item xs={12} md={12} xl={3} height="100%">
-          <Grid container height="100%" spacing={gridGap} alignItems="stretch">
-
-            {
-              props?.cardInfo?.map((item: any, idx: number)=> {
-               return (
-               <Grid key={idx} item xs={12} md={6} lg={6} xl={12}>
-                <CardLayout 
-                  label={ item?.label }
-                  content={
-                    <Fragment>
-                      <span>{ item?.content }</span>
-                      <Typography mt="1rem" color="#79716B" display="flex" alignItems="center">
-                        <Typography color="#15A260" fontSize="0.875rem" fontWeight={600} variant="caption">
-                          <ArrowUp /> { item?.perIncrease }
-                        </Typography>
-                        &nbsp; average
-                      </Typography>
-                    </Fragment>
-                  } 
-                  boxProps={cardProps} />
-              </Grid>)
-              })
-            }
-          </Grid>
+      <Grid item mt={{xs: gridGap, lg: 0}} xs={12} lg={4} xl={3}>
+        <Grid container direction="row" height={{lg: "100%"}} gap={gridGap}>
+          {
+            props?.cardInfo?.map((item: any, idx: number)=> {
+              return (
+              <Grid key={idx} item xs={12}>
+              <CardLayout 
+                label={ item?.label }
+                content={
+                  <Fragment>
+                    <span>{ item?.content }</span>
+                    <Typography mt="1rem" color={theme.palette.grey[500]} display="flex" alignItems="center">
+                      <Box color={theme.palette.primary.dark} fontSize="0.875rem" fontWeight={600}>
+                        <ArrowUp /> { item?.perIncrease }
+                      </Box>
+                      &nbsp; <FormattedMessage defaultMessage="average" id="dashboard.labels.average" />
+                    </Typography>
+                  </Fragment>
+                } 
+                labelColor={theme.palette.grey[500]}
+                boxProps={cardProps} />
+            </Grid>)
+            })
+          }
+        </Grid>
       </Grid>
     </Grid>
   )
 }
 
 const PayrollInfo = (props: any) => {
-  const theme = useTheme();
-  const {cardInfo} = props;
-  const {payrollToToday} = cardInfo || {};
+  const {navigate, isCardInfoLoading, theme, cardInfo, setSeasonSelected} = props;
+  const {payrollToToday, lastPayrolls} = cardInfo || {};
+  
   return (
-    <Grid container mt="2.25rem" spacing={gridGap}>
+    <Grid container mt="1.125rem" spacing={gridGap}>
       <Grid item xs={12} lg={3}>
         <Box {...cardProps}>
           <Typography
-            color="#79716B"
+            color={theme.palette.grey[500]}
             fontSize="1.14rem"
-            fontWeight={600}>PAYROLL TO THIS DATE</Typography>
+            fontWeight={600}>{ payrollToToday?.label }</Typography>
           <Box
             p="0.5rem"
             mt="1.3rem"
@@ -339,143 +340,106 @@ const PayrollInfo = (props: any) => {
           </Box>
           <Box display="flex" mt="1.0625rem" alignItems="center" justifyContent="space-between">
             <Typography
-              color="#1C1917"
+              color={theme.palette.grey[900]}
               fontSize="0.875rem"
-              fontWeight={500}>Starting: Mar 16</Typography>
+              fontWeight={500}>{ payrollToToday?.startDate }</Typography>
             <Box 
               display="inline-flex"
               padding="1px 9px"
               alignItems="center"
               justifyContent="center"
-              border="1px solid #17B26A"
+              border={`1px solid ${theme.palette.primary.dark}`}
               borderRadius="100px"
               width="5.437"
               height="1.375">
-              <Typography
-                color="#17B26A"
+              <Box
+                color={theme.palette.primary.dark}
                 fontSize="0.75rem"
                 fontWeight={500}>
-                <Box mr="8px" display="inline-block" width="0.5rem" height="0.5rem" borderRadius="100%" bgcolor="#17B26A" />
-                { payrollToToday?.daysLeft } days left
-              </Typography>
+                <Box mr="8px" display="inline-block" width="0.5rem" height="0.5rem" borderRadius="100%" bgcolor={theme.palette.primary.dark} />
+                { payrollToToday?.daysLeft }&nbsp;
+                <FormattedMessage defaultMessage={"day"} id="dashboard.card.label.day" />
+                &nbsp;{ payrollToToday?.daysLeft > 1 ? " s" : "" }&nbsp;
+                <FormattedMessage defaultMessage={"left"} id="dashboard.card.label.left" />
+              </Box>
             </Box>
           </Box>
-          <button style={{ padding: 0, backgroundColor: "transparent", border: "none" }}>
+          <Button variant="text"
+            onClick={() => navigate(`/payroll/preview?seasonId=${setSeasonSelected?._id}`)}
+            sx={{
+              justifyContent: "left",
+              marginTop: "1.2rem", 
+              padding: "0 !important"}}>
             <Typography
-              mt="1.2rem"
-              color="#055E40"
+              m="0"
+              color={theme.palette.primary.dark}
               display="flex"
               alignItems="center"
               fontWeight={500}>
               Run Payroll&ensp;<ArrowRight />
             </Typography>
-          </button>
+          </Button>
         </Box>
       </Grid>
 
-      {/* <Grid item xs={12} lg={9}>
+      <Grid item xs={12} lg={9}>
         <Box {...cardProps}>
-          <Typography fontSize="1rem" fontWeight={500}>
-            Recent Payrolls
+          <Typography fontSize="1rem" mb="1rem" fontWeight={500}>
+            <FormattedMessage defaultMessage="Recent Payrolls" id="dashboard.labels.recentPayrolls" />
           </Typography>
           <Grid container rowSpacing={gridGap} columnSpacing={gridGap}>
-            <Grid item xs={12} md={6} lg={4}>
-              <Box px="1rem" py="1.5rem" bgcolor={theme.palette.grey[100]} borderRadius={borderRadius}>
-                <Typography fontSize="0.875rem" fontWeight={500}>
-                  Feb 01 - Feb 15
-                </Typography>
-                <Grid container mt="1rem" rowSpacing="1rem" columnSpacing="1rem">
-                  <Grid item xs={12} lg={6}>
-                    <Box
-                      display="flex"
-                      alignItems="center"
-                      bgcolor="background.paper"
-                      padding="0.5rem"
-                      borderRadius={borderRadius}>
-                      <HandCoins size="1rem" />
-                      <Typography fontSize="0.875rem" fontWeight={500}>&ensp;$8,384</Typography>
-                    </Box>
-                  </Grid>
-                  <Grid item xs={12} lg={6}>
-                    <Box
-                      display="flex"
-                      alignItems="center"
-                      bgcolor="background.paper"
-                      padding="0.5rem"
-                      borderRadius={borderRadius}>
-                      <Plant size="1rem" />
-                      <Typography fontSize="0.875rem" fontWeight={500}>&ensp;928kg</Typography>
-                    </Box>
-                  </Grid>
+            {
+              isCardInfoLoading ? (
+                <Grid item xs={12}>
+                  <LinearProgress color="secondary" />
                 </Grid>
-              </Box>
-            </Grid>
-            
-            <Grid item xs={12} md={6} lg={4}>
-              <Box px="1rem" py="1.5rem" bgcolor={bgHighlight} borderRadius={borderRadius}>
-                <Typography fontSize="0.875rem" fontWeight={500}>
-                  Feb 01 - Feb 15
-                </Typography>
-                <Grid container mt="1rem" rowSpacing="1rem" columnSpacing="1rem">
-                  <Grid item xs={12} lg={6}>
-                    <Box
-                      display="flex"
-                      alignItems="center"
-                      bgcolor="white"
-                      padding="0.5rem"
-                      borderRadius={borderRadius}>
-                      <HandCoins size="1rem" />
-                      <Typography fontSize="0.875rem" fontWeight={500}>&ensp;$8,384</Typography>
+              ) : lastPayrolls?.map((item: any, idx: number) => {
+                return (
+                  <Grid item xs={12} md={6} lg={4} key={idx}>
+                    <Box px="1rem" py="1.5rem" bgcolor={theme.palette.grey[100]} borderRadius={borderRadius}>
+                      <Typography fontSize="0.875rem" fontWeight={500}>
+                        <FormattedDate 
+                          value={new Date(item?.startDate)} 
+                          month="short"
+                          day="2-digit" />
+                        &ensp;-&ensp;
+                        <FormattedDate 
+                          value={new Date(item?.endDate)} 
+                          month="short"
+                          day="2-digit" />
+                      </Typography>
+                      <Grid container mt="1rem" rowSpacing="1rem" columnSpacing="1rem">
+                        <Grid item xs={12} lg={6}>
+                          <Box
+                            display="flex"
+                            alignItems="center"
+                            bgcolor="background.paper"
+                            padding="0.5rem"
+                            borderRadius={borderRadius}>
+                            <HandCoins size="1rem" />
+                            <Typography fontSize="0.875rem" fontWeight={500}>&ensp;{item?.season?.currency}&nbsp;{item?.totals?.netAmount}</Typography>
+                          </Box>
+                        </Grid>
+                        <Grid item xs={12} lg={6}>
+                          <Box
+                            display="flex"
+                            alignItems="center"
+                            bgcolor="background.paper"
+                            padding="0.5rem"
+                            borderRadius={borderRadius}>
+                            <Plant size="1rem" />
+                            <Typography fontSize="0.875rem" fontWeight={500}>&ensp;{item?.totals?.collectedAmount}&nbsp;{item?.season?.unit}</Typography>
+                          </Box>
+                        </Grid>
+                      </Grid>
                     </Box>
                   </Grid>
-                  <Grid item xs={12} lg={6}>
-                    <Box
-                      display="flex"
-                      alignItems="center"
-                      bgcolor="white"
-                      padding="0.5rem"
-                      borderRadius={borderRadius}>
-                      <Plant size="1rem" />
-                      <Typography fontSize="0.875rem" fontWeight={500}>&ensp;928kg</Typography>
-                    </Box>
-                  </Grid>
-                </Grid>
-              </Box>
-            </Grid>
-            <Grid item xs={12} md={6} lg={4}>
-              <Box px="1rem" py="1.5rem" bgcolor={bgHighlight} borderRadius={borderRadius}>
-                <Typography fontSize="0.875rem" fontWeight={500}>
-                  Feb 01 - Feb 15
-                </Typography>
-                <Grid container mt="1rem" rowSpacing="1rem" columnSpacing="1rem">
-                  <Grid item xs={12} lg={6}>
-                    <Box
-                      display="flex"
-                      alignItems="center"
-                      bgcolor="white"
-                      padding="0.5rem"
-                      borderRadius={borderRadius}>
-                      <HandCoins size="1rem" />
-                      <Typography fontSize="0.875rem" fontWeight={500}>&ensp;$8,384</Typography>
-                    </Box>
-                  </Grid>
-                  <Grid item xs={12} lg={6}>
-                    <Box
-                      display="flex"
-                      alignItems="center"
-                      bgcolor="white"
-                      padding="0.5rem"
-                      borderRadius={borderRadius}>
-                      <Plant size="1rem" />
-                      <Typography fontSize="0.875rem" fontWeight={500}>&ensp;928kg</Typography>
-                    </Box>
-                  </Grid>
-                </Grid>
-              </Box>
-            </Grid>
+                )
+              })
+            }
           </Grid>
         </Box>
-      </Grid> */}
+      </Grid>
 
     </Grid>
   )
