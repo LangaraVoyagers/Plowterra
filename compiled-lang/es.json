@@ -1166,5 +1166,11 @@
       "type": 0,
       "value": "Fecha"
     }
+  ],
+  "harvest-log.create.form.picker.label": [
+    {
+      "type": 0,
+      "value": "Recolector"
+    }
   ]
 }
