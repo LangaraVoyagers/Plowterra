@@ -602,7 +602,10 @@ const SeasonDrawer = ({ dismiss, seasonId, ...props }: SeasonDrawerProps) => {
                   renderInput={(params) => (
                     <div>
                       <InputLabel htmlFor="season-currency" required>
-                        Currency
+                        {intl.formatMessage({
+                          id: "seasons.create.form.currency.label",
+                          defaultMessage: "Currency",
+                        })}
                       </InputLabel>
                       <TextField
                         {...params}

@@ -1208,5 +1208,11 @@
       "type": 0,
       "value": "Unidad"
     }
+  ],
+  "seasons.create.form.currency.label": [
+    {
+      "type": 0,
+      "value": "Moneda"
+    }
   ]
 }
