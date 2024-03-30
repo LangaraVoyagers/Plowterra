@@ -1376,5 +1376,11 @@
       "type": 0,
       "value": "Últimos 30 días"
     }
+  ],
+  "dashboard.7_days": [
+    {
+      "type": 0,
+      "value": "Últimos 7 días"
+    }
   ]
 }

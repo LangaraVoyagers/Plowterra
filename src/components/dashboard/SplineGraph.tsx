@@ -38,7 +38,9 @@ const SplineGraph = (props: IApexChartProps) => {
             <Button>
               {intl.formatMessage({ id: 'dashboard.30_days', defaultMessage: '30 days'})}
               </Button>
-            <Button>7 days</Button>
+            <Button>
+              {intl.formatMessage({ id: 'dashboard.7_days', defaultMessage: '7 days'})}
+              </Button>
           </ButtonGroup>
         </Grid>
       </Grid>
