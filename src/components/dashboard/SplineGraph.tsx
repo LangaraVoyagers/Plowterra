@@ -8,8 +8,11 @@ import {
 
 import Chart from 'react-apexcharts';
 import { IApexChartProps } from "./DashboardLayout";
+import { useIntl } from 'react-intl';
+
 
 const SplineGraph = (props: IApexChartProps) => {
+  const intl = useIntl();
   return (
     <Box>
       <Grid container justifyContent="space-between" rowSpacing="1rem">
@@ -24,7 +27,8 @@ const SplineGraph = (props: IApexChartProps) => {
             fontSize="0.875"
             fontWeight={500}
             color="#57534E">
-            Keep track of harvest collection over time
+            {/* Keep track of harvest collection over time */}
+            {intl.formatMessage({ id: 'dashboard.harvest_collection', defaultMessage: 'Keep track of harvest collection over time'})}
           </Typography>
         </Grid>
         <Grid item>

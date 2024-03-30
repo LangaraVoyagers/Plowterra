@@ -1352,5 +1352,11 @@
       "type": 0,
       "value": "Nominas Recientes"
     }
+  ],
+  "dashboard.harvest_collection": [
+    {
+      "type": 0,
+      "value": "Mantén un registro de la recolección de cosecha a lo largo del tiempo"
+    }
   ]
 }
