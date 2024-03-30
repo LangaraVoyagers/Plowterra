@@ -48,6 +48,7 @@ import { getSeasons } from "api/seasons";
 import { useAlert } from "context/AlertProvider";
 import useQueryCache from "hooks/useQueryCache";
 import { useState } from "react";
+import { useUser } from "context/UserProvider";
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
