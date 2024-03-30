@@ -201,7 +201,7 @@ const CardLayout = (props: ICardLayout) => {
   return (
     <Box {...props?.boxProps}>
       <Label size="sm">{ props.label }</Label>
-      <Display mt="1.3rem" size="xs" fontWeight="SemiBold">
+      <Display lineHeight="2" size="xs" fontWeight="SemiBold">
         { props.content }
       </Display>
     </Box>
