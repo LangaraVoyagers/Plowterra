@@ -98,7 +98,12 @@ const PayrollConfirmationModal = ({
             fullWidth
             autoFocus
           >
-            {isLoading ? "Loading..." : "Confirm"}
+            {isLoading ? "Loading..." : 
+            intl.formatMessage({
+              id: "payroll.confirmation.modal.confirm",
+              defaultMessage: "Confirm",
+            })
+            }
           </Button>
         </Box>
       </DialogActions>
