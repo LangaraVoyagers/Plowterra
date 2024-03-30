@@ -20,6 +20,7 @@ import { ApexOptions } from "apexcharts";
 import { FormattedMessage } from "react-intl";
 import SplineGraph from "./SplineGraph";
 import { useUser } from "context/UserProvider";
+import { useIntl } from 'react-intl';
 
 const gridGap = "1.5rem";
 
@@ -54,7 +55,8 @@ const DashBoardLayout = (props: any) => {
   const { user } = useUser();
   const USER_GREETING = getGreeting();
   const FORMATTED_DATE = getDate();
-  
+  const intl = useIntl();
+
   return (
     <Box padding={{md: "2rem"}}>
       <Grid container mb="2rem" rowSpacing={gridGap} justifyContent="space-between" alignItems="flex-end">
@@ -80,7 +82,7 @@ const DashBoardLayout = (props: any) => {
         </Grid>
         <Grid item>
           <Button variant="contained" endIcon={<FilePlus />}>
-            Add Harvest Entry
+            {intl.formatMessage({ id: "dashboard.addHarvestEntry", defaultMessage: "Add Harvest Entry",  })}
           </Button>
         </Grid>
       </Grid>

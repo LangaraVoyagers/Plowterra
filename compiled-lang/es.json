@@ -1286,5 +1286,11 @@
       "type": 0,
       "value": "Confirmar"
     }
+  ],
+  "dashboard.addHarvestEntry": [
+    {
+      "type": 0,
+      "value": "Agregar Registro de Cosecha"
+    }
   ]
 }
