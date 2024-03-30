@@ -1196,5 +1196,11 @@
       "type": 0,
       "value": "Notas"
     }
+  ],
+  "button.save": [
+    {
+      "type": 0,
+      "value": "Guardar"
+    }
   ]
 }
