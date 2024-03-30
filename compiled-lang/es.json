@@ -1154,5 +1154,17 @@
       "type": 0,
       "value": "Nuevo Registro de Cosecha"
     }
+  ],
+  "harvest-log.create.form.season.label": [
+    {
+      "type": 0,
+      "value": "Temporada"
+    }
+  ],
+  "harvest-log.create.form.date.label": [
+    {
+      "type": 0,
+      "value": "Fecha"
+    }
   ]
 }
