@@ -23,7 +23,7 @@ type SeasonFilterDataGridProps = {
   sx?: any;
   defaultFirst?: boolean;
   latestFirst?:boolean;
-  defaultSeasonId?: string;
+  defaultSeasonId?: string | null;
 };
 
 const SeasonFilterDataGrid = (props: SeasonFilterDataGridProps) => {

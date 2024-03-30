@@ -171,7 +171,7 @@ const DashBoardLayout = () => {
       <PayrollInfo 
         theme={theme}
         navigate={navigate}
-        setSeasonSelected={setSeasonSelected}
+        seasonSelected={seasonSelected}
         isCardInfoLoading={isCardInfoLoading}
         cardInfo={cardInfo?.payrollInfo} />
     </Box>
@@ -314,7 +314,7 @@ const MidSectionInfo = (props: any) => {
 }
 
 const PayrollInfo = (props: any) => {
-  const {navigate, isCardInfoLoading, theme, cardInfo, setSeasonSelected} = props;
+  const {navigate, isCardInfoLoading, theme, cardInfo, seasonSelected} = props;
   const {payrollToToday, lastPayrolls} = cardInfo || {};
   
   return (
@@ -365,7 +365,7 @@ const PayrollInfo = (props: any) => {
             </Box>
           </Box>
           <Button variant="text"
-            onClick={() => navigate(`/payroll/preview?seasonId=${setSeasonSelected?._id}`)}
+            onClick={() => navigate(`/payroll/preview?seasonId=${seasonSelected?._id}`)}
             sx={{
               justifyContent: "left",
               marginTop: "1.2rem", 
