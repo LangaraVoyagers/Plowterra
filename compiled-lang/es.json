@@ -1190,5 +1190,11 @@
       "type": 0,
       "value": "Deducción"
     }
+  ],
+  "harvest-log.create.form.note.label": [
+    {
+      "type": 0,
+      "value": "Notas"
+    }
   ]
 }
