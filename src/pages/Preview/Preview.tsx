@@ -460,7 +460,11 @@ const Preview: React.FC = () => {
             </Card>
             <Card>
               <Label size="sm" fontWeight="SemiBold">
-                Total Deductions
+                {intl.formatMessage({
+              id: "payroll.preview.total_deductions",
+              defaultMessage: "Total Deductions",
+            })
+                }
               </Label>
               <Display size="xs" fontWeight="SemiBold">
                 {payrollData?.totals.deductions}

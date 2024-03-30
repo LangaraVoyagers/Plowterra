@@ -1250,5 +1250,11 @@
       "type": 0,
       "value": "Cantidad de Cosecha Total"
     }
+  ],
+  "payroll.preview.total_deductions": [
+    {
+      "type": 0,
+      "value": "Deducciones Totales"
+    }
   ]
 }
