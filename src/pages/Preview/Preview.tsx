@@ -515,10 +515,11 @@ const Preview: React.FC = () => {
         height="100%"
       >
         <Display size="xs" fontWeight="SemiBold">
-          <FormattedMessage
+          {/* <FormattedMessage
             id="payroll.preview.details.title"
             defaultMessage="Payroll Details"
-          />
+          /> */}
+          {intl.formatMessage({ id: "payroll.preview.details.title", defaultMessage: "Payroll Details" })}
         </Display>
         <DataTable
           initialState={{

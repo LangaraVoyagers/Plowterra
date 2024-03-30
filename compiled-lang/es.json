@@ -1262,5 +1262,11 @@
       "type": 0,
       "value": "Ejecutar Nomina"
     }
+  ],
+  "payroll.preview.details.title": [
+    {
+      "type": 0,
+      "value": "Detalles de la Nomina"
+    }
   ]
 }
