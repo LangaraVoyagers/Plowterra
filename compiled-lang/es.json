@@ -1328,5 +1328,11 @@
       "type": 0,
       "value": "NOMINA PENDIENTE"
     }
+  ],
+  "dashboard.starting": [
+    {
+      "type": 0,
+      "value": "Iniciando"
+    }
   ]
 }

@@ -265,7 +265,9 @@ const PayrollInfo = () => {
             <Typography
               color="#1C1917"
               fontSize="0.875rem"
-              fontWeight={500}>Starting: Feb 15</Typography>
+              fontWeight={500}>
+                {intl.formatMessage({ id: "dashboard.starting", defaultMessage: "Starting" })}: Feb 15
+                </Typography>
             <Box 
               display="inline-flex"
               padding="1px 9px"
