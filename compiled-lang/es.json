@@ -836,7 +836,7 @@
   "seasons.create.form.product.label": [
     {
       "type": 0,
-      "value": "Producto*"
+      "value": "Producto"
     }
   ],
   "seasons.create.form.start_date.label": [
@@ -1201,6 +1201,12 @@
     {
       "type": 0,
       "value": "Guardar"
+    }
+  ],
+  "seasons.create.form.unit.label": [
+    {
+      "type": 0,
+      "value": "Unidad"
     }
   ]
 }
