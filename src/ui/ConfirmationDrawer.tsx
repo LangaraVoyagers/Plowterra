@@ -35,7 +35,7 @@ const ConfirmationDrawer: React.FC<ConfirmationDrawerProps> = ({
       anchor="right"
       PaperProps={{
         sx: {
-          width: desktop ? 600 : "100%",
+          width: desktop ? 500 : "100%",
         },
       }}
       {...rest}

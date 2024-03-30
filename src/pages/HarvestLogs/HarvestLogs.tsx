@@ -14,13 +14,13 @@ import {
   IHarvestLogResponse,
   ISeasonResponse,
 } from "project-2-types/dist/interface";
+import dayjs, { Dayjs } from "dayjs";
 
 import BasicHome from "layouts/BasicHome";
 import { BodyText } from "ui/Typography";
 import CreateHarvestLog from "components/harvestLogs/CreateHarvestLog";
 import DataTable from "ui/DataTable";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker"
-import { Dayjs } from "dayjs";
 import { FileText } from "@phosphor-icons/react";
 import FiltersDrawer from "components/harvestLogs/FiltersDrawer";
 import SeasonFilterDataGrid from "components/SeasonFilterDataGrid";
@@ -155,7 +155,7 @@ const columns = (currency: string): GridColDef[] => [
 ];
 
 const HarvestLogs = () => {
-  const { user } = useUser();
+  const { user, defaultSeason } = useUser();
   const intl = useIntl();
   const { showAlert } = useAlert();
 
@@ -167,8 +167,10 @@ const HarvestLogs = () => {
 
   const pickerId = search.get("pickerId") ?? null;
 
-  const [startDate, setStartDate] = useState<Dayjs | null>(null);
-  const [endDate, setEndDate] = useState<Dayjs | null>(null);
+  const [startDate, setStartDate] = useState<Dayjs | null>(
+    dayjs().startOf("week")
+  );
+  const [endDate, setEndDate] = useState<Dayjs | null>(dayjs().endOf("week"));
   const [searchTable, setSearchTable] = useState<string>();
 
   const [harvestLogs, setHarvestLogs] = useState<Array<IHarvestLogResponse>>(
@@ -192,7 +194,7 @@ const HarvestLogs = () => {
         pickerId,
         startDate: startDate ? startDate?.toDate().getTime() : undefined,
         endDate: endDate ? endDate?.toDate().getTime() : undefined,
-        seasonId: selectedSeason?._id,
+        seasonId: selectedSeason?._id || defaultSeason,
       }),
     onSuccess: (results) => {
       setHarvestLogs(results);

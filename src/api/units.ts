@@ -28,3 +28,19 @@ export const getUnitsById = async (id?: string) => {
     throw error
   }
 }
+
+export const createUnit = async (name: string) => {
+  try {
+    const {
+      data: { data },
+    } = await axios.post(endpoints.units, { name })
+
+    if (typeof data === "object") {
+      return data
+    }
+    return null
+  } catch (error) {
+    console.log({ error })
+    throw error
+  }
+}

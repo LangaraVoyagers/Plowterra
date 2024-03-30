@@ -8,16 +8,9 @@ import {
   DrawerProps,
   FormControl,
   FormHelperText,
-  InputLabel,
   MenuItem,
   Select,
   Stack,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
   TextField,
   useMediaQuery,
   useTheme,
@@ -31,7 +24,7 @@ import {
   getSeasonById,
   upsertSeason,
 } from "api/seasons";
-import { getUnits } from "api/units";
+import { createUnit, getUnits } from "api/units";
 import { useAlert } from "context/AlertProvider";
 import { useUser } from "context/UserProvider";
 import dayjs, { Dayjs } from "dayjs";
@@ -42,12 +35,15 @@ import { useState } from "react";
 import { Controller, FormProvider, useForm } from "react-hook-form";
 import { useIntl } from "react-intl";
 import { useMutation, useQuery } from "react-query";
-import { BodyText, Display, Label } from "ui/Typography";
+import { BodyText, Display } from "ui/Typography";
 import SeasonDeductions from "./SeasonDeductions";
 import ConfirmationDrawer from "ui/ConfirmationDrawer";
 import SeasonImage from "../../assets/images/SeasonSuccess.svg";
 import SelectFreeSolo from "./SelectFreeSolo";
 import DrawerContainer from "ui/DrawerContainer";
+import InputLabel from "ui/InputLabel";
+import Detail from "ui/Detail";
+import Tag from "ui/Tag";
 
 const payrollTimeframeList = (
   Object.keys(PayrollTimeframeEnum) as Array<keyof typeof PayrollTimeframeEnum>
@@ -121,7 +117,8 @@ const SeasonDrawer = ({ dismiss, seasonId, ...props }: SeasonDrawerProps) => {
     createCache: createProductCache,
   } = useQueryCache("products");
 
-  const { GET_DETAIL_QUERY_KEY: GET_UNITS_KEY } = useQueryCache("units");
+  const { GET_DETAIL_QUERY_KEY: GET_UNITS_KEY, createCache: createUnitCache } =
+    useQueryCache("units");
 
   const { GET_DETAIL_QUERY_KEY: GET_CURRENCY_KEY } =
     useQueryCache("currencies");
@@ -199,7 +196,7 @@ const SeasonDrawer = ({ dismiss, seasonId, ...props }: SeasonDrawerProps) => {
   });
 
   // Get all units
-  const { isLoading: isLoadingUnits } = useQuery({
+  useQuery({
     queryKey: GET_UNITS_KEY,
     queryFn: getUnits,
     onSuccess: (result) => {
@@ -392,7 +389,7 @@ const SeasonDrawer = ({ dismiss, seasonId, ...props }: SeasonDrawerProps) => {
           </Box>
         }
       >
-        <Display>
+        <Display component="h1" size="md" fontWeight="SemiBold">
           {intl.formatMessage(
             {
               id: "seasons.detail.title",
@@ -408,12 +405,11 @@ const SeasonDrawer = ({ dismiss, seasonId, ...props }: SeasonDrawerProps) => {
           render={({ field }) => {
             return (
               <Box display="flex" flexDirection="column" gap={1}>
-                <InputLabel htmlFor="season-name-input">
+                <InputLabel htmlFor="season-name-input" required>
                   {intl.formatMessage({
                     id: "seasons.create.form.name.label",
                     defaultMessage: "Harvest Season Name",
                   })}
-                  *
                 </InputLabel>
                 <TextField
                   {...field}
@@ -434,12 +430,11 @@ const SeasonDrawer = ({ dismiss, seasonId, ...props }: SeasonDrawerProps) => {
           render={() => {
             return (
               <Box display="flex" flexDirection="column" gap={1}>
-                <InputLabel htmlFor="season-start-date-input">
+                <InputLabel htmlFor="season-start-date-input" required>
                   {intl.formatMessage({
                     id: "seasons.create.form.start_date.label",
                     defaultMessage: "Start Date",
                   })}
-                  *
                 </InputLabel>
                 <DatePicker
                   // label="Start Date"
@@ -459,12 +454,11 @@ const SeasonDrawer = ({ dismiss, seasonId, ...props }: SeasonDrawerProps) => {
           render={({ field }) => {
             return (
               <Box display="flex" flexDirection="column" gap={1}>
-                <InputLabel htmlFor="season-payroll-timeframe-input">
+                <InputLabel htmlFor="season-payroll-timeframe-input" required>
                   {intl.formatMessage({
                     id: "seasons.create.form.payroll_timeframe.label",
                     defaultMessage: "Payroll Timeframe",
                   })}
-                  *
                 </InputLabel>
                 <FormControl>
                   <Select
@@ -496,10 +490,10 @@ const SeasonDrawer = ({ dismiss, seasonId, ...props }: SeasonDrawerProps) => {
           render={({ field: { onChange, value: productId } }) => {
             return (
               <Box display="flex" flexDirection="column" gap={1}>
-                <InputLabel>
+                <InputLabel htmlFor="select-product-input" required>
                   {intl.formatMessage({
                     id: "seasons.create.form.product.label",
-                    defaultMessage: "Product*",
+                    defaultMessage: "Product",
                   })}
                 </InputLabel>
                 <SelectFreeSolo
@@ -538,40 +532,39 @@ const SeasonDrawer = ({ dismiss, seasonId, ...props }: SeasonDrawerProps) => {
         <Controller
           control={control}
           name="unitId"
-          render={({ field: { onChange, value } }) => {
+          render={({ field: { onChange, value: unitId } }) => {
             return (
               <Box display="flex" flexDirection="column" gap={1}>
-                <Autocomplete
-                  id="season-unit-combo-box"
+                <InputLabel htmlFor="season-unit-combo-box" required>
+                  Unit
+                </InputLabel>
+                <SelectFreeSolo
+                  sx={{ width: "100%" }}
                   options={units.map((unit) => ({
                     id: unit._id,
                     label: unit?.name,
                   }))}
-                  loading={isLoadingUnits}
-                  // TODO: use free solo with text: https://mui.com/material-ui/react-autocomplete/#creatable
-                  value={
-                    value
-                      ? {
-                          id: value,
-                          label: units.find((u) => u._id === value)?.name,
-                        }
-                      : undefined
-                  }
-                  onChange={(_, newValue) => {
-                    onChange(newValue?.id);
+                  defaultValue={{
+                    id: unitId,
+                    label: units.find((u) => u._id === unitId)?.name ?? "",
                   }}
-                  renderInput={(params) => (
-                    <div>
-                      <InputLabel htmlFor="season-unit">Unit*</InputLabel>
-                      <TextField
-                        {...params}
-                        id="season-unit"
-                        size="small"
-                        helperText={errors.unitId?.message}
-                        error={!!errors.unitId}
-                      />
-                    </div>
-                  )}
+                  onCreate={async (value) => {
+                    try {
+                      const data = await createUnit(value);
+
+                      createUnitCache(data);
+                      onChange(data?._id);
+                      return data?._id;
+                    } catch (error) {
+                      return "";
+                    }
+                  }}
+                  onChange={({ id }) => {
+                    if (id) {
+                      onChange(id);
+                    }
+                  }}
+                  id="season-unit-combo-box"
                 />
               </Box>
             );
@@ -605,8 +598,8 @@ const SeasonDrawer = ({ dismiss, seasonId, ...props }: SeasonDrawerProps) => {
                   loading={isLoadingCurrency}
                   renderInput={(params) => (
                     <div>
-                      <InputLabel htmlFor="season-currency">
-                        Currency*
+                      <InputLabel htmlFor="season-currency" required>
+                        Currency
                       </InputLabel>
                       <TextField
                         {...params}
@@ -629,12 +622,11 @@ const SeasonDrawer = ({ dismiss, seasonId, ...props }: SeasonDrawerProps) => {
           render={({ field: { ref, value, onChange } }) => {
             return (
               <Box display="flex" flexDirection="column" gap={1}>
-                <InputLabel htmlFor="season-price-input">
+                <InputLabel htmlFor="season-price-input" required>
                   {intl.formatMessage({
                     id: "seasons.create.form.price.label",
                     defaultMessage: "Price per Unit",
                   })}
-                  *
                 </InputLabel>
                 <TextField
                   ref={ref}
@@ -655,7 +647,7 @@ const SeasonDrawer = ({ dismiss, seasonId, ...props }: SeasonDrawerProps) => {
         />
 
         <Box display="flex" flexDirection="column" gap={1}>
-          <InputLabel>
+          <InputLabel htmlFor="">
             {intl.formatMessage({
               id: "seasons.create.form.deductions.label",
               defaultMessage: "Deductions",
@@ -667,17 +659,16 @@ const SeasonDrawer = ({ dismiss, seasonId, ...props }: SeasonDrawerProps) => {
         {/* TODO: add confirmation modal later, we probably will standardize the way we handle the delete after design has defined that */}
         {!!seasonId && (
           <Box display="flex" flexDirection="column" gap={2} marginTop={4}>
-            <Display size="sm" component="h2">
-              {intl.formatMessage({
-                id: "danger.zone.label",
-                defaultMessage: "Danger Zone",
-              })}
-            </Display>
             <Alert
               severity="error"
               variant="outlined"
               action={
-                <Button color="error" variant="text" onClick={onDelete}>
+                <Button
+                  color="error"
+                  variant="text"
+                  onClick={onDelete}
+                  size="small"
+                >
                   {intl.formatMessage(
                     {
                       id: "seasons.button.delete",
@@ -704,7 +695,10 @@ const SeasonDrawer = ({ dismiss, seasonId, ...props }: SeasonDrawerProps) => {
   const createSeasonDataList = React.useCallback(() => {
     return [
       [
-        "Start Date",
+        intl.formatMessage({
+          id: "season.view.detail.start_date.label",
+          defaultMessage: "Start Date",
+        }),
         intl.formatDate(season?.startDate, {
           year: "numeric",
           month: "long",
@@ -712,44 +706,130 @@ const SeasonDrawer = ({ dismiss, seasonId, ...props }: SeasonDrawerProps) => {
         }),
       ],
       [
-        "End Date",
-        intl.formatDate(season?.endDate, {
-          year: "numeric",
-          month: "long",
-          day: "2-digit",
+        intl.formatMessage({
+          id: "season.view.detail.end_date.label",
+          defaultMessage: "End Date",
         }),
+        season?.endDate
+          ? intl.formatDate(season?.endDate, {
+              year: "numeric",
+              month: "long",
+              day: "2-digit",
+            })
+          : "-",
       ],
       [
-        "Payroll Timeframe",
+        intl.formatMessage({
+          id: "season.view.detail.timeframe.label",
+          defaultMessage: "Payroll Timeframe",
+        }),
         (season?.payrollTimeframe &&
           PayrollTimeframeEnum[season?.payrollTimeframe]) ||
           "",
       ],
-      ["Product", season?.product?.name || ""],
-      ["Unit", season?.unit?.name || ""],
-      ["Price Per Unit", season?.price || ""],
+      [
+        intl.formatMessage({
+          id: "season.view.detail.product.label",
+          defaultMessage: "Product",
+        }),
+        season?.product?.name || "",
+      ],
+      [
+        intl.formatMessage({
+          id: "season.view.detail.unit.label",
+          defaultMessage: "Unit",
+        }),
+        season?.unit?.name || "",
+      ],
+      [
+        <Box key="price_per_unit" display="flex" gap={1} alignItems="center">
+          {intl.formatMessage({
+            id: "season.view.detail.price_per_unit.label",
+            defaultMessage: "Price Per Unit",
+          })}
+          <Tag>{season?.currency.name}</Tag>
+        </Box>,
+        season?.price || "",
+      ],
       // add deduction name to display
       [
-        "Deductions",
+        <Box key="deductions" display="flex" gap={1} alignItems="center">
+          {intl.formatMessage({
+            id: "season.view.detail.deductions.label",
+            defaultMessage: "Deductions",
+          })}
+          <Tag>{season?.currency.name}</Tag>
+        </Box>,
         <Stack direction="row" spacing={1} key="season-deductions">
           {season?.deductions.map(({ price }, index) => {
             return <Chip key={index} label={price} size="small" />;
           })}
         </Stack>,
       ],
-      ["Status", season?.status ? StatusEnum[season?.status] : ""],
-      ["Production Total", 0],
-      ["Gross Total", 0],
-      ["Deductions Total", 0],
-      ["Net Payment", 0],
+      [
+        intl.formatMessage({
+          id: "season.view.detail.status.label",
+          defaultMessage: "Status",
+        }),
+        season?.status ? StatusEnum[season?.status] : "",
+      ],
+      [
+        <Box key="production_total" display="flex" gap={1} alignItems="center">
+          {intl.formatMessage({
+            id: "season.view.detail.production_total.label",
+            defaultMessage: "Production Total",
+          })}
+          <Tag>{season?.currency.name}</Tag>
+        </Box>,
+        0,
+      ],
+    ];
+  }, [season]);
+  const createSubTotals = React.useCallback(() => {
+    return [
+      [
+        <Box key="gross_total" display="flex" gap={1} alignItems="center">
+          {intl.formatMessage({
+            id: "season.view.detail.gross_total.label",
+            defaultMessage: "Gross Total",
+          })}
+          <Tag>{season?.currency.name}</Tag>
+        </Box>,
+        0,
+      ],
+      [
+        <Box key="deductions_total" display="flex" gap={1} alignItems="center">
+          {intl.formatMessage({
+            id: "season.view.detail.deductions_total.label",
+            defaultMessage: "Deductions Total",
+          })}
+          <Tag>{season?.currency.name}</Tag>
+        </Box>,
+        0,
+      ],
+    ];
+  }, [season]);
+  const createTotal = React.useCallback(() => {
+    return [
+      [
+        <Box key="net_payment" display="flex" gap={1} alignItems="center">
+          {intl.formatMessage({
+            id: "season.view.detail.net_payment.label",
+            defaultMessage: "Net Payment",
+          })}
+          <Tag>{season?.currency.name}</Tag>
+        </Box>,
+        0,
+      ],
     ];
   }, [season]);
 
   const seasonDetail = (
     <DrawerContainer
+      paddingX="0"
       footer={
         <Box display="flex" justifyContent="space-between">
-          <Button onClick={onCreateSeasonClose}>
+          <Button variant="outlined" onClick={onCreateSeasonClose}>
             {intl.formatMessage({
               id: "button.back",
               defaultMessage: "Back",
@@ -781,48 +861,31 @@ const SeasonDrawer = ({ dismiss, seasonId, ...props }: SeasonDrawerProps) => {
         </Box>
       }
     >
-      <Box display="flex" flexDirection="column">
-        <Label>Season</Label>
-        <Display>{season?.name}</Display>
-      </Box>
-
-      <Box display="flex" flexDirection="column">
-        <TableContainer>
-          <Table aria-label="Harvest log detail table">
-            <TableHead>
-              <TableRow>
-                <TableCell>CATEGORY</TableCell>
-                <TableCell>INFO</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {createSeasonDataList().map((row, index) => (
-                <TableRow key={index}>
-                  <TableCell component="th" scope="row">
-                    {row[0]}
-                  </TableCell>
-                  <TableCell>{row[1]}</TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
-      </Box>
+      <Detail
+        category={intl.formatMessage({
+          id: "seasons.view.detail.season.label",
+          defaultMessage: "Season",
+        })}
+        title={season?.name}
+        data={createSeasonDataList()}
+        subfooter={createSubTotals()}
+        footer={createTotal()}
+      />
 
       {/* TODO: add confirmation modal later, we probably will standardize the way we handle the delete after design has defined that */}
       {!!seasonId && season?.status.toUpperCase() !== "CLOSED" && (
-        <Box display="flex" flexDirection="column" gap={2}>
-          <Display size="sm" component="h2">
-            {intl.formatMessage(
-              {
-                id: "close.season.zone.label",
-                defaultMessage:
-                  "{isClosing, plural, one {Loading...} other {Close season} }",
-              },
-              { isClosing: Number(isClosing) }
-            )}
-          </Display>
-
+        <Box
+          display="flex"
+          flexDirection="column"
+          gap="1.25rem"
+          paddingX="1.5rem"
+        >
+          <BodyText size="md" component="h2" fontWeight="SemiBold">
+            {intl.formatMessage({
+              id: "seasons.view.detail.close.season.label",
+              defaultMessage: "Close Season",
+            })}
+          </BodyText>
           <Box
             display="flex"
             gap="1rem"
@@ -845,10 +908,14 @@ const SeasonDrawer = ({ dismiss, seasonId, ...props }: SeasonDrawerProps) => {
               size="small"
               sx={{ flexShrink: 0 }}
             >
-              {intl.formatMessage({
-                id: "season.button.close",
-                defaultMessage: "Close Season",
-              })}
+              {intl.formatMessage(
+                {
+                  id: "season.button.close",
+                  defaultMessage:
+                    "{isClosing, plural, one {Loading...} other {Close season} }",
+                },
+                { isClosing: Number(isClosing) }
+              )}
             </Button>
           </Box>
         </Box>
@@ -862,7 +929,7 @@ const SeasonDrawer = ({ dismiss, seasonId, ...props }: SeasonDrawerProps) => {
         anchor="right"
         PaperProps={{
           sx: {
-            width: desktop ? 600 : "100%",
+            width: desktop ? 500 : "100%",
           },
         }}
         {...props}

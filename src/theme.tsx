@@ -385,7 +385,7 @@ const themeOptions = (mode: PaletteMode): ThemeOptions => {
           root: {
             fontSize: "1rem",
             borderRadius: "0.5rem",
-            textTransform: "capitalize",
+            textTransform: "initial",
             fontWeight: 500,
             minWidth: "10rem",
             height: "fit-content",

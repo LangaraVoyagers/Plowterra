@@ -39,7 +39,7 @@ const DataTable = <T extends GridValidRowModel>({
               ...props.initialState?.pagination,
               paginationModel: {
                 ...props.initialState?.pagination?.paginationModel,
-                pageSize: !desktop ? 20 : undefined,
+                pageSize: 20,
               },
             },
           }}
@@ -47,7 +47,7 @@ const DataTable = <T extends GridValidRowModel>({
           slots={{
             pagination: !desktop ? Pagination : undefined,
           }}
-          autoPageSize={!!desktop}
+          // autoPageSize={!!desktop}
         />
       </StyledContainer>
     </>
@@ -108,6 +108,7 @@ const Pagination = () => {
 
 const StyledContainer = styled(Box)`
   width: 100%;
+  flex: 1;
 
   .MuiDataGrid-root {
     border-radius: 0.75rem 0.75rem 0 0;
