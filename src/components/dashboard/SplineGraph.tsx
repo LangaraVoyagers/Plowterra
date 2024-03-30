@@ -4,13 +4,13 @@ import {
   ButtonGroup,
   Grid,
   LinearProgress,
-  Typography,
   useTheme,
 } from "@mui/material"
+import { FormattedMessage, useIntl } from "react-intl";
 
 import { ApexOptions } from "apexcharts";
 import Chart from 'react-apexcharts';
-import { useIntl } from "react-intl";
+import { Display } from "ui/Typography";
 
 const SplineGraph = (props: any) => {
   const theme = useTheme();
@@ -81,18 +81,20 @@ const SplineGraph = (props: any) => {
     <Box>
       <Grid container justifyContent="space-between" padding="1rem" rowGap="1rem">
         <Grid item>
-          <Typography
+          <Display
+            lineHeight="1.6"
             fontSize="1.125rem"
-            fontWeight={600}
+            fontWeight="SemiBold"
             variant="h2">
-            Harvest Collection
-          </Typography>
-          <Typography
-            fontSize="0.875"
-            fontWeight={500}
-            color={theme.palette.grey[600]}>
-            Keep track of harvest collection over time
-          </Typography>
+            <FormattedMessage defaultMessage="Harvest Collection" id="dashboard.graph.title" />
+          </Display>
+          <Display
+            lineHeight="1.5"
+            fontSize="0.875rem"
+            fontWeight="Medium"
+            color="grey-600">
+            <FormattedMessage defaultMessage="Keep track of harvest collection over time" id="dashboard.graph.label" />
+          </Display>
         </Grid>
         <Grid item>
           <ButtonGroup color="secondary" variant="outlined" aria-label="Graph Filter Options">

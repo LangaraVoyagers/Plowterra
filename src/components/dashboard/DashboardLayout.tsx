@@ -12,9 +12,9 @@ import {
   Divider,
   Grid,
   LinearProgress,
-  Typography,
   useTheme,
 } from "@mui/material";
+import { Display, Label } from "ui/Typography";
 import { FormattedDate, FormattedMessage } from "react-intl";
 import { Fragment, ReactNode, useEffect, useState } from "react";
 import { getDate, getEpochForDeltaDays, getGreeting } from "shared/date-helpers";
@@ -122,23 +122,25 @@ const DashBoardLayout = () => {
     <Box padding={{md: "2rem"}}>
       <Grid container mb="2rem" rowSpacing={gridGap} justifyContent="space-between" alignItems="flex-end">
         <Grid item>
-          <Typography 
-            fontSize="2rem" 
-            fontWeight={700}
+          <Display
+            fontSize="md" 
+            fontWeight="Bold"
             variant="h1">
             { USER_GREETING }, { user.name }
-          </Typography>
-          <Box>
+          </Display>
+          <Box mt="1rem" fontSize="1rem">
             <FormattedMessage id="dashboard.greeting" defaultMessage="Today is" />
             &ensp;
-            <Typography
+            <Display
               px="5px"
+              fontSize="1rem"
+              lineHeight="1.4"
               bgcolor="background.paper"
               display="inline-block" 
               border="1px solid #D7D3D0"
               borderRadius="4px">
               { FORMATTED_DATE }
-            </Typography>
+            </Display>
           </Box>
         </Grid>
         <Grid item>
@@ -198,16 +200,10 @@ export interface IApexChartProps {
 const CardLayout = (props: ICardLayout) => {
   return (
     <Box {...props?.boxProps}>
-      <Typography
-        color={props?.labelColor || "black"}
-        fontSize="1.14rem"
-        fontWeight={600}>{ props.label }</Typography>
-      <Typography 
-        fontWeight={600} 
-        fontSize="1.5rem" 
-        mt="1.3rem">
+      <Label size="sm">{ props.label }</Label>
+      <Display mt="1.3rem" size="xs" fontWeight="SemiBold">
         { props.content }
-      </Typography>
+      </Display>
     </Box>
   )
 }
@@ -294,12 +290,12 @@ const MidSectionInfo = (props: any) => {
                 content={
                   <Fragment>
                     <span>{ item?.content }</span>
-                    <Typography mt="1rem" color={theme.palette.grey[500]} display="flex" alignItems="center">
-                      <Box color={theme.palette.primary.dark} fontSize="0.875rem" fontWeight={600}>
+                    <Label mt="1rem" color="grey-500" size="sm" textTransform="none" display="flex" alignItems="center">
+                      <Label color="primary-900" fontSize="0.875rem" fontWeight="SemiBold">
                         <ArrowUp /> { item?.perIncrease }
-                      </Box>
+                      </Label>
                       &nbsp; <FormattedMessage defaultMessage="average" id="dashboard.labels.average" />
-                    </Typography>
+                    </Label>
                   </Fragment>
                 } 
                 labelColor={theme.palette.grey[500]}
@@ -321,28 +317,29 @@ const PayrollInfo = (props: any) => {
     <Grid container mt="1.125rem" spacing={gridGap}>
       <Grid item xs={12} lg={3}>
         <Box {...cardProps}>
-          <Typography
-            color={theme.palette.grey[500]}
-            fontSize="1.14rem"
-            fontWeight={600}>{ payrollToToday?.label }</Typography>
+          <Label fontSize="1.14rem">{ payrollToToday?.label }</Label>
           <Box
             p="0.5rem"
             mt="1.3rem"
             bgcolor={theme.palette.grey[100]}
             padding="0.5rem"
             borderRadius={borderRadius}>
-            <Typography
-              m="0"
-              fontWeight={600} 
+            <Display
+              lineHeight="1.8"
+              fontWeight="SemiBold" 
               fontSize="1.5rem">
               { payrollToToday?.content }
-            </Typography>
+            </Display>
           </Box>
           <Box display="flex" mt="1.0625rem" alignItems="center" justifyContent="space-between">
-            <Typography
-              color={theme.palette.grey[900]}
+            <Display
               fontSize="0.875rem"
-              fontWeight={500}>{ payrollToToday?.startDate }</Typography>
+              color="grey-900"
+              size="sm"
+              fontWeight="Medium">
+                <FormattedMessage defaultMessage="Starting: " id="dashboard.labels.starting" />
+                  { payrollToToday?.startDate }
+            </Display>
             <Box 
               display="inline-flex"
               padding="1px 9px"
@@ -370,23 +367,24 @@ const PayrollInfo = (props: any) => {
               justifyContent: "left",
               marginTop: "1.2rem", 
               padding: "0 !important"}}>
-            <Typography
-              m="0"
-              color={theme.palette.primary.dark}
+            <Display
+              lineHeight="1.3"
+              color="primary-900"
               display="flex"
               alignItems="center"
-              fontWeight={500}>
-              Run Payroll&ensp;<ArrowRight />
-            </Typography>
+              fontSize="1rem"
+              fontWeight="SemiBold">
+              <FormattedMessage defaultMessage="Run Payroll" id="dashboard.button.runPayroll" />&ensp;<ArrowRight />
+            </Display>
           </Button>
         </Box>
       </Grid>
 
       <Grid item xs={12} lg={9}>
         <Box {...cardProps}>
-          <Typography fontSize="1rem" mb="1rem" fontWeight={500}>
+          <Display fontSize="1rem" mb="1rem" lineHeight="1" fontWeight="Medium">
             <FormattedMessage defaultMessage="Recent Payrolls" id="dashboard.labels.recentPayrolls" />
-          </Typography>
+          </Display>
           <Grid container rowSpacing={gridGap} columnSpacing={gridGap}>
             {
               isCardInfoLoading ? (
@@ -397,7 +395,7 @@ const PayrollInfo = (props: any) => {
                 return (
                   <Grid item xs={12} md={6} lg={4} key={idx}>
                     <Box px="1rem" py="1.5rem" bgcolor={theme.palette.grey[100]} borderRadius={borderRadius}>
-                      <Typography fontSize="0.875rem" fontWeight={500}>
+                      <Display fontSize="0.875rem" fontWeight="Medium" lineHeight="1">
                         <FormattedDate 
                           value={new Date(item?.startDate)} 
                           month="short"
@@ -407,7 +405,7 @@ const PayrollInfo = (props: any) => {
                           value={new Date(item?.endDate)} 
                           month="short"
                           day="2-digit" />
-                      </Typography>
+                      </Display>
                       <Grid container mt="1rem" rowSpacing="1rem" columnSpacing="1rem">
                         <Grid item xs={12} lg={6}>
                           <Box
@@ -417,7 +415,7 @@ const PayrollInfo = (props: any) => {
                             padding="0.5rem"
                             borderRadius={borderRadius}>
                             <HandCoins size="1rem" />
-                            <Typography fontSize="0.875rem" fontWeight={500}>&ensp;{item?.season?.currency}&nbsp;{item?.totals?.netAmount}</Typography>
+                            <Display fontSize="0.875rem" fontWeight="Medium" lineHeight="1">&ensp;{item?.season?.currency}&nbsp;{item?.totals?.netAmount}</Display>
                           </Box>
                         </Grid>
                         <Grid item xs={12} lg={6}>
@@ -428,7 +426,7 @@ const PayrollInfo = (props: any) => {
                             padding="0.5rem"
                             borderRadius={borderRadius}>
                             <Plant size="1rem" />
-                            <Typography fontSize="0.875rem" fontWeight={500}>&ensp;{item?.totals?.collectedAmount}&nbsp;{item?.season?.unit}</Typography>
+                            <Display fontSize="0.875rem" fontWeight="Medium" lineHeight="1">&ensp;{item?.totals?.collectedAmount}&nbsp;{item?.season?.unit}</Display>
                           </Box>
                         </Grid>
                       </Grid>
