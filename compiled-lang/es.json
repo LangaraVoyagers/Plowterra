@@ -1094,5 +1094,11 @@
       "type": 0,
       "value": "Registra y ver la cantidad de cosecha recolectada diariamente por cada recolector."
     }
+  ],
+  "harvest.log": [
+    {
+      "type": 0,
+      "value": "Registro de Cosecha"
+    }
   ]
 }
