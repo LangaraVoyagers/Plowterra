@@ -1088,5 +1088,11 @@
       "type": 0,
       "value": "Iniciar Nomina"
     }
+  ],
+  "harvest.log.subtitle": [
+    {
+      "type": 0,
+      "value": "Registra y ver la cantidad de cosecha recolectada diariamente por cada recolector."
+    }
   ]
 }
