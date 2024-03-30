@@ -293,7 +293,8 @@ const PayrollInfo = () => {
               display="flex"
               alignItems="center"
               fontWeight={500}>
-              Run Payroll&ensp;<ArrowRight />
+              {intl.formatMessage({ id: "dashboard.runPayroll", defaultMessage: "Run Payroll" })}
+              &ensp;<ArrowRight />
             </Typography>
           </button>
         </Box>

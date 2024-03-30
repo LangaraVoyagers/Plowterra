@@ -1340,5 +1340,11 @@
       "type": 0,
       "value": "3 días más"
     }
+  ],
+  "dashboard.runPayroll": [
+    {
+      "type": 0,
+      "value": "Ejecutar Nomina"
+    }
   ]
 }
