@@ -1,5 +1,4 @@
 import { PaletteMode, ThemeOptions } from "@mui/material";
-import { CaretRight } from "@phosphor-icons/react";
 import dark, {
   background as darkBackground,
   white as darkWhite,
@@ -9,6 +8,8 @@ import light, {
   white as lightWhite,
 } from "shared/palette/light";
 
+import { CaretRight } from "@phosphor-icons/react";
+
 const themeOptions = (mode: PaletteMode): ThemeOptions => {
   const colors = mode === "dark" ? dark : light;
   const background = mode === "dark" ? darkBackground : lightBackground;
@@ -16,7 +17,10 @@ const themeOptions = (mode: PaletteMode): ThemeOptions => {
   return {
     palette: {
       mode: mode,
-      primary: colors.primary,
+      primary: {
+        ...colors.primary,
+        light: colors.primary[100]
+      },
       secondary: {
         ...colors.secondary,
         main: colors.secondary[500],

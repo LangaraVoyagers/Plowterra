@@ -1,31 +1,36 @@
+import { BodyText, Display, Label } from "ui/Typography";
 import { Box, Button, useTheme } from "@mui/material";
-import { GridColDef } from "@mui/x-data-grid";
-import { CaretRight, HandCoins } from "@phosphor-icons/react";
-import endpoints from "api/endpoints";
-import { PayrollPayload, createPayroll, getPayrollPreview } from "api/payroll";
-import dayjs, { Dayjs } from "dayjs";
-import BasicHome from "layouts/BasicHome";
-import React, { useEffect, useState } from "react";
+import {
+  CaretRight,
+  HandCoins,
+} from "@phosphor-icons/react";
 import {
   FormattedDate,
   FormattedMessage,
   FormattedNumber,
   useIntl,
 } from "react-intl";
-import { useMutation } from "react-query";
-import { DatePicker } from "@mui/x-date-pickers";
-import { useUser } from "context/UserProvider";
 import {
   IPayrollResponse,
   ISeasonResponse,
 } from "project-2-types/dist/interface";
-import { BodyText, Display, Label } from "ui/Typography";
-import { useAlert } from "context/AlertProvider";
+import { PayrollPayload, createPayroll, getPayrollPreview } from "api/payroll";
+import React, { useEffect, useState } from "react";
+import dayjs, { Dayjs } from "dayjs";
 import { styled, useMediaQuery } from "@mui/system";
-import SeasonFilterDataGrid from "components/SeasonFilterDataGrid";
-import PayrollConfirmationModal from "components/payroll/PayrollConfirmationModal";
+
+import BasicHome from "layouts/BasicHome";
 import DataTable from "ui/DataTable";
+import { DatePicker } from "@mui/x-date-pickers";
+import { GridColDef } from "@mui/x-data-grid";
+import PayrollConfirmationModal from "components/payroll/PayrollConfirmationModal";
 import PayrollDone from "components/payroll/PayrollDone";
+import SeasonFilterDataGrid from "components/SeasonFilterDataGrid";
+import endpoints from "api/endpoints";
+import { useAlert } from "context/AlertProvider";
+import { useMutation } from "react-query";
+import { useSearchParams } from "react-router-dom";
+import { useUser } from "context/UserProvider";
 
 const columns = (currency: string, unit: string): GridColDef[] => [
   {
@@ -128,6 +133,8 @@ const columns = (currency: string, unit: string): GridColDef[] => [
 const Preview: React.FC = () => {
   const { user, defaultSeason } = useUser();
   const { showAlert } = useAlert();
+  const [searchParams] = useSearchParams();
+  const defaultSeasonId = searchParams.get("seasonId");
 
   const intl = useIntl();
 
@@ -338,6 +345,7 @@ const Preview: React.FC = () => {
                 status="ACTIVE"
                 sx={{ width: !desktop ? "100%" : undefined }}
                 defaultFirst={false}
+                defaultSeasonId={defaultSeasonId}
               />
             </div>
             <div className="filters">

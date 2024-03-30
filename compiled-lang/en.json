@@ -11,6 +11,12 @@
       "value": "Run Payroll"
     }
   ],
+  "button.back": [
+    {
+      "type": 0,
+      "value": "Back"
+    }
+  ],
   "button.cancel": [
     {
       "type": 0,
@@ -23,42 +29,52 @@
       "value": "Edit"
     }
   ],
+  "button.save": [
+    {
+      "type": 0,
+      "value": "Save"
+    }
+  ],
   "button.view_more": [
     {
       "type": 0,
       "value": "View More"
     }
   ],
-  "close.season.zone.label": [
-    {
-      "offset": 0,
-      "options": {
-        "one": {
-          "value": [
-            {
-              "type": 0,
-              "value": "Loading..."
-            }
-          ]
-        },
-        "other": {
-          "value": [
-            {
-              "type": 0,
-              "value": "Close season"
-            }
-          ]
-        }
-      },
-      "pluralType": "cardinal",
-      "type": 6,
-      "value": "isClosing"
-    }
-  ],
-  "danger.zone.label": [
+  "dashboard.card.label.day": [
     {
       "type": 0,
-      "value": "Danger Zone"
+      "value": "day"
+    }
+  ],
+  "dashboard.card.label.left": [
+    {
+      "type": 0,
+      "value": "left"
+    }
+  ],
+  "dashboard.get.graph.error": [
+    {
+      "type": 0,
+      "value": "Some error occurred, Please try again later"
+    }
+  ],
+  "dashboard.get.indicators.error": [
+    {
+      "type": 0,
+      "value": "Some error occurred, Please try again later"
+    }
+  ],
+  "dashboard.graph.xaxisLabel": [
+    {
+      "type": 0,
+      "value": "Harvest Date"
+    }
+  ],
+  "dashboard.graph.yaxisLabel": [
+    {
+      "type": 0,
+      "value": "Harvest Amount (in"
     }
   ],
   "dashboard.greeting": [
@@ -91,10 +107,232 @@
       "value": "Good Noon"
     }
   ],
+  "dashboard.labels.average": [
+    {
+      "type": 0,
+      "value": "average"
+    }
+  ],
+  "dashboard.labels.harvestDays": [
+    {
+      "type": 0,
+      "value": "HARVEST DAYS"
+    }
+  ],
+  "dashboard.labels.payrollToThisDate": [
+    {
+      "type": 0,
+      "value": "PAYROLL TO THIS DAY"
+    }
+  ],
+  "dashboard.labels.pricePerUnit": [
+    {
+      "type": 0,
+      "value": "PRICE PER UNIT"
+    }
+  ],
+  "dashboard.labels.product": [
+    {
+      "type": 0,
+      "value": "PRODUCT"
+    }
+  ],
+  "dashboard.labels.recentPayrolls": [
+    {
+      "type": 0,
+      "value": "Recent Payrolls"
+    }
+  ],
+  "dashboard.labels.seasonsTotalPayroll": [
+    {
+      "type": 0,
+      "value": "SEASON'S TOTAL PAYROLL"
+    }
+  ],
+  "dashboard.labels.startDate": [
+    {
+      "type": 0,
+      "value": "START DATE"
+    }
+  ],
+  "dashboard.labels.todaysCollection": [
+    {
+      "type": 0,
+      "value": "TODAY'S COLLECTION"
+    }
+  ],
+  "dashboard.labels.totalHarvestAmount": [
+    {
+      "type": 0,
+      "value": "TOTAL HARVEST AMOUNT"
+    }
+  ],
+  "dashboard.tooltip.yaxis": [
+    {
+      "type": 0,
+      "value": "Harvest Amount"
+    }
+  ],
   "datagrid.column.actions": [
     {
       "type": 0,
       "value": "Actions"
+    }
+  ],
+  "detail.category.label": [
+    {
+      "type": 0,
+      "value": "CATEGORY"
+    }
+  ],
+  "detail.info.label": [
+    {
+      "type": 0,
+      "value": "INFO"
+    }
+  ],
+  "harvest-log.add-correction-entry.label": [
+    {
+      "type": 0,
+      "value": "Add correction entry"
+    }
+  ],
+  "harvest-log.create.form.amount.label": [
+    {
+      "type": 0,
+      "value": "Amount"
+    }
+  ],
+  "harvest-log.create.form.date.label": [
+    {
+      "type": 0,
+      "value": "Date"
+    }
+  ],
+  "harvest-log.create.form.deduction.label": [
+    {
+      "type": 0,
+      "value": "Deduction"
+    }
+  ],
+  "harvest-log.create.form.note.label": [
+    {
+      "type": 0,
+      "value": "Notes"
+    }
+  ],
+  "harvest-log.create.form.picker.label": [
+    {
+      "type": 0,
+      "value": "Picker"
+    }
+  ],
+  "harvest-log.create.form.product.label": [
+    {
+      "type": 0,
+      "value": "Product - Unit"
+    }
+  ],
+  "harvest-log.create.form.season.label": [
+    {
+      "type": 0,
+      "value": "Harvest Season"
+    }
+  ],
+  "harvest-log.view.detail.add-correction-entry.button.label": [
+    {
+      "type": 0,
+      "value": "Add Correction Entry"
+    }
+  ],
+  "harvest-log.view.detail.amount.label": [
+    {
+      "type": 0,
+      "value": "Amount"
+    }
+  ],
+  "harvest-log.view.detail.correction-amount.label": [
+    {
+      "type": 0,
+      "value": "Amount"
+    }
+  ],
+  "harvest-log.view.detail.correction-deduction.label": [
+    {
+      "type": 0,
+      "value": "Deduction"
+    }
+  ],
+  "harvest-log.view.detail.correction-entries.label": [
+    {
+      "type": 0,
+      "value": "Correction Entries"
+    }
+  ],
+  "harvest-log.view.detail.date.label": [
+    {
+      "type": 0,
+      "value": "Date"
+    }
+  ],
+  "harvest-log.view.detail.deduction.total.label": [
+    {
+      "type": 0,
+      "value": "Deduction Total"
+    }
+  ],
+  "harvest-log.view.detail.harvest-season.label": [
+    {
+      "type": 0,
+      "value": "Harvest Season"
+    }
+  ],
+  "harvest-log.view.detail.note.label": [
+    {
+      "type": 0,
+      "value": "Notes"
+    }
+  ],
+  "harvest-log.view.detail.picker.label": [
+    {
+      "type": 0,
+      "value": "PICKER"
+    }
+  ],
+  "harvest-log.view.detail.ppu.label": [
+    {
+      "type": 0,
+      "value": "Price per Unit"
+    }
+  ],
+  "harvest-log.view.detail.product.label": [
+    {
+      "type": 0,
+      "value": "Product"
+    }
+  ],
+  "harvest-log.view.detail.save-correction-entry.button.label": [
+    {
+      "type": 0,
+      "value": "Save Correction Entry"
+    }
+  ],
+  "harvest-log.view.detail.subtotal.label": [
+    {
+      "type": 0,
+      "value": "Subtotal"
+    }
+  ],
+  "harvest-log.view.detail.total.label": [
+    {
+      "type": 0,
+      "value": "Total"
+    }
+  ],
+  "harvest.log": [
+    {
+      "type": 0,
+      "value": "Harvest Log"
     }
   ],
   "harvest.log.drawer.get.harvest.log.detail.error": [
@@ -169,10 +407,16 @@
       "value": "Start Date"
     }
   ],
-  "harvest.logs.drawer.create.form.titme": [
+  "harvest.log.subtitle": [
     {
       "type": 0,
-      "value": "Add Harvest Log"
+      "value": "Add and view picker's daily collection data here."
+    }
+  ],
+  "harvest.logs.drawer.create.form.title": [
+    {
+      "type": 0,
+      "value": "Add Harvest Entry"
     }
   ],
   "harvest.logs.get.harvest.logs.error": [
@@ -311,6 +555,18 @@
       "value": "Welcome back!"
     }
   ],
+  "paryroll.start.payroll.button": [
+    {
+      "type": 0,
+      "value": "Start payroll"
+    }
+  ],
+  "payroll.done.button": [
+    {
+      "type": 0,
+      "value": "Go back to payroll history"
+    }
+  ],
   "payroll.empty.state.subtitle": [
     {
       "type": 0,
@@ -367,6 +623,12 @@
       "value": "Pickers"
     }
   ],
+  "payroll.payroll.history.title": [
+    {
+      "type": 0,
+      "value": "Payroll History"
+    }
+  ],
   "payroll.preview.columns.deductions.header": [
     {
       "type": 0,
@@ -413,6 +675,12 @@
     {
       "type": 0,
       "value": "Picker"
+    }
+  ],
+  "payroll.preview.details.title": [
+    {
+      "type": 0,
+      "value": "Payroll Details"
     }
   ],
   "payroll.preview.empty.state.subtitle": [
@@ -631,6 +899,12 @@
       "value": "View Harvest Log"
     }
   ],
+  "pickers.detail.emergency_contact_number.label": [
+    {
+      "type": 0,
+      "value": "Emergency Contact Number"
+    }
+  ],
   "pickers.detail.emergency_contact_person.label": [
     {
       "type": 0,
@@ -743,8 +1017,28 @@
   ],
   "season.button.close": [
     {
-      "type": 0,
-      "value": "Close Season"
+      "offset": 0,
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Loading..."
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Close season"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "isClosing"
     }
   ],
   "season.close.description": [
@@ -763,6 +1057,78 @@
     {
       "type": 0,
       "value": "No seasons found"
+    }
+  ],
+  "season.view.detail.deductions.label": [
+    {
+      "type": 0,
+      "value": "Deductions"
+    }
+  ],
+  "season.view.detail.deductions_total.label": [
+    {
+      "type": 0,
+      "value": "Deductions Total"
+    }
+  ],
+  "season.view.detail.end_date.label": [
+    {
+      "type": 0,
+      "value": "End Date"
+    }
+  ],
+  "season.view.detail.gross_total.label": [
+    {
+      "type": 0,
+      "value": "Gross Total"
+    }
+  ],
+  "season.view.detail.net_payment.label": [
+    {
+      "type": 0,
+      "value": "Net Payment"
+    }
+  ],
+  "season.view.detail.price_per_unit.label": [
+    {
+      "type": 0,
+      "value": "Price Per Unit"
+    }
+  ],
+  "season.view.detail.product.label": [
+    {
+      "type": 0,
+      "value": "Product"
+    }
+  ],
+  "season.view.detail.production_total.label": [
+    {
+      "type": 0,
+      "value": "Production Total"
+    }
+  ],
+  "season.view.detail.start_date.label": [
+    {
+      "type": 0,
+      "value": "Start Date"
+    }
+  ],
+  "season.view.detail.status.label": [
+    {
+      "type": 0,
+      "value": "Status"
+    }
+  ],
+  "season.view.detail.timeframe.label": [
+    {
+      "type": 0,
+      "value": "Payroll Timeframe"
+    }
+  ],
+  "season.view.detail.unit.label": [
+    {
+      "type": 0,
+      "value": "Unit"
     }
   ],
   "seasons.button.delete": [
@@ -791,6 +1157,12 @@
       "value": "isDeleting"
     }
   ],
+  "seasons.close.season.clear.default.season": [
+    {
+      "type": 0,
+      "value": "The default season was closed, you can select a new default season on the Seasons page"
+    }
+  ],
   "seasons.close.season.response.error": [
     {
       "type": 0,
@@ -800,7 +1172,7 @@
   "seasons.close.season.response.success": [
     {
       "type": 0,
-      "value": "The season was close successfully."
+      "value": "The season was closed successfully."
     }
   ],
   "seasons.create.button.text": [
@@ -985,6 +1357,24 @@
     {
       "type": 0,
       "value": "The season was updated successfully"
+    }
+  ],
+  "seasons.view.detail.close.season.label": [
+    {
+      "type": 0,
+      "value": "Close Season"
+    }
+  ],
+  "seasons.view.detail.season.label": [
+    {
+      "type": 0,
+      "value": "Season"
+    }
+  ],
+  "select.season": [
+    {
+      "type": 0,
+      "value": "Select Season"
     }
   ],
   "sidebar.harvestSeason": [

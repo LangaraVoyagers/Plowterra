@@ -5,20 +5,38 @@
   "breadcrumb.run_payroll": {
     "defaultMessage": "Run Payroll"
   },
+  "button.back": {
+    "defaultMessage": "Back"
+  },
   "button.cancel": {
     "defaultMessage": "Cancel"
   },
   "button.edit": {
     "defaultMessage": "Edit"
   },
+  "button.save": {
+    "defaultMessage": "Save"
+  },
   "button.view_more": {
     "defaultMessage": "View More"
   },
-  "close.season.zone.label": {
-    "defaultMessage": "{isClosing, plural, one {Loading...} other {Close season} }"
+  "dashboard.card.label.day": {
+    "defaultMessage": "day"
   },
-  "danger.zone.label": {
-    "defaultMessage": "Danger Zone"
+  "dashboard.card.label.left": {
+    "defaultMessage": "left"
+  },
+  "dashboard.get.graph.error": {
+    "defaultMessage": "Some error occurred, Please try again later"
+  },
+  "dashboard.get.indicators.error": {
+    "defaultMessage": "Some error occurred, Please try again later"
+  },
+  "dashboard.graph.xaxisLabel": {
+    "defaultMessage": "Harvest Date"
+  },
+  "dashboard.graph.yaxisLabel": {
+    "defaultMessage": "Harvest Amount (in"
   },
   "dashboard.greeting": {
     "defaultMessage": "Today is"
@@ -35,8 +53,119 @@
   "dashboard.greetingNoon": {
     "defaultMessage": "Good Noon"
   },
+  "dashboard.labels.average": {
+    "defaultMessage": "average"
+  },
+  "dashboard.labels.harvestDays": {
+    "defaultMessage": "HARVEST DAYS"
+  },
+  "dashboard.labels.payrollToThisDate": {
+    "defaultMessage": "PAYROLL TO THIS DAY"
+  },
+  "dashboard.labels.pricePerUnit": {
+    "defaultMessage": "PRICE PER UNIT"
+  },
+  "dashboard.labels.product": {
+    "defaultMessage": "PRODUCT"
+  },
+  "dashboard.labels.recentPayrolls": {
+    "defaultMessage": "Recent Payrolls"
+  },
+  "dashboard.labels.seasonsTotalPayroll": {
+    "defaultMessage": "SEASON'S TOTAL PAYROLL"
+  },
+  "dashboard.labels.startDate": {
+    "defaultMessage": "START DATE"
+  },
+  "dashboard.labels.todaysCollection": {
+    "defaultMessage": "TODAY'S COLLECTION"
+  },
+  "dashboard.labels.totalHarvestAmount": {
+    "defaultMessage": "TOTAL HARVEST AMOUNT"
+  },
+  "dashboard.tooltip.yaxis": {
+    "defaultMessage": "Harvest Amount"
+  },
   "datagrid.column.actions": {
     "defaultMessage": "Actions"
+  },
+  "detail.category.label": {
+    "defaultMessage": "CATEGORY"
+  },
+  "detail.info.label": {
+    "defaultMessage": "INFO"
+  },
+  "harvest-log.add-correction-entry.label": {
+    "defaultMessage": "Add correction entry"
+  },
+  "harvest-log.create.form.amount.label": {
+    "defaultMessage": "Amount"
+  },
+  "harvest-log.create.form.date.label": {
+    "defaultMessage": "Date"
+  },
+  "harvest-log.create.form.deduction.label": {
+    "defaultMessage": "Deduction"
+  },
+  "harvest-log.create.form.note.label": {
+    "defaultMessage": "Notes"
+  },
+  "harvest-log.create.form.picker.label": {
+    "defaultMessage": "Picker"
+  },
+  "harvest-log.create.form.product.label": {
+    "defaultMessage": "Product - Unit"
+  },
+  "harvest-log.create.form.season.label": {
+    "defaultMessage": "Harvest Season"
+  },
+  "harvest-log.view.detail.add-correction-entry.button.label": {
+    "defaultMessage": "Add Correction Entry"
+  },
+  "harvest-log.view.detail.amount.label": {
+    "defaultMessage": "Amount"
+  },
+  "harvest-log.view.detail.correction-amount.label": {
+    "defaultMessage": "Amount"
+  },
+  "harvest-log.view.detail.correction-deduction.label": {
+    "defaultMessage": "Deduction"
+  },
+  "harvest-log.view.detail.correction-entries.label": {
+    "defaultMessage": "Correction Entries"
+  },
+  "harvest-log.view.detail.date.label": {
+    "defaultMessage": "Date"
+  },
+  "harvest-log.view.detail.deduction.total.label": {
+    "defaultMessage": "Deduction Total"
+  },
+  "harvest-log.view.detail.harvest-season.label": {
+    "defaultMessage": "Harvest Season"
+  },
+  "harvest-log.view.detail.note.label": {
+    "defaultMessage": "Notes"
+  },
+  "harvest-log.view.detail.picker.label": {
+    "defaultMessage": "PICKER"
+  },
+  "harvest-log.view.detail.ppu.label": {
+    "defaultMessage": "Price per Unit"
+  },
+  "harvest-log.view.detail.product.label": {
+    "defaultMessage": "Product"
+  },
+  "harvest-log.view.detail.save-correction-entry.button.label": {
+    "defaultMessage": "Save Correction Entry"
+  },
+  "harvest-log.view.detail.subtotal.label": {
+    "defaultMessage": "Subtotal"
+  },
+  "harvest-log.view.detail.total.label": {
+    "defaultMessage": "Total"
+  },
+  "harvest.log": {
+    "defaultMessage": "Harvest Log"
   },
   "harvest.log.drawer.get.harvest.log.detail.error": {
     "defaultMessage": "No harvest log found"
@@ -74,8 +203,11 @@
   "harvest.log.filters.drawer.start_date.label": {
     "defaultMessage": "Start Date"
   },
-  "harvest.logs.drawer.create.form.titme": {
-    "defaultMessage": "Add Harvest Log"
+  "harvest.log.subtitle": {
+    "defaultMessage": "Add and view picker's daily collection data here."
+  },
+  "harvest.logs.drawer.create.form.title": {
+    "defaultMessage": "Add Harvest Entry"
   },
   "harvest.logs.get.harvest.logs.error": {
     "defaultMessage": "No harvest logs found"
@@ -131,6 +263,12 @@
   "login.singin.error": {
     "defaultMessage": "Welcome back!"
   },
+  "paryroll.start.payroll.button": {
+    "defaultMessage": "Start payroll"
+  },
+  "payroll.done.button": {
+    "defaultMessage": "Go back to payroll history"
+  },
   "payroll.empty.state.subtitle": {
     "defaultMessage": "It seems you don’t have any payroll history yet."
   },
@@ -155,6 +293,9 @@
   "payroll.history.columns.pickers.header": {
     "defaultMessage": "Pickers"
   },
+  "payroll.payroll.history.title": {
+    "defaultMessage": "Payroll History"
+  },
   "payroll.preview.columns.deductions.header": {
     "defaultMessage": "Deductions {currency}"
   },
@@ -172,6 +313,9 @@
   },
   "payroll.preview.columns.picker.header": {
     "defaultMessage": "Picker"
+  },
+  "payroll.preview.details.title": {
+    "defaultMessage": "Payroll Details"
   },
   "payroll.preview.empty.state.subtitle": {
     "defaultMessage": "Make sure the filters set are correct."
@@ -257,6 +401,9 @@
   "pickers.detail.button.view_harvest_log": {
     "defaultMessage": "View Harvest Log"
   },
+  "pickers.detail.emergency_contact_number.label": {
+    "defaultMessage": "Emergency Contact Number"
+  },
   "pickers.detail.emergency_contact_person.label": {
     "defaultMessage": "Emergency Contact Person"
   },
@@ -303,7 +450,7 @@
     "defaultMessage": "Search"
   },
   "season.button.close": {
-    "defaultMessage": "Close Season"
+    "defaultMessage": "{isClosing, plural, one {Loading...} other {Close season} }"
   },
   "season.close.description": {
     "defaultMessage": "After closing this season, this cannot be updated, and you will not be able to add more harvest logs."
@@ -314,14 +461,53 @@
   "season.filter.data.grid.get.seasons.error": {
     "defaultMessage": "No seasons found"
   },
+  "season.view.detail.deductions.label": {
+    "defaultMessage": "Deductions"
+  },
+  "season.view.detail.deductions_total.label": {
+    "defaultMessage": "Deductions Total"
+  },
+  "season.view.detail.end_date.label": {
+    "defaultMessage": "End Date"
+  },
+  "season.view.detail.gross_total.label": {
+    "defaultMessage": "Gross Total"
+  },
+  "season.view.detail.net_payment.label": {
+    "defaultMessage": "Net Payment"
+  },
+  "season.view.detail.price_per_unit.label": {
+    "defaultMessage": "Price Per Unit"
+  },
+  "season.view.detail.product.label": {
+    "defaultMessage": "Product"
+  },
+  "season.view.detail.production_total.label": {
+    "defaultMessage": "Production Total"
+  },
+  "season.view.detail.start_date.label": {
+    "defaultMessage": "Start Date"
+  },
+  "season.view.detail.status.label": {
+    "defaultMessage": "Status"
+  },
+  "season.view.detail.timeframe.label": {
+    "defaultMessage": "Payroll Timeframe"
+  },
+  "season.view.detail.unit.label": {
+    "defaultMessage": "Unit"
+  },
   "seasons.button.delete": {
     "defaultMessage": "{isDeleting, plural, one {Deleting...} other {Delete} }"
+  },
+  "seasons.close.season.clear.default.season": {
+    "defaultMessage": "The default season was closed, you can select a new default season on the Seasons page"
   },
   "seasons.close.season.response.error": {
     "defaultMessage": "Oops! The season couldn't be closed."
   },
   "seasons.close.season.response.success": {
-    "defaultMessage": "The season was close successfully."
+    "defaultMessage": "The season was closed successfully."
   },
   "seasons.create.button.text": {
     "defaultMessage": "Add Season"
@@ -400,6 +586,15 @@
   },
   "seasons.update.season.response.success": {
     "defaultMessage": "The season was updated successfully"
+  },
+  "seasons.view.detail.close.season.label": {
+    "defaultMessage": "Close Season"
+  },
+  "seasons.view.detail.season.label": {
+    "defaultMessage": "Season"
+  },
+  "select.season": {
+    "defaultMessage": "Select Season"
   },
   "sidebar.harvestSeason": {
     "defaultMessage": "Harvest Season"

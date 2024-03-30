@@ -2,11 +2,12 @@ import { BodyText, Display } from "ui/Typography"
 import {
   Box,
   Breadcrumbs,
-  Link,
   styled,
   useMediaQuery,
   useTheme,
 } from "@mui/material"
+
+import {Link} from "react-router-dom";
 
 interface BasicHomeProps {
   breadcrumb: Array<{ title: React.ReactNode; href: string }>
@@ -48,10 +49,12 @@ export default function BasicHome({
               return (
                 <Link
                   key={index}
-                  underline="hover"
                   color="inherit"
-                  href={item.href}
-                >
+                  to={item.href}
+                  style={{
+                    color: theme.palette.grey[900],
+                    textDecoration: "none"
+                  }}>
                   {item.title}
                 </Link>
               );
