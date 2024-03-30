@@ -404,7 +404,10 @@ const Preview: React.FC = () => {
                   year: "numeric",
                 })} `}
               >
-                Pay Period
+                 {intl.formatMessage({
+              id: "payroll.preview.pay_period",
+              defaultMessage: "Pay Period",
+            })}
               </Label>
               <Display
                 aria-hidden

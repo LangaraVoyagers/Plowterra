@@ -1232,5 +1232,11 @@
       "type": 0,
       "value": "Hasta"
     }
+  ],
+  "payroll.preview.pay_period": [
+    {
+      "type": 0,
+      "value": "Período de Pago"
+    }
   ]
 }
