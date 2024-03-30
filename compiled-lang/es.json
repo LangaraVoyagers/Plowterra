@@ -1292,5 +1292,11 @@
       "type": 0,
       "value": "Agregar Registro de Cosecha"
     }
+  ],
+  "dashboard.product": [
+    {
+      "type": 0,
+      "value": "PRODUCTO"
+    }
   ]
 }

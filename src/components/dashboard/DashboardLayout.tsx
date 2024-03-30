@@ -122,6 +122,7 @@ const CardLayout = (props: ICardLayout) => {
 }
 
 const HarvestInfo = (props: any) => {
+  const intl = useIntl();
   return (
     <Grid {...cardProps} xs={12}>
       <Box mb="1.5rem">
@@ -142,7 +143,7 @@ const HarvestInfo = (props: any) => {
       <Grid container rowSpacing={{ xs: "2rem" }} columnSpacing={{ lg: "2rem" }}>
         <Grid item xs={12} md={6} lg={3} xl={2.25}>
           <CardLayout 
-            label="PRODUCT" 
+            label= {intl.formatMessage({ id: "dashboard.product", defaultMessage: "PRODUCT" })}
             content="Coffee" 
             boxProps={{
               borderRight: seperator
