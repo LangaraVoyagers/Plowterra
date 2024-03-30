@@ -447,7 +447,11 @@ const Preview: React.FC = () => {
             </Card>
             <Card>
               <Label size="sm" fontWeight="SemiBold">
-                Total Harvest Amount
+                {intl.formatMessage({
+              id: "payroll.preview.total_harvest_amount",
+              defaultMessage: "Total Harvest Amount",
+            })
+                }
               </Label>
               <Display size="xs" fontWeight="SemiBold">
                 {payrollData?.totals.collectedAmount}{" "}

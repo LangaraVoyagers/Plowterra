@@ -1244,5 +1244,11 @@
       "type": 0,
       "value": "Pago Neto Total"
     }
+  ],
+  "payroll.preview.total_harvest_amount": [
+    {
+      "type": 0,
+      "value": "Cantidad de Cosecha Total"
+    }
   ]
 }
