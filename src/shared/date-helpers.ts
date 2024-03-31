@@ -33,8 +33,7 @@ export const getGreeting = () => {
   return greeting;
 }
 
-
-export const getDate = (formatOprions={
+export const getDate = (epoch: number | string, formatOptions={
     year: "numeric",
     month: "long",
     day: "2-digit",
@@ -42,5 +41,12 @@ export const getDate = (formatOprions={
   } as const) => {
   const intl = useIntl();
 
-  return intl.formatDate(new Date(), formatOprions);
+  return intl.formatDate(new Date(epoch), formatOptions);
+}
+
+export const getEpochForDeltaDays = (deltaDays: number | string): string => {
+  if (deltaDays === "all") {
+    return `0000000000000`;
+  }
+  return String(new Date(new Date().setDate(new Date().getDate() - Number(deltaDays))).getTime());
 }

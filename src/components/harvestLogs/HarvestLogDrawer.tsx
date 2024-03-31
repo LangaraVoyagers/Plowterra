@@ -23,31 +23,32 @@ import {
   useMediaQuery,
   useTheme,
 } from "@mui/material";
+import { BodyText, Display } from "ui/Typography";
 import { Controller, useForm } from "react-hook-form";
-import { createHarvestLog, getHarvestLogById } from "api/harvestLogs";
-import { useMutation, useQuery } from "react-query";
-import HarvestLogSchema from "project-2-types/dist/ajv/harvest-log.ajv";
+import { FormattedMessage, useIntl } from "react-intl";
 import {
-  IPickerResponse,
   IHarvestLogResponse,
+  IPickerResponse,
   ISeasonResponse,
 } from "project-2-types/dist/interface";
+import { createHarvestLog, getHarvestLogById } from "api/harvestLogs";
+import { useMutation, useQuery } from "react-query";
+
+import { CaretDown } from "@phosphor-icons/react";
+import ConfirmationDrawer from "ui/ConfirmationDrawer";
+import Detail from "ui/Detail";
+import DrawerContainer from "ui/DrawerContainer";
+import HarvestLogSchema from "project-2-types/dist/ajv/harvest-log.ajv";
+import HarvestLogSuccess from "../../assets/images/HarvestLogSuccess.svg";
+import InputLabel from "ui/InputLabel";
+import Tag from "ui/Tag";
 import { ajvResolver } from "@hookform/resolvers/ajv";
 import { getPickers } from "api/pickers";
 import { getSeasons } from "api/seasons";
 import { useAlert } from "context/AlertProvider";
 import useQueryCache from "hooks/useQueryCache";
 import { useState } from "react";
-import { BodyText, Display } from "ui/Typography";
-import ConfirmationDrawer from "ui/ConfirmationDrawer";
-import HarvestLogSuccess from "../../assets/images/HarvestLogSuccess.svg";
-import { FormattedMessage, useIntl } from "react-intl";
 import { useUser } from "context/UserProvider";
-import { CaretDown } from "@phosphor-icons/react";
-import DrawerContainer from "ui/DrawerContainer";
-import InputLabel from "ui/InputLabel";
-import Detail from "ui/Detail";
-import Tag from "ui/Tag";
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -428,10 +429,7 @@ const HarvestLogDrawer = ({
       <Display component="h1" size="md" fontWeight="SemiBold">
         <FormattedMessage
           id="harvest.logs.drawer.create.form.title"
-          defaultMessage={intl.formatMessage({
-            id: "harvest-log.create.form.label",
-            defaultMessage: "Add Harvest Entry",
-          })}
+          defaultMessage={"Add Harvest Entry"}
         />
       </Display>
       <Controller
@@ -563,7 +561,7 @@ const HarvestLogDrawer = ({
         </InputLabel>
         <OutlinedInput
           id="harvest-log-product"
-          value={season?.product?.name ?? "-"}
+          value={`${season?.product?.name ?? ""} - ${season?.unit?.name ?? ""}`}
           size="small"
           disabled
         />
