@@ -1,5 +1,9 @@
 import { Box, useMediaQuery, useTheme } from "@mui/material";
-import { GridColDef, GridRenderCellParams } from "@mui/x-data-grid";
+import {
+  GridColDef,
+  GridRenderCellParams,
+  GridSortItem,
+} from "@mui/x-data-grid";
 import BasicHome from "layouts/BasicHome";
 import { getSeasons } from "api/seasons";
 import { useQuery } from "react-query";
@@ -32,7 +36,11 @@ const StarIcon = ({ id, checked, onChange }: StarIconProps) => {
       onClick={() => {
         onChange(id, !checked);
       }}
-      color={(theme.palette.warning as ColorPartial)[300]}
+      color={
+        checked
+          ? (theme.palette.warning as ColorPartial)[400]
+          : theme.palette.grey[500]
+      }
       weight={checked ? "fill" : "regular"}
     />
   );
@@ -43,14 +51,13 @@ const columns = (
 ): GridColDef[] => [
   {
     field: "default",
-    renderHeader: () => (
-      <FormattedMessage
-        id="seasons.table.column.default"
-        defaultMessage="Default"
-      />
-    ),
+    headerName: "",
     width: 50,
+    valueGetter: (params) => {
+      return defaultSeasonId === params.row._id;
+    },
     renderCell: (params) => {
+      console.log({ params });
       return (
         <Box
           display="flex"
@@ -60,11 +67,13 @@ const columns = (
           width="100%"
           sx={{ cursor: "pointer" }}
         >
-          <StarIcon
-            id={params.row._id}
-            checked={defaultSeasonId === params.row._id}
-            onChange={onDefaultSeasonChange}
-          />
+          {params?.row?.status === "ACTIVE" && (
+            <StarIcon
+              id={params.row._id}
+              checked={params.value}
+              onChange={onDefaultSeasonChange}
+            />
+          )}
         </Box>
       );
     },
@@ -74,7 +83,7 @@ const columns = (
     renderHeader: () => (
       <FormattedMessage id="seasons.table.column.name" defaultMessage="Name" />
     ),
-    flex: 0.5,
+    flex: 0.25,
     minWidth: 100,
   },
   {
@@ -85,7 +94,7 @@ const columns = (
         defaultMessage="Picker List"
       />
     ),
-    flex: 0.5,
+    flex: 0.25,
     minWidth: 100,
     renderCell: (params) => {
       return (
@@ -115,6 +124,7 @@ const columns = (
         defaultMessage="Status"
       />
     ),
+    flex: 0.25,
     valueGetter: (params) =>
       StatusEnum[params.row.status as keyof typeof StatusEnum],
   },
@@ -126,6 +136,7 @@ const columns = (
         defaultMessage="Product"
       />
     ),
+    flex: 0.25,
     valueGetter: (params) => params.row.product?.name,
   },
   {
@@ -156,7 +167,7 @@ const columns = (
         defaultMessage="End Date"
       />
     ),
-    flex: 0.25,
+    flex: 0.5,
     renderCell: (params: GridRenderCellParams<ISeasonResponse>) => {
       if (params.row.endDate) {
         return (
@@ -175,6 +186,7 @@ const columns = (
     renderHeader: () => (
       <FormattedMessage id="table.column.actions" defaultMessage="Actions" />
     ),
+    width: 150,
     align: "center",
     headerAlign: "center",
     sortable: false,
@@ -202,6 +214,12 @@ const Seasons = () => {
       field: "status",
       operator: "equals",
       value: "ACTIVE",
+    },
+  ]);
+  const [sortModel, setSortModel] = useState<Array<GridSortItem>>([
+    {
+      field: "default",
+      sort: "desc",
     },
   ]);
 
@@ -301,6 +319,8 @@ const Seasons = () => {
               defaultMessage: ` Let's add your first harvest season!`,
             }),
           }}
+          sortModel={sortModel}
+          onSortModelChange={setSortModel}
           initialState={{
             columns: {
               columnVisibilityModel: {
