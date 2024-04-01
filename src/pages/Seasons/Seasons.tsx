@@ -57,7 +57,6 @@ const columns = (
       return defaultSeasonId === params.row._id;
     },
     renderCell: (params) => {
-      console.log({ params });
       return (
         <Box
           display="flex"
