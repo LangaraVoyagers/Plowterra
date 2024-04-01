@@ -1486,7 +1486,7 @@
   "seasons.table.column.end_date": [
     {
       "type": 0,
-      "value": "Fecha de Fin"
+      "value": "Fecha Final"
     }
   ],
   "seasons.table.column.name": [
