@@ -234,7 +234,7 @@ const Seasons = () => {
         defaultMessage: "Create and close your harvest season here.",
       })}
       breadcrumb={[
-        { title: user.farm.name, href: "#" },
+        { title: user.farm.name, href: "/" },
         {
           title: (
             <FormattedMessage

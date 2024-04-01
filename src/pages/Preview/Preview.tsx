@@ -238,7 +238,7 @@ const Preview: React.FC = () => {
         defaultMessage: "Start Payroll",
       })}
       breadcrumb={[
-        { title: "Farm Name", href: "/" },
+        { title: user.farm.name, href: "/" },
         {
           title: (
             <FormattedMessage id="sidebar.payroll" defaultMessage="Payroll" />
