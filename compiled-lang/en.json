@@ -49,8 +49,28 @@
   ],
   "dashboard.card.label.day": [
     {
-      "type": 0,
-      "value": "day"
+      "offset": 0,
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 0,
+              "value": "day "
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "days "
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "days"
     }
   ],
   "dashboard.card.label.left": [
@@ -1475,12 +1495,6 @@
     {
       "type": 0,
       "value": "No seasons found"
-    }
-  ],
-  "seasons.table.column.default": [
-    {
-      "type": 0,
-      "value": "Default"
     }
   ],
   "seasons.table.column.end_date": [

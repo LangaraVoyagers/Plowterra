@@ -49,8 +49,28 @@
   ],
   "dashboard.card.label.day": [
     {
-      "type": 0,
-      "value": "día"
+      "offset": 0,
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 0,
+              "value": "día "
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "días "
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "days"
     }
   ],
   "dashboard.card.label.left": [
