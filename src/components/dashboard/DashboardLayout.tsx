@@ -258,15 +258,16 @@ const HarvestInfo = (props: any) => {
 
 const MidSectionInfo = (props: any) => {
   const {
-    theme, 
-    mode, 
-    series, 
-    unitName, 
-    daysDelta, 
-    setDaysDelta, 
-    isGraphLoading } = props;
-  
-  return (    
+    theme,
+    mode,
+    series,
+    unitName,
+    daysDelta,
+    setDaysDelta,
+    isGraphLoading,
+  } = props;
+
+  return (
     <Grid container pt={gridGap} columnSpacing={gridGap} alignItems="stretch">
       <Grid item xs={12} lg={8} xl={9}>
         <Box {...cardProps} pb="0">
@@ -276,71 +277,97 @@ const MidSectionInfo = (props: any) => {
             daysDelta={daysDelta}
             setDaysDelta={setDaysDelta}
             unitName={unitName}
-            series={series} />
+            series={series}
+          />
         </Box>
       </Grid>
-      <Grid item mt={{xs: gridGap, lg: 0}} xs={12} lg={4} xl={3}>
-        <Grid container direction="row" height={{lg: "100%"}} gap={gridGap}>
-          {
-            props?.cardInfo?.map((item: any, idx: number)=> {
-              return (
+      <Grid item mt={{ xs: gridGap, lg: 0 }} xs={12} lg={4} xl={3}>
+        <Grid container direction="row" height={{ lg: "100%" }} gap={gridGap}>
+          {props?.cardInfo?.map((item: any, idx: number) => {
+            return (
               <Grid key={idx} item xs={12}>
-              <CardLayout 
-                label={ item?.label }
-                content={
-                  <Fragment>
-                    <span>{ item?.content }</span>
-                    <Label mt="1rem" color="grey-500" size="sm" textTransform="none" display="flex" alignItems="center">
-                      <Label color="primary-900" fontSize="0.875rem" fontWeight="SemiBold">
-                        <ArrowUp /> { item?.perIncrease }
+                <CardLayout
+                  label={item?.label}
+                  content={
+                    <Fragment>
+                      <span>{item?.content}</span>
+                      <Label
+                        mt="1rem"
+                        color="grey-500"
+                        size="sm"
+                        textTransform="none"
+                        display="flex"
+                        alignItems="center"
+                      >
+                        <Label
+                          color="primary-900"
+                          fontSize="0.875rem"
+                          fontWeight="SemiBold"
+                        >
+                          <ArrowUp /> {item?.perIncrease}
+                        </Label>
+                        &nbsp;{" "}
+                        <FormattedMessage
+                          defaultMessage="average"
+                          id="dashboard.labels.average"
+                        />
                       </Label>
-                      &nbsp; <FormattedMessage defaultMessage="average" id="dashboard.labels.average" />
-                    </Label>
-                  </Fragment>
-                } 
-                labelColor={theme.palette.grey[500]}
-                boxProps={cardProps} />
-            </Grid>)
-            })
-          }
+                    </Fragment>
+                  }
+                  labelColor={theme.palette.grey[500]}
+                  boxProps={cardProps}
+                />
+              </Grid>
+            );
+          })}
         </Grid>
       </Grid>
     </Grid>
-  )
-}
+  );
+};
 
 const PayrollInfo = (props: any) => {
-  const {navigate, isCardInfoLoading, theme, cardInfo, seasonSelected} = props;
-  const {payrollToToday, lastPayrolls} = cardInfo || {};
-  
+  const { navigate, isCardInfoLoading, theme, cardInfo, seasonSelected } =
+    props;
+  const { payrollToToday, lastPayrolls } = cardInfo || {};
+
   return (
     <Grid container mt="1.125rem" spacing={gridGap}>
       <Grid item xs={12} lg={3}>
         <Box {...cardProps}>
-          <Label fontSize="1.14rem">{ payrollToToday?.label }</Label>
+          <Label fontSize="1.14rem">{payrollToToday?.label}</Label>
           <Box
             p="0.5rem"
             mt="1.3rem"
             bgcolor={theme.palette.grey[100]}
             padding="0.5rem"
-            borderRadius={borderRadius}>
-            <Display
-              lineHeight="1.8"
-              fontWeight="SemiBold" 
-              fontSize="1.5rem">
-              { payrollToToday?.content }
+            borderRadius={borderRadius}
+          >
+            <Display lineHeight="1.8" fontWeight="SemiBold" fontSize="1.5rem">
+              {payrollToToday?.content}
             </Display>
           </Box>
-          <Box display="flex" mt="1.0625rem" alignItems="center" justifyContent="space-between">
+          <Box
+            display="flex"
+            mt="1.0625rem"
+            alignItems="center"
+            justifyContent="space-between"
+          >
             <Display
               fontSize="0.875rem"
               color="grey-900"
               size="sm"
-              fontWeight="Medium">
-                <FormattedMessage defaultMessage="Starting: " id="dashboard.labels.starting" />
-                  { payrollToToday?.startDate }
+              fontWeight="Medium"
+            >
+              <FormattedMessage
+                defaultMessage="Starting: {startDate}"
+                id="dashboard.labels.starting"
+                values={{
+                  startDate: payrollToToday?.startDate,
+                }}
+              />
             </Display>
-            <Box 
+            <Box
               display="inline-flex"
               padding="1px 9px"
               alignItems="center"
@@ -348,33 +375,59 @@ const PayrollInfo = (props: any) => {
               border={`1px solid ${theme.palette.primary.dark}`}
               borderRadius="100px"
               width="5.437"
-              height="1.375">
+              height="1.375"
+            >
               <Box
                 color={theme.palette.primary.dark}
                 fontSize="0.75rem"
-                fontWeight={500}>
-                <Box mr="8px" display="inline-block" width="0.5rem" height="0.5rem" borderRadius="100%" bgcolor={theme.palette.primary.dark} />
-                { payrollToToday?.daysLeft }&nbsp;
-                <FormattedMessage defaultMessage={"day"} id="dashboard.card.label.day" />
-                &nbsp;{ payrollToToday?.daysLeft > 1 ? " s" : "" }&nbsp;
-                <FormattedMessage defaultMessage={"left"} id="dashboard.card.label.left" />
+                fontWeight={500}
+              >
+                <Box
+                  mr="8px"
+                  display="inline-block"
+                  width="0.5rem"
+                  height="0.5rem"
+                  borderRadius="100%"
+                  bgcolor={theme.palette.primary.dark}
+                />
+                {payrollToToday?.daysLeft}&nbsp;
+                <FormattedMessage
+                  defaultMessage={"day"}
+                  id="dashboard.card.label.day"
+                />
+                &nbsp;{payrollToToday?.daysLeft > 1 ? " s" : ""}&nbsp;
+                <FormattedMessage
+                  defaultMessage={"left"}
+                  id="dashboard.card.label.left"
+                />
               </Box>
             </Box>
           </Box>
-          <Button variant="text"
-            onClick={() => navigate(`/payroll/preview?seasonId=${seasonSelected?._id}`)}
+          <Button
+            variant="text"
+            onClick={() =>
+              navigate(`/payroll/preview?seasonId=${seasonSelected?._id}`)
+            }
             sx={{
               justifyContent: "left",
-              marginTop: "1.2rem", 
-              padding: "0 !important"}}>
+              marginTop: "1.2rem",
+              padding: "0 !important",
+            }}
+          >
             <Display
               lineHeight="1.3"
               color="primary-900"
               display="flex"
               alignItems="center"
               fontSize="1rem"
-              fontWeight="SemiBold">
-              <FormattedMessage defaultMessage="Run Payroll" id="dashboard.button.runPayroll" />&ensp;<ArrowRight />
+              fontWeight="SemiBold"
+            >
+              <FormattedMessage
+                defaultMessage="Run Payroll"
+                id="dashboard.button.runPayroll"
+              />
+              &ensp;
+              <ArrowRight />
             </Display>
           </Button>
         </Box>
@@ -383,39 +436,66 @@ const PayrollInfo = (props: any) => {
       <Grid item xs={12} lg={9}>
         <Box {...cardProps}>
           <Display fontSize="1rem" mb="1rem" lineHeight="1" fontWeight="Medium">
-            <FormattedMessage defaultMessage="Recent Payrolls" id="dashboard.labels.recentPayrolls" />
+            <FormattedMessage
+              defaultMessage="Recent Payrolls"
+              id="dashboard.labels.recentPayrolls"
+            />
           </Display>
           <Grid container rowSpacing={gridGap} columnSpacing={gridGap}>
-            {
-              isCardInfoLoading ? (
-                <Grid item xs={12}>
-                  <LinearProgress color="secondary" />
-                </Grid>
-              ) : lastPayrolls?.map((item: any, idx: number) => {
+            {isCardInfoLoading ? (
+              <Grid item xs={12}>
+                <LinearProgress color="secondary" />
+              </Grid>
+            ) : (
+              lastPayrolls?.map((item: any, idx: number) => {
                 return (
                   <Grid item xs={12} md={6} lg={4} key={idx}>
-                    <Box px="1rem" py="1.5rem" bgcolor={theme.palette.grey[100]} borderRadius={borderRadius}>
-                      <Display fontSize="0.875rem" fontWeight="Medium" lineHeight="1">
-                        <FormattedDate 
-                          value={new Date(item?.startDate)} 
+                    <Box
+                      px="1rem"
+                      py="1.5rem"
+                      bgcolor={theme.palette.grey[100]}
+                      borderRadius={borderRadius}
+                    >
+                      <Display
+                        fontSize="0.875rem"
+                        fontWeight="Medium"
+                        lineHeight="1"
+                      >
+                        <FormattedDate
+                          value={new Date(item?.startDate)}
                           month="short"
-                          day="2-digit" />
+                          day="2-digit"
+                        />
                         &ensp;-&ensp;
-                        <FormattedDate 
-                          value={new Date(item?.endDate)} 
+                        <FormattedDate
+                          value={new Date(item?.endDate)}
                           month="short"
-                          day="2-digit" />
+                          day="2-digit"
+                        />
                       </Display>
-                      <Grid container mt="1rem" rowSpacing="1rem" columnSpacing="1rem">
+                      <Grid
+                        container
+                        mt="1rem"
+                        rowSpacing="1rem"
+                        columnSpacing="1rem"
+                      >
                         <Grid item xs={12} lg={6}>
                           <Box
                             display="flex"
                             alignItems="center"
                             bgcolor="background.paper"
                             padding="0.5rem"
-                            borderRadius={borderRadius}>
+                            borderRadius={borderRadius}
+                          >
                             <HandCoins size="1rem" />
-                            <Display fontSize="0.875rem" fontWeight="Medium" lineHeight="1">&ensp;{item?.season?.currency}&nbsp;{item?.totals?.netAmount}</Display>
+                            <Display
+                              fontSize="0.875rem"
+                              fontWeight="Medium"
+                              lineHeight="1"
+                            >
+                              &ensp;{item?.season?.currency}&nbsp;
+                              {item?.totals?.netAmount}
+                            </Display>
                           </Box>
                         </Grid>
                         <Grid item xs={12} lg={6}>
@@ -424,23 +504,30 @@ const PayrollInfo = (props: any) => {
                             alignItems="center"
                             bgcolor="background.paper"
                             padding="0.5rem"
-                            borderRadius={borderRadius}>
+                            borderRadius={borderRadius}
+                          >
                             <Plant size="1rem" />
-                            <Display fontSize="0.875rem" fontWeight="Medium" lineHeight="1">&ensp;{item?.totals?.collectedAmount}&nbsp;{item?.season?.unit}</Display>
+                            <Display
+                              fontSize="0.875rem"
+                              fontWeight="Medium"
+                              lineHeight="1"
+                            >
+                              &ensp;{item?.totals?.collectedAmount}&nbsp;
+                              {item?.season?.unit}
+                            </Display>
                           </Box>
                         </Grid>
                       </Grid>
                     </Box>
                   </Grid>
-                )
+                );
               })
-            }
+            )}
           </Grid>
         </Box>
       </Grid>
-
     </Grid>
-  )
-}
+  );
+};
 
 export default DashBoardLayout;

@@ -338,7 +338,10 @@ const Preview: React.FC = () => {
           <div className="filter-container">
             <div className="date-filter">
               <BodyText size="md" sx={{ flexShrink: 0 }}>
-                Active Season
+                {intl.formatMessage({
+                  id: "preview.active.season",
+                  defaultMessage: "Active Season",
+                })}
               </BodyText>
               <SeasonFilterDataGrid
                 onChange={setSelectedSeason}
@@ -350,7 +353,12 @@ const Preview: React.FC = () => {
             </div>
             <div className="filters">
               <div className="date-filter">
-                <BodyText size="md">From</BodyText>
+                <BodyText size="md">
+                  {intl.formatMessage({
+                    id: "payroll.preview.from",
+                    defaultMessage: "From",
+                  })}
+                </BodyText>
                 <DatePicker
                   value={startDate}
                   slotProps={{
@@ -364,7 +372,12 @@ const Preview: React.FC = () => {
                 />
               </div>
               <div className="date-filter">
-                <BodyText size="md">to</BodyText>
+                <BodyText size="md">
+                  {intl.formatMessage({
+                    id: "payroll.preview.to",
+                    defaultMessage: "to",
+                  })}
+                </BodyText>
                 <DatePicker
                   value={endDate}
                   slotProps={{
@@ -399,7 +412,10 @@ const Preview: React.FC = () => {
                   year: "numeric",
                 })} `}
               >
-                Pay Period
+                {intl.formatMessage({
+                  id: "payroll.preview.pay_period",
+                  defaultMessage: "Pay Period",
+                })}
               </Label>
               <Display
                 aria-hidden
@@ -427,7 +443,10 @@ const Preview: React.FC = () => {
             </Card>
             <Card>
               <Label size="sm" fontWeight="SemiBold">
-                Total Net Pay
+                {intl.formatMessage({
+                  id: "payroll.preview.total_net_pay",
+                  defaultMessage: "Total Net Pay",
+                })}
               </Label>
               <Display size="xs" fontWeight="SemiBold">
                 {payrollData?.totals?.netAmount}
@@ -435,7 +454,10 @@ const Preview: React.FC = () => {
             </Card>
             <Card>
               <Label size="sm" fontWeight="SemiBold">
-                Total Harvest Amount
+                {intl.formatMessage({
+                  id: "payroll.preview.total_harvest_amount",
+                  defaultMessage: "Total Harvest Amount",
+                })}
               </Label>
               <Display size="xs" fontWeight="SemiBold">
                 {payrollData?.totals.collectedAmount}{" "}
@@ -444,7 +466,10 @@ const Preview: React.FC = () => {
             </Card>
             <Card>
               <Label size="sm" fontWeight="SemiBold">
-                Total Deductions
+                {intl.formatMessage({
+                  id: "payroll.preview.total_deductions",
+                  defaultMessage: "Total Deductions",
+                })}
               </Label>
               <Display size="xs" fontWeight="SemiBold">
                 {payrollData?.totals.deductions}
@@ -459,9 +484,12 @@ const Preview: React.FC = () => {
             onClick={handleClickOpen}
             disabled={!payrollData?.details?.length}
             className="run-payroll-button"
+            endIcon={<CaretRight size={20} />}
           >
-            Run Payroll
-            <CaretRight size={25} />
+            {intl.formatMessage({
+              id: "payroll.preview.run_payroll",
+              defaultMessage: "Run Payroll",
+            })}
           </Button>
         </PayrollFilters>
       )}
@@ -491,10 +519,10 @@ const Preview: React.FC = () => {
         height="100%"
       >
         <Display size="xs" fontWeight="SemiBold">
-          <FormattedMessage
-            id="payroll.preview.details.title"
-            defaultMessage="Payroll Details"
-          />
+          {intl.formatMessage({
+            id: "payroll.preview.details.title",
+            defaultMessage: "Payroll Details",
+          })}
         </Display>
         <DataTable
           initialState={{
@@ -613,4 +641,4 @@ const PayrollFilters = styled(Box)`
   }
 `;
 
-export default Preview
+export default Preview;

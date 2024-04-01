@@ -25,6 +25,8 @@ const CreateHarvestLog = () => {
     }
   }, [openNew]);
 
+  
+
   return (
     <div>
       <Button variant="contained" onClick={showDrawer} endIcon={<FilePlus />}>

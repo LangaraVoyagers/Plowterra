@@ -211,10 +211,10 @@ const Pickers = () => {
           sortModel={sortModel[0]}
           setSortModel={setSortModel}
           options={[
-            { field: "name", sort: "asc", label: "A to Z" },
-            { field: "name", sort: "desc", label: "Z to A" },
-            { field: "createdAt", sort: "desc", label: "Recent" },
-            { field: "createdAt", sort: "asc", label: "Long-standing" },
+            { field: "name", sort: "asc", label: intl.formatMessage({ id: "pickers.sort.az", defaultMessage: "A to Z" }) },
+            { field: "name", sort: "desc", label: intl.formatMessage({ id: "pickers.sort.za", defaultMessage: "Z to A" }) },
+            { field: "createdAt", sort: "desc", label: intl.formatMessage({ id: "pickers.sort.recent", defaultMessage: "Recent" }) },
+            { field: "createdAt", sort: "asc", label: intl.formatMessage({ id: "pickers.sort.long", defaultMessage: "Long-standing" }) },
           ]}
         />
         {desktop ? (

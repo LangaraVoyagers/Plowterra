@@ -536,7 +536,10 @@ const SeasonDrawer = ({ dismiss, seasonId, ...props }: SeasonDrawerProps) => {
             return (
               <Box display="flex" flexDirection="column" gap={1}>
                 <InputLabel htmlFor="season-unit-combo-box" required>
-                  Unit
+                  {intl.formatMessage({
+                    id: "seasons.create.form.unit.label",
+                    defaultMessage: "Unit",
+                  })}
                 </InputLabel>
                 <SelectFreeSolo
                   sx={{ width: "100%" }}
@@ -599,7 +602,10 @@ const SeasonDrawer = ({ dismiss, seasonId, ...props }: SeasonDrawerProps) => {
                   renderInput={(params) => (
                     <div>
                       <InputLabel htmlFor="season-currency" required>
-                        Currency
+                        {intl.formatMessage({
+                          id: "seasons.create.form.currency.label",
+                          defaultMessage: "Currency",
+                        })}
                       </InputLabel>
                       <TextField
                         {...params}

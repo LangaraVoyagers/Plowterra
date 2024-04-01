@@ -4,19 +4,19 @@ import { CaretRight, HandCoins, User } from "@phosphor-icons/react";
 import { getPayrollHistory } from "api/payroll";
 import SeasonFilterDataGrid from "components/SeasonFilterDataGrid";
 import { useAlert } from "context/AlertProvider";
-import { useUser } from "context/UserProvider"
-import useQueryCache from "hooks/useQueryCache"
-import BasicHome from "layouts/BasicHome"
-import { ISeasonResponse } from "project-2-types/dist/interface"
-import { useState } from "react"
+import { useUser } from "context/UserProvider";
+import useQueryCache from "hooks/useQueryCache";
+import BasicHome from "layouts/BasicHome";
+import { ISeasonResponse } from "project-2-types/dist/interface";
+import { useState } from "react";
 import {
   FormattedDate,
   FormattedMessage,
   FormattedNumber,
   useIntl,
-} from "react-intl"
-import { useQuery } from "react-query"
-import { useNavigate } from "react-router-dom"
+} from "react-intl";
+import { useQuery } from "react-query";
+import { useNavigate } from "react-router-dom";
 import DataTable from "ui/DataTable";
 import { Display } from "ui/Typography";
 import ViewMoreButton from "ui/ViewMoreButton";
@@ -194,12 +194,12 @@ const Payroll = () => {
             navigate(`/payroll/preview?seasonId=${selectedSeason?._id}`)
           }
           size="medium"
-          endIcon={<CaretRight size={25} />}
+          endIcon={<CaretRight size={20} />}
         >
-          <FormattedMessage
-            id="paryroll.start.payroll.button"
-            defaultMessage="Start payroll"
-          />
+          {intl.formatMessage({
+            id: "paryroll.start.payroll.button",
+            defaultMessage: "Start payroll",
+          })}
         </Button>
       }
     >
@@ -211,10 +211,10 @@ const Payroll = () => {
         gap="1rem"
       >
         <Display component="h2" size="xs" fontWeight="SemiBold">
-          <FormattedMessage
-            id="payroll.payroll.history.title"
-            defaultMessage="Payroll History"
-          />
+          {intl.formatMessage({
+            id: "payroll.payroll.history.title",
+            defaultMessage: "Payroll History",
+          })}
         </Display>
         <SeasonFilterDataGrid
           onChange={setSelectedSeason}
@@ -252,4 +252,4 @@ const Payroll = () => {
   );
 };
 
-export default Payroll
+export default Payroll;
