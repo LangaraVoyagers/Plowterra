@@ -100,7 +100,7 @@
   "harvest.log.drawer.get.harvest.log.detail.error": [
     {
       "type": 0,
-      "value": "No se encontró registro de cosecha"
+      "value": "No se encontró registro de cosechas"
     }
   ],
   "harvest.log.drawer.get.pickers.error": [
@@ -124,7 +124,7 @@
   "harvest.log.empty.state.subtitle": [
     {
       "type": 0,
-      "value": "¡Agreguemos tu primer registro de cosecha!"
+      "value": "¡Agreguemos tu primera cosecha!"
     }
   ],
   "harvest.log.empty.state.title": [
@@ -172,7 +172,7 @@
   "harvest.logs.drawer.create.form.titme": [
     {
       "type": 0,
-      "value": "Agregar Registro de Cosecha"
+      "value": "Agregar Cosecha"
     }
   ],
   "harvest.logs.get.harvest.logs.error": [
@@ -190,7 +190,7 @@
   "harvest.logs.new.entry.success.drawer.back.button": [
     {
       "type": 0,
-      "value": "Volver al Registro de Cosecha"
+      "value": "Volver a Cosecha"
     }
   ],
   "harvest.logs.new.entry.success.drawer.message": [
@@ -628,7 +628,7 @@
   "pickers.detail.button.view_harvest_log": [
     {
       "type": 0,
-      "value": "Ver Registro de Cosecha"
+      "value": "Ver Cosecha"
     }
   ],
   "pickers.detail.emergency_contact_person.label": [
@@ -996,7 +996,7 @@
   "sidebar.harvest_log": [
     {
       "type": 0,
-      "value": "Registro de Cosecha"
+      "value": "La Cosecha"
     }
   ],
   "sidebar.harvest_season": [
@@ -1092,13 +1092,13 @@
   "harvest.log.subtitle": [
     {
       "type": 0,
-      "value": "Registra y ver la cantidad de cosecha recolectada diariamente por cada recolector."
+      "value": "Registra y ve la cantidad de cosecha recolectada diariamente por cada recolector."
     }
   ],
   "harvest.log": [
     {
       "type": 0,
-      "value": "Registro de Cosecha"
+      "value": "La Cosecha"
     }
   ],
   "harvest.log.button": [
@@ -1152,7 +1152,7 @@
   "harvest-log.create.form.label": [
     {
       "type": 0,
-      "value": "Nuevo Registro de Cosecha"
+      "value": "Nueva Cosecha"
     }
   ],
   "harvest-log.create.form.season.label": [
@@ -1290,7 +1290,7 @@
   "dashboard.addHarvestEntry": [
     {
       "type": 0,
-      "value": "Agregar Registro de Cosecha"
+      "value": "Agregar Cosecha"
     }
   ],
   "dashboard.product": [
