@@ -43,7 +43,12 @@ const columns = (
 ): GridColDef[] => [
   {
     field: "default",
-
+    renderHeader: () => (
+      <FormattedMessage
+        id="seasons.table.column.default"
+        defaultMessage="Default"
+      />
+    ),
     width: 50,
     renderCell: (params) => {
       return (

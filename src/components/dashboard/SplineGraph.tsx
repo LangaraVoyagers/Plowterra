@@ -79,55 +79,113 @@ const SplineGraph = (props: any) => {
 
   return (
     <Box>
-      <Grid container justifyContent="space-between" padding="1rem" rowGap="1rem">
+      <Grid
+        container
+        justifyContent="space-between"
+        padding="1rem"
+        rowGap="1rem"
+      >
         <Grid item>
           <Display
             lineHeight="1.6"
             fontSize="1.125rem"
             fontWeight="SemiBold"
-            variant="h2">
-            <FormattedMessage defaultMessage="Harvest Collection" id="dashboard.graph.title" />
+            variant="h2"
+          >
+            <FormattedMessage
+              defaultMessage="Harvest Collection"
+              id="dashboard.graph.title"
+            />
           </Display>
           <Display
             lineHeight="1.5"
             fontSize="0.875rem"
             fontWeight="Medium"
-            color="grey-600">
-            <FormattedMessage defaultMessage="Keep track of harvest collection over time" id="dashboard.graph.label" />
+            color="grey-600"
+          >
+            <FormattedMessage
+              defaultMessage="Keep track of harvest collection over time"
+              id="dashboard.graph.label"
+            />
           </Display>
         </Grid>
         <Grid item>
-          <ButtonGroup color="secondary" variant="outlined" aria-label="Graph Filter Options">
+          <ButtonGroup
+            color="secondary"
+            variant="outlined"
+            aria-label="Graph Filter Options"
+          >
             <Button
-              onClick={() => setDaysDelta("all")} 
-              sx={{bgcolor: daysDelta === "all" ? `${theme.palette.secondary.main}3D` : "transparent"}} 
-              aria-label="All time">All time</Button>
-            <Button 
+              onClick={() => setDaysDelta("all")}
+              sx={{
+                bgcolor:
+                  daysDelta === "all"
+                    ? `${theme.palette.secondary.main}3D`
+                    : "transparent",
+              }}
+              aria-label={intl.formatMessage({
+                id: "dashboard.graph.filter.all_time",
+              })}
+            >
+              <FormattedMessage
+                id="dashboard.graph.filter.all_time"
+                defaultMessage="All time"
+              />{" "}
+            </Button>
+            <Button
               onClick={() => setDaysDelta(30)}
-              sx={{bgcolor: daysDelta === 30 ? `${theme.palette.secondary.main}3D` : "transparent"}} 
-              aria-label="30 days">30 days</Button>
+              sx={{
+                bgcolor:
+                  daysDelta === 30
+                    ? `${theme.palette.secondary.main}3D`
+                    : "transparent",
+              }}
+              aria-label={intl.formatMessage({
+                id: "dashboard.graph.filter.30_days",
+              })}
+            >
+              <FormattedMessage
+                id="dashboard.graph.filter.30_days"
+                defaultMessage="30 days"
+              />
+            </Button>
             <Button
               onClick={() => setDaysDelta(7)}
-              sx={{bgcolor: daysDelta === 7 ? `${theme.palette.secondary.main}3D` : "transparent"}} 
-              aria-label="7 days">7 days</Button>
+              sx={{
+                bgcolor:
+                  daysDelta === 7
+                    ? `${theme.palette.secondary.main}3D`
+                    : "transparent",
+              }}
+              aria-label={intl.formatMessage({
+                id: "dashboard.graph.filter.7_days",
+              })}
+            >
+              <FormattedMessage
+                id="dashboard.graph.filter.7_days"
+                defaultMessage="7 days"
+              />
+            </Button>
           </ButtonGroup>
         </Grid>
       </Grid>
-      {
-        !isLoading ? <Chart options={options} series={series} type="area" width="100%" height={220} /> : (
-          <Grid
-            p="1rem"
-            container 
-            height="220px" 
-            alignItems="center">
-            <Grid item xs={12}>
-              <LinearProgress color="secondary" />
-            </Grid>
+      {!isLoading ? (
+        <Chart
+          options={options}
+          series={series}
+          type="area"
+          width="100%"
+          height={220}
+        />
+      ) : (
+        <Grid p="1rem" container height="220px" alignItems="center">
+          <Grid item xs={12}>
+            <LinearProgress color="secondary" />
           </Grid>
-        )
-      }
+        </Grid>
+      )}
     </Box>
-  )  
+  );  
 }
 
 export default SplineGraph;

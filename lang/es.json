@@ -3,7 +3,10 @@
     "defaultMessage": "Iniciar Planilla"
   },
   "breadcrumb.run_payroll": {
-    "defaultMessage": "Ejecutar Planilla"
+    "defaultMessage": "Vista previa"
+  },
+  "button.back": {
+    "defaultMessage": "Atrás"
   },
   "button.cancel": {
     "defaultMessage": "Cancelar"
@@ -11,71 +14,221 @@
   "button.edit": {
     "defaultMessage": "Editar"
   },
+  "button.save": {
+    "defaultMessage": "Guardar"
+  },
   "button.view_more": {
     "defaultMessage": "Ver Más"
   },
-  "close.season.zone.label": {
-    "defaultMessage": "{isClosing, plural, one {Cargando...} other {Cerrar temporada}}"
+  "dashboard.button.runPayroll": {
+    "defaultMessage": "Ejecutar"
   },
-  "danger.zone.label": {
-    "defaultMessage": "Zona de Peligro"
+  "dashboard.card.label.day": {
+    "defaultMessage": "día"
+  },
+  "dashboard.card.label.left": {
+    "defaultMessage": "restantes"
+  },
+  "dashboard.get.graph.error": {
+    "defaultMessage": "Se produjo un error. Vuelve a intentarlo más tarde."
+  },
+  "dashboard.get.indicators.error": {
+    "defaultMessage": "Se produjo un error. Vuelve a intentarlo más tarde."
+  },
+  "dashboard.graph.filter.30_days": {
+    "defaultMessage": "30 días"
+  },
+  "dashboard.graph.filter.7_days": {
+    "defaultMessage": "7 días"
+  },
+  "dashboard.graph.filter.all_time": {
+    "defaultMessage": "Todo"
+  },
+  "dashboard.graph.label": {
+    "defaultMessage": "Ház seguimiento de la cosecha a lo largo del tiempo."
+  },
+  "dashboard.graph.title": {
+    "defaultMessage": "La Cosecha"
+  },
+  "dashboard.graph.xaxisLabel": {
+    "defaultMessage": "Fecha Registrada"
+  },
+  "dashboard.graph.yaxisLabel": {
+    "defaultMessage": "Cantidad Cosechada (en"
   },
   "dashboard.greeting": {
     "defaultMessage": "Hoy es"
   },
   "dashboard.greetingAfternoon": {
-    "defaultMessage": "Buenas Tardes"
+    "defaultMessage": "Buenas tardes"
   },
   "dashboard.greetingEvening": {
-    "defaultMessage": "Buenas Noches"
+    "defaultMessage": "Buenas noches"
   },
   "dashboard.greetingMorning": {
     "defaultMessage": "Buenos días"
   },
-  "dashboard.greetingNoon": {
-    "defaultMessage": "Buenas tardes"
+  "dashboard.labels.average": {
+    "defaultMessage": "Promedio"
+  },
+  "dashboard.labels.harvestDays": {
+    "defaultMessage": "DÍAS DE COSECHA"
+  },
+  "dashboard.labels.payrollToThisDate": {
+    "defaultMessage": "PLANILLA A LA FECHA"
+  },
+  "dashboard.labels.pricePerUnit": {
+    "defaultMessage": "PRECIO POR UNIDAD"
+  },
+  "dashboard.labels.product": {
+    "defaultMessage": "PRODUCTO"
+  },
+  "dashboard.labels.recentPayrolls": {
+    "defaultMessage": "Planillas Recientes"
+  },
+  "dashboard.labels.seasonsTotalPayroll": {
+    "defaultMessage": "PLANILLA TOTAL DE LA TEMPORADA"
+  },
+  "dashboard.labels.startDate": {
+    "defaultMessage": "FECHA DE INICIO"
+  },
+  "dashboard.labels.starting": {
+    "defaultMessage": "Inició:  {startDate}"
+  },
+  "dashboard.labels.todaysCollection": {
+    "defaultMessage": "RECOLECCIÓN DE HOY"
+  },
+  "dashboard.labels.totalHarvestAmount": {
+    "defaultMessage": "COSECHA TOTAL"
+  },
+  "dashboard.tooltip.yaxis": {
+    "defaultMessage": "Cantidad de Cosecha"
   },
   "datagrid.column.actions": {
     "defaultMessage": "Acciones"
   },
+  "detail.category.label": {
+    "defaultMessage": "CATEGORÍA"
+  },
+  "detail.info.label": {
+    "defaultMessage": "INFO"
+  },
+  "harvest-log.add-correction-entry.label": {
+    "defaultMessage": "Agregar Corrección"
+  },
+  "harvest-log.create.form.amount.label": {
+    "defaultMessage": "Cantidad"
+  },
+  "harvest-log.create.form.date.label": {
+    "defaultMessage": "Fecha"
+  },
+  "harvest-log.create.form.deduction.label": {
+    "defaultMessage": "Deducción"
+  },
+  "harvest-log.create.form.note.label": {
+    "defaultMessage": "Notas"
+  },
+  "harvest-log.create.form.picker.label": {
+    "defaultMessage": "Recolector"
+  },
+  "harvest-log.create.form.product.label": {
+    "defaultMessage": "Producto - Unidad"
+  },
+  "harvest-log.create.form.season.label": {
+    "defaultMessage": "Temporada"
+  },
+  "harvest-log.view.detail.add-correction-entry.button.label": {
+    "defaultMessage": "Agregar Corrección"
+  },
+  "harvest-log.view.detail.amount.label": {
+    "defaultMessage": "Cantidad"
+  },
+  "harvest-log.view.detail.correction-amount.label": {
+    "defaultMessage": "Cantidad"
+  },
+  "harvest-log.view.detail.correction-deduction.label": {
+    "defaultMessage": "Deducción"
+  },
+  "harvest-log.view.detail.correction-entries.label": {
+    "defaultMessage": "Correcciones"
+  },
+  "harvest-log.view.detail.date.label": {
+    "defaultMessage": "Fecha"
+  },
+  "harvest-log.view.detail.deduction.total.label": {
+    "defaultMessage": "Deducción Total"
+  },
+  "harvest-log.view.detail.harvest-season.label": {
+    "defaultMessage": "Temporada"
+  },
+  "harvest-log.view.detail.note.label": {
+    "defaultMessage": "Notas"
+  },
+  "harvest-log.view.detail.picker.label": {
+    "defaultMessage": "RECOLECTOR"
+  },
+  "harvest-log.view.detail.ppu.label": {
+    "defaultMessage": "Precio por Unidad"
+  },
+  "harvest-log.view.detail.product.label": {
+    "defaultMessage": "Producto"
+  },
+  "harvest-log.view.detail.save-correction-entry.button.label": {
+    "defaultMessage": "Guardar corrección"
+  },
+  "harvest-log.view.detail.subtotal.label": {
+    "defaultMessage": "Subtotal"
+  },
+  "harvest-log.view.detail.total.label": {
+    "defaultMessage": "Total"
+  },
+  "harvest.log": {
+    "defaultMessage": "La Cosecha"
+  },
   "harvest.log.drawer.get.harvest.log.detail.error": {
-    "defaultMessage": "No se encontró registro de cosecha"
+    "defaultMessage": "No hay datos"
   },
   "harvest.log.drawer.get.pickers.error": {
-    "defaultMessage": "No se encontraron recolectores"
+    "defaultMessage": "No hay datos"
   },
   "harvest.log.drawer.get.seasons.error": {
-    "defaultMessage": "No se encontraron temporadas"
+    "defaultMessage": "No hay datos"
   },
   "harvest.log.drawer.save.harvest.log.error": {
-    "defaultMessage": "¡Vaya! No se pudo guardar el registro de cosecha."
+    "defaultMessage": "Ups! No se pudo guardar el registro de cosecha."
   },
   "harvest.log.empty.state.subtitle": {
-    "defaultMessage": "¡Agreguemos tu primer registro de cosecha!"
+    "defaultMessage": "¡Agreguemos tu primera cosecha!"
   },
   "harvest.log.empty.state.title": {
-    "defaultMessage": "Parece que aún no has agregado ningún registro de cosecha."
+    "defaultMessage": "Parece que aún no has agregado ningúna cosecha."
   },
   "harvest.log.filters.drawer.apply.button": {
-    "defaultMessage": "Aplicar Filtros"
+    "defaultMessage": "Aplicar"
   },
   "harvest.log.filters.drawer.end_date.label": {
-    "defaultMessage": "Fecha de Fin"
+    "defaultMessage": "Fecha Final"
   },
   "harvest.log.filters.drawer.harvest_season.label": {
-    "defaultMessage": "Temporada de Cosecha"
+    "defaultMessage": "Temporada"
   },
   "harvest.log.filters.drawer.picker.label": {
     "defaultMessage": "Recolector"
   },
   "harvest.log.filters.drawer.reset.button": {
-    "defaultMessage": "Restablecer Filtros"
+    "defaultMessage": "Limpiar Filtros"
   },
   "harvest.log.filters.drawer.start_date.label": {
-    "defaultMessage": "Fecha de Inicio"
+    "defaultMessage": "Fecha Inicio"
   },
-  "harvest.logs.drawer.create.form.titme": {
-    "defaultMessage": "Agregar Registro de Cosecha"
+  "harvest.log.subtitle": {
+    "defaultMessage": "Agrega y visualiza la cosecha del recolector aquí."
+  },
+  "harvest.logs.drawer.create.form.title": {
+    "defaultMessage": "Nueva Cosecha"
+  },
+  "harvest.logs.end.date": {
+    "defaultMessage": "Fecha Final"
   },
   "harvest.logs.get.harvest.logs.error": {
     "defaultMessage": "No se encontraron registros de cosecha"
@@ -84,13 +237,16 @@
     "defaultMessage": "No se encontró recolector"
   },
   "harvest.logs.new.entry.success.drawer.back.button": {
-    "defaultMessage": "Volver al Registro de Cosecha"
+    "defaultMessage": "Volver a La Cosecha"
   },
   "harvest.logs.new.entry.success.drawer.message": {
     "defaultMessage": "{pickerName} recibirá un mensaje de texto con el resumen."
   },
   "harvest.logs.new.entry.success.drawer.title": {
     "defaultMessage": "¡Registro de Cosecha Completado!"
+  },
+  "harvest.logs.start.date": {
+    "defaultMessage": "Fecha Inicio"
   },
   "harvest.logs.table.column.amount": {
     "defaultMessage": "Cantidad"
@@ -99,22 +255,22 @@
     "defaultMessage": "Fecha"
   },
   "harvest.logs.table.column.deductions": {
-    "defaultMessage": "Deducir {currency}"
+    "defaultMessage": "Deduc {currency}"
   },
   "harvest.logs.table.column.picker": {
     "defaultMessage": "Recolector"
   },
   "harvest.logs.table.column.picker_list": {
-    "defaultMessage": "Lista de Recolectores"
+    "defaultMessage": "Recolectores"
   },
   "harvest.logs.table.column.product": {
     "defaultMessage": "Producto"
   },
   "harvestSeason": {
-    "defaultMessage": "Temporada de Cosecha"
+    "defaultMessage": "Temporada"
   },
   "harvestSeason.subtitle": {
-    "defaultMessage": "Crea y cierra tu temporada de cosecha aquí."
+    "defaultMessage": "Crea y cierra tu temporada aquí."
   },
   "login.button.submit": {
     "defaultMessage": "{isLoading, plural, one {Cargando...} other {Iniciar Sesión}}"
@@ -131,11 +287,26 @@
   "login.singin.error": {
     "defaultMessage": "¡Bienvenido de nuevo!"
   },
+  "paryroll.start.payroll.button": {
+    "defaultMessage": "Iniciar Planilla"
+  },
+  "payroll.confirmation.modal.cancel": {
+    "defaultMessage": "Cancelar"
+  },
+  "payroll.confirmation.modal.confirm": {
+    "defaultMessage": "Confirmar"
+  },
+  "payroll.confirmation.modal.title": {
+    "defaultMessage": "¿Listo para ejecutar la planilla?"
+  },
+  "payroll.done.button": {
+    "defaultMessage": "Volver al historial de planillas"
+  },
   "payroll.empty.state.subtitle": {
-    "defaultMessage": "Parece que aún no tienes ningún historial de planilla."
+    "defaultMessage": "Parece que aún no tienes historial de planillas."
   },
   "payroll.get.payroll.history.error": {
-    "defaultMessage": "No se encontró historial de planilla"
+    "defaultMessage": "No se encontraron datos"
   },
   "payroll.history.columns.deductions.header": {
     "defaultMessage": "Deducciones {currency}"
@@ -144,28 +315,31 @@
     "defaultMessage": "Cantidad de cosecha"
   },
   "payroll.history.columns.net_pay.header": {
-    "defaultMessage": "Pago neto total {currency}"
+    "defaultMessage": "Salario Neto {currency}"
   },
   "payroll.history.columns.pay_date.header": {
-    "defaultMessage": "Fecha de pago"
+    "defaultMessage": "Fecha de Pago"
   },
   "payroll.history.columns.pay_period.header": {
-    "defaultMessage": "Período de pago"
+    "defaultMessage": "Período de Pago"
   },
   "payroll.history.columns.pickers.header": {
     "defaultMessage": "Recolectores"
+  },
+  "payroll.payroll.history.title": {
+    "defaultMessage": "Historial"
   },
   "payroll.preview.columns.deductions.header": {
     "defaultMessage": "Deducciones {currency}"
   },
   "payroll.preview.columns.gross_pay.header": {
-    "defaultMessage": "Pago bruto {currency}"
+    "defaultMessage": "Salario Bruto {currency}"
   },
   "payroll.preview.columns.harvest_amount.header": {
     "defaultMessage": "Cantidad de cosecha"
   },
   "payroll.preview.columns.net_pay.header": {
-    "defaultMessage": "Pago neto {currency}"
+    "defaultMessage": "Salario Neto {currency}"
   },
   "payroll.preview.columns.no.header": {
     "defaultMessage": "No."
@@ -173,23 +347,47 @@
   "payroll.preview.columns.picker.header": {
     "defaultMessage": "Recolector"
   },
+  "payroll.preview.details.title": {
+    "defaultMessage": "Detalles"
+  },
   "payroll.preview.empty.state.subtitle": {
     "defaultMessage": "Asegúrate de que los filtros establecidos sean correctos."
   },
   "payroll.preview.empty.state.title": {
-    "defaultMessage": "Parece que no tienes entradas de cosecha para liquidar."
+    "defaultMessage": "Parece que no tienes registros de cosecha para liquidar."
+  },
+  "payroll.preview.from": {
+    "defaultMessage": "Desde"
   },
   "payroll.preview.get.error": {
     "defaultMessage": "¡Ups! La vista previa no está disponible."
   },
+  "payroll.preview.pay_period": {
+    "defaultMessage": "Período de pago"
+  },
   "payroll.preview.run.error": {
     "defaultMessage": "¡Ups! No se pudo guardar la planilla."
+  },
+  "payroll.preview.run_payroll": {
+    "defaultMessage": "Ejecutar"
+  },
+  "payroll.preview.to": {
+    "defaultMessage": "hasta"
+  },
+  "payroll.preview.total_deductions": {
+    "defaultMessage": "Deducción Total"
+  },
+  "payroll.preview.total_harvest_amount": {
+    "defaultMessage": "Cosecha Total"
+  },
+  "payroll.preview.total_net_pay": {
+    "defaultMessage": "Salario Neto"
   },
   "payrolls": {
     "defaultMessage": "Planilla"
   },
   "payrolls.subtitle": {
-    "defaultMessage": "Crea las planillas y consulta registros de planillas anteriores."
+    "defaultMessage": "Guarda las planilla y consulta los registros anteriores."
   },
   "pickers": {
     "defaultMessage": "Recolectores"
@@ -255,10 +453,13 @@
     "defaultMessage": "Tipo de Sangre"
   },
   "pickers.detail.button.view_harvest_log": {
-    "defaultMessage": "Ver Registro de Cosecha"
+    "defaultMessage": "Ver La Cosecha"
+  },
+  "pickers.detail.emergency_contact_number.label": {
+    "defaultMessage": "Número del Contacto de Emergencia"
   },
   "pickers.detail.emergency_contact_person.label": {
-    "defaultMessage": "Persona de Contacto de Emergencia"
+    "defaultMessage": "Contacto de Emergencia"
   },
   "pickers.detail.error": {
     "defaultMessage": "¡Ups! No se pudo mostrar la información."
@@ -278,8 +479,20 @@
   "pickers.get.pickers.error": {
     "defaultMessage": "No se encontraron recolectores"
   },
+  "pickers.sort.az": {
+    "defaultMessage": "A - Z"
+  },
+  "pickers.sort.long": {
+    "defaultMessage": "Más Antiguo"
+  },
+  "pickers.sort.recent": {
+    "defaultMessage": "Más Reciente"
+  },
+  "pickers.sort.za": {
+    "defaultMessage": "Z - A"
+  },
   "pickers.sorting.error": {
-    "defaultMessage": "Error al aplicar la ordenación."
+    "defaultMessage": "Error al ordenar."
   },
   "pickers.subtitle": {
     "defaultMessage": "Agrega y visualiza el perfil e información del recolector aquí."
@@ -299,6 +512,9 @@
   "pickers.update.picker.response.success": {
     "defaultMessage": "El recolector se actualizó correctamente"
   },
+  "preview.active.season": {
+    "defaultMessage": "Temporada"
+  },
   "search": {
     "defaultMessage": "Buscar"
   },
@@ -314,8 +530,50 @@
   "season.filter.data.grid.get.seasons.error": {
     "defaultMessage": "No se encontraron temporadas"
   },
+  "season.view.detail.deductions.label": {
+    "defaultMessage": "Deductions"
+  },
+  "season.view.detail.deductions_total.label": {
+    "defaultMessage": "Deducción Total"
+  },
+  "season.view.detail.end_date.label": {
+    "defaultMessage": "Fecha Final"
+  },
+  "season.view.detail.gross_total.label": {
+    "defaultMessage": "Salario Bruto"
+  },
+  "season.view.detail.net_payment.label": {
+    "defaultMessage": "Salario Neto"
+  },
+  "season.view.detail.price_per_unit.label": {
+    "defaultMessage": "Precio por Unidad"
+  },
+  "season.view.detail.product.label": {
+    "defaultMessage": "Producto"
+  },
+  "season.view.detail.production_total.label": {
+    "defaultMessage": "Cosecha Total"
+  },
+  "season.view.detail.start_date.label": {
+    "defaultMessage": "Fecha Inicio"
+  },
+  "season.view.detail.status.label": {
+    "defaultMessage": "Estado"
+  },
+  "season.view.detail.timeframe.label": {
+    "defaultMessage": "Período de pago"
+  },
+  "season.view.detail.unit.label": {
+    "defaultMessage": "Unidad"
+  },
+  "seasonDeduction.add": {
+    "defaultMessage": "Agregar Deducción"
+  },
   "seasons.button.delete": {
     "defaultMessage": "{isDeleting, plural, one {Eliminando...} other {Eliminar} }"
+  },
+  "seasons.close.season.clear.default.season": {
+    "defaultMessage": "La temporada favorita ha sido cerrada. Puedes seleccionar una nueva temporada predeterminada en la página de Temporadas."
   },
   "seasons.close.season.response.error": {
     "defaultMessage": "¡Ups! No se pudo cerrar la temporada."
@@ -324,7 +582,10 @@
     "defaultMessage": "La temporada se cerró exitosamente."
   },
   "seasons.create.button.text": {
-    "defaultMessage": "Agregar Temporada"
+    "defaultMessage": "Nueva Temporada"
+  },
+  "seasons.create.form.currency.label": {
+    "defaultMessage": "Moneda"
   },
   "seasons.create.form.deductions.label": {
     "defaultMessage": "Deducciones"
@@ -339,10 +600,13 @@
     "defaultMessage": "Precio por Unidad"
   },
   "seasons.create.form.product.label": {
-    "defaultMessage": "Producto*"
+    "defaultMessage": "Producto"
   },
   "seasons.create.form.start_date.label": {
-    "defaultMessage": "Fecha de Inicio"
+    "defaultMessage": "Fecha Inicio"
+  },
+  "seasons.create.form.unit.label": {
+    "defaultMessage": "Unidad"
   },
   "seasons.create.season.response.error": {
     "defaultMessage": "¡Ups! No se pudo guardar la temporada."
@@ -380,6 +644,9 @@
   "seasons.get.seasons.error": {
     "defaultMessage": "No se encontraron temporadas"
   },
+  "seasons.table.column.default": {
+    "defaultMessage": "Favorito"
+  },
   "seasons.table.column.end_date": {
     "defaultMessage": "Fecha de Fin"
   },
@@ -387,13 +654,13 @@
     "defaultMessage": "Nombre"
   },
   "seasons.table.column.picker_list": {
-    "defaultMessage": "Lista de Recolectores"
+    "defaultMessage": "Recolectores"
   },
   "seasons.table.column.product": {
     "defaultMessage": "Producto"
   },
   "seasons.table.column.start_date": {
-    "defaultMessage": "Fecha de Inicio"
+    "defaultMessage": "Fecha Inicio"
   },
   "seasons.table.column.status": {
     "defaultMessage": "Estado"
@@ -401,20 +668,29 @@
   "seasons.update.season.response.success": {
     "defaultMessage": "La temporada se actualizó correctamente"
   },
+  "seasons.view.detail.close.season.label": {
+    "defaultMessage": "Cerrar Temporada"
+  },
+  "seasons.view.detail.season.label": {
+    "defaultMessage": "Temporada"
+  },
+  "select.season": {
+    "defaultMessage": "Seleccionar Temporada"
+  },
   "sidebar.harvestSeason": {
-    "defaultMessage": "Temporada de Cosecha"
+    "defaultMessage": "Temporada"
   },
   "sidebar.harvest_log": {
-    "defaultMessage": "Registro de Cosecha"
+    "defaultMessage": "La Cosecha"
   },
   "sidebar.harvest_season": {
-    "defaultMessage": "Temporada de Cosecha"
+    "defaultMessage": "Temporada"
   },
   "sidebar.home": {
     "defaultMessage": "Inicio"
   },
   "sidebar.main.sections": {
-    "defaultMessage": "Secciones Principales"
+    "defaultMessage": "Contenido Principal"
   },
   "sidebar.payroll": {
     "defaultMessage": "Planilla"
@@ -423,10 +699,10 @@
     "defaultMessage": "Recolectores"
   },
   "sidebar.quick_actions": {
-    "defaultMessage": "Acciones Rápidas"
+    "defaultMessage": "Más Acciones"
   },
   "sidebar.quick_actions.add_harvest_log": {
-    "defaultMessage": "Agregar Entrada de Cosecha"
+    "defaultMessage": "Agregar Cosecha"
   },
   "sidebar.quick_actions.add_picker": {
     "defaultMessage": "Agregar Recolector"

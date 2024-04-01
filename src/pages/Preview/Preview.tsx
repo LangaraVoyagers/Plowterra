@@ -484,12 +484,12 @@ const Preview: React.FC = () => {
             onClick={handleClickOpen}
             disabled={!payrollData?.details?.length}
             className="run-payroll-button"
+            endIcon={<CaretRight size={20} />}
           >
             {intl.formatMessage({
               id: "payroll.preview.run_payroll",
               defaultMessage: "Run Payroll",
             })}
-            <CaretRight size={25} />
           </Button>
         </PayrollFilters>
       )}

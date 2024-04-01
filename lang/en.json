@@ -20,6 +20,9 @@
   "button.view_more": {
     "defaultMessage": "View More"
   },
+  "dashboard.button.runPayroll": {
+    "defaultMessage": "Run Payroll"
+  },
   "dashboard.card.label.day": {
     "defaultMessage": "day"
   },
@@ -31,6 +34,21 @@
   },
   "dashboard.get.indicators.error": {
     "defaultMessage": "Some error occurred, Please try again later"
+  },
+  "dashboard.graph.filter.30_days": {
+    "defaultMessage": "30 days"
+  },
+  "dashboard.graph.filter.7_days": {
+    "defaultMessage": "7 days"
+  },
+  "dashboard.graph.filter.all_time": {
+    "defaultMessage": "All time"
+  },
+  "dashboard.graph.label": {
+    "defaultMessage": "Keep track of harvest collection over time"
+  },
+  "dashboard.graph.title": {
+    "defaultMessage": "Harvest Collection"
   },
   "dashboard.graph.xaxisLabel": {
     "defaultMessage": "Harvest Date"
@@ -49,9 +67,6 @@
   },
   "dashboard.greetingMorning": {
     "defaultMessage": "Good morning"
-  },
-  "dashboard.greetingNoon": {
-    "defaultMessage": "Good Noon"
   },
   "dashboard.labels.average": {
     "defaultMessage": "average"
@@ -76,6 +91,9 @@
   },
   "dashboard.labels.startDate": {
     "defaultMessage": "START DATE"
+  },
+  "dashboard.labels.starting": {
+    "defaultMessage": "Starting: {startDate}"
   },
   "dashboard.labels.todaysCollection": {
     "defaultMessage": "TODAY'S COLLECTION"
@@ -209,6 +227,9 @@
   "harvest.logs.drawer.create.form.title": {
     "defaultMessage": "Add Harvest Entry"
   },
+  "harvest.logs.end.date": {
+    "defaultMessage": "End Date"
+  },
   "harvest.logs.get.harvest.logs.error": {
     "defaultMessage": "No harvest logs found"
   },
@@ -223,6 +244,9 @@
   },
   "harvest.logs.new.entry.success.drawer.title": {
     "defaultMessage": "Harvest Entry Completed!"
+  },
+  "harvest.logs.start.date": {
+    "defaultMessage": "Start Date"
   },
   "harvest.logs.table.column.amount": {
     "defaultMessage": "Amount"
@@ -265,6 +289,15 @@
   },
   "paryroll.start.payroll.button": {
     "defaultMessage": "Start payroll"
+  },
+  "payroll.confirmation.modal.cancel": {
+    "defaultMessage": "Cancel"
+  },
+  "payroll.confirmation.modal.confirm": {
+    "defaultMessage": "Confirm"
+  },
+  "payroll.confirmation.modal.title": {
+    "defaultMessage": "Ready to run the payroll?"
   },
   "payroll.done.button": {
     "defaultMessage": "Go back to payroll history"
@@ -323,11 +356,32 @@
   "payroll.preview.empty.state.title": {
     "defaultMessage": "It seems you don't have harvest entries to settle."
   },
+  "payroll.preview.from": {
+    "defaultMessage": "From"
+  },
   "payroll.preview.get.error": {
     "defaultMessage": "Oops! Preview is not available."
   },
+  "payroll.preview.pay_period": {
+    "defaultMessage": "Pay Period"
+  },
   "payroll.preview.run.error": {
     "defaultMessage": "Oops! Payroll could not be saved."
+  },
+  "payroll.preview.run_payroll": {
+    "defaultMessage": "Run Payroll"
+  },
+  "payroll.preview.to": {
+    "defaultMessage": "to"
+  },
+  "payroll.preview.total_deductions": {
+    "defaultMessage": "Total Deductions"
+  },
+  "payroll.preview.total_harvest_amount": {
+    "defaultMessage": "Total Harvest Amount"
+  },
+  "payroll.preview.total_net_pay": {
+    "defaultMessage": "Total Net Pay"
   },
   "payrolls": {
     "defaultMessage": "Payroll"
@@ -425,6 +479,18 @@
   "pickers.get.pickers.error": {
     "defaultMessage": "No pickers found"
   },
+  "pickers.sort.az": {
+    "defaultMessage": "A to Z"
+  },
+  "pickers.sort.long": {
+    "defaultMessage": "Long-standing"
+  },
+  "pickers.sort.recent": {
+    "defaultMessage": "Recent"
+  },
+  "pickers.sort.za": {
+    "defaultMessage": "Z to A"
+  },
   "pickers.sorting.error": {
     "defaultMessage": "Fail to apply sorting."
   },
@@ -445,6 +511,9 @@
   },
   "pickers.update.picker.response.success": {
     "defaultMessage": "The picker was updated successfully"
+  },
+  "preview.active.season": {
+    "defaultMessage": "Active Season"
   },
   "search": {
     "defaultMessage": "Search"
@@ -497,6 +566,9 @@
   "season.view.detail.unit.label": {
     "defaultMessage": "Unit"
   },
+  "seasonDeduction.add": {
+    "defaultMessage": "Add Deduction"
+  },
   "seasons.button.delete": {
     "defaultMessage": "{isDeleting, plural, one {Deleting...} other {Delete} }"
   },
@@ -511,6 +583,9 @@
   },
   "seasons.create.button.text": {
     "defaultMessage": "Add Season"
+  },
+  "seasons.create.form.currency.label": {
+    "defaultMessage": "Currency"
   },
   "seasons.create.form.deductions.label": {
     "defaultMessage": "Deductions"
@@ -529,6 +604,9 @@
   },
   "seasons.create.form.start_date.label": {
     "defaultMessage": "Start Date"
+  },
+  "seasons.create.form.unit.label": {
+    "defaultMessage": "Unit"
   },
   "seasons.create.season.response.error": {
     "defaultMessage": "Oops! The season couldn't be saved."
@@ -565,6 +643,9 @@
   },
   "seasons.get.seasons.error": {
     "defaultMessage": "No seasons found"
+  },
+  "seasons.table.column.default": {
+    "defaultMessage": "Default"
   },
   "seasons.table.column.end_date": {
     "defaultMessage": "End Date"

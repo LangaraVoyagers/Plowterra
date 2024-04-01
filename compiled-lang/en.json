@@ -41,6 +41,12 @@
       "value": "View More"
     }
   ],
+  "dashboard.button.runPayroll": [
+    {
+      "type": 0,
+      "value": "Run Payroll"
+    }
+  ],
   "dashboard.card.label.day": [
     {
       "type": 0,
@@ -63,6 +69,36 @@
     {
       "type": 0,
       "value": "Some error occurred, Please try again later"
+    }
+  ],
+  "dashboard.graph.filter.30_days": [
+    {
+      "type": 0,
+      "value": "30 days"
+    }
+  ],
+  "dashboard.graph.filter.7_days": [
+    {
+      "type": 0,
+      "value": "7 days"
+    }
+  ],
+  "dashboard.graph.filter.all_time": [
+    {
+      "type": 0,
+      "value": "All time"
+    }
+  ],
+  "dashboard.graph.label": [
+    {
+      "type": 0,
+      "value": "Keep track of harvest collection over time"
+    }
+  ],
+  "dashboard.graph.title": [
+    {
+      "type": 0,
+      "value": "Harvest Collection"
     }
   ],
   "dashboard.graph.xaxisLabel": [
@@ -99,12 +135,6 @@
     {
       "type": 0,
       "value": "Good morning"
-    }
-  ],
-  "dashboard.greetingNoon": [
-    {
-      "type": 0,
-      "value": "Good Noon"
     }
   ],
   "dashboard.labels.average": [
@@ -153,6 +183,16 @@
     {
       "type": 0,
       "value": "START DATE"
+    }
+  ],
+  "dashboard.labels.starting": [
+    {
+      "type": 0,
+      "value": "Starting: "
+    },
+    {
+      "type": 1,
+      "value": "startDate"
     }
   ],
   "dashboard.labels.todaysCollection": [
@@ -419,6 +459,12 @@
       "value": "Add Harvest Entry"
     }
   ],
+  "harvest.logs.end.date": [
+    {
+      "type": 0,
+      "value": "End Date"
+    }
+  ],
   "harvest.logs.get.harvest.logs.error": [
     {
       "type": 0,
@@ -451,6 +497,12 @@
     {
       "type": 0,
       "value": "Harvest Entry Completed!"
+    }
+  ],
+  "harvest.logs.start.date": [
+    {
+      "type": 0,
+      "value": "Start Date"
     }
   ],
   "harvest.logs.table.column.amount": [
@@ -559,6 +611,24 @@
     {
       "type": 0,
       "value": "Start payroll"
+    }
+  ],
+  "payroll.confirmation.modal.cancel": [
+    {
+      "type": 0,
+      "value": "Cancel"
+    }
+  ],
+  "payroll.confirmation.modal.confirm": [
+    {
+      "type": 0,
+      "value": "Confirm"
+    }
+  ],
+  "payroll.confirmation.modal.title": [
+    {
+      "type": 0,
+      "value": "Ready to run the payroll?"
     }
   ],
   "payroll.done.button": [
@@ -695,16 +765,58 @@
       "value": "It seems you don't have harvest entries to settle."
     }
   ],
+  "payroll.preview.from": [
+    {
+      "type": 0,
+      "value": "From"
+    }
+  ],
   "payroll.preview.get.error": [
     {
       "type": 0,
       "value": "Oops! Preview is not available."
     }
   ],
+  "payroll.preview.pay_period": [
+    {
+      "type": 0,
+      "value": "Pay Period"
+    }
+  ],
   "payroll.preview.run.error": [
     {
       "type": 0,
       "value": "Oops! Payroll could not be saved."
+    }
+  ],
+  "payroll.preview.run_payroll": [
+    {
+      "type": 0,
+      "value": "Run Payroll"
+    }
+  ],
+  "payroll.preview.to": [
+    {
+      "type": 0,
+      "value": "to"
+    }
+  ],
+  "payroll.preview.total_deductions": [
+    {
+      "type": 0,
+      "value": "Total Deductions"
+    }
+  ],
+  "payroll.preview.total_harvest_amount": [
+    {
+      "type": 0,
+      "value": "Total Harvest Amount"
+    }
+  ],
+  "payroll.preview.total_net_pay": [
+    {
+      "type": 0,
+      "value": "Total Net Pay"
     }
   ],
   "payrolls": [
@@ -967,6 +1079,30 @@
       "value": "No pickers found"
     }
   ],
+  "pickers.sort.az": [
+    {
+      "type": 0,
+      "value": "A to Z"
+    }
+  ],
+  "pickers.sort.long": [
+    {
+      "type": 0,
+      "value": "Long-standing"
+    }
+  ],
+  "pickers.sort.recent": [
+    {
+      "type": 0,
+      "value": "Recent"
+    }
+  ],
+  "pickers.sort.za": [
+    {
+      "type": 0,
+      "value": "Z to A"
+    }
+  ],
   "pickers.sorting.error": [
     {
       "type": 0,
@@ -1007,6 +1143,12 @@
     {
       "type": 0,
       "value": "The picker was updated successfully"
+    }
+  ],
+  "preview.active.season": [
+    {
+      "type": 0,
+      "value": "Active Season"
     }
   ],
   "search": [
@@ -1131,6 +1273,12 @@
       "value": "Unit"
     }
   ],
+  "seasonDeduction.add": [
+    {
+      "type": 0,
+      "value": "Add Deduction"
+    }
+  ],
   "seasons.button.delete": [
     {
       "offset": 0,
@@ -1181,6 +1329,12 @@
       "value": "Add Season"
     }
   ],
+  "seasons.create.form.currency.label": [
+    {
+      "type": 0,
+      "value": "Currency"
+    }
+  ],
   "seasons.create.form.deductions.label": [
     {
       "type": 0,
@@ -1215,6 +1369,12 @@
     {
       "type": 0,
       "value": "Start Date"
+    }
+  ],
+  "seasons.create.form.unit.label": [
+    {
+      "type": 0,
+      "value": "Unit"
     }
   ],
   "seasons.create.season.response.error": [
@@ -1315,6 +1475,12 @@
     {
       "type": 0,
       "value": "No seasons found"
+    }
+  ],
+  "seasons.table.column.default": [
+    {
+      "type": 0,
+      "value": "Default"
     }
   ],
   "seasons.table.column.end_date": [

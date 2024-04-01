@@ -194,9 +194,12 @@ const Payroll = () => {
             navigate(`/payroll/preview?seasonId=${selectedSeason?._id}`)
           }
           size="medium"
-          endIcon={<CaretRight size={25} />}
+          endIcon={<CaretRight size={20} />}
         >
-          {intl.formatMessage({ id: "paryroll.start.payroll.button", defaultMessage: "Start payroll" })}
+          {intl.formatMessage({
+            id: "paryroll.start.payroll.button",
+            defaultMessage: "Start payroll",
+          })}
         </Button>
       }
     >
