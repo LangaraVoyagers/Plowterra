@@ -5,109 +5,124 @@ import {
   Grid,
   LinearProgress,
   useTheme,
-} from "@mui/material"
+} from "@mui/material";
 import { FormattedMessage, useIntl } from "react-intl";
 
 import { ApexOptions } from "apexcharts";
-import Chart from 'react-apexcharts';
+import Chart from "react-apexcharts";
 import { Display } from "ui/Typography";
+
+import ChartGraphicLight from "../../assets/images/ChartGraphic.svg";
+import ChartGraphicDark from "../../assets/images/ChartGraphicDark.svg";
 
 const SplineGraph = (props: any) => {
   const theme = useTheme();
   const intl = useIntl();
-  const {
-    mode,
-    series,
-    unitName,
-    daysDelta,
-    setDaysDelta,
-    isLoading
-  } = props;
+  const { mode, series, unitName, daysDelta, setDaysDelta, isLoading } = props;
 
   const options: ApexOptions = {
     theme: {
-      mode: mode
+      mode: mode,
     },
     chart: {
       height: 350,
       type: "area",
       background: "transparent",
       toolbar: {
-        show: false
-      }
+        show: false,
+      },
     },
     dataLabels: {
-      enabled: false
+      enabled: false,
     },
     stroke: {
-      curve: 'smooth',
+      curve: "smooth",
       width: 1,
-      colors: [theme.palette.primary.dark]
+      colors: [theme.palette.primary.dark],
     },
     fill: {
-      colors: [theme.palette.primary.dark]
+      colors: [theme.palette.primary.dark],
     },
     xaxis: {
       title: {
-        text: intl.formatMessage({defaultMessage:"Harvest Date", id:"dashboard.graph.xaxisLabel"}),
+        text: intl.formatMessage({
+          defaultMessage: "Harvest Date",
+          id: "dashboard.graph.xaxisLabel",
+        }),
         style: {
-          fontFamily: "PlusJakartaSans, Inter, system-ui, Avenir, Helvetica, Arial, sans-serif",
+          fontFamily:
+            "PlusJakartaSans, Inter, system-ui, Avenir, Helvetica, Arial, sans-serif",
           fontSize: "0.75rem",
-          fontWeight: 500
-        }
-      }
+          fontWeight: 500,
+        },
+      },
     },
     yaxis: {
-      title:{
-        text: `${intl.formatMessage({defaultMessage:"Harvest Amount (in", id:"dashboard.graph.yaxisLabel"})} ${ unitName })`,
+      title: {
+        text: `${intl.formatMessage({
+          defaultMessage: "Harvest Amount (in",
+          id: "dashboard.graph.yaxisLabel",
+        })} ${unitName})`,
         style: {
-          fontFamily: "PlusJakartaSans, Inter, system-ui, Avenir, Helvetica, Arial, sans-serif",
+          fontFamily:
+            "PlusJakartaSans, Inter, system-ui, Avenir, Helvetica, Arial, sans-serif",
           fontSize: "0.75rem",
-          fontWeight: 500
-        }
-      }
+          fontWeight: 500,
+        },
+      },
     },
     tooltip: {
       y: {
         formatter(value) {
-          return `${ value } ${ unitName }`
+          return `${value} ${unitName}`;
         },
-      }
+      },
     },
-    colors: [theme.palette.primary.dark]
-  }
+    colors: [theme.palette.primary.dark],
+  };
 
   return (
     <Box>
       <Grid
         container
         justifyContent="space-between"
-        padding="1rem"
+        padding="0 1rem 1rem 0"
         rowGap="1rem"
       >
         <Grid item>
-          <Display
-            lineHeight="1.6"
-            fontSize="1.125rem"
-            fontWeight="SemiBold"
-            variant="h2"
-          >
-            <FormattedMessage
-              defaultMessage="Harvest Collection"
-              id="dashboard.graph.title"
+          <Box display="flex" alignItems="center" gap="1rem">
+            <img
+              src={mode === "light" ? ChartGraphicLight : ChartGraphicDark}
+              alt="sidebaricon"
+              width={56}
+              height={56}
+              aria-hidden
             />
-          </Display>
-          <Display
-            lineHeight="1.5"
-            fontSize="0.875rem"
-            fontWeight="Medium"
-            color="grey-600"
-          >
-            <FormattedMessage
-              defaultMessage="Keep track of harvest collection over time"
-              id="dashboard.graph.label"
-            />
-          </Display>
+            <Box>
+              <Display
+                lineHeight="1.6"
+                fontSize="1.125rem"
+                fontWeight="SemiBold"
+                variant="h2"
+              >
+                <FormattedMessage
+                  defaultMessage="Harvest Collection"
+                  id="dashboard.graph.title"
+                />
+              </Display>
+              <Display
+                lineHeight="1.5"
+                fontSize="0.875rem"
+                fontWeight="Medium"
+                color="grey-600"
+              >
+                <FormattedMessage
+                  defaultMessage="Keep track of harvest collection over time"
+                  id="dashboard.graph.label"
+                />
+              </Display>
+            </Box>
+          </Box>
         </Grid>
         <Grid item>
           <ButtonGroup
@@ -185,7 +200,7 @@ const SplineGraph = (props: any) => {
         </Grid>
       )}
     </Box>
-  );  
-}
+  );
+};
 
 export default SplineGraph;
