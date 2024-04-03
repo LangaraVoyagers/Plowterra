@@ -8,8 +8,8 @@ import { Controller, useFieldArray, useFormContext } from "react-hook-form";
 import { useMutation, useQuery } from "react-query";
 import { ISeasonRequest } from "./SeasonDrawer";
 import SelectFreeSolo from "./SelectFreeSolo";
-import { useIntl } from 'react-intl';
-
+import { FormattedMessage, useIntl } from "react-intl";
+import { Label } from "ui/Typography";
 
 const SeasonDeductions = () => {
   const { control, setValue } = useFormContext<ISeasonRequest>();
@@ -52,7 +52,25 @@ const SeasonDeductions = () => {
   const intl = useIntl();
 
   return (
-    <Box display="flex" flexDirection="column" width="100%" gap={2}>
+    <Box display="flex" flexDirection="column" width="100%" gap={1}>
+      <Grid id="headers" container spacing={4}>
+        <Grid key={`header-left`} item width="45%">
+          <Label size="xs" fontWeight="Medium" color="grey-800">
+            <FormattedMessage
+              id="season.deductions.name.header"
+              defaultMessage="Deduction Name"
+            />
+          </Label>
+        </Grid>
+        <Grid key={`header-right`} item display="flex" width="55%" gap={3}>
+          <Label size="xs" fontWeight="Medium" color="grey-800">
+            <FormattedMessage
+              id="season.deductions.price.header"
+              defaultMessage="Deduction Price"
+            />
+          </Label>
+        </Grid>
+      </Grid>
       {!isLoading &&
         fields.map((field, index) => {
           return (
@@ -126,7 +144,10 @@ const SeasonDeductions = () => {
             append({ deductionID: "", price: "" });
           }}
         >
-          {intl.formatMessage({ id: "seasonDeduction.add", defaultMessage: "Add Deduction" })}
+          {intl.formatMessage({
+            id: "seasonDeduction.add",
+            defaultMessage: "Add Deduction",
+          })}
         </Button>
       </Box>
     </Box>
