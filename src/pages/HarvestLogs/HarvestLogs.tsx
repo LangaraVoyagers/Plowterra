@@ -130,14 +130,7 @@ const columns = (currency: string): GridColDef[] => [
     flex: 0.25,
     align: "center",
     renderCell: (params: GridRenderCellParams) => {
-      return (
-        <FormattedDate
-          value={params.row.createdAt}
-          year="numeric"
-          month="short"
-          day="numeric"
-        />
-      );
+      return <FormattedDate value={params.row.createdAt} dateStyle="medium" />;
     },
   },
   {
