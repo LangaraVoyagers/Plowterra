@@ -111,8 +111,8 @@ const Login: React.FC = () => {
         display="flex"
         flexDirection={desktop ? "row" : "column"}
         justifyContent={desktop ? "flex-start" : "flex-end"}
-        height={desktop ? "auto" : "100vh"}
-        width="100vw"
+        height={desktop ? "auto" : "100%"}
+        width="100%"
       >
         <Box
           component="form"
