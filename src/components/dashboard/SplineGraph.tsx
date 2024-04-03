@@ -12,6 +12,9 @@ import { ApexOptions } from "apexcharts";
 import Chart from "react-apexcharts";
 import { BodyText, Display } from "ui/Typography";
 
+import ChartGraphicLight from "../../assets/images/ChartGraphic.svg";
+import ChartGraphicDark from "../../assets/images/ChartGraphicDark.svg";
+
 const SplineGraph = (props: any) => {
   const theme = useTheme();
   const intl = useIntl();
@@ -83,32 +86,43 @@ const SplineGraph = (props: any) => {
       <Grid
         container
         justifyContent="space-between"
-        padding="1rem"
+        padding="0 1rem 1rem 0"
         rowGap="1rem"
       >
         <Grid item>
-          <Display
-            lineHeight="1.6"
-            fontSize="1.125rem"
-            fontWeight="SemiBold"
-            variant="h2"
-          >
-            <FormattedMessage
-              defaultMessage="Harvest Collection"
-              id="dashboard.graph.title"
+          <Box display="flex" alignItems="center" gap="1rem">
+            <img
+              src={mode === "light" ? ChartGraphicLight : ChartGraphicDark}
+              alt="sidebaricon"
+              width={56}
+              height={56}
+              aria-hidden
             />
-          </Display>
-          <Display
-            lineHeight="1.5"
-            fontSize="0.875rem"
-            fontWeight="Medium"
-            color="grey-600"
-          >
-            <FormattedMessage
-              defaultMessage="Keep track of harvest collection over time"
-              id="dashboard.graph.label"
-            />
-          </Display>
+            <Box>
+              <Display
+                lineHeight="1.6"
+                fontSize="1.125rem"
+                fontWeight="SemiBold"
+                variant="h2"
+              >
+                <FormattedMessage
+                  defaultMessage="Harvest Collection"
+                  id="dashboard.graph.title"
+                />
+              </Display>
+              <Display
+                lineHeight="1.5"
+                fontSize="0.875rem"
+                fontWeight="Medium"
+                color="grey-600"
+              >
+                <FormattedMessage
+                  defaultMessage="Keep track of harvest collection over time"
+                  id="dashboard.graph.label"
+                />
+              </Display>
+            </Box>
+          </Box>
         </Grid>
         <Grid item>
           <ButtonGroup variant="outlined" 
