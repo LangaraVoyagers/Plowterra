@@ -170,7 +170,7 @@ const HarvestLogs = () => {
   const [startDate, setStartDate] = useState<Dayjs | null>(
     dayjs().startOf("week")
   );
-  const [endDate, setEndDate] = useState<Dayjs | null>(dayjs().endOf("week"));
+  const [endDate, setEndDate] = useState<Dayjs | null>(dayjs());
   const [searchTable, setSearchTable] = useState<string>();
 
   const [harvestLogs, setHarvestLogs] = useState<Array<IHarvestLogResponse>>(
