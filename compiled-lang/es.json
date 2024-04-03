@@ -49,8 +49,28 @@
   ],
   "dashboard.card.label.day": [
     {
-      "type": 0,
-      "value": "día"
+      "offset": 0,
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 0,
+              "value": "día "
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "días "
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "days"
     }
   ],
   "dashboard.card.label.left": [
@@ -1466,7 +1486,7 @@
   "seasons.table.column.end_date": [
     {
       "type": 0,
-      "value": "Fecha de Fin"
+      "value": "Fecha Final"
     }
   ],
   "seasons.table.column.name": [

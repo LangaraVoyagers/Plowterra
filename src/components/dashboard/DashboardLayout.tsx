@@ -392,10 +392,12 @@ const PayrollInfo = (props: any) => {
                 />
                 {payrollToToday?.daysLeft}&nbsp;
                 <FormattedMessage
-                  defaultMessage={"day"}
+                  defaultMessage="{days, plural, one {day } other {days }}"
                   id="dashboard.card.label.day"
+                  values={{
+                    days: payrollToToday?.daysLeft,
+                  }}
                 />
-                &nbsp;{payrollToToday?.daysLeft > 1 ? " s" : ""}&nbsp;
                 <FormattedMessage
                   defaultMessage={"left"}
                   id="dashboard.card.label.left"
