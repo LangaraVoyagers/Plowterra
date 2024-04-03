@@ -32,7 +32,7 @@ import {
   ISeasonResponse,
 } from "project-2-types/dist/interface";
 import { createHarvestLog, getHarvestLogById } from "api/harvestLogs";
-import { useMutation, useQuery } from "react-query";
+import { useMutation, useQuery, useQueryClient } from "react-query";
 
 import { CaretDown } from "@phosphor-icons/react";
 import ConfirmationDrawer from "ui/ConfirmationDrawer";
@@ -102,7 +102,7 @@ const HarvestLogDrawer = ({
     CREATE_MUTATION_KEY,
     GET_DETAIL_QUERY_KEY,
     UPDATE_MUTATION_KEY,
-
+    GET_QUERY_KEY: HARVEST_LOGS_QUERY_KEY,
     createCache: createHarvestLogCache,
     updateCache: updateHarvestLogCache,
   } = useQueryCache("harvestLogs", harvestLogId);
@@ -123,6 +123,8 @@ const HarvestLogDrawer = ({
     id: string;
     label: string;
   } | null>(null);
+
+  const queryClient = useQueryClient();
 
   const [openCorrectionEntry, setOpenCorrectionEntry] = React.useState(false);
 
@@ -321,6 +323,10 @@ const HarvestLogDrawer = ({
         : CREATE_MUTATION_KEY,
     mutationFn: createHarvestLog,
     onSuccess: (result) => {
+      queryClient.invalidateQueries({
+        predicate: (query) =>
+          query.queryKey.includes(HARVEST_LOGS_QUERY_KEY[0]),
+      });
       if (harvestLogId && !openCorrectionEntry) {
         handleUpdateSuccess(result);
       } else {
