@@ -5,77 +5,78 @@ import {
   Grid,
   LinearProgress,
   useTheme,
-} from "@mui/material"
+} from "@mui/material";
 import { FormattedMessage, useIntl } from "react-intl";
 
 import { ApexOptions } from "apexcharts";
-import Chart from 'react-apexcharts';
-import { Display } from "ui/Typography";
+import Chart from "react-apexcharts";
+import { BodyText, Display } from "ui/Typography";
 
 const SplineGraph = (props: any) => {
   const theme = useTheme();
   const intl = useIntl();
-  const {
-    mode,
-    series,
-    unitName,
-    daysDelta,
-    setDaysDelta,
-    isLoading
-  } = props;
+  const { mode, series, unitName, daysDelta, setDaysDelta, isLoading } = props;
 
   const options: ApexOptions = {
     theme: {
-      mode: mode
+      mode: mode,
     },
     chart: {
       height: 350,
       type: "area",
       background: "transparent",
       toolbar: {
-        show: false
-      }
+        show: false,
+      },
     },
     dataLabels: {
-      enabled: false
+      enabled: false,
     },
     stroke: {
-      curve: 'smooth',
+      curve: "smooth",
       width: 1,
-      colors: [theme.palette.primary.dark]
+      colors: [theme.palette.primary.dark],
     },
     fill: {
-      colors: [theme.palette.primary.dark]
+      colors: [theme.palette.primary.dark],
     },
     xaxis: {
       title: {
-        text: intl.formatMessage({defaultMessage:"Harvest Date", id:"dashboard.graph.xaxisLabel"}),
+        text: intl.formatMessage({
+          defaultMessage: "Harvest Date",
+          id: "dashboard.graph.xaxisLabel",
+        }),
         style: {
-          fontFamily: "PlusJakartaSans, Inter, system-ui, Avenir, Helvetica, Arial, sans-serif",
+          fontFamily:
+            "PlusJakartaSans, Inter, system-ui, Avenir, Helvetica, Arial, sans-serif",
           fontSize: "0.75rem",
-          fontWeight: 500
-        }
-      }
+          fontWeight: 500,
+        },
+      },
     },
     yaxis: {
-      title:{
-        text: `${intl.formatMessage({defaultMessage:"Harvest Amount (in", id:"dashboard.graph.yaxisLabel"})} ${ unitName })`,
+      title: {
+        text: `${intl.formatMessage({
+          defaultMessage: "Harvest Amount (in",
+          id: "dashboard.graph.yaxisLabel",
+        })} ${unitName})`,
         style: {
-          fontFamily: "PlusJakartaSans, Inter, system-ui, Avenir, Helvetica, Arial, sans-serif",
+          fontFamily:
+            "PlusJakartaSans, Inter, system-ui, Avenir, Helvetica, Arial, sans-serif",
           fontSize: "0.75rem",
-          fontWeight: 500
-        }
-      }
+          fontWeight: 500,
+        },
+      },
     },
     tooltip: {
       y: {
         formatter(value) {
-          return `${ value } ${ unitName }`
+          return `${value} ${unitName}`;
         },
-      }
+      },
     },
-    colors: [theme.palette.primary.dark]
-  }
+    colors: [theme.palette.primary.dark],
+  };
 
   return (
     <Box>
@@ -110,61 +111,71 @@ const SplineGraph = (props: any) => {
           </Display>
         </Grid>
         <Grid item>
-          <ButtonGroup
-            color="secondary"
-            variant="outlined"
-            aria-label="Graph Filter Options"
-          >
+          <ButtonGroup variant="outlined" 
+          size="small"
+          aria-label="Graph Filter Options">
             <Button
               onClick={() => setDaysDelta("all")}
               sx={{
+                borderColor: theme.palette.grey[200],
                 bgcolor:
                   daysDelta === "all"
-                    ? `${theme.palette.secondary.main}3D`
+                    ? `${theme.palette.grey[200]}`
                     : "transparent",
+                "&:hover": { borderColor: `${theme.palette.grey[200]}` },
               }}
               aria-label={intl.formatMessage({
                 id: "dashboard.graph.filter.all_time",
               })}
             >
-              <FormattedMessage
-                id="dashboard.graph.filter.all_time"
-                defaultMessage="All time"
-              />{" "}
+              <BodyText size="sm" fontWeight="SemiBold" color="grey-900">
+                <FormattedMessage
+                  id="dashboard.graph.filter.all_time"
+                  defaultMessage="All time"
+                />
+              </BodyText>{" "}
             </Button>
             <Button
               onClick={() => setDaysDelta(30)}
               sx={{
+                borderColor: theme.palette.grey[200],
                 bgcolor:
                   daysDelta === 30
-                    ? `${theme.palette.secondary.main}3D`
+                    ? `${theme.palette.grey[200]}`
                     : "transparent",
+                "&:hover": { borderColor: `${theme.palette.grey[200]}` },
               }}
               aria-label={intl.formatMessage({
                 id: "dashboard.graph.filter.30_days",
               })}
             >
-              <FormattedMessage
-                id="dashboard.graph.filter.30_days"
-                defaultMessage="30 days"
-              />
+              <BodyText size="sm" fontWeight="SemiBold" color="grey-900">
+                <FormattedMessage
+                  id="dashboard.graph.filter.30_days"
+                  defaultMessage="30 days"
+                />
+              </BodyText>
             </Button>
             <Button
               onClick={() => setDaysDelta(7)}
               sx={{
+                borderColor: theme.palette.grey[200],
                 bgcolor:
                   daysDelta === 7
-                    ? `${theme.palette.secondary.main}3D`
+                    ? `${theme.palette.grey[200]}`
                     : "transparent",
+                "&:hover": { borderColor: `${theme.palette.grey[200]}` },
               }}
               aria-label={intl.formatMessage({
                 id: "dashboard.graph.filter.7_days",
               })}
             >
-              <FormattedMessage
-                id="dashboard.graph.filter.7_days"
-                defaultMessage="7 days"
-              />
+              <BodyText size="sm" fontWeight="SemiBold" color="grey-900">
+                <FormattedMessage
+                  id="dashboard.graph.filter.7_days"
+                  defaultMessage="7 days"
+                />
+              </BodyText>
             </Button>
           </ButtonGroup>
         </Grid>
@@ -185,7 +196,7 @@ const SplineGraph = (props: any) => {
         </Grid>
       )}
     </Box>
-  );  
-}
+  );
+};
 
 export default SplineGraph;
