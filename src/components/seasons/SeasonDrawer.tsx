@@ -27,7 +27,7 @@ import {
 import { createUnit, getUnits } from "api/units";
 import { useAlert } from "context/AlertProvider";
 import { useUser } from "context/UserProvider";
-import dayjs, { Dayjs } from "dayjs";
+import dayjs from "dayjs";
 import useQueryCache from "hooks/useQueryCache";
 import { PayrollTimeframeEnum, StatusEnum } from "project-2-types/dist";
 import React from "react";
@@ -126,7 +126,6 @@ const SeasonDrawer = ({ dismiss, seasonId, ...props }: SeasonDrawerProps) => {
   const [showEditForm, setShowEditForm] = useState<boolean>(!seasonId);
   const [showSuccess, setShowSuccess] = useState<boolean>(false);
 
-  const [startDate, setStartDate] = useState<Dayjs | null>(dayjs());
   const [products, setProducts] = useState<Array<IProduct>>([]);
   const [currencies, setCurrencies] = useState<Array<ICurrency>>([]);
   const [units, setUnits] = useState<Array<IUnit>>([]);
@@ -427,7 +426,7 @@ const SeasonDrawer = ({ dismiss, seasonId, ...props }: SeasonDrawerProps) => {
         <Controller
           control={control}
           name="startDate"
-          render={() => {
+          render={({ field }) => {
             return (
               <Box display="flex" flexDirection="column" gap={1}>
                 <InputLabel htmlFor="season-start-date-input" required>
@@ -437,11 +436,10 @@ const SeasonDrawer = ({ dismiss, seasonId, ...props }: SeasonDrawerProps) => {
                   })}
                 </InputLabel>
                 <DatePicker
-                  // label="Start Date"
-                  value={startDate}
+                  value={dayjs(field.value)}
                   slotProps={{ textField: { size: "small" } }}
                   onChange={(newValue) => {
-                    setStartDate(newValue);
+                    field.onChange(dayjs(newValue).toDate().getTime());
                   }}
                 />
               </Box>

@@ -10,7 +10,7 @@ import { FormattedMessage, useIntl } from "react-intl";
 
 import { ApexOptions } from "apexcharts";
 import Chart from "react-apexcharts";
-import { Display } from "ui/Typography";
+import { BodyText, Display } from "ui/Typography";
 
 import ChartGraphicLight from "../../assets/images/ChartGraphic.svg";
 import ChartGraphicDark from "../../assets/images/ChartGraphicDark.svg";
@@ -125,61 +125,71 @@ const SplineGraph = (props: any) => {
           </Box>
         </Grid>
         <Grid item>
-          <ButtonGroup
-            color="secondary"
-            variant="outlined"
-            aria-label="Graph Filter Options"
-          >
+          <ButtonGroup variant="outlined" 
+          size="small"
+          aria-label="Graph Filter Options">
             <Button
               onClick={() => setDaysDelta("all")}
               sx={{
+                borderColor: theme.palette.grey[200],
                 bgcolor:
                   daysDelta === "all"
-                    ? `${theme.palette.secondary.main}3D`
+                    ? `${theme.palette.grey[200]}`
                     : "transparent",
+                "&:hover": { borderColor: `${theme.palette.grey[200]}` },
               }}
               aria-label={intl.formatMessage({
                 id: "dashboard.graph.filter.all_time",
               })}
             >
-              <FormattedMessage
-                id="dashboard.graph.filter.all_time"
-                defaultMessage="All time"
-              />{" "}
+              <BodyText size="sm" fontWeight="SemiBold" color="grey-900">
+                <FormattedMessage
+                  id="dashboard.graph.filter.all_time"
+                  defaultMessage="All time"
+                />
+              </BodyText>{" "}
             </Button>
             <Button
               onClick={() => setDaysDelta(30)}
               sx={{
+                borderColor: theme.palette.grey[200],
                 bgcolor:
                   daysDelta === 30
-                    ? `${theme.palette.secondary.main}3D`
+                    ? `${theme.palette.grey[200]}`
                     : "transparent",
+                "&:hover": { borderColor: `${theme.palette.grey[200]}` },
               }}
               aria-label={intl.formatMessage({
                 id: "dashboard.graph.filter.30_days",
               })}
             >
-              <FormattedMessage
-                id="dashboard.graph.filter.30_days"
-                defaultMessage="30 days"
-              />
+              <BodyText size="sm" fontWeight="SemiBold" color="grey-900">
+                <FormattedMessage
+                  id="dashboard.graph.filter.30_days"
+                  defaultMessage="30 days"
+                />
+              </BodyText>
             </Button>
             <Button
               onClick={() => setDaysDelta(7)}
               sx={{
+                borderColor: theme.palette.grey[200],
                 bgcolor:
                   daysDelta === 7
-                    ? `${theme.palette.secondary.main}3D`
+                    ? `${theme.palette.grey[200]}`
                     : "transparent",
+                "&:hover": { borderColor: `${theme.palette.grey[200]}` },
               }}
               aria-label={intl.formatMessage({
                 id: "dashboard.graph.filter.7_days",
               })}
             >
-              <FormattedMessage
-                id="dashboard.graph.filter.7_days"
-                defaultMessage="7 days"
-              />
+              <BodyText size="sm" fontWeight="SemiBold" color="grey-900">
+                <FormattedMessage
+                  id="dashboard.graph.filter.7_days"
+                  defaultMessage="7 days"
+                />
+              </BodyText>
             </Button>
           </ButtonGroup>
         </Grid>
