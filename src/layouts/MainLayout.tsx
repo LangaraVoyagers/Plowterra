@@ -241,7 +241,10 @@ export default function MainLayout() {
               icon={icon}
               href={href}
               currPath={currPath}
-              setCurrPath={setCurrPath}
+              setCurrPath={(path) => {
+                setCurrPath(path);
+                setMobileOpen(!mobileOpen);
+              }}
             />
           ))}
         </List>
@@ -334,6 +337,8 @@ export default function MainLayout() {
         height="100%"
         flexGrow={1}
         minWidth={0}
+        maxWidth="1640px"
+        margin="auto"
       >
         {!!mobile && (
           <Header
