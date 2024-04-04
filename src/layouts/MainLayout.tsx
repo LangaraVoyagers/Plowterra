@@ -333,6 +333,7 @@ export default function MainLayout() {
         flexDirection="column"
         height="100%"
         flexGrow={1}
+        minWidth={0}
       >
         {!!mobile && (
           <Header
