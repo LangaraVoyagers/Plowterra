@@ -24,7 +24,7 @@
     "defaultMessage": "Run Payroll"
   },
   "dashboard.card.label.day": {
-    "defaultMessage": "day"
+    "defaultMessage": "{days, plural, one {day } other {days }}"
   },
   "dashboard.card.label.left": {
     "defaultMessage": "left"
@@ -643,9 +643,6 @@
   },
   "seasons.get.seasons.error": {
     "defaultMessage": "No seasons found"
-  },
-  "seasons.table.column.default": {
-    "defaultMessage": "Default"
   },
   "seasons.table.column.end_date": {
     "defaultMessage": "End Date"

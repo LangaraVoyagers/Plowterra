@@ -130,14 +130,7 @@ const columns = (currency: string): GridColDef[] => [
     flex: 0.25,
     align: "center",
     renderCell: (params: GridRenderCellParams) => {
-      return (
-        <FormattedDate
-          value={params.row.createdAt}
-          year="numeric"
-          month="short"
-          day="numeric"
-        />
-      );
+      return <FormattedDate value={params.row.createdAt} dateStyle="medium" />;
     },
   },
   {
@@ -170,7 +163,7 @@ const HarvestLogs = () => {
   const [startDate, setStartDate] = useState<Dayjs | null>(
     dayjs().startOf("week")
   );
-  const [endDate, setEndDate] = useState<Dayjs | null>(dayjs().endOf("week"));
+  const [endDate, setEndDate] = useState<Dayjs | null>(dayjs());
   const [searchTable, setSearchTable] = useState<string>();
 
   const [harvestLogs, setHarvestLogs] = useState<Array<IHarvestLogResponse>>(

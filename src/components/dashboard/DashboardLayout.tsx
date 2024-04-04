@@ -17,7 +17,11 @@ import {
 import { Display, Label } from "ui/Typography";
 import { FormattedDate, FormattedMessage } from "react-intl";
 import { Fragment, ReactNode, useEffect, useState } from "react";
-import { getDate, getEpochForDeltaDays, getGreeting } from "shared/date-helpers";
+import {
+  getDate,
+  getEpochForDeltaDays,
+  getGreeting,
+} from "shared/date-helpers";
 import { getGraphValues, getIndicators } from "api/dashbaoard";
 
 import { ApexOptions } from "apexcharts";
@@ -40,8 +44,8 @@ const cardProps = {
   borderRadius,
   padding: "1.5rem",
   width: "100%",
-  height: "100%"
-}
+  height: "100%",
+};
 
 const DashBoardLayout = () => {
   const { mode } = useThemMode();
@@ -58,19 +62,16 @@ const DashBoardLayout = () => {
   const [daysDelta, setDaysDelta] = useState<any>("all");
   const [fromDate, setFromDate] = useState<any>(`0000000000000`);
 
-  const {isLoading: isCardInfoLoading} = useQuery({
+  const { isLoading: isCardInfoLoading } = useQuery({
     queryKey: seasonSelected?._id,
     queryFn: () => getIndicators(seasonSelected?._id),
     enabled: !!seasonSelected?._id,
     onSuccess: (results) => {
-      const {
-        season,
-        payrollToTodayData, 
-        totals,
-        lastPayrolls
-      } = results;
+      const { season, payrollToTodayData, totals, lastPayrolls } = results;
 
-      setCardInfo(cardStruc(false, season, payrollToTodayData, totals, lastPayrolls));
+      setCardInfo(
+        cardStruc(false, season, payrollToTodayData, totals, lastPayrolls)
+      );
     },
     onError: (error) => {
       console.log(error);
@@ -84,23 +85,30 @@ const DashBoardLayout = () => {
     },
   });
 
-  const {isLoading: isGraphLoading} = useQuery({
+  const { isLoading: isGraphLoading } = useQuery({
     queryKey: [intl.locale, seasonSelected?._id, fromDate],
-    queryFn: () => getGraphValues(seasonSelected?._id, fromDate, new Date().getTime()),
+    queryFn: () =>
+      getGraphValues(seasonSelected?._id, fromDate, new Date().getTime()),
     enabled: !!seasonSelected?._id,
     onSuccess: (results) => {
-      const name = intl.formatMessage({defaultMessage: "Harvest Amount", id: "dashboard.tooltip.yaxis"});
+      const name = intl.formatMessage({
+        defaultMessage: "Harvest Amount",
+        id: "dashboard.tooltip.yaxis",
+      });
       const data: any = [];
-      results?.map((item: any)=> {
+      results?.map((item: any) => {
         const date = new Date(item?.date).getTime();
         const formatOptions = {
           year: "numeric",
           month: "short",
-          day: "2-digit"
+          day: "2-digit",
         } as const;
-        data.push({x: intl.formatDate(date, formatOptions), y: item?.collectedAmount})
-      })
-      setGraphSeries([{name, data}])
+        data.push({
+          x: intl.formatDate(date, formatOptions),
+          y: item?.collectedAmount,
+        });
+      });
+      setGraphSeries([{ name, data }]);
     },
     onError: (error) => {
       console.log(error);
@@ -112,40 +120,51 @@ const DashBoardLayout = () => {
         "error"
       );
     },
-  })
+  });
 
   useEffect(() => {
     setFromDate(getEpochForDeltaDays(daysDelta));
-  }, [daysDelta])
-  
+  }, [daysDelta]);
+
   return (
-    <Box padding={{md: "2rem"}}>
-      <Grid container mb="2rem" rowSpacing={gridGap} justifyContent="space-between" alignItems="flex-end">
+    <Box padding={{ md: "2rem" }}>
+      <Grid
+        container
+        mb="2rem"
+        rowSpacing={gridGap}
+        justifyContent="space-between"
+        alignItems="flex-end"
+      >
         <Grid item>
-          <Display
-            fontSize="md" 
-            fontWeight="Bold"
-            variant="h1">
-            { USER_GREETING }, { user.name }
+          <Display fontSize="md" fontWeight="Bold" variant="h1">
+            {USER_GREETING}, {user.name}
           </Display>
-          <Box mt="1rem" fontSize="1rem">
-            <FormattedMessage id="dashboard.greeting" defaultMessage="Today is" />
+          <Box mt="1.25rem" fontSize="1rem">
+            <FormattedMessage
+              id="dashboard.greeting"
+              defaultMessage="Today is"
+            />
             &ensp;
             <Display
               px="5px"
               fontSize="1rem"
               lineHeight="1.4"
               bgcolor="background.paper"
-              display="inline-block" 
+              display="inline-block"
               border="1px solid #D7D3D0"
-              borderRadius="4px">
-              { FORMATTED_DATE }
+              borderRadius="4px"
+            >
+              {FORMATTED_DATE}
             </Display>
           </Box>
         </Grid>
         <Grid item>
-          <Button onClick={() => navigate("/harvest-logs?new=true")} variant="contained" endIcon={<FilePlus />}>
-              Add Harvest Entry
+          <Button
+            onClick={() => navigate("/harvest-logs?new=true")}
+            variant="contained"
+            endIcon={<FilePlus />}
+          >
+            Add Harvest Entry
           </Button>
         </Grid>
       </Grid>
@@ -154,31 +173,35 @@ const DashBoardLayout = () => {
         mode={mode}
         cardInfo={cardInfo?.harvestInfo}
         seasonSelected={seasonSelected}
-        setSeasonSelected={setSeasonSelected} />
+        setSeasonSelected={setSeasonSelected}
+      />
       <MidSectionInfo
         theme={theme}
         mode={mode}
         isGraphLoading={isGraphLoading}
-        cardInfo={cardInfo?.midSectionInfo} 
+        cardInfo={cardInfo?.midSectionInfo}
         daysDelta={daysDelta}
         setDaysDelta={setDaysDelta}
         unitName={cardInfo?.unitName}
-        series={graphSeries} />
+        series={graphSeries}
+      />
       <Divider
-        style={{ 
+        style={{
           marginTop: "2.5rem",
-          background: theme.palette.grey[300] 
-        }} 
-        variant="fullWidth" />
-      <PayrollInfo 
+          background: theme.palette.grey[300],
+        }}
+        variant="fullWidth"
+      />
+      <PayrollInfo
         theme={theme}
         navigate={navigate}
         seasonSelected={seasonSelected}
         isCardInfoLoading={isCardInfoLoading}
-        cardInfo={cardInfo?.payrollInfo} />
+        cardInfo={cardInfo?.payrollInfo}
+      />
     </Box>
-  )
-}
+  );
+};
 
 export interface ISeasonOptions {
   label: string;
@@ -200,19 +223,16 @@ export interface IApexChartProps {
 const CardLayout = (props: ICardLayout) => {
   return (
     <Box {...props?.boxProps}>
-      <Label size="sm">{ props.label }</Label>
+      <Label size="sm">{props.label}</Label>
       <Display lineHeight="2" size="xs" fontWeight="SemiBold">
-        { props.content }
+        {props.content}
       </Display>
     </Box>
-  )
-}
+  );
+};
 
 const HarvestInfo = (props: any) => {
-  const { 
-    theme,
-    cardInfo,
-    setSeasonSelected } = props;
+  const { theme, cardInfo, setSeasonSelected } = props;
 
   return (
     <Grid item {...cardProps} xs={12}>
@@ -220,41 +240,50 @@ const HarvestInfo = (props: any) => {
         <SeasonFilterDataGrid
           status="ACTIVE"
           defaultFirst={false}
-          getDefaultSeasonId={(seasonId) => setSeasonSelected({_id: seasonId})}
+          getDefaultSeasonId={(seasonId) =>
+            setSeasonSelected({ _id: seasonId })
+          }
           onChange={setSeasonSelected}
           sx={{
             control: {
               fontSize: "1.25rem",
               fontWeight: 600,
               width: "16.375rem",
-              height: "3.375rem"
+              height: "3.375rem",
             },
             menu: {
-              width: "16.375rem"
-            }
+              width: "16.375rem",
+            },
           }}
         />
       </Box>
-      <Grid container rowSpacing={{ xs: "2rem" }} columnSpacing={{ lg: "2rem" }}>
-        {
-          cardInfo?.map((item: any, idx: number) => {
-            return (
-              <Grid key={idx} item xs={12} md={6} lg={3} xl={2.25}>
-                <CardLayout 
-                  label={item.label} 
-                  content={item.content} 
-                  labelColor={theme.palette.grey[500]}
-                  boxProps={idx === (cardInfo.length - 1) ? {} : {
-                    borderRight: seperator
-                  }} />
-              </Grid>
-            )
-          })
-        }
+      <Grid
+        container
+        rowSpacing={{ xs: "2rem" }}
+        columnSpacing={{ lg: "2rem" }}
+      >
+        {cardInfo?.map((item: any, idx: number) => {
+          return (
+            <Grid key={idx} item xs={12} md={6} lg={3} xl={2.25}>
+              <CardLayout
+                label={item.label}
+                content={item.content}
+                labelColor={theme.palette.grey[500]}
+                boxProps={
+                  idx === cardInfo.length - 1
+                    ? {}
+                    : {
+                        borderRight: seperator,
+                      }
+                }
+              />
+            </Grid>
+          );
+        })}
       </Grid>
     </Grid>
-  )
-}
+  );
+};
 
 const MidSectionInfo = (props: any) => {
   const {
@@ -392,10 +421,12 @@ const PayrollInfo = (props: any) => {
                 />
                 {payrollToToday?.daysLeft}&nbsp;
                 <FormattedMessage
-                  defaultMessage={"day"}
+                  defaultMessage="{days, plural, one {day } other {days }}"
                   id="dashboard.card.label.day"
+                  values={{
+                    days: payrollToToday?.daysLeft,
+                  }}
                 />
-                &nbsp;{payrollToToday?.daysLeft > 1 ? " s" : ""}&nbsp;
                 <FormattedMessage
                   defaultMessage={"left"}
                   id="dashboard.card.label.left"

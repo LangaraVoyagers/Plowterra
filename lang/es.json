@@ -24,7 +24,7 @@
     "defaultMessage": "Ejecutar"
   },
   "dashboard.card.label.day": {
-    "defaultMessage": "día"
+    "defaultMessage": "{days, plural, one {día } other {días }}"
   },
   "dashboard.card.label.left": {
     "defaultMessage": "restantes"
@@ -648,7 +648,7 @@
     "defaultMessage": "Favorito"
   },
   "seasons.table.column.end_date": {
-    "defaultMessage": "Fecha de Fin"
+    "defaultMessage": "Fecha Final"
   },
   "seasons.table.column.name": {
     "defaultMessage": "Nombre"
