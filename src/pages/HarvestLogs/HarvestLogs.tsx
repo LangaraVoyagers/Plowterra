@@ -146,6 +146,7 @@ const columns = (currency: string): GridColDef[] => [
     align: "center",
     width: 150,
     flex: 0.15,
+    sortable: false,
     disableColumnMenu: true,
     renderCell: (data: GridRenderCellParams<{ _id: string }>) => {
       return <UpdateHarvestLog harvestLogId={data.row._id} />;

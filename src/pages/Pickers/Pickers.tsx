@@ -136,6 +136,7 @@ const columns: GridColDef[] = [
     align: "center",
     width: 150,
     flex: 0.15,
+    sortable: false,
     disableColumnMenu: true,
     renderCell: (data: GridRenderCellParams<IPickerResponse>) => {
       return <UpdatePicker pickerId={data.row._id} />;

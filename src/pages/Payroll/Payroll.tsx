@@ -134,6 +134,7 @@ const columns = (currency: string): GridColDef[] => [
     align: "center",
     width: 150,
     flex: 0.15,
+    sortable: false,
     disableColumnMenu: true,
     renderCell: () => <ViewMoreButton />,
   },
