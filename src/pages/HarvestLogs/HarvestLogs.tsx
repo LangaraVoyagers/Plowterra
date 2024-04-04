@@ -91,9 +91,11 @@ const columns = (currency: string): GridColDef[] => [
         defaultMessage="Amount"
       />
     ),
-    flex: 0.1,
+    flex: 0.15,
     headerAlign: "right",
     align: "right",
+    disableColumnMenu: true,
+    hideSortIcons: true,
     renderCell: (params) => {
       return (
         <BodyText>
@@ -115,7 +117,12 @@ const columns = (currency: string): GridColDef[] => [
     headerAlign: "right",
     align: "right",
     renderCell: (params: GridRenderCellParams) => {
-      return <FormattedNumber value={params.row.totalDeduction} />;
+      return (
+        <FormattedNumber
+          value={params.row.totalDeduction}
+          minimumFractionDigits={2}
+        />
+      );
     },
   },
   {
@@ -130,11 +137,7 @@ const columns = (currency: string): GridColDef[] => [
     flex: 0.25,
     align: "center",
     renderCell: (params: GridRenderCellParams) => {
-      return (
-        <BodyText size="md" fontWeight="Medium">
-          <FormattedDate value={params.row.createdAt} dateStyle="medium" />
-        </BodyText>
-      );
+      return <FormattedDate value={params.row.createdAt} dateStyle="medium" />;
     },
   },
   {

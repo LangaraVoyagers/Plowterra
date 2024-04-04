@@ -19,7 +19,6 @@ import { useQuery } from "react-query";
 import { useNavigate } from "react-router-dom";
 import DataTable from "ui/DataTable";
 import { Display } from "ui/Typography";
-import ViewMoreButton from "ui/ViewMoreButton";
 
 const columns = (currency: string): GridColDef[] => [
   {
@@ -30,7 +29,8 @@ const columns = (currency: string): GridColDef[] => [
         defaultMessage="Pay Period"
       />
     ),
-    flex: 0.5,
+    disableColumnMenu: true,
+    flex: 0.25,
     minWidth: 100,
     renderCell: (params: GridRenderCellParams) => {
       return (
@@ -52,6 +52,7 @@ const columns = (currency: string): GridColDef[] => [
   },
   {
     field: "netAmount",
+    flex: 0.25,
     renderHeader: () => (
       <FormattedMessage
         id="payroll.history.columns.net_pay.header"
@@ -62,7 +63,10 @@ const columns = (currency: string): GridColDef[] => [
     headerAlign: "right",
     align: "right",
     renderCell: (params) => (
-      <FormattedNumber value={params.row.totals.netAmount} />
+      <FormattedNumber
+        value={params.row.totals.netAmount}
+        minimumFractionDigits={2}
+      />
     ),
   },
   {
@@ -75,6 +79,7 @@ const columns = (currency: string): GridColDef[] => [
     ),
     headerAlign: "right",
     align: "right",
+    flex: 0.25,
     renderCell: (params) => (
       <Box display="flex" gap={0.88} paddingLeft="3rem">
         <FormattedNumber value={params.row.totals.collectedAmount} />
@@ -91,10 +96,14 @@ const columns = (currency: string): GridColDef[] => [
         values={{ currency }}
       />
     ),
+    flex: 0.25,
     headerAlign: "right",
     align: "right",
     renderCell: (params) => (
-      <FormattedNumber value={params.row.totals.deductions} />
+      <FormattedNumber
+        value={params.row.totals.deductions}
+        minimumFractionDigits={2}
+      />
     ),
   },
   {
@@ -106,6 +115,7 @@ const columns = (currency: string): GridColDef[] => [
         defaultMessage="Pickers"
       />
     ),
+    flex: 0.25,
     renderCell: (params) => (
       <Box display="flex" gap={0.88} paddingLeft="3rem">
         <User size="1.25rem" />
@@ -121,23 +131,25 @@ const columns = (currency: string): GridColDef[] => [
         defaultMessage="Pay Date"
       />
     ),
+    flex: 0.25,
     renderCell: (params) => (
       <FormattedDate value={params.value} month="short" day="2-digit" />
     ),
   },
-  {
-    field: "actions",
-    renderHeader: () => (
-      <FormattedMessage id="datagrid.column.actions" defaultMessage="Actions" />
-    ),
-    headerAlign: "center",
-    align: "center",
-    width: 150,
-    flex: 0.15,
-    sortable: false,
-    disableColumnMenu: true,
-    renderCell: () => <ViewMoreButton />,
-  },
+  // {
+  //   field: "actions",
+  //   renderHeader: () => (
+  //     <FormattedMessage id="datagrid.column.actions" defaultMessage="Actions" />
+  //   ),
+  //   headerAlign: "center",
+  //   align: "center",
+  //   width: 150,
+  //   flex: 0.15,
+  //   sortable: false,
+  //   disableColumnMenu: true,
+  //   renderCell: () => <ViewMoreButton />,
+  // },
+  // TODO: hide temporarily
 ];
 
 const Payroll = () => {
