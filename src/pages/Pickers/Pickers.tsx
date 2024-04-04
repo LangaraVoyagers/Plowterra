@@ -130,12 +130,13 @@ const columns: GridColDef[] = [
   {
     field: "actions",
     renderHeader: () => (
-      <FormattedMessage id="table.column.actions" defaultMessage="Actions" />
+      <FormattedMessage id="datagrid.column.actions" defaultMessage="Actions" />
     ),
+    headerAlign: "center",
+    align: "center",
     width: 150,
     flex: 0.15,
-    align: "center",
-    headerAlign: "center",
+    disableColumnMenu: true,
     renderCell: (data: GridRenderCellParams<IPickerResponse>) => {
       return <UpdatePicker pickerId={data.row._id} />;
     },

@@ -124,10 +124,6 @@ const columns = (currency: string, unit: string): GridColDef[] => [
       return <FormattedNumber value={params.row.netAmount} />;
     },
   },
-  {
-    field: "actions",
-    width: 100,
-  },
 ];
 
 const Preview: React.FC = () => {

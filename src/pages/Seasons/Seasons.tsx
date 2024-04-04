@@ -183,12 +183,13 @@ const columns = (
   {
     field: "actions",
     renderHeader: () => (
-      <FormattedMessage id="table.column.actions" defaultMessage="Actions" />
+      <FormattedMessage id="datagrid.column.actions" defaultMessage="Actions" />
     ),
-    width: 150,
-    align: "center",
     headerAlign: "center",
-    sortable: false,
+    align: "center",
+    width: 150,
+    flex: 0.15,
+    disableColumnMenu: true,
     renderCell: (data: GridRenderCellParams<{ _id: string }>) => {
       return <UpdateSeason seasonId={data.row._id} />;
     },

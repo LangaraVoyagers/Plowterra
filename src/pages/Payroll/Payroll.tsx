@@ -128,10 +128,13 @@ const columns = (currency: string): GridColDef[] => [
   {
     field: "actions",
     renderHeader: () => (
-      <FormattedMessage id="table.column.actions" defaultMessage="Actions" />
+      <FormattedMessage id="datagrid.column.actions" defaultMessage="Actions" />
     ),
     headerAlign: "center",
     align: "center",
+    width: 150,
+    flex: 0.15,
+    disableColumnMenu: true,
     renderCell: () => <ViewMoreButton />,
   },
 ];
