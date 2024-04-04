@@ -14,7 +14,7 @@ import {
   LinearProgress,
   useTheme,
 } from "@mui/material";
-import { Display, Label } from "ui/Typography";
+import { BodyText, Display, Label } from "ui/Typography";
 import { FormattedDate, FormattedMessage } from "react-intl";
 import { Fragment, ReactNode, useEffect, useState } from "react";
 import {
@@ -139,23 +139,25 @@ const DashBoardLayout = () => {
           <Display fontSize="md" fontWeight="Bold" variant="h1">
             {USER_GREETING}, {user.name}
           </Display>
-          <Box mt="1.25rem" fontSize="1rem">
-            <FormattedMessage
-              id="dashboard.greeting"
-              defaultMessage="Today is"
-            />
-            &ensp;
-            <Display
+          <Box mt="1.25rem" display="flex" gap={1}>
+            <BodyText>
+              <FormattedMessage
+                id="dashboard.greeting"
+                defaultMessage="Today is"
+              />
+            </BodyText>
+
+            <Box
               px="5px"
-              fontSize="1rem"
-              lineHeight="1.4"
               bgcolor="background.paper"
-              display="inline-block"
+              width="fit-content"
               border="1px solid #D7D3D0"
               borderRadius="4px"
             >
-              {FORMATTED_DATE}
-            </Display>
+              <BodyText size="sm" color="grey-500" fontWeight="SemiBold">
+                {FORMATTED_DATE}
+              </BodyText>
+            </Box>
           </Box>
         </Grid>
         <Grid item>
@@ -362,12 +364,13 @@ const PayrollInfo = (props: any) => {
 
   return (
     <Grid container mt="1.125rem" spacing={gridGap}>
-      <Grid item xs={12} lg={3}>
-        <Box {...cardProps}>
-          <Label fontSize="1.14rem">{payrollToToday?.label}</Label>
+      <Grid item xs={12} lg={4} xl={3}>
+        <Box {...cardProps} display="flex" flexDirection="column" gap={2}>
+          <Label color="grey-500" size="sm" fontWeight="SemiBold">
+            {payrollToToday?.label}
+          </Label>
           <Box
             p="0.5rem"
-            mt="1.3rem"
             bgcolor={theme.palette.grey[100]}
             padding="0.5rem"
             borderRadius={borderRadius}
@@ -378,16 +381,12 @@ const PayrollInfo = (props: any) => {
           </Box>
           <Box
             display="flex"
-            mt="1.0625rem"
             alignItems="center"
             justifyContent="space-between"
+            flexWrap="wrap"
+            gap={1}
           >
-            <Display
-              fontSize="0.875rem"
-              color="grey-900"
-              size="sm"
-              fontWeight="Medium"
-            >
+            <BodyText color="grey-900" size="sm" fontWeight="Medium">
               <FormattedMessage
                 defaultMessage="Starting: {startDate}"
                 id="dashboard.labels.starting"
@@ -395,166 +394,144 @@ const PayrollInfo = (props: any) => {
                   startDate: payrollToToday?.startDate,
                 }}
               />
-            </Display>
+            </BodyText>
             <Box
-              display="inline-flex"
+              display="flex"
+              flexWrap="nowrap"
               padding="1px 9px"
               alignItems="center"
               justifyContent="center"
               border={`1px solid ${theme.palette.primary.dark}`}
               borderRadius="100px"
-              width="5.437"
-              height="1.375"
+              py={0.5}
             >
               <Box
-                color={theme.palette.primary.dark}
-                fontSize="0.75rem"
-                fontWeight={500}
-              >
-                <Box
-                  mr="8px"
-                  display="inline-block"
-                  width="0.5rem"
-                  height="0.5rem"
-                  borderRadius="100%"
-                  bgcolor={theme.palette.primary.dark}
-                />
-                {payrollToToday?.daysLeft}&nbsp;
+                mr="8px"
+                display="inline-block"
+                width="0.5rem"
+                height="0.5rem"
+                borderRadius="100%"
+                bgcolor={theme.palette.primary.dark}
+              />
+              <BodyText size="xs" fontWeight="Medium">
                 <FormattedMessage
-                  defaultMessage="{days, plural, one {day } other {days }}"
+                  defaultMessage="{days, plural, one {{days} day left} other {{days} days left}}"
                   id="dashboard.card.label.day"
                   values={{
                     days: payrollToToday?.daysLeft,
                   }}
                 />
-                <FormattedMessage
-                  defaultMessage={"left"}
-                  id="dashboard.card.label.left"
-                />
-              </Box>
+              </BodyText>
             </Box>
           </Box>
+
           <Button
             variant="text"
             onClick={() =>
               navigate(`/payroll/preview?seasonId=${seasonSelected?._id}`)
             }
+            endIcon={<ArrowRight size="1rem" weight="bold" />}
             sx={{
-              justifyContent: "left",
-              marginTop: "1.2rem",
               padding: "0 !important",
+              background: "transparent !important",
+              width: "fix-content",
+              justifyContent: "left",
             }}
           >
-            <Display
-              lineHeight="1.3"
-              color="primary-900"
-              display="flex"
-              alignItems="center"
-              fontSize="1rem"
-              fontWeight="SemiBold"
-            >
-              <FormattedMessage
-                defaultMessage="Run Payroll"
-                id="dashboard.button.runPayroll"
-              />
-              &ensp;
-              <ArrowRight />
-            </Display>
+            <FormattedMessage
+              defaultMessage="Run Payroll"
+              id="dashboard.button.runPayroll"
+            />
           </Button>
         </Box>
       </Grid>
 
-      <Grid item xs={12} lg={9}>
+      <Grid item xs={12} lg={8} xl={9}>
         <Box {...cardProps}>
-          <Display fontSize="1rem" mb="1rem" lineHeight="1" fontWeight="Medium">
+          <BodyText
+            fontSize="1.125rem"
+            mb="1rem"
+            lineHeight="1"
+            fontWeight="Medium"
+          >
             <FormattedMessage
               defaultMessage="Recent Payrolls"
               id="dashboard.labels.recentPayrolls"
             />
-          </Display>
-          <Grid container rowSpacing={gridGap} columnSpacing={gridGap}>
-            {isCardInfoLoading ? (
-              <Grid item xs={12}>
-                <LinearProgress color="secondary" />
-              </Grid>
-            ) : (
-              lastPayrolls?.map((item: any, idx: number) => {
-                return (
-                  <Grid item xs={12} md={6} lg={4} key={idx}>
-                    <Box
-                      px="1rem"
-                      py="1.5rem"
-                      bgcolor={theme.palette.grey[100]}
-                      borderRadius={borderRadius}
-                    >
-                      <Display
-                        fontSize="0.875rem"
-                        fontWeight="Medium"
-                        lineHeight="1"
+          </BodyText>
+          <Box display="flex" overflow="auto">
+            <Grid container rowSpacing={gridGap} columnSpacing={gridGap}>
+              {isCardInfoLoading ? (
+                <Grid item xs={12}>
+                  <LinearProgress color="secondary" />
+                </Grid>
+              ) : (
+                lastPayrolls?.map((item: any, idx: number) => {
+                  return (
+                    <Grid item xs={12} sm={6} md={6} lg={4} key={idx}>
+                      <Box
+                        px="1rem"
+                        py="1.5rem"
+                        bgcolor={theme.palette.grey[100]}
+                        borderRadius={borderRadius}
+                        display="flex"
+                        flexDirection="column"
+                        gap={4}
                       >
-                        <FormattedDate
-                          value={new Date(item?.startDate)}
-                          month="short"
-                          day="2-digit"
-                        />
-                        &ensp;-&ensp;
-                        <FormattedDate
-                          value={new Date(item?.endDate)}
-                          month="short"
-                          day="2-digit"
-                        />
-                      </Display>
-                      <Grid
-                        container
-                        mt="1rem"
-                        rowSpacing="1rem"
-                        columnSpacing="1rem"
-                      >
-                        <Grid item xs={12} lg={6}>
+                        <BodyText size="sm" fontWeight="Medium">
+                          <FormattedDate
+                            value={new Date(item?.startDate)}
+                            month="short"
+                            day="2-digit"
+                          />
+                          &ensp;-&ensp;
+                          <FormattedDate
+                            value={new Date(item?.endDate)}
+                            month="short"
+                            day="2-digit"
+                          />
+                        </BodyText>
+
+                        <Box display="flex" gap={2} flexWrap="wrap">
                           <Box
                             display="flex"
                             alignItems="center"
                             bgcolor="background.paper"
                             padding="0.5rem"
                             borderRadius={borderRadius}
+                            flexWrap="nowrap"
+                            flex={1}
                           >
-                            <HandCoins size="1rem" />
-                            <Display
-                              fontSize="0.875rem"
-                              fontWeight="Medium"
-                              lineHeight="1"
-                            >
+                            <HandCoins size={16} />
+                            <BodyText size="sm" fontWeight="Medium">
                               &ensp;{item?.season?.currency}&nbsp;
                               {item?.totals?.netAmount}
-                            </Display>
+                            </BodyText>
                           </Box>
-                        </Grid>
-                        <Grid item xs={12} lg={6}>
+
                           <Box
                             display="flex"
                             alignItems="center"
                             bgcolor="background.paper"
                             padding="0.5rem"
                             borderRadius={borderRadius}
+                            flexWrap="nowrap"
+                            flex={1}
                           >
-                            <Plant size="1rem" />
-                            <Display
-                              fontSize="0.875rem"
-                              fontWeight="Medium"
-                              lineHeight="1"
-                            >
+                            <Plant size={16} />
+                            <BodyText size="sm" fontWeight="Medium">
                               &ensp;{item?.totals?.collectedAmount}&nbsp;
                               {item?.season?.unit}
-                            </Display>
+                            </BodyText>
                           </Box>
-                        </Grid>
-                      </Grid>
-                    </Box>
-                  </Grid>
-                );
-              })
-            )}
-          </Grid>
+                        </Box>
+                      </Box>
+                    </Grid>
+                  );
+                })
+              )}
+            </Grid>
+          </Box>
         </Box>
       </Grid>
     </Grid>

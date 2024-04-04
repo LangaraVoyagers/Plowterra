@@ -24,10 +24,7 @@
     "defaultMessage": "Run Payroll"
   },
   "dashboard.card.label.day": {
-    "defaultMessage": "{days, plural, one {day } other {days }}"
-  },
-  "dashboard.card.label.left": {
-    "defaultMessage": "left"
+    "defaultMessage": "{days, plural, one {{days} day left} other {{days} days left}}"
   },
   "dashboard.get.graph.error": {
     "defaultMessage": "Some error occurred, Please try again later"
@@ -524,6 +521,12 @@
   "season.close.description": {
     "defaultMessage": "After closing this season, this cannot be updated, and you will not be able to add more harvest logs."
   },
+  "season.deductions.name.header": {
+    "defaultMessage": "Deduction Name"
+  },
+  "season.deductions.price.header": {
+    "defaultMessage": "Deduction Price"
+  },
   "season.detail.error": {
     "defaultMessage": "Oops! Information couldn't be displayed."
   },
@@ -703,9 +706,6 @@
   },
   "sidebar.quick_actions.add_picker": {
     "defaultMessage": "Add Picker"
-  },
-  "table.column.actions": {
-    "defaultMessage": "Actions"
   },
   "user.menu.log_out": {
     "defaultMessage": "Log out"

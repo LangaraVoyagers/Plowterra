@@ -24,10 +24,7 @@
     "defaultMessage": "Ejecutar"
   },
   "dashboard.card.label.day": {
-    "defaultMessage": "{days, plural, one {día } other {días }}"
-  },
-  "dashboard.card.label.left": {
-    "defaultMessage": "restantes"
+    "defaultMessage": "{days, plural, one {día restante} other {días restantes}}"
   },
   "dashboard.get.graph.error": {
     "defaultMessage": "Se produjo un error. Vuelve a intentarlo más tarde."
@@ -523,6 +520,12 @@
   },
   "season.close.description": {
     "defaultMessage": "Después de cerrar esta temporada, no se podrá actualizar y no podrá agregar más registros de cosecha."
+  },
+  "season.deductions.name.header": {
+    "defaultMessage": "Nombre"
+  },
+  "season.deductions.price.header": {
+    "defaultMessage": "Precio"
   },
   "season.detail.error": {
     "defaultMessage": "¡Ups! No se pudo mostrar la información."

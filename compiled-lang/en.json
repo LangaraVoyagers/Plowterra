@@ -54,16 +54,24 @@
         "one": {
           "value": [
             {
+              "type": 1,
+              "value": "days"
+            },
+            {
               "type": 0,
-              "value": "day "
+              "value": " day left"
             }
           ]
         },
         "other": {
           "value": [
             {
+              "type": 1,
+              "value": "days"
+            },
+            {
               "type": 0,
-              "value": "days "
+              "value": " days left"
             }
           ]
         }
@@ -71,12 +79,6 @@
       "pluralType": "cardinal",
       "type": 6,
       "value": "days"
-    }
-  ],
-  "dashboard.card.label.left": [
-    {
-      "type": 0,
-      "value": "left"
     }
   ],
   "dashboard.get.graph.error": [
@@ -1209,6 +1211,18 @@
       "value": "After closing this season, this cannot be updated, and you will not be able to add more harvest logs."
     }
   ],
+  "season.deductions.name.header": [
+    {
+      "type": 0,
+      "value": "Deduction Name"
+    }
+  ],
+  "season.deductions.price.header": [
+    {
+      "type": 0,
+      "value": "Deduction Price"
+    }
+  ],
   "season.detail.error": [
     {
       "type": 0,
@@ -1615,12 +1629,6 @@
     {
       "type": 0,
       "value": "Add Picker"
-    }
-  ],
-  "table.column.actions": [
-    {
-      "type": 0,
-      "value": "Actions"
     }
   ],
   "user.menu.log_out": [
