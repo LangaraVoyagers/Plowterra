@@ -1,11 +1,11 @@
-import { Box, useMediaQuery, useTheme } from "@mui/material";
-import { FormattedDate, FormattedMessage, useIntl } from "react-intl"
+import { Avatar, Box, useMediaQuery, useTheme } from "@mui/material";
+import { FormattedDate, FormattedMessage, useIntl } from "react-intl";
 import {
   GridColDef,
   GridRenderCellParams,
   GridSortItem,
   GridValueGetterParams,
-} from "@mui/x-data-grid"
+} from "@mui/x-data-grid";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 
@@ -36,16 +36,34 @@ const columns: GridColDef[] = [
       />
     ),
     minWidth: 150,
-    flex: 0.5,
+    flex: 0.25,
     renderCell: (params) => {
       return (
-        <Box>
-          <BodyText size="md" fontWeight="Medium">
-            {params.row.name}
-          </BodyText>
-          <BodyText size="xs" color="grey-500">
-            {params.row.phone}
-          </BodyText>
+        <Box display="flex" gap={2}>
+          <Avatar
+            sx={({ palette }) => {
+              return {
+                background: palette.grey[100],
+                color: palette.grey[600],
+              };
+            }}
+          >
+            <BodyText size="md" fontWeight="Bold">
+              {params.row.name
+                ?.split(" ")
+                ?.splice(0, 2)
+                ?.map((word: string) => word[0])
+                ?.join("")}
+            </BodyText>
+          </Avatar>
+          <Box display="flex" flexDirection="column">
+            <BodyText size="md" fontWeight="Medium">
+              {params.row.name}
+            </BodyText>
+            <BodyText size="xs" color="grey-500">
+              {params.row.phone}
+            </BodyText>
+          </Box>
         </Box>
       );
     },
@@ -56,7 +74,7 @@ const columns: GridColDef[] = [
       <FormattedMessage id="pickers.table.column.name" defaultMessage="Name" />
     ),
     minWidth: 150,
-    flex: 0.5,
+    flex: 0.25,
     editable: true,
   },
   {
@@ -96,7 +114,6 @@ const columns: GridColDef[] = [
     field: "createdAt",
     headerName: "Created at",
     flex: 0.25,
-
     valueGetter: (params: GridValueGetterParams<IPickerResponse>) =>
       params.row.createdAt,
     renderCell: (params: GridRenderCellParams<IPickerResponse>) => {
@@ -115,7 +132,8 @@ const columns: GridColDef[] = [
     renderHeader: () => (
       <FormattedMessage id="table.column.actions" defaultMessage="Actions" />
     ),
-    width: 100,
+    width: 150,
+    flex: 0.15,
     align: "center",
     headerAlign: "center",
     renderCell: (data: GridRenderCellParams<IPickerResponse>) => {
@@ -211,10 +229,38 @@ const Pickers = () => {
           sortModel={sortModel[0]}
           setSortModel={setSortModel}
           options={[
-            { field: "name", sort: "asc", label: intl.formatMessage({ id: "pickers.sort.az", defaultMessage: "A to Z" }) },
-            { field: "name", sort: "desc", label: intl.formatMessage({ id: "pickers.sort.za", defaultMessage: "Z to A" }) },
-            { field: "createdAt", sort: "desc", label: intl.formatMessage({ id: "pickers.sort.recent", defaultMessage: "Recent" }) },
-            { field: "createdAt", sort: "asc", label: intl.formatMessage({ id: "pickers.sort.long", defaultMessage: "Long-standing" }) },
+            {
+              field: "name",
+              sort: "asc",
+              label: intl.formatMessage({
+                id: "pickers.sort.az",
+                defaultMessage: "A to Z",
+              }),
+            },
+            {
+              field: "name",
+              sort: "desc",
+              label: intl.formatMessage({
+                id: "pickers.sort.za",
+                defaultMessage: "Z to A",
+              }),
+            },
+            {
+              field: "createdAt",
+              sort: "desc",
+              label: intl.formatMessage({
+                id: "pickers.sort.recent",
+                defaultMessage: "Recent",
+              }),
+            },
+            {
+              field: "createdAt",
+              sort: "asc",
+              label: intl.formatMessage({
+                id: "pickers.sort.long",
+                defaultMessage: "Long-standing",
+              }),
+            },
           ]}
         />
         {desktop ? (
@@ -266,10 +312,9 @@ const Pickers = () => {
 
       {!!open && (
         <PickerDrawer pickerId={params.id} dismiss={hideDrawer} open />
-        // Replace with Picker detail
       )}
     </BasicHome>
   );
 };
 
-export default Pickers
+export default Pickers;
