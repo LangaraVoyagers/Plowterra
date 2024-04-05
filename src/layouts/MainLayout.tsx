@@ -31,6 +31,7 @@ import paths from "shared/paths";
 import { useLocation } from 'react-router-dom';
 import { usePersistedState } from "hooks/usePersistedState";
 import { useThemMode } from "context/ThemeProvider";
+import { useNavigate } from "react-router-dom";
 
 const DRAWER_WIDTH = 288;
 
@@ -146,7 +147,9 @@ export default function MainLayout() {
   const theme = useTheme();
   const mobile = useMediaQuery(theme.breakpoints.down("md"));
   const { mode } = useThemMode();
-  const [currPath, setCurrPath] = useState<string|undefined>();
+  const navigate = useNavigate();
+
+  const [currPath, setCurrPath] = useState<string | undefined>();
 
   const [expanded, setOpen] = usePersistedState("sidebar-expanded", true);
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -159,7 +162,7 @@ export default function MainLayout() {
   useEffect(() => {
     setCurrPath(location.pathname);
   }, [location.pathname]);
-  
+
   const handleDrawerClose = () => {
     if (mobile) {
       setMobileOpen(!mobileOpen);
@@ -192,13 +195,25 @@ export default function MainLayout() {
             width="100%"
           >
             {!!open || !!mobileOpen ? (
-              <img src={Logo} alt="Plowterra logo" height={30} aria-hidden />
+              <img
+                src={Logo}
+                alt="Plowterra logo"
+                height={30}
+                style={{
+                  cursor: "pointer",
+                }}
+                onClick={() => navigate("/")}
+                aria-hidden
+              />
             ) : (
               <img
                 src={LogoSquare}
                 alt="Plowterra logo"
                 height={30}
                 onClick={handleDrawerClose}
+                style={{
+                  cursor: "pointer",
+                }}
                 aria-hidden
               />
             )}
@@ -243,7 +258,9 @@ export default function MainLayout() {
               currPath={currPath}
               setCurrPath={(path) => {
                 setCurrPath(path);
-                setMobileOpen(!mobileOpen);
+                if (mobile) {
+                  setMobileOpen(!mobileOpen);
+                }
               }}
             />
           ))}
