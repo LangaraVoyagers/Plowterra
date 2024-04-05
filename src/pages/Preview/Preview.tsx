@@ -471,7 +471,10 @@ const Preview: React.FC = () => {
                 })}
               </Label>
               <Display size="xs" fontWeight="SemiBold">
-                {payrollData?.totals?.netAmount}
+                <FormattedNumber
+                  value={payrollData?.totals?.netAmount ?? 0}
+                  minimumFractionDigits={2}
+                />
               </Display>
             </Card>
             <Card>
