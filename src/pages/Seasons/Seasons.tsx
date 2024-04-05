@@ -56,6 +56,7 @@ const columns = (
     valueGetter: (params) => {
       return defaultSeasonId === params.row._id;
     },
+    disableColumnMenu: true,
     renderCell: (params) => {
       return (
         <Box
@@ -166,7 +167,7 @@ const columns = (
         defaultMessage="End Date"
       />
     ),
-    flex: 0.5,
+    flex: 0.25,
     renderCell: (params: GridRenderCellParams<ISeasonResponse>) => {
       if (params.row.endDate) {
         return (
@@ -183,11 +184,13 @@ const columns = (
   {
     field: "actions",
     renderHeader: () => (
-      <FormattedMessage id="table.column.actions" defaultMessage="Actions" />
+      <FormattedMessage id="datagrid.column.actions" defaultMessage="Actions" />
     ),
-    width: 150,
-    align: "center",
     headerAlign: "center",
+    align: "center",
+    width: 150,
+    flex: 0.15,
+    disableColumnMenu: true,
     sortable: false,
     renderCell: (data: GridRenderCellParams<{ _id: string }>) => {
       return <UpdateSeason seasonId={data.row._id} />;

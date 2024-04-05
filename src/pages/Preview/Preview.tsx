@@ -41,7 +41,11 @@ const columns = (currency: string, unit: string): GridColDef[] => [
         defaultMessage="No."
       />
     ),
-    width: 50,
+    align: "center",
+    headerAlign: "center",
+    disableColumnMenu: true,
+    hideSortIcons: true,
+    width: 80,
     valueGetter: (params) => {
       return params.row.index + 1;
     },
@@ -54,7 +58,7 @@ const columns = (currency: string, unit: string): GridColDef[] => [
         defaultMessage="Picker"
       />
     ),
-    flex: 0.5,
+    flex: 0.25,
     minWidth: 100,
     valueGetter: (params) => {
       return params.row.picker.name;
@@ -71,8 +75,14 @@ const columns = (currency: string, unit: string): GridColDef[] => [
     ),
     headerAlign: "right",
     align: "right",
+    flex: 0.25,
     renderCell: (params) => {
-      return <FormattedNumber value={params.row.grossAmount} />;
+      return (
+        <FormattedNumber
+          value={params.row.grossAmount}
+          minimumFractionDigits={2}
+        />
+      );
     },
   },
   {
@@ -83,6 +93,7 @@ const columns = (currency: string, unit: string): GridColDef[] => [
         defaultMessage="Harvest Amount"
       />
     ),
+    flex: 0.25,
     headerAlign: "right",
     align: "right",
     renderCell: (params) => {
@@ -102,31 +113,42 @@ const columns = (currency: string, unit: string): GridColDef[] => [
         values={{ currency }}
       />
     ),
+    flex: 0.25,
     headerAlign: "right",
     align: "right",
     renderCell: (params) => {
-      return <FormattedNumber value={params.row.deductions} />;
+      return (
+        <FormattedNumber
+          value={params.row.deductions}
+          minimumFractionDigits={2}
+        />
+      );
     },
   },
   {
     field: "netAmount",
     renderHeader: () => (
-      <FormattedMessage
-        id="payroll.preview.columns.net_pay.header"
-        defaultMessage="Net Pay {currency}"
-        values={{ currency }}
-      />
+      <Box paddingRight={4}>
+        <FormattedMessage
+          id="payroll.preview.columns.net_pay.header"
+          defaultMessage="Net Pay {currency}"
+          values={{ currency }}
+        />
+      </Box>
     ),
     headerAlign: "right",
     align: "right",
     flex: 0.25,
     renderCell: (params) => {
-      return <FormattedNumber value={params.row.netAmount} />;
+      return (
+        <Box paddingRight={4}>
+          <FormattedNumber
+            value={params.row.netAmount}
+            minimumFractionDigits={2}
+          />
+        </Box>
+      );
     },
-  },
-  {
-    field: "actions",
-    width: 100,
   },
 ];
 
@@ -449,7 +471,10 @@ const Preview: React.FC = () => {
                 })}
               </Label>
               <Display size="xs" fontWeight="SemiBold">
-                {payrollData?.totals?.netAmount}
+                <FormattedNumber
+                  value={payrollData?.totals?.netAmount ?? 0}
+                  minimumFractionDigits={2}
+                />
               </Display>
             </Card>
             <Card>

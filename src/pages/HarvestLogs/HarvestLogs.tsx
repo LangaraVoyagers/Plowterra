@@ -45,7 +45,7 @@ const columns = (currency: string): GridColDef[] => [
       />
     ),
     minWidth: 150,
-    flex: 0.5,
+    flex: 0.25,
     valueGetter: (params: GridValueGetterParams<IHarvestLogResponse>) =>
       params.row.picker?.name,
   },
@@ -58,7 +58,7 @@ const columns = (currency: string): GridColDef[] => [
       />
     ),
     minWidth: 120,
-    flex: 0.5,
+    flex: 0.25,
     renderCell: (params) => {
       return (
         <Box>
@@ -91,9 +91,11 @@ const columns = (currency: string): GridColDef[] => [
         defaultMessage="Amount"
       />
     ),
-    flex: 0.25,
+    flex: 0.15,
     headerAlign: "right",
     align: "right",
+    disableColumnMenu: true,
+    hideSortIcons: true,
     renderCell: (params) => {
       return (
         <BodyText>
@@ -115,7 +117,12 @@ const columns = (currency: string): GridColDef[] => [
     headerAlign: "right",
     align: "right",
     renderCell: (params: GridRenderCellParams) => {
-      return <FormattedNumber value={params.row.totalDeduction} />;
+      return (
+        <FormattedNumber
+          value={params.row.totalDeduction}
+          minimumFractionDigits={2}
+        />
+      );
     },
   },
   {
@@ -140,7 +147,10 @@ const columns = (currency: string): GridColDef[] => [
     ),
     headerAlign: "center",
     align: "center",
-    width: 110,
+    width: 150,
+    flex: 0.15,
+    sortable: false,
+    disableColumnMenu: true,
     renderCell: (data: GridRenderCellParams<{ _id: string }>) => {
       return <UpdateHarvestLog harvestLogId={data.row._id} />;
     },
