@@ -1,7 +1,8 @@
 import { FormattedDate, FormattedMessage } from "react-intl"
 
-import { Skeleton } from "@mui/material";
+import { Box, Skeleton } from "@mui/material";
 import { ISeasonResponse } from "project-2-types";
+import { ArrowDown, ArrowUp } from "@phosphor-icons/react";
 
 const cardStruc = (
   isLoading: boolean,
@@ -13,7 +14,7 @@ const cardStruc = (
 ) => {
   const currencyName = season?.currency?.name;
   const unitName = season?.unit?.name;
-  
+
   const CIRCULAR_LOADER = (
     <Skeleton
       animation="wave"
@@ -98,9 +99,18 @@ const cardStruc = (
         content: isLoading
           ? CIRCULAR_LOADER
           : `${currencyName} ${Number(totals?.totalPayroll).toFixed(2)}`,
-        perIncrease: isLoading
-          ? `- %`
-          : `${averages?.avePayrollChange?.toFixed(2) ?? 0} %`,
+        perIncrease: isLoading ? (
+          `%`
+        ) : (
+          <Box display="flex" gap={1} alignItems="center">
+            {averages.avePayrollChange > 0 ? (
+              <ArrowUp weight="bold" />
+            ) : (
+              <ArrowDown weight="bold" />
+            )}
+            {`${averages?.avePayrollChange?.toFixed(2) ?? 0} %`}
+          </Box>
+        ),
       },
       {
         label: (
@@ -111,12 +121,19 @@ const cardStruc = (
         ),
         content: isLoading
           ? CIRCULAR_LOADER
-          : `${Number(totals?.todaysHarvest).toFixed(
-              2
-            )} ${unitName}`,
-        perIncrease: isLoading
-          ? `- %`
-          : `${averages?.aveHarvestChange?.toFixed(2) ?? 0} %`,
+          : `${Number(totals?.todaysHarvest).toFixed(2)} ${unitName}`,
+        perIncrease: isLoading ? (
+          `%`
+        ) : (
+          <Box display="flex" gap={1} alignItems="center">
+            {averages.aveHarvestChange > 0 ? (
+              <ArrowUp weight="bold" />
+            ) : (
+              <ArrowDown weight="bold" />
+            )}
+            {`${averages?.aveHarvestChange?.toFixed(2) ?? 0} %`}
+          </Box>
+        ),
       },
     ],
     payrollInfo: {

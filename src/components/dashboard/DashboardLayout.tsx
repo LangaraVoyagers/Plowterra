@@ -1,10 +1,4 @@
-import {
-  ArrowRight,
-  ArrowUp,
-  FilePlus,
-  HandCoins,
-  Plant,
-} from "@phosphor-icons/react";
+import { ArrowRight, FilePlus, HandCoins, Plant } from "@phosphor-icons/react";
 import {
   Box,
   BoxProps,
@@ -335,7 +329,7 @@ const MidSectionInfo = (props: any) => {
                           fontSize="0.875rem"
                           fontWeight="SemiBold"
                         >
-                          <ArrowUp /> {item?.perIncrease}
+                          {item?.perIncrease}
                         </Label>
                         &nbsp;{" "}
                         <FormattedMessage
