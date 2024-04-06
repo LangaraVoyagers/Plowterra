@@ -1,10 +1,4 @@
-import {
-  ArrowRight,
-  ArrowUp,
-  FilePlus,
-  HandCoins,
-  Plant,
-} from "@phosphor-icons/react";
+import { ArrowRight, FilePlus, HandCoins, Plant } from "@phosphor-icons/react";
 import {
   Box,
   BoxProps,
@@ -67,10 +61,18 @@ const DashBoardLayout = () => {
     queryFn: () => getIndicators(seasonSelected?._id),
     enabled: !!seasonSelected?._id,
     onSuccess: (results) => {
-      const { season, payrollToTodayData, totals, lastPayrolls, averages } = results;
-      
+      const { season, payrollToTodayData, totals, lastPayrolls, averages } =
+        results;
+
       setCardInfo(
-        cardStruc(false, season, payrollToTodayData, totals, lastPayrolls, averages)
+        cardStruc(
+          false,
+          season,
+          payrollToTodayData,
+          totals,
+          lastPayrolls,
+          averages
+        )
       );
     },
     onError: (error) => {
@@ -335,7 +337,7 @@ const MidSectionInfo = (props: any) => {
                           fontSize="0.875rem"
                           fontWeight="SemiBold"
                         >
-                          <ArrowUp /> {item?.perIncrease}
+                          {item?.perIncrease}
                         </Label>
                         &nbsp;{" "}
                         <FormattedMessage
@@ -395,54 +397,34 @@ const PayrollInfo = (props: any) => {
                 }}
               />
             </BodyText>
-            <Box
-              display="flex"
-              flexWrap="nowrap"
-              padding="1px 9px"
-              alignItems="center"
-              justifyContent="center"
-              border={`1px solid ${theme.palette.primary.dark}`}
-              borderRadius="100px"
-              py={0.5}
-            >
-              <Box
-                mr="8px"
-                display="inline-block"
-                width="0.5rem"
-                height="0.5rem"
-                borderRadius="100%"
-                bgcolor={theme.palette.primary.dark}
-              />
-              <BodyText size="xs" fontWeight="Medium">
-                <FormattedMessage
-                  defaultMessage="{days, plural, one {{days} day left} other {{days} days left}}"
-                  id="dashboard.card.label.day"
-                  values={{
-                    days: payrollToToday?.daysLeft,
-                  }}
-                />
-              </BodyText>
-            </Box>
-          </Box>
-
-          <Button
-            variant="text"
-            onClick={() =>
-              navigate(`/payroll/preview?seasonId=${seasonSelected?._id}`)
-            }
-            endIcon={<ArrowRight size="1rem" weight="bold" />}
-            sx={{
-              padding: "0 !important",
-              background: "transparent !important",
-              width: "fix-content",
-              justifyContent: "left",
-            }}
-          >
-            <FormattedMessage
-              defaultMessage="Run Payroll"
-              id="dashboard.button.runPayroll"
+            <PayrollDaysBadge
+              days={
+                isNaN(payrollToToday?.daysLeft) ? 0 : payrollToToday?.daysLeft
+              }
+              status={payrollToToday?.status}
+              theme={theme}
             />
-          </Button>
+          </Box>
+          {payrollToToday?.daysLeft !== 0 && (
+            <Button
+              variant="text"
+              onClick={() =>
+                navigate(`/payroll/preview?seasonId=${seasonSelected?._id}`)
+              }
+              endIcon={<ArrowRight size="1rem" weight="bold" />}
+              sx={{
+                padding: "0 !important",
+                background: "transparent !important",
+                width: "fix-content",
+                justifyContent: "left",
+              }}
+            >
+              <FormattedMessage
+                defaultMessage="Run Payroll"
+                id="dashboard.button.runPayroll"
+              />
+            </Button>
+          )}
         </Box>
       </Grid>
 
@@ -535,6 +517,82 @@ const PayrollInfo = (props: any) => {
         </Box>
       </Grid>
     </Grid>
+  );
+};
+
+type PayrollDaysBadgeProps = {
+  status: "overdue" | "upcoming" | "no_records";
+  theme: any;
+  days: number;
+};
+
+const PayrollDaysBadge = ({ theme, days, status }: PayrollDaysBadgeProps) => {
+  return (
+    <Box
+      display="flex"
+      flexWrap="nowrap"
+      padding="1px 9px"
+      alignItems="center"
+      justifyContent="center"
+      border={`1px solid ${
+        status !== "overdue"
+          ? theme.palette?.success?.[500]
+          : theme.palette?.error?.[500]
+      }`}
+      bgcolor={
+        status !== "overdue"
+          ? theme.palette?.success?.[50]
+          : theme.palette?.error?.[50]
+      }
+      borderRadius="100px"
+      py={0.5}
+    >
+      <Box
+        mr="8px"
+        display="inline-block"
+        width="0.5rem"
+        height="0.5rem"
+        borderRadius="100%"
+        bgcolor={
+          status !== "overdue"
+            ? theme.palette?.success?.[600]
+            : theme.palette?.error?.[600]
+        }
+      />
+
+      {status === "upcoming" && (
+        <BodyText size="xs" fontWeight="Medium" color="success-700">
+          <FormattedMessage
+            defaultMessage="{days, plural, one {{days} day left} other {{days} days left}}"
+            id="dashboard.card.label.days.left"
+            values={{
+              days: Math.abs(days),
+            }}
+          />
+        </BodyText>
+      )}
+
+      {status === "overdue" && (
+        <BodyText size="xs" fontWeight="Medium" color="error-700">
+          <FormattedMessage
+            defaultMessage="{days, plural, one {{days} day overdue} other {{days} days overdue}}"
+            id="dashboard.card.label.days.overdue"
+            values={{
+              days: Math.abs(days),
+            }}
+          />
+        </BodyText>
+      )}
+
+      {status === "no_records" && (
+        <BodyText size="xs" fontWeight="Medium" color="success-700">
+          <FormattedMessage
+            defaultMessage="Up to Date"
+            id="dashboard.card.label.days.up_to_date"
+          />
+        </BodyText>
+      )}
+    </Box>
   );
 };
 

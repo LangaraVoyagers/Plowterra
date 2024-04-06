@@ -47,7 +47,7 @@
       "value": "Run Payroll"
     }
   ],
-  "dashboard.card.label.day": [
+  "dashboard.card.label.days.left": [
     {
       "offset": 0,
       "options": {
@@ -79,6 +79,46 @@
       "pluralType": "cardinal",
       "type": 6,
       "value": "days"
+    }
+  ],
+  "dashboard.card.label.days.overdue": [
+    {
+      "offset": 0,
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 1,
+              "value": "days"
+            },
+            {
+              "type": 0,
+              "value": " day overdue"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 1,
+              "value": "days"
+            },
+            {
+              "type": 0,
+              "value": " days overdue"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "days"
+    }
+  ],
+  "dashboard.card.label.days.up_to_date": [
+    {
+      "type": 0,
+      "value": "Up to Date"
     }
   ],
   "dashboard.get.graph.error": [

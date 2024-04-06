@@ -47,7 +47,7 @@
       "value": "Ejecutar"
     }
   ],
-  "dashboard.card.label.day": [
+  "dashboard.card.label.days": [
     {
       "offset": 0,
       "options": {
@@ -55,7 +55,7 @@
           "value": [
             {
               "type": 0,
-              "value": "día "
+              "value": "día restante"
             }
           ]
         },
@@ -63,7 +63,7 @@
           "value": [
             {
               "type": 0,
-              "value": "días "
+              "value": "días restantes"
             }
           ]
         }
@@ -73,10 +73,44 @@
       "value": "days"
     }
   ],
-  "dashboard.card.label.left": [
+  "dashboard.card.label.days.overdue": [
+    {
+      "offset": 0,
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 1,
+              "value": "days"
+            },
+            {
+              "type": 0,
+              "value": " día atrasado"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 1,
+              "value": "days"
+            },
+            {
+              "type": 0,
+              "value": " días atrasados"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "days"
+    }
+  ],
+  "dashboard.card.label.days.up_to_date": [
     {
       "type": 0,
-      "value": "restantes"
+      "value": "Al día"
     }
   ],
   "dashboard.get.graph.error": [
@@ -1187,6 +1221,18 @@
     {
       "type": 0,
       "value": "Después de cerrar esta temporada, no se podrá actualizar y no podrá agregar más registros de cosecha."
+    }
+  ],
+  "season.deductions.name.header": [
+    {
+      "type": 0,
+      "value": "Nombre"
+    }
+  ],
+  "season.deductions.price.header": [
+    {
+      "type": 0,
+      "value": "Precio"
     }
   ],
   "season.detail.error": [

@@ -23,8 +23,14 @@
   "dashboard.button.runPayroll": {
     "defaultMessage": "Run Payroll"
   },
-  "dashboard.card.label.day": {
+  "dashboard.card.label.days.left": {
     "defaultMessage": "{days, plural, one {{days} day left} other {{days} days left}}"
+  },
+  "dashboard.card.label.days.overdue": {
+    "defaultMessage": "{days, plural, one {{days} day overdue} other {{days} days overdue}}"
+  },
+  "dashboard.card.label.days.up_to_date": {
+    "defaultMessage": "Up to Date"
   },
   "dashboard.get.graph.error": {
     "defaultMessage": "Some error occurred, Please try again later"
