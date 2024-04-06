@@ -290,8 +290,14 @@
   "login.signin.error": {
     "defaultMessage": "¡Vaya! Parece que tienes problemas para iniciar sesión, por favor contacta al soporte."
   },
-  "login.singin.error": {
-    "defaultMessage": "¡Bienvenido de nuevo!"
+  "login.signup.error": {
+    "defaultMessage": "¡Vaya! Parece que tienes problemas para crear tu cuenta, por favor contacta al soporte."
+  },
+  "login.singin.welcome.back": {
+    "defaultMessage": "Bienvenido!"
+  },
+  "login.singup.welcome": {
+    "defaultMessage": "Bienvenido!"
   },
   "paryroll.start.payroll.button": {
     "defaultMessage": "Iniciar Planilla"
@@ -718,6 +724,30 @@
   },
   "sidebar.quick_actions.add_picker": {
     "defaultMessage": "Agregar Recolector"
+  },
+  "signup.button.submit": {
+    "defaultMessage": "{isLoading, plural, one {Cargando...} other {Iniciar Sesión} }"
+  },
+  "signup.email.format.validation.message": {
+    "defaultMessage": "Formato inválido"
+  },
+  "signup.email.label": {
+    "defaultMessage": "Correo Electrónico"
+  },
+  "signup.name.format.validation.message": {
+    "defaultMessage": "El nombre es muy corto"
+  },
+  "signup.name.label": {
+    "defaultMessage": "Nombre"
+  },
+  "signup.password.format.validation.message": {
+    "defaultMessage": "La contraseña es muy corta"
+  },
+  "signup.password.label": {
+    "defaultMessage": "Contraseña"
+  },
+  "signup.required.message": {
+    "defaultMessage": "Campo requerido"
   },
   "table.column.actions": {
     "defaultMessage": "Acciones"

@@ -261,6 +261,12 @@
       "value": "COSECHA TOTAL"
     }
   ],
+  "dashboard.recent.payroll.no.data": [
+    {
+      "type": 0,
+      "value": "No tienes planillas registradas aún"
+    }
+  ],
   "dashboard.tooltip.yaxis": [
     {
       "type": 0,
@@ -655,10 +661,22 @@
       "value": "¡Vaya! Parece que tienes problemas para iniciar sesión, por favor contacta al soporte."
     }
   ],
-  "login.singin.error": [
+  "login.signup.error": [
     {
       "type": 0,
-      "value": "¡Bienvenido de nuevo!"
+      "value": "¡Vaya! Parece que tienes problemas para crear tu cuenta, por favor contacta al soporte."
+    }
+  ],
+  "login.singin.welcome.back": [
+    {
+      "type": 0,
+      "value": "Bienvenido!"
+    }
+  ],
+  "login.singup.welcome": [
+    {
+      "type": 0,
+      "value": "Bienvenido!"
     }
   ],
   "paryroll.start.payroll.button": [
@@ -1647,6 +1665,74 @@
     {
       "type": 0,
       "value": "Agregar Recolector"
+    }
+  ],
+  "signup.button.submit": [
+    {
+      "offset": 0,
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Cargando..."
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Iniciar Sesión"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "isLoading"
+    }
+  ],
+  "signup.email.format.validation.message": [
+    {
+      "type": 0,
+      "value": "Formato inválido"
+    }
+  ],
+  "signup.email.label": [
+    {
+      "type": 0,
+      "value": "Correo Electrónico"
+    }
+  ],
+  "signup.name.format.validation.message": [
+    {
+      "type": 0,
+      "value": "El nombre es muy corto"
+    }
+  ],
+  "signup.name.label": [
+    {
+      "type": 0,
+      "value": "Nombre"
+    }
+  ],
+  "signup.password.format.validation.message": [
+    {
+      "type": 0,
+      "value": "La contraseña es muy corta"
+    }
+  ],
+  "signup.password.label": [
+    {
+      "type": 0,
+      "value": "Contraseña"
+    }
+  ],
+  "signup.required.message": [
+    {
+      "type": 0,
+      "value": "Campo requerido"
     }
   ],
   "table.column.actions": [

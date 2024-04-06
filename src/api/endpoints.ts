@@ -1,6 +1,7 @@
 const endpoints = {
   pickers: "/pickers",
   signin: "/auth/signin",
+  singup: "/auth/signup",
   seasons: "/seasons",
   harvestLogs: "/harvest-logs",
   payrolls: "/payrolls",
@@ -10,6 +11,6 @@ const endpoints = {
   deductions: "/deductions",
   dashboardIndicators: "/dashboard/indicators",
   dashboardGraph: "/dashboard/harvest-graph",
-}
+};
 
 export default endpoints;

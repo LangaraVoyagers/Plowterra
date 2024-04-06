@@ -290,8 +290,14 @@
   "login.signin.error": {
     "defaultMessage": "Oops! Seems like you are having issues when logging in, please contact support."
   },
-  "login.singin.error": {
+  "login.signup.error": {
+    "defaultMessage": "Oops! Seems like you are having issues when creating your account, please contact support."
+  },
+  "login.singin.welcome.back": {
     "defaultMessage": "Welcome back!"
+  },
+  "login.singup.welcome": {
+    "defaultMessage": "Welcome!"
   },
   "paryroll.start.payroll.button": {
     "defaultMessage": "Start payroll"
@@ -715,6 +721,30 @@
   },
   "sidebar.quick_actions.add_picker": {
     "defaultMessage": "Add Picker"
+  },
+  "signup.button.submit": {
+    "defaultMessage": "{isLoading, plural, one {Loading...} other {Log in} }"
+  },
+  "signup.email.format.validation.message": {
+    "defaultMessage": "Invalid format"
+  },
+  "signup.email.label": {
+    "defaultMessage": "Email"
+  },
+  "signup.name.format.validation.message": {
+    "defaultMessage": "Name is too short"
+  },
+  "signup.name.label": {
+    "defaultMessage": "Name"
+  },
+  "signup.password.format.validation.message": {
+    "defaultMessage": "Password is too short."
+  },
+  "signup.password.label": {
+    "defaultMessage": "Password"
+  },
+  "signup.required.message": {
+    "defaultMessage": "Required field"
   },
   "user.menu.log_out": {
     "defaultMessage": "Log out"

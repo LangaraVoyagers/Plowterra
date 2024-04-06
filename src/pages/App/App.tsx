@@ -16,11 +16,16 @@ import { UserProvider } from "context/UserProvider";
 import paths from "shared/paths";
 import PublicRoutes from "layouts/PublicRoutes";
 import LogOut from "pages/LogOut";
+import SignUp from "pages/SignUp";
 
 const router = createBrowserRouter([
   {
     path: paths.login,
     element: <PublicRoutes />,
+  },
+  {
+    path: paths.singup,
+    element: <SignUp />,
   },
   {
     path: "/",

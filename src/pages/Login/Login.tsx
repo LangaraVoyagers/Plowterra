@@ -57,7 +57,7 @@ const Login: React.FC = () => {
       data?.user && setUser(data.user);
       showAlert(
         intl.formatMessage({
-          id: "login.singin.error",
+          id: "login.singin.welcome.back",
           defaultMessage: "Welcome back!",
         }),
         "success"

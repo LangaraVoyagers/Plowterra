@@ -669,10 +669,22 @@
       "value": "Oops! Seems like you are having issues when logging in, please contact support."
     }
   ],
-  "login.singin.error": [
+  "login.signup.error": [
+    {
+      "type": 0,
+      "value": "Oops! Seems like you are having issues when creating your account, please contact support."
+    }
+  ],
+  "login.singin.welcome.back": [
     {
       "type": 0,
       "value": "Welcome back!"
+    }
+  ],
+  "login.singup.welcome": [
+    {
+      "type": 0,
+      "value": "Welcome!"
     }
   ],
   "paryroll.start.payroll.button": [
@@ -1675,6 +1687,74 @@
     {
       "type": 0,
       "value": "Add Picker"
+    }
+  ],
+  "signup.button.submit": [
+    {
+      "offset": 0,
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Loading..."
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Log in"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "isLoading"
+    }
+  ],
+  "signup.email.format.validation.message": [
+    {
+      "type": 0,
+      "value": "Invalid format"
+    }
+  ],
+  "signup.email.label": [
+    {
+      "type": 0,
+      "value": "Email"
+    }
+  ],
+  "signup.name.format.validation.message": [
+    {
+      "type": 0,
+      "value": "Name is too short"
+    }
+  ],
+  "signup.name.label": [
+    {
+      "type": 0,
+      "value": "Name"
+    }
+  ],
+  "signup.password.format.validation.message": [
+    {
+      "type": 0,
+      "value": "Password is too short."
+    }
+  ],
+  "signup.password.label": [
+    {
+      "type": 0,
+      "value": "Password"
+    }
+  ],
+  "signup.required.message": [
+    {
+      "type": 0,
+      "value": "Required field"
     }
   ],
   "user.menu.log_out": [
