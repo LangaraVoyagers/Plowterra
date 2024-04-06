@@ -269,6 +269,12 @@
       "value": "TOTAL HARVEST AMOUNT"
     }
   ],
+  "dashboard.recent.payroll.no.data": [
+    {
+      "type": 0,
+      "value": "You don't have payroll records yet."
+    }
+  ],
   "dashboard.tooltip.yaxis": [
     {
       "type": 0,

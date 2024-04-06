@@ -104,6 +104,9 @@
   "dashboard.labels.totalHarvestAmount": {
     "defaultMessage": "TOTAL HARVEST AMOUNT"
   },
+  "dashboard.recent.payroll.no.data": {
+    "defaultMessage": "You don't have payroll records yet."
+  },
   "dashboard.tooltip.yaxis": {
     "defaultMessage": "Harvest Amount"
   },

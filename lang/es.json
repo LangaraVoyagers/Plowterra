@@ -104,6 +104,9 @@
   "dashboard.labels.totalHarvestAmount": {
     "defaultMessage": "COSECHA TOTAL"
   },
+  "dashboard.recent.payroll.no.data": {
+    "defaultMessage": "No tienes planillas registradas aún"
+  },
   "dashboard.tooltip.yaxis": {
     "defaultMessage": "Cantidad de Cosecha"
   },

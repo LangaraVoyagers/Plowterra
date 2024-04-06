@@ -516,6 +516,14 @@ const PayrollInfo = (props: any) => {
               )}
             </Grid>
           </Box>
+          {!isCardInfoLoading && !lastPayrolls?.length && (
+            <BodyText color="grey-500" size="xs">
+              <FormattedMessage
+                id="dashboard.recent.payroll.no.data"
+                defaultMessage="You don't have payroll records yet."
+              />
+            </BodyText>
+          )}
         </Box>
       </Grid>
     </Grid>
