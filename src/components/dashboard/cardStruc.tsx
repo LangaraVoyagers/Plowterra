@@ -103,7 +103,8 @@ const cardStruc = (
           `%`
         ) : (
           <Box display="flex" gap={1} alignItems="center">
-            {averages.avePayrollChange > 0 ? (
+            {(averages.aveHarvestChange || 0) ===
+            0 ? null : averages.avePayrollChange > 0 ? (
               <ArrowUp weight="bold" />
             ) : (
               <ArrowDown weight="bold" />
@@ -126,7 +127,8 @@ const cardStruc = (
           `%`
         ) : (
           <Box display="flex" gap={1} alignItems="center">
-            {averages.aveHarvestChange > 0 ? (
+            {(averages.aveHarvestChange || 0) ===
+            0 ? null : averages.aveHarvestChange > 0 ? (
               <ArrowUp weight="bold" />
             ) : (
               <ArrowDown weight="bold" />
