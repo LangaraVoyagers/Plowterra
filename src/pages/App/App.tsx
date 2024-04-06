@@ -24,7 +24,7 @@ const router = createBrowserRouter([
     element: <PublicRoutes />,
   },
   {
-    path: paths.singup,
+    path: paths.signup,
     element: <SignUp />,
   },
   {

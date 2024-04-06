@@ -2,7 +2,7 @@ const paths = {
   home: "/",
   pickers: "/pickers",
   login: "/login",
-  singup: "/singup",
+  signup: "/signup",
   seasons: "/seasons",
   harvestLogs: "/harvest-logs",
   payroll: "/payroll",
