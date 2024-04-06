@@ -156,11 +156,13 @@ const cardStruc = (
             day="2-digit"
           />
         ),
-        daysLeft: isLoading
-          ? "-"
-          : payrollToTodayData?.daysRemaining > 0
-          ? payrollToTodayData?.daysRemaining
-          : 0,
+        daysLeft: isLoading ? "-" : payrollToTodayData?.daysRemaining,
+        status:
+          payrollToTodayData?.daysRemaining === 0
+            ? "no_records"
+            : payrollToTodayData?.daysRemaining > 0
+            ? "upcoming"
+            : "overdue",
       },
       lastPayrolls: lastPayrolls?.slice(0, 3),
     },

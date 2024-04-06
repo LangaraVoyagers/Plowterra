@@ -62,7 +62,7 @@ const SplineGraph = (props: any) => {
         text: `${intl.formatMessage({
           defaultMessage: "Harvest Amount (in",
           id: "dashboard.graph.yaxisLabel",
-        })} ${unitName})`,
+        })} ${unitName ?? ""})`,
         style: {
           fontFamily:
             "PlusJakartaSans, Inter, system-ui, Avenir, Helvetica, Arial, sans-serif",
