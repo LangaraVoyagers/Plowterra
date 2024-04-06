@@ -99,35 +99,27 @@ const SplineGraph = (props: any) => {
               aria-hidden
             />
             <Box>
-              <Display
-                lineHeight="1.6"
-                fontSize="1.125rem"
-                fontWeight="SemiBold"
-                variant="h2"
-              >
+              <Display fontWeight="SemiBold" variant="h2" size="md">
                 <FormattedMessage
                   defaultMessage="Harvest Collection"
                   id="dashboard.graph.title"
                 />
               </Display>
-              <Display
-                lineHeight="1.5"
-                fontSize="0.875rem"
-                fontWeight="Medium"
-                color="grey-600"
-              >
+              <BodyText size="md" fontWeight="Medium" color="grey-600">
                 <FormattedMessage
                   defaultMessage="Keep track of harvest collection over time"
                   id="dashboard.graph.label"
                 />
-              </Display>
+              </BodyText>
             </Box>
           </Box>
         </Grid>
         <Grid item>
-          <ButtonGroup variant="outlined" 
-          size="small"
-          aria-label="Graph Filter Options">
+          <ButtonGroup
+            variant="outlined"
+            size="small"
+            aria-label="Graph Filter Options"
+          >
             <Button
               onClick={() => setDaysDelta("all")}
               sx={{

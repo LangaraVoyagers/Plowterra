@@ -252,7 +252,7 @@ const HarvestInfo = (props: any) => {
             control: {
               fontSize: "1.25rem",
               fontWeight: 600,
-              width: "16.375rem",
+              maxWidth: "16.375rem",
               height: "3.375rem",
             },
             menu: {
