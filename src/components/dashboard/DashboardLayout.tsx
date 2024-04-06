@@ -529,7 +529,7 @@ type PayrollDaysBadgeProps = {
 };
 
 const PayrollDaysBadge = ({ theme, days, status }: PayrollDaysBadgeProps) => {
-  console.log({ days, status });
+
   return (
     <Box
       display="flex"
