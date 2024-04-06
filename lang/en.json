@@ -723,7 +723,7 @@
     "defaultMessage": "Add Picker"
   },
   "signup.button.submit": {
-    "defaultMessage": "{isLoading, plural, one {Loading...} other {Log in} }"
+    "defaultMessage": "{isLoading, plural, one {Loading...} other {Sign up} }"
   },
   "signup.email.format.validation.message": {
     "defaultMessage": "Invalid format"

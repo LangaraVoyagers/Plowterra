@@ -12,6 +12,7 @@ import {
   Button,
   useMediaQuery,
   useTheme,
+  Link,
 } from "@mui/material";
 import { EyeSlash, Eye } from "@phosphor-icons/react";
 import { Controller, useForm } from "react-hook-form";
@@ -23,6 +24,7 @@ import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import InputLabel from "ui/InputLabel";
 import { login } from "api/login";
+import paths from "shared/paths";
 
 type SignUpForm = { name: string; email: string; password: string };
 
@@ -90,14 +92,14 @@ const SignUp = () => {
       navigate("/");
     },
     onError: () => {
-        showAlert(
-          intl.formatMessage({
-            id: "login.signup.error",
-            defaultMessage:
-              "Oops! Seems like you are having issues when creating your account, please contact support.",
-          }),
-          "error"
-        );
+      showAlert(
+        intl.formatMessage({
+          id: "login.signup.error",
+          defaultMessage:
+            "Oops! Seems like you are having issues when creating your account, please contact support.",
+        }),
+        "error"
+      );
     },
   });
 
@@ -309,11 +311,19 @@ const SignUp = () => {
                 {
                   id: "signup.button.submit",
                   defaultMessage:
-                    "{isLoading, plural, one {Loading...} other {Log in} }",
+                    "{isLoading, plural, one {Loading...} other {Sign up} }",
                 },
                 { isLoading: Number(!!(isLoading || logingIn)) }
               )}
             </Button>
+            <Box textAlign="center">
+              <Link
+                sx={{ cursor: "pointer" }}
+                onClick={() => navigate(paths.login)}
+              >
+                Login
+              </Link>
+            </Box>
           </Box>
         </Box>
       </Box>
