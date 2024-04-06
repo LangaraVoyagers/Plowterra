@@ -68,7 +68,6 @@ const DashBoardLayout = () => {
     enabled: !!seasonSelected?._id,
     onSuccess: (results) => {
       const { season, payrollToTodayData, totals, lastPayrolls, averages } = results;
-      console.log(results);
       
       setCardInfo(
         cardStruc(false, season, payrollToTodayData, totals, lastPayrolls, averages)
