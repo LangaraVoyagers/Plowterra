@@ -8,11 +8,12 @@ const cardStruc = (
   season?: ISeasonResponse,
   payrollToTodayData?: any,
   totals: any = {},
-  lastPayrolls?: any
+  lastPayrolls?: any,
+  averages: any = {}
 ) => {
   const currencyName = season?.currency?.name;
   const unitName = season?.unit?.name;
-  const { averages } = totals;
+  
   const CIRCULAR_LOADER = (
     <Skeleton
       animation="wave"
@@ -110,9 +111,9 @@ const cardStruc = (
         ),
         content: isLoading
           ? CIRCULAR_LOADER
-          : `${currencyName} ${Number(payrollToTodayData?.grossAmount).toFixed(
+          : `${Number(totals?.todaysHarvest).toFixed(
               2
-            )}`,
+            )} ${unitName}`,
         perIncrease: isLoading
           ? `- %`
           : `${averages?.aveHarvestChange?.toFixed(2) ?? 0} %`,
