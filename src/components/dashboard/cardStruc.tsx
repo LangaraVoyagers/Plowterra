@@ -158,7 +158,7 @@ const cardStruc = (
         ),
         daysLeft: isLoading ? "-" : payrollToTodayData?.daysRemaining,
         status:
-          payrollToTodayData?.daysRemaining === 0
+          (payrollToTodayData?.daysRemaining || 0) === 0
             ? "no_records"
             : payrollToTodayData?.daysRemaining > 0
             ? "upcoming"

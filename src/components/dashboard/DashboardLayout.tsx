@@ -397,13 +397,15 @@ const PayrollInfo = (props: any) => {
                 }}
               />
             </BodyText>
-            <PayrollDaysBadge
-              days={
-                isNaN(payrollToToday?.daysLeft) ? 0 : payrollToToday?.daysLeft
-              }
-              status={payrollToToday?.status}
-              theme={theme}
-            />
+            {!isCardInfoLoading && (
+              <PayrollDaysBadge
+                days={
+                  isNaN(payrollToToday?.daysLeft) ? 0 : payrollToToday?.daysLeft
+                }
+                status={payrollToToday?.status}
+                theme={theme}
+              />
+            )}
           </Box>
           {payrollToToday?.daysLeft !== 0 && (
             <Button
@@ -527,6 +529,7 @@ type PayrollDaysBadgeProps = {
 };
 
 const PayrollDaysBadge = ({ theme, days, status }: PayrollDaysBadgeProps) => {
+  console.log({ days, status });
   return (
     <Box
       display="flex"
