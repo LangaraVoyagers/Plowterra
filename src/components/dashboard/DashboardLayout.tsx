@@ -67,10 +67,10 @@ const DashBoardLayout = () => {
     queryFn: () => getIndicators(seasonSelected?._id),
     enabled: !!seasonSelected?._id,
     onSuccess: (results) => {
-      const { season, payrollToTodayData, totals, lastPayrolls } = results;
-
+      const { season, payrollToTodayData, totals, lastPayrolls, averages } = results;
+      
       setCardInfo(
-        cardStruc(false, season, payrollToTodayData, totals, lastPayrolls)
+        cardStruc(false, season, payrollToTodayData, totals, lastPayrolls, averages)
       );
     },
     onError: (error) => {
