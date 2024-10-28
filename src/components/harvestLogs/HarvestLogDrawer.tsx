@@ -325,7 +325,7 @@ const HarvestLogDrawer = ({
     onSuccess: (result) => {
       queryClient.invalidateQueries({
         predicate: (query) =>
-          query.queryKey.includes(HARVEST_LOGS_QUERY_KEY[0]),
+          query?.queryKey?.includes(HARVEST_LOGS_QUERY_KEY[0]),
       });
       if (harvestLogId && !openCorrectionEntry) {
         handleUpdateSuccess(result);
