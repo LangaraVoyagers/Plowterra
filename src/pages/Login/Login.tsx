@@ -48,6 +48,10 @@ const Login: React.FC = () => {
   } = useForm<LoginForm>({
     mode: "all",
     resolver: validateResolver(LoginSchema),
+    defaultValues: {
+      email: "alberth@plowterra.com",
+      password: "Testing123",
+    },
   });
 
   const { isLoading, mutate: signin } = useMutation({
