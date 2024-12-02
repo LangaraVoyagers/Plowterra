@@ -32,6 +32,7 @@ import { useLocation } from 'react-router-dom';
 import { usePersistedState } from "hooks/usePersistedState";
 import { useThemMode } from "context/ThemeProvider";
 import { useNavigate } from "react-router-dom";
+import { useUser } from "context/UserProvider";
 
 const DRAWER_WIDTH = 288;
 
@@ -143,6 +144,8 @@ const quickActions = [
 const container = window !== undefined ? () => window.document.body : undefined;
 
 export default function MainLayout() {
+  const { user } = useUser();
+
   const location = useLocation();
   const theme = useTheme();
   const mobile = useMediaQuery(theme.breakpoints.down("md"));
@@ -159,10 +162,6 @@ export default function MainLayout() {
   const Logo = mode === "light" ? LogoLight : LogoDark;
   const LogoSquare = mode === "light" ? LogoSquareLight : LogoSquareDark;
 
-  useEffect(() => {
-    setCurrPath(location.pathname);
-  }, [location.pathname]);
-
   const handleDrawerClose = () => {
     if (mobile) {
       setMobileOpen(!mobileOpen);
@@ -176,6 +175,16 @@ export default function MainLayout() {
       setOpen(true);
     }
   };
+
+  useEffect(() => {
+    setCurrPath(location.pathname);
+  }, [location.pathname]);
+
+  useEffect(() => {
+    if (!user.farm._id) {
+      navigate(paths.login);
+    }
+  }, [location.pathname]);
 
   const drawer = (
     <>
@@ -336,6 +345,7 @@ export default function MainLayout() {
       >
         {drawer}
       </MuiDrawer>
+      {/* Desktop */}
       <Drawer
         component="aside"
         variant="permanent"
